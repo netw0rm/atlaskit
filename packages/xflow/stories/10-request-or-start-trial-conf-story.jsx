@@ -108,6 +108,17 @@ storiesOf('RequestOrStartTrial (Confluence)')
       </MockConfluenceXFlowProvider>
     )
   )
+  .add('User can add a product (INACTIVE), Start Trial flow without Grant Access screen', () =>
+    setupStorybookAnalytics(
+      <MockConfluenceXFlowProvider {...defaultProps} canCurrentUserAddProduct={async () => true}>
+        <RequestOrStartTrial
+          {...defaultRequestOrStartTrialProps}
+          onTrialActivating={action('onTrialActivating')}
+          grantAccessEnabled={false}
+        />
+      </MockConfluenceXFlowProvider>
+    )
+  )
   .add('User can add a product (DEACTIVATED), Start Trial flow without Grant Access screen', () =>
     setupStorybookAnalytics(
       <MockConfluenceXFlowProvider

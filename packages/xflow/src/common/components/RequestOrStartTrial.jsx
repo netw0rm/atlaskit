@@ -41,12 +41,14 @@ class RequestOrStartTrial extends Component {
       reactivateCTA: PropTypes.string,
       trialCTA: PropTypes.string,
     }),
+    grantAccessEnabled: PropTypes.bool,
   };
 
   static defaultProps = {
     onComplete: () => {},
     onTrialRequested: () => {},
     onTrialActivating: () => {},
+    grantAccessEnabled: true,
   };
 
   state = {
@@ -150,6 +152,7 @@ class RequestOrStartTrial extends Component {
       sourceComponent,
       sourceContext,
       contextInfo,
+      grantAccessEnabled,
     } = this.props;
     const {
       activationState,
@@ -196,7 +199,7 @@ class RequestOrStartTrial extends Component {
                       <ContextualStartTrial
                         onComplete={onComplete}
                         onTrialActivating={onTrialActivating}
-                        showGrantAccess={activationState === INACTIVE}
+                        showGrantAccess={activationState === INACTIVE && grantAccessEnabled}
                         contextInfo={contextInfo}
                       />
                     )
@@ -204,7 +207,7 @@ class RequestOrStartTrial extends Component {
                       <StartTrial
                         onComplete={onComplete}
                         onTrialActivating={onTrialActivating}
-                        showGrantAccess={activationState === INACTIVE}
+                        showGrantAccess={activationState === INACTIVE && grantAccessEnabled}
                       />
                     )
                 );
@@ -239,10 +242,12 @@ export default withXFlowProvider(
       checkProductRequestFlag,
       getProductActivationState,
       waitForActivation,
+      grantAccessEnabled,
   } }) => ({
     canCurrentUserAddProduct,
     checkProductRequestFlag,
     getProductActivationState,
     waitForActivation,
+    grantAccessEnabled,
   })
 );

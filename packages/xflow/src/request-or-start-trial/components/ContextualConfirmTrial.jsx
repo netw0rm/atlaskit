@@ -170,13 +170,7 @@ class ContextualConfirmTrial extends Component {
           id="xflow.generic.confirm-trial.settings-info"
           defaultMessage="Cancel your trial at any time in {manageApplicationsLink}."
           values={{
-            manageApplicationsLink: (
-              <a href="/admin/billing/applications" target="_blank" rel="noopener noreferrer">
-                <FormattedMessage
-                  id="xflow.generic.confirm-trial.settings-info.manage-applications.link"
-                  defaultMessage="Manage subscriptions"
-                />
-              </a>),
+            manageApplicationsLink: this.renderManageApplicationsLink(),
           }}
         />
       </ConfirmTrialAdminInfo>
@@ -198,17 +192,20 @@ class ContextualConfirmTrial extends Component {
           id="xflow.generic.confirm-reactivation.settings-info"
           defaultMessage="Cancel your subscription at any time in {manageApplicationsLink}."
           values={{
-            manageApplicationsLink: (
-              <a href="/admin/billing/applications" target="_blank" rel="noopener noreferrer">
-                <FormattedMessage
-                  id="xflow.generic.confirm-trial.settings-info.manage-applications.link"
-                  defaultMessage="Manage subscriptions"
-                />
-              </a>),
+            manageApplicationsLink: this.renderManageApplicationsLink(),
           }}
         />
       </ConfirmTrialAdminInfo>
     </ContextualConfirmTrialFooter>
+  );
+
+  renderManageApplicationsLink = () => (
+    <a href="/admin/billing/applications" target="_blank" rel="noopener noreferrer">
+      <FormattedMessage
+        id="xflow.generic.confirm-trial.settings-info.manage-applications.link"
+        defaultMessage="Manage subscriptions"
+      />
+    </a>
   );
 
   renderFooter = (status) => (status === INACTIVE

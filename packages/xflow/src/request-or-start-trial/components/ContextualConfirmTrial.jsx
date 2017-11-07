@@ -199,14 +199,26 @@ class ContextualConfirmTrial extends Component {
     </ContextualConfirmTrialFooter>
   );
 
-  renderManageApplicationsLink = () => (
-    <a href="/admin/billing/applications" target="_blank" rel="noopener noreferrer">
-      <FormattedMessage
-        id="xflow.generic.confirm-trial.settings-info.manage-applications.link"
-        defaultMessage="Manage subscriptions"
-      />
-    </a>
-  );
+  renderManageApplicationsLink = () => {
+    const { status, firePrivateAnalyticsEvent } = this.props;
+    return (
+      <a
+        href="/admin/billing/applications"
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => firePrivateAnalyticsEvent(
+          status === INACTIVE
+            ? 'xflow.confirm-trial.manage-subscriptions.clicked'
+            : 'xflow.reactivate-trial.manage-subscriptions.clicked'
+        )}
+      >
+        <FormattedMessage
+          id="xflow.generic.confirm-trial.settings-info.manage-applications.link"
+          defaultMessage="Manage subscriptions"
+        />
+      </a>
+    );
+  }
 
   renderFooter = (status) => (status === INACTIVE
     ? this.renderInactiveFooter()

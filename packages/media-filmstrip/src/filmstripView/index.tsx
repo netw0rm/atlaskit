@@ -1,6 +1,6 @@
 /* tslint:disable variable-name */
 import * as React from 'react';
-import { ReactNode, WheelEvent, MouseEvent as ReactMouseEvent, ReactChild, SyntheticEvent} from 'react';
+import { ReactNode, WheelEvent, MouseEvent as ReactMouseEvent, ReactElement } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import ArrowLeft from '@atlaskit/icon/glyph/arrowleft';
 import ArrowRight from '@atlaskit/icon/glyph/arrowright';
@@ -216,7 +216,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     const {windowElement, bufferElement} = this;
     let bufferWidth = 0;
     let windowWidth = 0;
-    let childOffsets = undefined;
+    let childOffsets;
     if (windowElement && bufferElement) {
       bufferWidth = bufferElement.getBoundingClientRect().width;
       windowWidth = windowElement.getBoundingClientRect().width;
@@ -400,7 +400,9 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     this.setState({isDragging: false});
 
     const {onDragEnd} = this.props;
-    if (!result.destination || !onDragEnd) return;
+    if (!result.destination || !onDragEnd) {
+      return;
+    }
 
     const {source, destination} = result;
 
@@ -421,7 +423,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     const {isNativeDragOver} = this.state;
     const {dataTransfer} = e;
     const x = e.nativeEvent.offsetX + offset;
-    const y = e.nativeEvent.offsetY;
+    // const y = e.nativeEvent.offsetY;
     let newIndex = 0;
     let index = 0;
     const len = this.childOffsets.length;
@@ -453,7 +455,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
 
       dragImg.src = '';
 
-      dataTransfer.setDragImage(dragImg, 10, 10)
+      dataTransfer.setDragImage(dragImg, 10, 10);
       this.setState({ isNativeDragOver: true });
 
       if (onDragEnter) {
@@ -462,13 +464,13 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     }
   }
 
-  onDragLeave = (e: DragEvent) => {
+  onDragLeave = (e: any) => {
     e.preventDefault();
     this.setState({ isNativeDragOver: false });
   }
 
-  onDrop = (e: DragEvent) => {
-    const {children, onDrop} = this.props;
+  onDrop = (e: any) => {
+    const {/* children, */ onDrop} = this.props;
     e.preventDefault();
     this.setState({ isNativeDragOver: false });
     const mouseMove = new MouseEvent('mouseup', {
@@ -481,10 +483,10 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
     }
   }
 
-  onNativeDragOver = (e: DragEvent) => {
+  onNativeDragOver = (e: any) => {
     e.preventDefault();
-    const x = e.offsetX;
-    const y = e.offsetY;
+    const x = (e as any).offsetX;
+    const y = (e as any).offsetY;
 
     const mouseMove = new MouseEvent('mousemove', {
       button: 0, // primary
@@ -512,7 +514,7 @@ export class FilmstripView extends React.Component<FilmstripViewProps, Filmstrip
   }
 
   renderChildren = (children) => {
-    return React.Children.map(children, (child, index) => {
+    return React.Children.map(children, (child: ReactElement<any>, index) => {
       const key = child['key'] ? child['key'] : index;
       const isFake = child.props && child.props.isFake;
 

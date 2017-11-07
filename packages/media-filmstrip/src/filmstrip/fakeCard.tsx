@@ -6,6 +6,7 @@ import DocumentFilledIcon from '@atlaskit/icon/glyph/document-filled';
 const MEDIA_HEIGHT = 125;
 const FILE_WIDTH = 156;
 
+// tslint:disable-next-line:variable-name
 const IconWrapper = styled.div`
   color: rgba(0, 82, 204, 0.4);
   background: rgba(0, 101, 255, 0.8);
@@ -18,6 +19,7 @@ const IconWrapper = styled.div`
   justify-content: center;
   cursor: -webkit-grab;
 `;
+// tslint:disable-next-line:variable-name
 const DraggedFilesWrapper = styled.div`
   position: absolute;
   margin-top: 6px;
@@ -25,7 +27,7 @@ const DraggedFilesWrapper = styled.div`
   color: rgba(255,255,255,0.8);
 `;
 
-export default ({draggedFiles}) => {
+export default ({draggedFiles, isFake}) => {
   const draggedFilesLength = draggedFiles > 1 ? <DraggedFilesWrapper>{draggedFiles}</DraggedFilesWrapper> : null;
 
   return (

@@ -5,8 +5,8 @@ import {CardViewProps, Card, CardView, CardProps} from '@atlaskit/media-card';
 import {FilmstripView} from '../filmstripView';
 import FakeCard from './fakeCard';
 
-export type withKey = { key: string };
-export type FilmstripItem = CardProps | (CardViewProps & withKey) ;
+export type CardViewPropsWithKey = CardViewProps & { key: string };
+export type FilmstripItem = CardProps | CardViewPropsWithKey;
 
 export interface FilmstripProps {
   context?: Context;
@@ -46,16 +46,16 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
     const {items: nextItems, onSort} = nextProps;
     const {items: currentItems} = this.state;
     const hasNewItems = nextItems !== currentItems;
-    const fakeItem = currentItems.find(i => i.isFake);
+    const fakeItem = (currentItems as any).find(i => i.isFake);
 
     if (hasNewItems && fakeItem && onSort) {
       const nextItemsCopy = [...nextItems];
       const fakeItemIndex = currentItems.indexOf(fakeItem);
       const newItem = nextItemsCopy.pop();
       // console.log('fakeItemIndex', fakeItemIndex)
-      debugger
-      console.log('newItem id', newItem.indentifier ? newItem.identifier.id : 'no--id');
-      nextItemsCopy.splice(fakeItemIndex, 0, newItem);
+      // debugger
+      // console.log('newItem id', newItem.indentifier ? newItem.identifier.id : 'no--id');
+      nextItemsCopy.splice(fakeItemIndex, 0, newItem!);
       // console.log(nextItemsCopy.map(i => i.identifier ? i.identifier.id : 'no--id').join(' '))
       this.setState({ items: nextItemsCopy });
       onSort(nextItemsCopy);
@@ -72,7 +72,7 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
 
     sortedItems.splice(destination.index, 0, removed);
     this.setState({items: sortedItems});
-    console.log('onDragEnd', sortedItems)
+    // console.log('onDragEnd', sortedItems)
     if (onSort) {
       onSort(sortedItems);
     }
@@ -84,9 +84,9 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
     return items.map((item, index) => {
       const isCardItem = (item as CardProps).identifier;
 
-      if (item.isFake) {
+      if ((item as any).isFake) {
         return (
-          <FakeCard key={item.key} isFake={true} draggedFiles={item.draggedFiles} />
+          <FakeCard key={(item as CardViewPropsWithKey).key} isFake={true} draggedFiles={(item as CardViewPropsWithKey).draggedFiles} />
         );
       }
 
@@ -116,7 +116,7 @@ export class Filmstrip extends React.PureComponent<FilmstripProps, FilmstripStat
   onDragEnter = (length, index) => {
     const {items} = this.state;
     const itemsWithFakeContent = [...items];
-    const fakeCards = Array(1).fill(null).map(key => ({
+    const fakeCards = (Array(1) as any).fill(null).map(key => ({
       key: lastKey++,
       isFake: true,
       draggedFiles: length

@@ -330,7 +330,7 @@ describe('EmojiUtils', () => {
           width: 64,
         },
         altRepresentations: {
-          XXHDPI: {
+          XHDPI: {
             imagePath: 'https://something/something3.png',
             height: 128,
             width: 128,

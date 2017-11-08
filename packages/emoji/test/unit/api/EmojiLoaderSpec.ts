@@ -19,7 +19,7 @@ const header = (code: string | number): SecurityOptions => ({
 const getSecurityHeader = call => call[0].headers.get(defaultSecurityHeader);
 
 const defaultSecurityCode = '10804';
-const defaultScale = 'altScale=XXHDPI';
+const defaultScale = 'altScale=XHDPI';
 
 const provider1: EmojiLoaderConfig = {
   url: p1Url,

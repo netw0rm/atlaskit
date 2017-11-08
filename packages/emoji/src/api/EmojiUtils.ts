@@ -40,7 +40,7 @@ const calculateScale = (getRatio: () => number): KeyValues => {
     return { scale: 'XHDPI', altScale: 'XXXHDPI' };
   }
   // Default set used for desktop
-  return { altScale: 'XXHDPI' };
+  return { altScale: 'XHDPI' };
 };
 
 export const getPixelRatio = (): number => {
@@ -48,7 +48,7 @@ export const getPixelRatio = (): number => {
 };
 
 const getAltRepresentation = (reps: AltRepresentations): EmojiServiceRepresentation => {
-  // Invalid reps handled outside function
+  // Invalid reps handled outside function - logic may change depending what the service returns
   return reps[calculateScale(getPixelRatio).altScale];
 };
 

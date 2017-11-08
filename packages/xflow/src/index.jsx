@@ -3,7 +3,7 @@ export { default as RequestOrStartTrial } from './common/components/RequestOrSta
 export { default as RequestProductTrialOptOut } from './request-trial-opt-out/components/OptOut';
 export {
   default as JiraToJSDXFlowProvider,
-} from './jira-jsd/JiraToJSDXFlowProvider';
+} from './product-xflow-providers/JiraToJSDXFlowProvider';
 export {
   default as JiraToConfluenceXFlowProvider,
-} from './jira-confluence/JiraToConfluenceXFlowProvider';
+} from './product-xflow-providers/JiraToConfluenceXFlowProvider';

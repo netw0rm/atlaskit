@@ -52,6 +52,10 @@ export default function interActiveCard(dependencies) {
       location: 'Sydney, Australia',
       timeString: getTimeString(),
 
+      isBot: false,
+      isActive: true,
+      isCensored: false,
+
       hasDarkTheme: false,
       hasWeekday: false,
       hasAvatar: true,
@@ -127,6 +131,9 @@ export default function interActiveCard(dependencies) {
               isLoading={this.state.hasLoadingState}
               hasError={this.state.hasErrorState}
               actions={this.state.hasNoActions ? [] : actions}
+              isBot={this.state.isBot}
+              isActive={this.state.isActive}
+              isCensored={this.state.isCensored}
               avatarUrl={this.state.hasAvatar ? this.state.avatarUrl : ''}
               companyName={this.state.company}
               email={this.state.email}
@@ -158,6 +165,9 @@ export default function interActiveCard(dependencies) {
               <ul>
                 <li>{this.createCheckboxBooleanAttribute('hasLoadingState')}</li>
                 <li>{this.createCheckboxBooleanAttribute('hasErrorState')}</li>
+                <li>{this.createCheckboxBooleanAttribute('isBot')}</li>
+                <li>{this.createCheckboxBooleanAttribute('isActive')}</li>
+                <li>{this.createCheckboxBooleanAttribute('isCensored')}</li>
                 <li>{this.createCheckboxBooleanAttribute('hasDarkTheme')}</li>
               </ul>
 

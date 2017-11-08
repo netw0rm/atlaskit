@@ -28,6 +28,16 @@ export const headerTextColor = themed({
   dark: colors.N0,
 });
 
+export const appLabelBgColor = themed({
+  light: colors.N20,
+  dark: colors.N20,
+});
+
+export const appLabelTextColor = themed({
+  light: colors.N500,
+  dark: colors.N500,
+});
+
 export const labelTextColor = themed({
   light: colors.N800,
   dark: colors.DN900,

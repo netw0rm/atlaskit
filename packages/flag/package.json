@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/flag",
-  "version": "6.1.4",
+  "version": "6.1.5",
   "config": {
     "access": "public"
   },
@@ -38,6 +38,7 @@
     "@atlaskit/util-shared-styles": "^2.10.3",
     "babel-runtime": "^6.11.6",
     "prop-types": "^15.5.10",
+    "prop-types-extra": "^1.0.1",
     "react-transition-group": "^1.2.0",
     "styled-components": "^1.4.6"
   },

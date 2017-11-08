@@ -1,5 +1,8 @@
 # @atlaskit/avatar
 
+## 8.0.11 (2017-11-02)
+
+* bug fix; added missing dependencies (issues closed: ak-3782) ([4dbc3ef](https://bitbucket.org/atlassian/atlaskit/commits/4dbc3ef))
 ## 8.0.10 (2017-10-26)
 
 

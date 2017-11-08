@@ -2,7 +2,12 @@ import 'es6-promise/auto';
 import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
 
-import retrieveJiraUsers from '../../../src/jira-confluence/retrieveJiraUsers';
+import retrieveUserManagementUsers, {
+    JIRA_SOFTWARE_GROUP,
+    JIRA_CORE_GROUP,
+    JIRA_SERVICE_DESK_GROUP,
+    SITE_ADMINS_GROUP,
+} from '../../../src/common/retrieveUserManagementUsers';
 
 import groupSearch from './mock-data/groupSearch.json';
 import jiraUsersResponse from './mock-data/jiraUsers.json';
@@ -12,17 +17,22 @@ import jiraServiceDeskUsersResponse from './mock-data/jiraServiceDeskUsers.json'
 import missingJiraCoreGroupResponse from './mock-data/missingJiraCoreGroup.json';
 
 const GROUPS_ENDPOINT = '/admin/rest/um/1/group/search';
-const JIRA_SOFTWARE_GROUP = 'jira-software-users';
-const JIRA_CORE_GROUP = 'jira-core-users';
-const JIRA_SERVICE_DESK_GROUP = 'jira-servicedesk-users';
-const SITE_ADMINS_GROUP = 'site-admins';
 
 const usersEndpoint = (groupName, currentIndex) =>
   `/admin/rest/um/1/group/user/direct?groupname=${groupName}&activeFilter=active&start-index=${currentIndex}&max-results=30`;
 
-describe('retrieveJiraUsers', () => {
+describe('retrieveUserManagementUsers', () => {
+  let retrieveJiraUsers;
+
   beforeEach(() => {
     fetchMock.restore();
+
+    retrieveJiraUsers = retrieveUserManagementUsers([
+      JIRA_SOFTWARE_GROUP,
+      JIRA_CORE_GROUP,
+      JIRA_SERVICE_DESK_GROUP,
+      SITE_ADMINS_GROUP,
+    ]);
   });
 
   /**

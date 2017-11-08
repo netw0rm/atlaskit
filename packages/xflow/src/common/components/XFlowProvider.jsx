@@ -56,6 +56,8 @@ export const xFlowShape = PropTypes.shape({
   progress: PropTypes.number,
   status: PropTypes.oneOf([ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN]),
 
+  grantAccessEnabled: PropTypes.bool,
+
   canCurrentUserAddProduct: PropTypes.func,
   getProductActivationState: PropTypes.func,
   canCurrentUserGrantAccessToProducts: PropTypes.func,

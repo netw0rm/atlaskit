@@ -8,10 +8,10 @@ import notifyUsersAccessGranted, {
   NOTIFY_ENDPOINT_EAST,
 } from '../../../src/common/notifyUsersAccessGranted';
 
-import userAdminResponse from './../jira-confluence/mock-data/isUserTrustedSiteAdmin.json';
-import accessgrantedJiraUsersResponse from './../jira-confluence/mock-data/accessgrantedJiraUsers.json';
-import accessgrantedNoUsersResponse from './../jira-confluence/mock-data/accessgrantedNoUsers.json';
-import jiraUsersResponse from './../jira-confluence/mock-data/jiraUsers.json';
+import userAdminResponse from './mock-data/isUserTrustedSiteAdmin.json';
+import accessgrantedJiraUsersResponse from './mock-data/accessgrantedJiraUsers.json';
+import accessgrantedNoUsersResponse from './mock-data/accessgrantedNoUsers.json';
+import jiraUsersResponse from './mock-data/jiraUsers.json';
 // import jiraSoftwareUsersResponse from './mock-data/jiraSoftwareUsers.json';
 // import jiraCoreUsersResponse from './mock-data/jiraCoreUsers.json';
 // import jiraServiceDeskUsersResponse from './mock-data/jiraServiceDeskUsers.json';

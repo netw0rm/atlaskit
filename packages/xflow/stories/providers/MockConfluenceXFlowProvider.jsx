@@ -1,5 +1,5 @@
 import React from 'react';
-import JiraToConfluenceXFlowProvider from '../../src/jira-confluence/JiraToConfluenceXFlowProvider';
+import JiraToConfluenceXFlowProvider from '../../src/product-xflow-providers/JiraToConfluenceXFlowProvider';
 
 import mockConfluenceStatusChecker from './mockConfluenceStatusChecker';
 import { INACTIVE } from '../../src/common/productProvisioningStates';

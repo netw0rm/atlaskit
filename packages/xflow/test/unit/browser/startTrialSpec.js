@@ -19,7 +19,7 @@ import LoadingTime from '../../../src/request-or-start-trial/components/LoadingT
 import AlreadyStarted from '../../../src/request-or-start-trial/components/AlreadyStarted';
 import ProgressIndicator from '../../../src/request-or-start-trial/components/ProgressIndicator';
 import ErrorFlag from '../../../src/common/components/ErrorFlag';
-import JiraToConfluenceXFlowProvider from '../../../src/jira-confluence/JiraToConfluenceXFlowProvider';
+import JiraToConfluenceXFlowProvider from '../../../src/product-xflow-providers/JiraToConfluenceXFlowProvider';
 import XFlowIntlProvider from '../../../src/common/components/XFlowIntlProvider';
 import XFlowAnalyticsListener from '../../../src/common/components/XFlowAnalyticsListener';
 

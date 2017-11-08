@@ -1,3 +1,6 @@
+/** Utils to query infos about the current tenant = site
+ */
+
 import 'es6-promise/auto';
 import 'whatwg-fetch';
 import getMeta from './getMeta';
@@ -46,13 +49,14 @@ export const queryUsername = username =>
       throw new Error(
         `Unable to retrieve information about a user. Status: ${response.status}`
       );
-    } else {
-      return response.json();
     }
+
+    return response.json();
   });
 
 export const isUserTrusted = username =>
-  queryUsername(username || getCurrentUsername()).then((data) => {
+  queryUsername(username || getCurrentUsername())
+  .then((data) => {
     let isSiteAdmin;
     try {
       isSiteAdmin = data.groups.items.some(group => group.name === SITE_ADMINS_GROUP_NAME);

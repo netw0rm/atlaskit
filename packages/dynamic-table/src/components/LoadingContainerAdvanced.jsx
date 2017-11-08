@@ -32,7 +32,7 @@ export default class LoadingContainerAdvanced extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     if (!nextProps.isLoading) {
-      this.dettachListeners();
+      this.detachListeners();
     } else if (!this.props.isLoading && this.hasTargetNode()) {
       this.attachListeners();
     }
@@ -49,7 +49,7 @@ export default class LoadingContainerAdvanced extends Component {
   }
 
   componentWillUnmount = () => {
-    this.dettachListeners();
+    this.detachListeners();
   }
 
   getTargetNode = () => {
@@ -82,7 +82,7 @@ export default class LoadingContainerAdvanced extends Component {
     window.addEventListener('resize', this.handleResize);
   }
 
-  dettachListeners = () => {
+  detachListeners = () => {
     window.removeEventListener('scroll', this.handleScroll);
     window.removeEventListener('resize', this.handleResize);
   }

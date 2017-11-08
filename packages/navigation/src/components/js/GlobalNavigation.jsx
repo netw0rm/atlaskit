@@ -21,7 +21,7 @@ type Props = {|
   logo, or the product home icon */
   primaryIcon?: ReactElement,
   /** The appearance of the primary icon for custom styling purposes */
-  primaryIconAppearance?: IconAppearance,
+  primaryIconAppearance: IconAppearance,
   /** A link to place around the primary icon. */
   primaryItemHref?: string,
   /**  list of nodes to be placed in the secondary actions slot at the bottom of

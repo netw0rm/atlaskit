@@ -3,7 +3,7 @@ import React from 'react';
 import { RequestOrStartTrial } from '@atlaskit/xflow';
 
 import setupStorybookAnalytics from './util/setupStorybookAnalytics';
-import MockConfluenceXFlowProvider from './providers/MockConfluenceXFlowProvider';
+import MockJSWXFlowProvider from './providers/MockJSWXFlowProvider';
 
 import mockProductStatusChecker from './providers/mockProductStatusChecker';
 import { ACTIVE, ACTIVATING, DEACTIVATED, UNKNOWN } from '../src/common/productProvisioningStates';
@@ -84,120 +84,76 @@ const defaultProps = {
   grantAccessToUsers: () => delay(1000),
   goToProduct: async () => {},
   closeLoadingDialog: async () => {},
-  requestTrialWithNote: async () => delay(1000),
-  cancelRequestTrial: async () => {},
-  checkProductRequestFlag: async () => {},
-  setProductRequestFlag: async () => {},
+  requestTrialAccess: () => delay(1000),
+  requestTrialAccessWithNote: () => delay(1000),
+  requestTrialAccessWithoutNote: () => delay(1000),
+  cancelRequestTrialAccess: async () => {},
 };
 
 const defaultRequestOrStartTrialProps = {
   onAnalyticsEvent: action('onAnalyticsEvent'),
-  sourceComponent: 'storybook-example-compontent',
+  sourceComponent: 'storybook-example-component',
   sourceContext: 'storybook-example-context',
   targetProduct: 'storybook-example-product',
 };
 
-storiesOf('RequestOrStartTrial (Confluence)')
-  .add('User can add a product (INACTIVE), Start Trial flow with Grant Access screen', () =>
+storiesOf('RequestOrStartTrial (Jira Software)')
+  .add('User can add a product (INACTIVE), Start Trial flow skips Grant Access screen by default', () =>
     setupStorybookAnalytics(
-      <MockConfluenceXFlowProvider {...defaultProps} canCurrentUserAddProduct={async () => true}>
+      <MockJSWXFlowProvider {...defaultProps} canCurrentUserAddProduct={async () => true}>
         <RequestOrStartTrial
           {...defaultRequestOrStartTrialProps}
           onTrialActivating={action('onTrialActivating')}
         />
-      </MockConfluenceXFlowProvider>
+      </MockJSWXFlowProvider>
     )
   )
-  .add('User can add a product (INACTIVE), Start Trial flow without Grant Access screen', () =>
+  .add('User can add a product (DEACTIVATED), Start Trial flow always skips Grant Access screen', () =>
     setupStorybookAnalytics(
-      <MockConfluenceXFlowProvider {...defaultProps} canCurrentUserAddProduct={async () => true}>
-        <RequestOrStartTrial
-          {...defaultRequestOrStartTrialProps}
-          onTrialActivating={action('onTrialActivating')}
-          grantAccessEnabled={false}
-        />
-      </MockConfluenceXFlowProvider>
-    )
-  )
-  .add('User can add a product (DEACTIVATED), Start Trial flow without Grant Access screen', () =>
-    setupStorybookAnalytics(
-      <MockConfluenceXFlowProvider
+      <MockJSWXFlowProvider
         {...defaultProps}
         canCurrentUserAddProduct={async () => true}
         productStatusChecker={mockProductStatusChecker(DEACTIVATED)}
       >
         <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
-      </MockConfluenceXFlowProvider>
-    )
-  )
-  .add('User can add a product (INACTIVE), Contextual Start Trial flow with Grant Access screen', () =>
-    setupStorybookAnalytics(
-      <MockConfluenceXFlowProvider {...defaultProps} canCurrentUserAddProduct={async () => true}>
-        <RequestOrStartTrial
-          {...defaultRequestOrStartTrialProps}
-          onTrialActivating={action('onTrialActivating')}
-          contextInfo={{
-            contextualMessage: 'Project pages are a feature powered by Confluence',
-            reactivateCTA: 'Reactivate Confluence',
-            trialCTA: 'Try Confluence free for 30 days',
-          }}
-        />
-      </MockConfluenceXFlowProvider>
-    )
-  )
-  .add('User can add a product (DEACTIVATED), Contextual Start Trial flow without Grant Access screen', () =>
-    setupStorybookAnalytics(
-      <MockConfluenceXFlowProvider
-        {...defaultProps}
-        canCurrentUserAddProduct={async () => true}
-        productStatusChecker={mockProductStatusChecker(DEACTIVATED)}
-      >
-        <RequestOrStartTrial
-          {...defaultRequestOrStartTrialProps}
-          contextInfo={{
-            contextualMessage: 'Project pages are a feature powered by Confluence',
-            reactivateCTA: 'Reactivate Confluence',
-            trialCTA: 'Try Confluence free for 30 days',
-          }}
-        />
-      </MockConfluenceXFlowProvider>
+      </MockJSWXFlowProvider>
     )
   )
   .add('User can add a product (ACTIVATING), Already Started with progress bar', () =>
     setupStorybookAnalytics(
-      <MockConfluenceXFlowProvider
+      <MockJSWXFlowProvider
         {...defaultProps}
         productStatusChecker={mockProductStatusChecker(ACTIVATING)}
         canCurrentUserAddProduct={async () => true}
       >
         <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
-      </MockConfluenceXFlowProvider>
+      </MockJSWXFlowProvider>
     )
   )
   .add('User can add a product (ACTIVE), Already Started', () =>
     setupStorybookAnalytics(
-      <MockConfluenceXFlowProvider
+      <MockJSWXFlowProvider
         {...defaultProps}
         productStatusChecker={mockProductStatusChecker(ACTIVE)}
-        canCurrentUserAddProduct={async () => true}
+        canCurrentUserAddProduct={async () => false}
       >
         <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
-      </MockConfluenceXFlowProvider>
+      </MockJSWXFlowProvider>
     )
   )
   .add('User cannot add a product (INACTIVE), Request Trial', () =>
     setupStorybookAnalytics(
-      <MockConfluenceXFlowProvider {...defaultProps}>
+      <MockJSWXFlowProvider {...defaultProps}>
         <RequestOrStartTrial
           {...defaultRequestOrStartTrialProps}
           onTrialRequested={action('onTrialRequested')}
         />
-      </MockConfluenceXFlowProvider>
+      </MockJSWXFlowProvider>
     )
   )
-  .add('Initializing dialog, (user can add a product), awaiting current product status (never resolves)', () =>
+  .add('Initializing dialog, awaiting current product status (never resolves)', () =>
     setupStorybookAnalytics(
-      <MockConfluenceXFlowProvider
+      <MockJSWXFlowProvider
         {...defaultProps}
         productStatusChecker={{
           check() {
@@ -206,15 +162,14 @@ storiesOf('RequestOrStartTrial (Confluence)')
           start() {},
           stop() {},
         }}
-        canCurrentUserAddProduct={async () => true}
       >
         <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
-      </MockConfluenceXFlowProvider>
+      </MockJSWXFlowProvider>
     )
   )
-  .add('Initializing dialog, (user can add a product), Error flag after product status check fails (UNKNOWN)', () =>
+  .add('Initializing dialog, Error flag after product status check fails (UNKNOWN)', () =>
     setupStorybookAnalytics(
-      <MockConfluenceXFlowProvider
+      <MockJSWXFlowProvider
         {...defaultProps}
         productStatusChecker={{
           check() {
@@ -223,20 +178,20 @@ storiesOf('RequestOrStartTrial (Confluence)')
           start() {},
           stop() {},
         }}
-        canCurrentUserAddProduct={async () => true}
       >
         <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
-      </MockConfluenceXFlowProvider>
+      </MockJSWXFlowProvider>
     )
   )
-  .add('Failed to retrieve permission to add product, fallback to request trial', () =>
+  .add('Initialisation error, Error flag after trusted user check failed', () =>
     setupStorybookAnalytics(
-      <MockConfluenceXFlowProvider
+      <MockJSWXFlowProvider
         {...defaultProps}
         canCurrentUserAddProduct={() =>
           new Promise((_, reject) => setTimeout(() => reject(new Error('Misc')), 500))}
+        requestTrialAccess={async () => true}
       >
         <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
-      </MockConfluenceXFlowProvider>
+      </MockJSWXFlowProvider>
     )
   );

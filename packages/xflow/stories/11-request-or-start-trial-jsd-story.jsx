@@ -5,7 +5,7 @@ import { RequestOrStartTrial } from '@atlaskit/xflow';
 import setupStorybookAnalytics from './util/setupStorybookAnalytics';
 import MockJSDXFlowProvider from './providers/MockJSDXFlowProvider';
 
-import mockJSDStatusChecker from './providers/mockJSDStatusChecker';
+import mockProductStatusChecker from './providers/mockProductStatusChecker';
 import { ACTIVE, ACTIVATING, DEACTIVATED, UNKNOWN } from '../src/common/productProvisioningStates';
 
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
@@ -124,7 +124,7 @@ storiesOf('RequestOrStartTrial (Jira Service Desk)')
       <MockJSDXFlowProvider
         {...defaultProps}
         canCurrentUserAddProduct={async () => true}
-        productStatusChecker={mockJSDStatusChecker(DEACTIVATED)}
+        productStatusChecker={mockProductStatusChecker(DEACTIVATED)}
       >
         <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
       </MockJSDXFlowProvider>
@@ -134,7 +134,7 @@ storiesOf('RequestOrStartTrial (Jira Service Desk)')
     setupStorybookAnalytics(
       <MockJSDXFlowProvider
         {...defaultProps}
-        productStatusChecker={mockJSDStatusChecker(ACTIVATING)}
+        productStatusChecker={mockProductStatusChecker(ACTIVATING)}
         canCurrentUserAddProduct={async () => true}
       >
         <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
@@ -145,7 +145,7 @@ storiesOf('RequestOrStartTrial (Jira Service Desk)')
     setupStorybookAnalytics(
       <MockJSDXFlowProvider
         {...defaultProps}
-        productStatusChecker={mockJSDStatusChecker(ACTIVE)}
+        productStatusChecker={mockProductStatusChecker(ACTIVE)}
         canCurrentUserAddProduct={async () => false}
       >
         <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />

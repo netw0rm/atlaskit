@@ -1,7 +1,7 @@
 import React from 'react';
 import JiraToJSDXFlowProvider from '../../src/product-xflow-providers/JiraToJSDXFlowProvider';
 
-import mockJSDStatusChecker from './mockJSDStatusChecker';
+import mockProductStatusChecker from './mockProductStatusChecker';
 import { INACTIVE } from '../../src/common/productProvisioningStates';
 
 const notImplemented = () => {
@@ -30,7 +30,7 @@ export default class MockJSDXFlowProvider extends JiraToJSDXFlowProvider {
     const props = {
       ...overrideImplementations,
       startProductTrial: () => new Promise(resolve => setTimeout(resolve, 1000)),
-      productStatusChecker: mockJSDStatusChecker(INACTIVE),
+      productStatusChecker: mockProductStatusChecker(INACTIVE),
       ...this.state,
       ...this.props,
     };

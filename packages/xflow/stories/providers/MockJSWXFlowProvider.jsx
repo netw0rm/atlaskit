@@ -1,5 +1,5 @@
 import React from 'react';
-import JiraToConfluenceXFlowProvider from '../../src/product-xflow-providers/JiraToConfluenceXFlowProvider';
+import JiraToJSWXFlowProvider from '../../src/product-xflow-providers/JiraToJSWXFlowProvider';
 
 import mockProductStatusChecker from './mockProductStatusChecker';
 import { INACTIVE } from '../../src/common/productProvisioningStates';
@@ -13,23 +13,19 @@ const overrideImplementations = {
   isProductInstalledOrActivating: notImplemented,
   canCurrentUserGrantAccessToProducts: notImplemented,
 
-  requestTrialWithNote: notImplemented,
-  cancelRequestTrial: notImplemented,
+  requestTrialAccess: notImplemented,
+  requestTrialAccessWithNote: notImplemented,
+  requestTrialAccessWithoutNote: notImplemented,
+  cancelRequestTrialAccess: notImplemented,
 
-  waitForActivation: notImplemented,
   cancelStartProductTrial: notImplemented,
   grantAccessToUsers: notImplemented,
   retrieveUsers: notImplemented,
   goToProduct: notImplemented,
   closeLoadingDialog: notImplemented,
-  checkProductRequestFlag: notImplemented,
-  closeAlreadyStartedDialog: notImplemented,
-
-  optOutRequestTrialFeature: notImplemented,
-  cancelOptOut: notImplemented,
 };
 
-export default class MockConfluenceXFlowProvider extends JiraToConfluenceXFlowProvider {
+export default class MockJSDXFlowProvider extends JiraToJSWXFlowProvider {
   render() {
     const props = {
       ...overrideImplementations,
@@ -39,6 +35,6 @@ export default class MockConfluenceXFlowProvider extends JiraToConfluenceXFlowPr
       ...this.props,
     };
 
-    return <JiraToConfluenceXFlowProvider {...props} />;
+    return <JiraToJSWXFlowProvider {...props} />;
   }
 }

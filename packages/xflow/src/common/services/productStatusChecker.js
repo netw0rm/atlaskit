@@ -2,7 +2,7 @@ import 'es6-promise/auto';
 import 'whatwg-fetch';
 import bezier from 'cubic-bezier';
 
-import { ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN } from './productProvisioningStates';
+import { ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN } from '../productProvisioningStates';
 
 const DEFAULT_POLLING_INTERVAL = 5000;
 const POLLING_TIMEOUT = 300000; // 5 minutes, milliseconds;

@@ -8,11 +8,11 @@ import {
   getCloudId,
   JIRA_CLOUD_ID_URL,
   CONFLUENCE_CLOUD_ID_URL,
-} from '../../../src/common/tenantContext';
-import jiraAdminResponse from './mock-data/isUserTrustedJiraAdmin.json';
-import nonAdminResponse from './mock-data/isUserTrustedNonAdmin.json';
-import siteAdminResponse from './mock-data/isUserTrustedSiteAdmin.json';
-import queryUsernameResponse from './mock-data/queryUsername.json';
+} from '../../../../src/common/services/tenantContext';
+import jiraAdminResponse from '../mock-data/isUserTrustedJiraAdmin.json';
+import nonAdminResponse from '../mock-data/isUserTrustedNonAdmin.json';
+import siteAdminResponse from '../mock-data/isUserTrustedSiteAdmin.json';
+import queryUsernameResponse from '../mock-data/queryUsername.json';
 
 const TEST_USERNAME = 'admin%40acme.org';
 

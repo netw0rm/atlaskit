@@ -2,19 +2,19 @@ import 'es6-promise/auto';
 import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
 
-import * as tenantContext from '../../../src/common/tenantContext';
+import * as tenantContext from '../../../../src/common/services/tenantContext';
 
 import notifyUsersAccessGranted, {
   NOTIFY_ENDPOINT_EAST,
-} from '../../../src/common/notifyUsersAccessGranted';
+} from '../../../../src/common/services/notifyUsersAccessGranted';
 
-import userAdminResponse from './mock-data/isUserTrustedSiteAdmin.json';
-import accessgrantedJiraUsersResponse from './mock-data/accessgrantedJiraUsers.json';
-import accessgrantedNoUsersResponse from './mock-data/accessgrantedNoUsers.json';
-import jiraUsersResponse from './mock-data/jiraUsers.json';
-// import jiraSoftwareUsersResponse from './mock-data/jiraSoftwareUsers.json';
-// import jiraCoreUsersResponse from './mock-data/jiraCoreUsers.json';
-// import jiraServiceDeskUsersResponse from './mock-data/jiraServiceDeskUsers.json';
+import userAdminResponse from '../mock-data/isUserTrustedSiteAdmin.json';
+import accessgrantedJiraUsersResponse from '../mock-data/accessgrantedJiraUsers.json';
+import accessgrantedNoUsersResponse from '../mock-data/accessgrantedNoUsers.json';
+import jiraUsersResponse from '../mock-data/jiraUsers.json';
+// import jiraSoftwareUsersResponse from '../mock-data/jiraSoftwareUsers.json';
+// import jiraCoreUsersResponse from '../mock-data/jiraCoreUsers.json';
+// import jiraServiceDeskUsersResponse from '../mock-data/jiraServiceDeskUsers.json';
 
 const mockNotifyEastEndpointWithResponse = (response) => {
   fetchMock.mock(

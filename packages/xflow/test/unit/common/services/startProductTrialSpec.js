@@ -2,7 +2,7 @@ import 'es6-promise/auto';
 import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
 
-import startProductTrial, { startTrialEndpoint } from '../../../src/common/startProductTrial';
+import startProductTrial, { startTrialEndpoint } from '../../../../src/common/services/startProductTrial';
 
 describe('startProductTrial', () => {
   let confluenceStartTrial;

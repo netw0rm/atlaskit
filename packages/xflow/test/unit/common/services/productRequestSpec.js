@@ -2,11 +2,11 @@ import 'es6-promise/auto';
 import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
 
-import * as tenantContext from '../../../src/common/tenantContext';
+import * as tenantContext from '../../../../src/common/services/tenantContext';
 
 import productRequest, {
   PRODUCT_REQUEST_ENDPOINT_EAST,
-} from '../../../src/common/productRequest';
+} from '../../../../src/common/services/productRequest';
 
 const mockRequestTrialEastEndpointWithResponse = (response) => {
   fetchMock.mock(

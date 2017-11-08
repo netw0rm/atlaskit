@@ -4,7 +4,7 @@ import fetchMock from 'fetch-mock';
 
 import optOutRequestTrialFeature, {
   optOutEndpoint,
-} from '../../../src/common/optOutRequestTrialFeature';
+} from '../../../../src/common/services/optOutRequestTrialFeature';
 
 describe('optOutRequestTrialFeature', () => {
   beforeEach(() => {

@@ -3,7 +3,7 @@
 
 import 'es6-promise/auto';
 import 'whatwg-fetch';
-import getMeta from './getMeta';
+import getPageMeta from './getPageMeta';
 
 const SITE_ADMINS_GROUP_NAME = 'site-admins';
 
@@ -11,7 +11,7 @@ export const JIRA_CLOUD_ID_URL = '/rest/product-fabric/1.0/cloud/id';
 export const CONFLUENCE_CLOUD_ID_URL = '/wiki/rest/product-fabric/1.0/cloud/id';
 const DEFAULT_AVATAR_URL = 'https://i2.wp.com/avatar-cdn.atlassian.com/default/96?ssl=1';
 const AVATAR_REGEXP = /^https:\/\/avatar-cdn.atlassian.com\/[A-Za-z0-9]+/;
-export const getCurrentUsername = () => getMeta('ajs-remote-user') || getMeta('remote-username');
+export const getCurrentUsername = () => getPageMeta('ajs-remote-user') || getPageMeta('remote-username');
 
 /**
  * Gets the largest avatar url

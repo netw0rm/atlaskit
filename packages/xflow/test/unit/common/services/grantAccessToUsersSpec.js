@@ -1,16 +1,16 @@
 import 'es6-promise/auto';
 import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
-import * as notifyUsersAccessGranted from '../../../src/common/notifyUsersAccessGranted';
+import * as notifyUsersAccessGranted from '../../../../src/common/services/notifyUsersAccessGranted';
 
-import jiraUsers from './mock-data/jiraUsers.json';
+import jiraUsers from '../mock-data/jiraUsers.json';
 
 import grantAccessToUsers, {
   CREATE_GROUP_URL,
   addUsersUrl,
-} from '../../../src/common/grantAccessToUsers';
+} from '../../../../src/common/services/grantAccessToUsers';
 
-import createConfluenceUsersGroupResponse from './mock-data/createConfluenceUsersGroup.json';
+import createConfluenceUsersGroupResponse from '../mock-data/createConfluenceUsersGroup.json';
 
 const addUsersToGroupResponse = (url, options) => {
   const { users } = JSON.parse(options.body);

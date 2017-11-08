@@ -1,16 +1,16 @@
 import React from 'react';
 import { JiraServiceDeskLogo } from '@atlaskit/logo';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { isUserTrusted } from '../common/tenantContext';
+import { isUserTrusted } from '../common/services/tenantContext';
 import productXFlowProviderFactory from '../common/productXFlowProviderFactory';
-import grantAccessToUsers from '../common/grantAccessToUsers';
-import productStatusChecker from '../common/productStatusChecker';
-import startProductTrial from '../common/startProductTrial';
+import grantAccessToUsers from '../common/services/grantAccessToUsers';
+import productStatusChecker from '../common/services/productStatusChecker';
+import startProductTrial from '../common/services/startProductTrial';
 
 import retrieveUserManagementUsers, {
     JIRA_SOFTWARE_GROUP,
     SITE_ADMINS_GROUP,
-} from '../common/retrieveUserManagementUsers';
+} from '../common/services/retrieveUserManagementUsers';
 
 const VALID_GROUPS = [
   JIRA_SOFTWARE_GROUP,

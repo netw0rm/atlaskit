@@ -1,7 +1,8 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 
-import RequestTrialOptOut from '../src/request-trial-opt-out';
+import { RequestProductTrialOptOut } from '@atlaskit/xflow';
+
 import setupStorybookAnalytics from './util/setupStorybookAnalytics';
 import MockConfluenceXFlowProvider from './providers/MockConfluenceXFlowProvider';
 
@@ -17,11 +18,11 @@ const defaultOptOutProps = {
   onComplete: () => Promise.resolve(true),
 };
 
-storiesOf('Request Trial Opt Out')
+storiesOf('RequestProductTrialOptOut')
   .add('Opt Out Dialog', () =>
     setupStorybookAnalytics(
       <MockConfluenceXFlowProvider {...defaultProps}>
-        <RequestTrialOptOut
+        <RequestProductTrialOptOut
           {...defaultOptOutProps}
           optOutRequestTrialFeature={() =>
             new Promise(resolve => setTimeout(resolve, 1000)
@@ -33,7 +34,7 @@ storiesOf('Request Trial Opt Out')
   .add('Opt Out, error flag after failed request', () =>
     setupStorybookAnalytics(
       <MockConfluenceXFlowProvider {...defaultProps}>
-        <RequestTrialOptOut
+        <RequestProductTrialOptOut
           {...defaultOptOutProps}
           optOutRequestTrialFeature={() =>
             new Promise((_, reject) =>

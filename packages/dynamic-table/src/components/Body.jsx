@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { ASC, DESC } from '../internal/constants';
 import { getPageRows } from '../internal/helpers';
 import TableRow from './TableRow';
@@ -26,7 +26,7 @@ const getSortedRows = (head, rows, sortKey, sortOrder) => {
   });
 };
 
-export default class Body extends PureComponent {
+export default class Body extends Component {
   static propTypes = {
     head: props.head,
     isFixedSize: PropTypes.bool,

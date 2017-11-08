@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import Spinner from '@atlaskit/spinner';
 
 import props from '../internal/props';
 import { SMALL, MEDIUM, LARGE, XLARGE, LOADING_CONTENTS_OPACITY } from '../internal/constants';
 import { Container, ContentsContainer, SpinnerContainer } from '../styled/LoadingContainer';
 
-export default class LoadingContainer extends PureComponent {
+export default class LoadingContainer extends Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
     isLoading: PropTypes.bool,

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import DynamicTableStateless from './Stateless';
 import props from '../internal/props';
 import { ASC, DESC } from '../internal/constants';
@@ -8,7 +8,7 @@ import { ASC, DESC } from '../internal/constants';
 // handled by validation of the stateless verion.
 /* eslint-disable react/prop-types */
 
-export default class DynamicTable extends PureComponent {
+export default class DynamicTable extends Component {
   static propTypes = {
     defaultPage: props.isInteger,
     defaultSortKey: props.sortKey,

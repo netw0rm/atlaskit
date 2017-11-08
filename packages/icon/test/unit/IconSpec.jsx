@@ -119,5 +119,23 @@ describe(name, () => {
         expect(handler.mock.calls.length).toBe(1);
       });
     });
+
+    describe('glyphs', () => {
+      // eslint-disable-next-line react/prop-types
+      const glyph = (props) => (<div>{props.id}</div>);
+
+      it('should be passed an ID prop that is unique between icons', () => {
+        const icon = mount(<Icon glyph={glyph} label="My icon" />);
+        const uidLength = 7;
+
+        const id = icon.find(glyph).prop('id');
+        expect(typeof id).toBe('string');
+        expect(id.length).toBe(uidLength);
+
+        const otherIcon = mount(<Icon glyph={glyph} label="My icon" />);
+        const otherId = otherIcon.find(glyph).prop('id');
+        expect(otherId).not.toBe(id);
+      });
+    });
   });
 });

@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
+import uid from 'uid';
+
 import { colors } from '../../../theme/src';
 
 const sizes = {
@@ -65,6 +67,7 @@ class Icon extends PureComponent {
       width: dimensions,
     };
 
+    const id = uid();
     return (
       <Span
         onClick={onClick}
@@ -76,6 +79,7 @@ class Icon extends PureComponent {
           role="img"
           style={svgStyles}
           title={this.props.label}
+          id={id}
           {...svgProps}
         />
       </Span>

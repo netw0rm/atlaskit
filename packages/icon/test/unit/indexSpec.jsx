@@ -397,4 +397,50 @@ describe(name, () => {
       });
     });
   });
+
+  describe('gradients', () => {
+    it('ids should contain the id prop of the glyph component', () => {
+      const BitbucketIcon = components.bitbucket.component;
+
+      const wrapper = mount(<BitbucketIcon label="My icon" />);
+      const glyphIdProp = wrapper.childAt(0).prop('id');
+      const gradientId = wrapper.find('linearGradient').prop('id');
+
+      expect(gradientId).toEqual(expect.stringMatching(new RegExp(glyphIdProp)));
+    });
+
+    it('multiple gradients in a single icon should use unique ids', () => {
+      const ConfluenceIcon = components.confluence.component;
+
+      const wrapper = mount(<ConfluenceIcon label="My icon" />);
+      const gradientIds = wrapper.find('linearGradient').map(g => g.prop('id'));
+
+      expect(gradientIds[0]).not.toBe(gradientIds[1]);
+    });
+
+    it('ids should be referenced correctly in fill properties', () => {
+      const BitbucketIcon = components.bitbucket.component;
+
+      const wrapper = mount(<BitbucketIcon label="My icon" />);
+      const gradientId = wrapper.find('linearGradient').prop('id');
+      const gradientFillPaths = wrapper.find('path').filterWhere(node =>
+        /^url\(#/.test(node.prop('fill'))
+      );
+
+      expect(gradientFillPaths.length).toBeGreaterThanOrEqual(1);
+
+      gradientFillPaths.forEach((node) => {
+        expect(node.prop('fill')).toBe(`url(#${gradientId})`);
+      });
+    });
+
+    it('should have unique ids across icon instances', () => {
+      const BitbucketIcon = components.bitbucket.component;
+
+      const gradientId = mount(<BitbucketIcon label="My icon" />).find('linearGradient').prop('id');
+      const otherGradientId = mount(<BitbucketIcon label="My icon" />).find('linearGradient').prop('id');
+
+      expect(gradientId).not.toBe(otherGradientId);
+    });
+  });
 });

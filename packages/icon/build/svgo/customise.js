@@ -6,8 +6,11 @@ const callbackOnDefinedFill = require('./plugins/callbackOnDefinedFill');
 const callbackOnStyleElement = require('./plugins/callbackOnStyleElement');
 const addAriaLabels = require('./plugins/addAriaLabels');
 const convertAttributesToCamelcase = require('./plugins/convertAttributesToCamelcase');
+const replaceIDs = require('./plugins/replaceIDs');
 
 module.exports = () => {
+  const replaceIDPlaceholderStr = 'idPlaceholder';
+  const dynamicIDVarName = 'id';
   const initialiseCustomSVGO = (filename) => {
     const addAriaLabelsPlugin = Object.assign({}, addAriaLabels, {
       params: { title: '{title}' },
@@ -26,13 +29,7 @@ module.exports = () => {
         { convertAttributesToCamelcase },
         { addAttributesToSVGElement: { attributes: ['{...svgProps}'] } },
         { addPresentationAttribute },
-        { cleanupIDs: {
-          // This is used to prefix IDs of LinearGradient fills with a unique ID in case multiple
-          // icons with gradients (company/product icons) are shown on the same page.
-          prefix: filename.replace('.svg', '').replace(/[^a-z]+/, '') + '-', // eslint-disable-line
-          minify: true,
-          remove: true,
-        } },
+        { replaceIDs },
         { callbackOnDefinedFillPlugin },
         { callbackOnStyleElement },
         { removeStyleElement: true },
@@ -41,9 +38,23 @@ module.exports = () => {
     });
   };
 
+  // Replace the ID placeholders in the replaceID step with the dynamic variable name
+  const replaceIDPlaceholders = (svgData) => {
+    const linearRegex = new RegExp(`id=\\"([^"]+)-${replaceIDPlaceholderStr}\\"`, 'g');
+    const urlRegex = new RegExp(`fill=\\"url\\(#([^"]+)-${replaceIDPlaceholderStr}\\)\\"`, 'g');
+
+    const replacedData = svgData.data
+      .replace(linearRegex, `id={"$1-" + ${dynamicIDVarName}}`)
+      .replace(urlRegex, `fill={"url(#$1-" + ${dynamicIDVarName} + ")"}`);
+
+    return Object.assign({}, svgData, { data: replacedData });
+  };
+
   return (filename, data) => {
     const customSVGO = initialiseCustomSVGO(filename);
+
     // Run the default optimiser on the SVG
-    return new Promise(resolve => customSVGO.optimize(data, resolve));
+    return new Promise(resolve => customSVGO.optimize(data, resolve))
+      .then((svgData) => replaceIDPlaceholders(svgData));
   };
 };

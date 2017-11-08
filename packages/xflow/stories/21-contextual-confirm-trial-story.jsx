@@ -22,7 +22,7 @@ const defaultProps = {
   },
 };
 
-storiesOf('ContextualConfirmTrial')
+storiesOf('request-or-start-trial/ContextualConfirmTrial')
   .add('Confirm Trial dialog (INACTIVE)', () =>
     setupStorybookAnalytics(
       <ConfirmTrialBase

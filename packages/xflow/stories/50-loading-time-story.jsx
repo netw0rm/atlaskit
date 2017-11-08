@@ -22,7 +22,7 @@ const defaultProps = {
     'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/lmp9uitENIE2uALwP2L-0RptjRxiiDMe0atv8gRXyCs/loading_img.svg',
 };
 
-storiesOf('LoadingTime')
+storiesOf('request-or-start-trial/LoadingTime')
   .add('Show Loading dialog', () =>
     setupStorybookAnalytics(<LoadingTimeBase {...defaultProps} progress={0} />)
   )

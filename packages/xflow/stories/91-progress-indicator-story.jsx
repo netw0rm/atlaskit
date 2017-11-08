@@ -5,7 +5,7 @@ import { ACTIVE, ACTIVATING, UNKNOWN } from '../src/common/productProvisioningSt
 
 import setupStorybookAnalytics from './util/setupStorybookAnalytics';
 
-storiesOf('ProgressIndicator')
+storiesOf('request-or-start-trial/ProgressIndicator')
   .add('Empty Progress Bar', () =>
     setupStorybookAnalytics(<ProgressIndicator progress={0} status={ACTIVATING} />)
   )

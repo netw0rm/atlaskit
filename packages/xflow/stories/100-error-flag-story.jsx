@@ -4,7 +4,7 @@ import ErrorFlag from '../src/common/components/ErrorFlag';
 
 import setupStorybookAnalytics from './util/setupStorybookAnalytics';
 
-storiesOf('ErrorFlag')
+storiesOf('common/ErrorFlag')
   .add('basic', () => setupStorybookAnalytics(<ErrorFlag
     showFlag
     title="(Title) Oops... Something went wrong"

@@ -25,8 +25,6 @@ describe('retrieveUserManagementUsers', () => {
   let retrieveJiraUsers;
 
   beforeEach(() => {
-    fetchMock.restore();
-
     retrieveJiraUsers = retrieveUserManagementUsers([
       JIRA_SOFTWARE_GROUP,
       JIRA_CORE_GROUP,
@@ -34,6 +32,7 @@ describe('retrieveUserManagementUsers', () => {
       SITE_ADMINS_GROUP,
     ]);
   });
+  afterEach(fetchMock.restore);
 
   /**
    * test scenario where there are no JIRA users (i.e. all site-admin instance)`

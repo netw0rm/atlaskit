@@ -73,10 +73,10 @@ describe('productStatusChecker', () => {
 
   beforeEach(() => {
     jest.clearAllTimers();
-    fetchMock.restore();
 
     confluenceStatusChecker = productStatusChecker('confluence.ondemand');
   });
+  afterEach(fetchMock.restore);
 
   afterEach(() => {
     confluenceStatusChecker.reset();

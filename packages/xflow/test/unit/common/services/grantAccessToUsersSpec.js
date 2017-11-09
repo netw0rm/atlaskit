@@ -48,10 +48,10 @@ describe('grantAccessToUsers', () => {
   let confluenceGrantAccessToUsers;
 
   beforeEach(() => {
-    fetchMock.restore();
-
     confluenceGrantAccessToUsers = grantAccessToUsers('confluence-users', 'confluence');
   });
+
+  afterEach(fetchMock.restore);
 
   it('will add the specified users to the confluence-users group', async () => {
     mockCreateGroupEndpointWithSuccessStatus();

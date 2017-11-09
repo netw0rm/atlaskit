@@ -27,11 +27,9 @@ const mockEndpointWithFailureStatus = (status) => {
 };
 
 describe('tenantContext', () => {
-  describe('getCloudId', () => {
-    beforeEach(() => {
-      fetchMock.restore();
-    });
+  afterEach(fetchMock.restore);
 
+  describe('getCloudId', () => {
     it('should return the expected cloud id from Jira', async () => {
       const EXPECTED_CLOUD_ID = 'not-an-instance-name';
       fetchMock.mock(JIRA_CLOUD_ID_URL, { cloudId: EXPECTED_CLOUD_ID }, { method: 'GET' });
@@ -62,10 +60,6 @@ describe('tenantContext', () => {
   });
 
   describe('getUserDisplayName', () => {
-    beforeEach(() => {
-      fetchMock.restore();
-    });
-
     it('should return the expected display name', async () => {
       const EXPECTED_DISPLAY_NAME = 'Alex Smith';
       mockEndpointWithResponse(queryUsernameResponse);
@@ -99,10 +93,6 @@ describe('tenantContext', () => {
   });
 
   describe('isUserTrusted', () => {
-    beforeEach(() => {
-      fetchMock.restore();
-    });
-
     it('will return false if they are only a Jira administrator', async () => {
       mockEndpointWithResponse(jiraAdminResponse);
       const result = await isUserTrusted(TEST_USERNAME);

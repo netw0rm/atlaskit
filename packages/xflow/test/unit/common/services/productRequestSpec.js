@@ -21,7 +21,6 @@ const mockRequestTrialEastEndpointWithResponse = (response) => {
 
 describe('productRequest', () => {
   beforeEach(() => {
-    fetchMock.restore();
     tenantContext.getAvatarUrl = jest.fn().mockReturnValue('some-avatar-url');
     tenantContext.getCloudId = jest.fn().mockReturnValue(Promise.resolve('some-cloud-id'));
     tenantContext.getCurrentUsername = jest.fn().mockReturnValue('exampleUser');
@@ -29,6 +28,8 @@ describe('productRequest', () => {
     tenantContext.getUserDisplayName = jest.fn().mockReturnValue('example user');
     tenantContext.queryUsername = jest.fn().mockReturnValue(Promise.resolve({}));
   });
+
+  afterEach(fetchMock.restore);
 
   it('should return a resolved promise with no value if the endpoint returns a 200 response', async () => {
     const xflowResponse = { message: 'request received' };

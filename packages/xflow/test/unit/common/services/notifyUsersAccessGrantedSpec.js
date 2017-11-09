@@ -28,9 +28,7 @@ const mockNotifyEastEndpointWithResponse = (response) => {
 };
 
 describe('notifyUsersAccessGranted', () => {
-  beforeEach(() => {
-    fetchMock.restore();
-  });
+  afterEach(fetchMock.restore);
 
   it('should return no users and it should never contact the endpoint', async () => {
     const SHOULD_NEVER_CALL = 'SHOULD_NEVER_CALL';

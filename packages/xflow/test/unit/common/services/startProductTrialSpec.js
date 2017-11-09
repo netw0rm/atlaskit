@@ -8,10 +8,9 @@ describe('startProductTrial', () => {
   let confluenceStartTrial;
 
   beforeEach(() => {
-    fetchMock.restore();
-
     confluenceStartTrial = startProductTrial('confluence.ondemand');
   });
+  afterEach(fetchMock.restore);
 
   it('should return a resolved promise with no value if the endpoint returns a 202 response', async () => {
     fetchMock.mock(startTrialEndpoint('confluence.ondemand'), 202);

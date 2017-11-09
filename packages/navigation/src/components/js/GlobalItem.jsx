@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import GlobalItemInner, { globalItemStyles } from '../styled/GlobalItemInner';
 import DefaultLinkComponent from './DefaultLinkComponent';
-import type { ReactElement, ReactClass } from '../../types';
+import type { ReactElement, ReactClass, IconAppearance } from '../../types';
 
 type Props = {|
   /** Standard aria-haspopup prop */
@@ -24,6 +24,8 @@ type Props = {|
   role?: string,
   /** Set the size of the item's content.  */
   size?: 'small' | 'medium' | 'large',
+  /** Appearance of item for custom styling (square or round) */
+  appearance: IconAppearance,
 |}
 
 export default class GlobalItem extends PureComponent {
@@ -31,6 +33,7 @@ export default class GlobalItem extends PureComponent {
     linkComponent: DefaultLinkComponent,
     onMouseDown: () => {},
     size: 'small',
+    appearance: 'round',
   };
 
   props: Props
@@ -51,6 +54,7 @@ export default class GlobalItem extends PureComponent {
       onClick,
       onMouseDown: providedMouseDown,
       role,
+      appearance,
     } = this.props;
 
     const allyAndEventProps = {
@@ -77,6 +81,7 @@ export default class GlobalItem extends PureComponent {
           href={href}
           size={size}
           onMouseDown={providedMouseDown}
+          appearance={appearance}
           {...allyAndEventProps}
         >
           {this.props.children}
@@ -90,6 +95,7 @@ export default class GlobalItem extends PureComponent {
         isSelected={isSelected}
         onMouseDown={onMouseDown}
         size={size}
+        appearance={appearance}
         {...allyAndEventProps}
       >
         {this.props.children}

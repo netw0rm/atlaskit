@@ -1,5 +1,298 @@
 # @atlaskit/editor-bitbucket
 
+## 4.0.0 (2017-11-09)
+
+
+* bug fix; add type to returns mention result so that consistent with API. ([b168339](https://bitbucket.org/atlassian/atlaskit/commits/b168339))
+* bug fix; added missing method _notifyAllResultsListeners to mention mock service and fixed re ([f057300](https://bitbucket.org/atlassian/atlaskit/commits/f057300))
+
+* bug fix; bump editor-core major version ([fca90e4](https://bitbucket.org/atlassian/atlaskit/commits/fca90e4))
+
+* bug fix; fire onChange only when doc content is changed (issues closed: ed-2681) ([75dc43b](https://bitbucket.org/atlassian/atlaskit/commits/75dc43b))
+
+* bug fix; added missing help dialog (issues closed: ed-2656) ([5de1771](https://bitbucket.org/atlassian/atlaskit/commits/5de1771))
+
+* feature; enabling table plugin in editor bitbucket ([fe59624](https://bitbucket.org/atlassian/atlaskit/commits/fe59624))
+
+
+
+
+* feature; bumped editor-core to version 46.2.2 ([cdb5f3f](https://bitbucket.org/atlassian/atlaskit/commits/cdb5f3f))
+
+
+* feature; fix plaintext link detection, enable markdown and code detection on paste (issues closed: 2445) ([382a781](https://bitbucket.org/atlassian/atlaskit/commits/382a781))
+
+
+* bug fix; use editor-core's bitbucket transformer for parse/serialize (issues closed: ed-2402) ([11bbd8a](https://bitbucket.org/atlassian/atlaskit/commits/11bbd8a))
+
+
+* bug fix; fix browserstack tests import not transpiled editor-core ([3e729c2](https://bitbucket.org/atlassian/atlaskit/commits/3e729c2))
+* bug fix; fixes broken storybooks due to ED-2389 ([184d93a](https://bitbucket.org/atlassian/atlaskit/commits/184d93a))
+
+
+* breaking; A lot of previously supported block nesting inside lists and blockquote will not work now. ([63ca14b](https://bitbucket.org/atlassian/atlaskit/commits/63ca14b))
+* breaking; restricting block nesting for panel, blockquote and list. ([63ca14b](https://bitbucket.org/atlassian/atlaskit/commits/63ca14b))
+
+
+* bug fix; adding mentionSource back to editor-bitbucket ([6c1543c](https://bitbucket.org/atlassian/atlaskit/commits/6c1543c))
+
+
+
+
+* bug fix; bump editor-core in editor-bitbucket ([abec6f0](https://bitbucket.org/atlassian/atlaskit/commits/abec6f0))
+
+* bug fix; fixed mentions in storybook ([823c533](https://bitbucket.org/atlassian/atlaskit/commits/823c533))
+* bug fix; fix emoji storybook ([82fb228](https://bitbucket.org/atlassian/atlaskit/commits/82fb228))
+* bug fix; fix emojiProvider tslint error ([3b158f8](https://bitbucket.org/atlassian/atlaskit/commits/3b158f8))
+* feature; bump editor-core to 43.1.0 ([ed778c2](https://bitbucket.org/atlassian/atlaskit/commits/ed778c2))
+
+
+
+
+
+* bug fix; updated shift keymap related tests and make them passed. Skip horizontal tests. ([36f1993](https://bitbucket.org/atlassian/atlaskit/commits/36f1993))
+* feature; change es2015 build so it transpiles everything except import/export statements (issues closed: ed-2272) ([354cdca](https://bitbucket.org/atlassian/atlaskit/commits/354cdca))
+* bug fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
+
+
+
+
+* feature; bitbucket editor to have a max-height of 480px. ([ce8f2cc](https://bitbucket.org/atlassian/atlaskit/commits/ce8f2cc))
+
+
+* bug fix; bump editor-core to version 39.0.0 ([41a0491](https://bitbucket.org/atlassian/atlaskit/commits/41a0491))
+
+* bug fix; bump editor-core in all editor-* packages (issues closed: ed-2038) ([9814e09](https://bitbucket.org/atlassian/atlaskit/commits/9814e09))
+
+* bug fix; remove escaping from link href from markdown serializer. ([3f5f059](https://bitbucket.org/atlassian/atlaskit/commits/3f5f059))
+
+* bug fix; fIxing plugin order in editorcq, editor-jira and editor-bitbucket. ([4ac0594](https://bitbucket.org/atlassian/atlaskit/commits/4ac0594))
+
+* feature; add support for ascii emoji completion. Add mention/emoji exports to editor-bitbuck (issues closed: fs-1081) ([a4a67a4](https://bitbucket.org/atlassian/atlaskit/commits/a4a67a4))
+
+* bug fix; bump emoji and mention to align with editor-core ([b448c83](https://bitbucket.org/atlassian/atlaskit/commits/b448c83))
+
+* bug fix; resolved conflicts with master ([3803cb9](https://bitbucket.org/atlassian/atlaskit/commits/3803cb9))
+
+* feature; bump editor-core to 31.2.1 ([bf2f23f](https://bitbucket.org/atlassian/atlaskit/commits/bf2f23f))
+
+* bug fix; destroy providerFactory on editor unmount ([5759528](https://bitbucket.org/atlassian/atlaskit/commits/5759528))
+
+* feature; use schemas from editor-core. ([6e5a982](https://bitbucket.org/atlassian/atlaskit/commits/6e5a982))
+* bug fix; use latest editor-core with new dropdowns/popup ([d78e36b](https://bitbucket.org/atlassian/atlaskit/commits/d78e36b))
+
+
+* breaking; ED-1369 ([fd147c0](https://bitbucket.org/atlassian/atlaskit/commits/fd147c0))
+* breaking; remove context prop from the editors (not used anymore) ([fd147c0](https://bitbucket.org/atlassian/atlaskit/commits/fd147c0))
+* breaking; ED-1704 ([7c87399](https://bitbucket.org/atlassian/atlaskit/commits/7c87399))
+* breaking; bump editor-core to the new major version ([7c87399](https://bitbucket.org/atlassian/atlaskit/commits/7c87399))
+
+* feature; updated BB to have hyperlink new behaviours. ([cd9bcbc](https://bitbucket.org/atlassian/atlaskit/commits/cd9bcbc))
+
+
+* bug fix; use latest editor-core with new PM ([caffe29](https://bitbucket.org/atlassian/atlaskit/commits/caffe29))
+
+* feature; add "errorReporter" property to all editors. Check out docs/USAGE.md for example usage (issues closed: ed-1694) ([63bd615](https://bitbucket.org/atlassian/atlaskit/commits/63bd615))
+
+* feature; editor-bitbucket: Add support for new BB emoji markup ([3d59e05](https://bitbucket.org/atlassian/atlaskit/commits/3d59e05))
+
+* bug fix; fix hyperlink autoformatting failure in BB ([4bc9020](https://bitbucket.org/atlassian/atlaskit/commits/4bc9020))
+* feature; bumping editor-core to 25.4.0 ([868d4a0](https://bitbucket.org/atlassian/atlaskit/commits/868d4a0))
+
+
+* bug fix; use new nodeviews (issues closed: ed-1491) ([2763163](https://bitbucket.org/atlassian/atlaskit/commits/2763163))
+
+* bug fix; use latest editor-core ([eebbb00](https://bitbucket.org/atlassian/atlaskit/commits/eebbb00))
+
+* bug fix; use new published core version ([8c50b0b](https://bitbucket.org/atlassian/atlaskit/commits/8c50b0b))
+
+
+* feature; bumping emoji to 14.1.0 ([2243e9e](https://bitbucket.org/atlassian/atlaskit/commits/2243e9e))
+* feature; bumping editor-core to 16.8.0 version ([d885e2b](https://bitbucket.org/atlassian/atlaskit/commits/d885e2b))
+
+
+
+
+* feature; use createSchema helper in editor-bitbucket (issues closed: ed-1525) ([2e4029c](https://bitbucket.org/atlassian/atlaskit/commits/2e4029c))
+
+* bug fix; make sure .focus() isn't called when editor is already focused (issues closed: ed-1510) ([2f7336e](https://bitbucket.org/atlassian/atlaskit/commits/2f7336e))
+
+
+
+
+* bug fix; first time typing @ in firefox doesn't trigger mentions (issues closed: ed-1553) ([caf9a4e](https://bitbucket.org/atlassian/atlaskit/commits/caf9a4e))
+
+
+
+* bug fix; escape 4 spaces with zero-width-non-joiner ([c93523f](https://bitbucket.org/atlassian/atlaskit/commits/c93523f))
+* feature; updated editor-core to 16.3.3 ([4c835fc](https://bitbucket.org/atlassian/atlaskit/commits/4c835fc))
+
+
+
+
+* bug fix; fixed test failure for h6. ([37c092e](https://bitbucket.org/atlassian/atlaskit/commits/37c092e))
+* feature; added test for h6 support back to BB. ([7872d95](https://bitbucket.org/atlassian/atlaskit/commits/7872d95))
+
+
+
+
+
+
+
+* bug fix; fixing nested list markdown generated for paragraphs and headings. ([a104f99](https://bitbucket.org/atlassian/atlaskit/commits/a104f99))
+
+* bug fix; update legal copy to be more clear. Not all modules include ADG license. (issues closed: ak-2035) ([f3a945e](https://bitbucket.org/atlassian/atlaskit/commits/f3a945e))
+
+
+* bug fix; update legal copy and fix broken links for component README on npm. New contribution and (issues closed: ak-2035) ([0b3e454](https://bitbucket.org/atlassian/atlaskit/commits/0b3e454))
+
+* bug fix; use native dome focus instead of view focus, which not works in firefox ([4861541](https://bitbucket.org/atlassian/atlaskit/commits/4861541))
+
+* bug fix; fixed BB autofocus ([38c021f](https://bitbucket.org/atlassian/atlaskit/commits/38c021f))
+* bug fix; bitbucket editor does not have focus when component is mounted. (issues closed: #ed-1522) ([3392760](https://bitbucket.org/atlassian/atlaskit/commits/3392760))
+
+
+* feature; updated core to 14.5.2. ([bddce10](https://bitbucket.org/atlassian/atlaskit/commits/bddce10))
+* bug fix; set default of title and alt to be null so that it does not render redundant element ([eae2e6b](https://bitbucket.org/atlassian/atlaskit/commits/eae2e6b))
+* bug fix; fixed tests. ([b965c01](https://bitbucket.org/atlassian/atlaskit/commits/b965c01))
+
+
+* feature; updated core to 14.3.10 ([531810e](https://bitbucket.org/atlassian/atlaskit/commits/531810e))
+
+* feature; update core to 14.3.4 ([16e61b6](https://bitbucket.org/atlassian/atlaskit/commits/16e61b6))
+
+* feature; adapt breaking changes on mention that change displayName to text ([560e956](https://bitbucket.org/atlassian/atlaskit/commits/560e956))
+* feature; ED-1380 updated bitbucket to use core 14.2.0 ([33d89d5](https://bitbucket.org/atlassian/atlaskit/commits/33d89d5))
+
+* bug fix; mention and emoji needs to be added before blocktype plugin (issues closed: ed-1464) ([cee19b4](https://bitbucket.org/atlassian/atlaskit/commits/cee19b4))
+
+
+
+* bug fix; simplify string. ([9d3660a](https://bitbucket.org/atlassian/atlaskit/commits/9d3660a))
+* bug fix; added h6 tests back ([6067855](https://bitbucket.org/atlassian/atlaskit/commits/6067855))
+* bug fix; added emoji and mention as peer dependency. ([0c70ae1](https://bitbucket.org/atlassian/atlaskit/commits/0c70ae1))
+
+* feature; update bitbucket to apply new plugin structures. ([add27ab](https://bitbucket.org/atlassian/atlaskit/commits/add27ab))
+* bug fix; fixed bitbucket exception on run build ([77fe029](https://bitbucket.org/atlassian/atlaskit/commits/77fe029))
+* bug fix; added back schema_builder specific for BB. ([206e823](https://bitbucket.org/atlassian/atlaskit/commits/206e823))
+* bug fix; removed redundant schema builder for BB test. ([c582488](https://bitbucket.org/atlassian/atlaskit/commits/c582488))
+* bug fix; fixed some nitpick according to feedback. ([15189b8](https://bitbucket.org/atlassian/atlaskit/commits/15189b8))
+
+
+* bug fix; temperory revert changes on code exclusion. ([4b5da98](https://bitbucket.org/atlassian/atlaskit/commits/4b5da98))
+
+* bug fix; emojiQuery and MentionQuery should be exclues in code mark ([6602f43](https://bitbucket.org/atlassian/atlaskit/commits/6602f43))
+* bug fix; fixed test typo ([95d8d83](https://bitbucket.org/atlassian/atlaskit/commits/95d8d83))
+* bug fix; fixed bitbucket test after upgrade promsemirror. ([4cceb0d](https://bitbucket.org/atlassian/atlaskit/commits/4cceb0d))
+* feature; add support for emoji in the bitbucket editor (issues closed: fs-777) ([e79ddc3](https://bitbucket.org/atlassian/atlaskit/commits/e79ddc3))
+* feature; updated to use the editor-core with new prosemirror ([1720255](https://bitbucket.org/atlassian/atlaskit/commits/1720255))
+
+
+* bug fix; fix mangling of list item with two or more children ([70ea8a1](https://bitbucket.org/atlassian/atlaskit/commits/70ea8a1))
+
+* bug fix; update skipping behavior of the serializer, exclude `[` & `]` from the list ([ad899dd](https://bitbucket.org/atlassian/atlaskit/commits/ad899dd))
+
+
+
+* feature; remove redundant deps and update editor-core to version without redundant deps ([e97ea79](https://bitbucket.org/atlassian/atlaskit/commits/e97ea79))
+
+
+
+* bug fix; maintainers for all the packages were added ([261d00a](https://bitbucket.org/atlassian/atlaskit/commits/261d00a))
+
+* bug fix; fix list items with new lines in between (issues closed: ed-1035) ([edeb362](https://bitbucket.org/atlassian/atlaskit/commits/edeb362))
+
+
+* feature; update version of editor-core to 7.0.0 in BB ([50c9099](https://bitbucket.org/atlassian/atlaskit/commits/50c9099))
+
+
+* bug fix; migrate from `mono` to `code` ([8824a64](https://bitbucket.org/atlassian/atlaskit/commits/8824a64))
+
+
+* feature; adding clear formatting option to editor-bitbucket, editor-jira and editor-cq. ([995877f](https://bitbucket.org/atlassian/atlaskit/commits/995877f))
+
+
+
+* bug fix; merge branch 'master' into ED-738-ak-editor-shared-styles ([b514e44](https://bitbucket.org/atlassian/atlaskit/commits/b514e44))
+* bug fix; fix DND/Paste behaviour in Safari, fix errors in IE (issues closed: ed-1037, ed-1038) ([fa15767](https://bitbucket.org/atlassian/atlaskit/commits/fa15767))
+
+* bug fix; revert the refactoring in ToolbarBlockType to fix broken unit test cases. ([efa7cff](https://bitbucket.org/atlassian/atlaskit/commits/efa7cff))
+
+
+* bug fix; fixes detaching/attaching of an editor in specific bitbucket use case ([1a4f7ab](https://bitbucket.org/atlassian/atlaskit/commits/1a4f7ab))
+
+* bug fix; adding DefaultKeymapsPlugin for new Redo keymaps to editor-bitbucket, editor-jira an ([b70508b](https://bitbucket.org/atlassian/atlaskit/commits/b70508b))
+* bug fix; bumping editor-core dependency ([8ccd2fc](https://bitbucket.org/atlassian/atlaskit/commits/8ccd2fc))
+* bug fix; updating editor-core version (issues closed: fab-2616) ([03f989f](https://bitbucket.org/atlassian/atlaskit/commits/03f989f))
+
+
+
+
+
+* bug fix; merged master into ED-738 ([8afd112](https://bitbucket.org/atlassian/atlaskit/commits/8afd112))
+
+
+
+
+
+
+
+
+
+
+* feature; Default BB to have 3 lines on editor instead of 1. ([e19db3e](https://bitbucket.org/atlassian/atlaskit/commits/e19db3e))
+
+
+
+
+
+
+
+* feature; use one version down of core to try. ([d847b8b](https://bitbucket.org/atlassian/atlaskit/commits/d847b8b))
+
+
+
+
+
+* bug fix; Remove blockcode analytics test temperary. ([26f76e6](https://bitbucket.org/atlassian/atlaskit/commits/26f76e6))
+
+
+
+
+
+
+* bug fix; refactor stories to use // rather than http:// ([a0826cf](https://bitbucket.org/atlassian/atlaskit/commits/a0826cf))
+
+
+
+
+
+* bug fix; Rearrange tsconfig.json organisation to allow per-package configuration. ([6c6992d](https://bitbucket.org/atlassian/atlaskit/commits/6c6992d))
+
+* bug fix; update mocha, refactor uses of this.skip() in tests. ([b9282f3](https://bitbucket.org/atlassian/atlaskit/commits/b9282f3))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## 3.4.4 (2017-10-16)
 
 * bug fix; add type to returns mention result so that consistent with API. ([b168339](https://bitbucket.org/atlassian/atlaskit/commits/b168339))

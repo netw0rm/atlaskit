@@ -19,7 +19,7 @@ const header = (code: string | number): SecurityOptions => ({
 const getSecurityHeader = call => call[0].headers.get(defaultSecurityHeader);
 
 const defaultSecurityCode = '10804';
-const defaultScale = 'altScale=XHDPI';
+const defaultAltScaleParam = 'altScale=XHDPI';
 
 const provider1: EmojiLoaderConfig = {
   url: p1Url,
@@ -65,7 +65,7 @@ describe('EmojiLoader', () => {
         url: p1Url,
       };
       fetchMock.mock({
-        matcher: `end:${defaultScale}`,
+        matcher: `end:${defaultAltScaleParam}`,
         response: fetchResponse(providerData1),
       });
 
@@ -78,7 +78,7 @@ describe('EmojiLoader', () => {
     it('can handle when a version is specified in the query params', () => {
       const params = '?maxVersion=2';
       fetchMock.mock({
-        matcher: `end:${params}&${defaultScale}`,
+        matcher: `end:${params}&${defaultAltScaleParam}`,
         response: fetchResponse(providerData1),
       });
 
@@ -99,7 +99,7 @@ describe('EmojiLoader', () => {
         getRatio: () => 1
       };
       fetchMock.mock({
-        matcher: `${provider1.url}?${defaultScale}`,
+        matcher: `${provider1.url}?${defaultAltScaleParam}`,
         response: fetchResponse(providerData1),
       });
 

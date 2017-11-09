@@ -19,7 +19,7 @@ describe('ActionsView', () => {
     const actions: AppCardAction[] = [{
       title: 'Open',
       target: {
-        app: 'some.app',
+        receiver: 'some.receiver',
         key: 'test.target'
       },
       parameters: {
@@ -36,7 +36,7 @@ describe('ActionsView', () => {
       {
         title: 'Open',
         target: {
-          app: 'some.app1',
+          receiver: 'some.receiver1',
           key: 'test.target.open'
         },
         parameters: {
@@ -46,7 +46,7 @@ describe('ActionsView', () => {
       {
         title: 'View',
         target: {
-          app: 'some.app2',
+          receiver: 'some.receiver2',
           key: 'test.target.view'
         },
         parameters: {
@@ -56,7 +56,7 @@ describe('ActionsView', () => {
       {
         title: 'Reply',
         target: {
-          app: 'some.app3',
+          receiver: 'some.receiver3',
           key: 'test.target.reply'
         },
         parameters: {

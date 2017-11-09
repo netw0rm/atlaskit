@@ -59,7 +59,7 @@ export interface AppCardContext {
 export interface AppCardAction {
   title: string;
   target: {
-    app?: string;
+    receiver?: string;
     key: string;
   };
   parameters?: object;

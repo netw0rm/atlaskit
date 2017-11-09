@@ -90,7 +90,7 @@ storiesOf(name, module)
             <QuestionCircleIcon label="Help icon" secondaryColor="inherit" />
           </AkGlobalItem>,
           <AkGlobalItem>
-            <AkAvatar size="small" src={emmaAvatar} />
+            <AkAvatar size="small" src={emmaAvatar} borderColor="default" />
           </AkGlobalItem>,
         ]}
       />
@@ -125,7 +125,7 @@ storiesOf(name, module)
             <QuestionCircleIcon label="Help icon" secondaryColor="inherit" />
           </AkGlobalItem>,
           <AkGlobalItem>
-            <AkAvatar size="small" src={emmaAvatar} />
+            <AkAvatar size="small" src={emmaAvatar} borderColor="default" />
           </AkGlobalItem>,
         ]}
       />

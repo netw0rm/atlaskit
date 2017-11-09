@@ -1,5 +1,92 @@
 # @atlaskit/logo
 
+## 6.0.0 (2017-11-09)
+
+
+
+* bug fix; fixed logo width issue in IE11. ([0ce8ab7](https://bitbucket.org/atlassian/atlaskit/commits/0ce8ab7))
+* breaking; Logo sizes changed, children no longer accepted ([7173d81](https://bitbucket.org/atlassian/atlaskit/commits/7173d81))
+* breaking; refactoring Logo component to fix numerous bugs ([7173d81](https://bitbucket.org/atlassian/atlaskit/commits/7173d81))
+
+* bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))
+
+* bug fix; update styled-components dep and react peerDep ([6a67bf8](https://bitbucket.org/atlassian/atlaskit/commits/6a67bf8))
+
+* bug fix; jSD and Statuspage logo icons have fixed gradients (issues closed: ak-3479) ([60d8aca](https://bitbucket.org/atlassian/atlaskit/commits/60d8aca))
+
+* breaking; All logos have been updated with new assets, please test these inside your application to make sure ([c4db7fc](https://bitbucket.org/atlassian/atlaskit/commits/c4db7fc))
+* breaking; new and updated company and product logos ([c4db7fc](https://bitbucket.org/atlassian/atlaskit/commits/c4db7fc))
+
+* bug fix; fix the theme-dependency ([db90333](https://bitbucket.org/atlassian/atlaskit/commits/db90333))
+
+
+
+
+
+
+
+
+* bug fix; rename jsnext:main to jsnext:experimental:main temporarily ([c7508e0](https://bitbucket.org/atlassian/atlaskit/commits/c7508e0))
+
+* bug fix; use class transform in loose mode in babel to improve load performance in apps ([fde719a](https://bitbucket.org/atlassian/atlaskit/commits/fde719a))
+
+
+
+
+
+
+* bug fix; rerelease, failed prepublish scripts ([5fd82f8](https://bitbucket.org/atlassian/atlaskit/commits/5fd82f8))
+
+* feature; added ES module builds to dist and add jsnext:main to most ADG packages ([ea76507](https://bitbucket.org/atlassian/atlaskit/commits/ea76507))
+
+
+
+
+
+
+
+* feature; Convert logo to styled-components updated internal structure ([ec91404](https://bitbucket.org/atlassian/atlaskit/commits/ec91404))
+* bug fix; add prop-types as a dependency to avoid React 15.x warnings (issues closed: ak-2473) ([92598eb](https://bitbucket.org/atlassian/atlaskit/commits/92598eb))
+
+
+
+
+* bug fix; update legal copy to be more clear. Not all modules include ADG license. (issues closed: ak-2035) ([f3a945e](https://bitbucket.org/atlassian/atlaskit/commits/f3a945e))
+
+* bug fix; update legal copy and fix broken links for component README on npm. New contribution and (issues closed: ak-2035) ([0b3e454](https://bitbucket.org/atlassian/atlaskit/commits/0b3e454))
+
+
+* bug fix; update logo readme to use new readme component (issues closed: ak-2110) ([491d789](https://bitbucket.org/atlassian/atlaskit/commits/491d789))
+
+
+
+
+
+
+* bug fix; maintainers for all the packages were added ([261d00a](https://bitbucket.org/atlassian/atlaskit/commits/261d00a))
+* bug fix; merge branch 'master' into ED-738-ak-editor-shared-styles ([b514e44](https://bitbucket.org/atlassian/atlaskit/commits/b514e44))
+
+
+* breaking;  ([b989245](https://bitbucket.org/atlassian/atlaskit/commits/b989245))
+* breaking; text-only logo mode without icon (issues closed: ak-1408) ([b989245](https://bitbucket.org/atlassian/atlaskit/commits/b989245))
+
+* bug fix; avoiding binding render to this ([40c9951](https://bitbucket.org/atlassian/atlaskit/commits/40c9951))
+
+* bug fix; fix logo to have public access ([5a41e37](https://bitbucket.org/atlassian/atlaskit/commits/5a41e37))
+
+
+
+
+
+
+
+
+
+
+* feature; Add more product logos ([e84ae80](https://bitbucket.org/atlassian/atlaskit/commits/e84ae80))
+* feature; Adjust width of collapsed logo ([99fa4a5](https://bitbucket.org/atlassian/atlaskit/commits/99fa4a5))
+
+
 ## 5.0.0 (2017-10-27)
 
 

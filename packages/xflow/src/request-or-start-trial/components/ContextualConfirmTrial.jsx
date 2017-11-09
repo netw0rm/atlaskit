@@ -168,7 +168,10 @@ class ContextualConfirmTrial extends Component {
         <ConfirmTrialAdminInfoImage imageType="settings" />
         <FormattedMessage
           id="xflow.generic.confirm-trial.settings-info"
-          defaultMessage="Cancel your trial at any time in Manage applications."
+          defaultMessage="Cancel your trial at any time in {manageApplicationsLink}."
+          values={{
+            manageApplicationsLink: this.renderManageApplicationsLink(),
+          }}
         />
       </ConfirmTrialAdminInfo>
     </ContextualConfirmTrialFooter>
@@ -180,18 +183,42 @@ class ContextualConfirmTrial extends Component {
         <ConfirmTrialAdminInfoImage imageType="card" />
         <FormattedMessage
           id="xflow.generic.confirm-reactivation.card-info"
-          defaultMessage="Once you reactivate a subscription, billing will start at the end of your chosen billing cycle."
+          defaultMessage="Once your subscription reactivates, billing will resume."
         />
       </ConfirmTrialAdminInfo>
       <ConfirmTrialAdminInfo columnSize="medium">
         <ConfirmTrialAdminInfoImage imageType="settings" />
         <FormattedMessage
           id="xflow.generic.confirm-reactivation.settings-info"
-          defaultMessage="Cancel your subscription at any time in Manage applications."
+          defaultMessage="Cancel your subscription at any time in {manageApplicationsLink}."
+          values={{
+            manageApplicationsLink: this.renderManageApplicationsLink(),
+          }}
         />
       </ConfirmTrialAdminInfo>
     </ContextualConfirmTrialFooter>
   );
+
+  renderManageApplicationsLink = () => {
+    const { status, firePrivateAnalyticsEvent } = this.props;
+    return (
+      <a
+        href="/admin/billing/applications"
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => firePrivateAnalyticsEvent(
+          status === INACTIVE
+            ? 'xflow.confirm-trial.manage-subscriptions.clicked'
+            : 'xflow.reactivate-trial.manage-subscriptions.clicked'
+        )}
+      >
+        <FormattedMessage
+          id="xflow.generic.confirm-trial.settings-info.manage-applications.link"
+          defaultMessage="Manage subscriptions"
+        />
+      </a>
+    );
+  }
 
   renderFooter = (status) => (status === INACTIVE
     ? this.renderInactiveFooter()

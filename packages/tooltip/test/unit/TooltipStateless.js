@@ -79,7 +79,7 @@ describe('provide your own target', () => {
   it('should accept a custom target', () => {
     const NewTarget = (props) => <div {...props} />;
     const spy = jest.fn();
-    const wrapper = mount(
+    const wrapper = shallow(
       <Tooltip
         description="Tooltip text"
         target={NewTarget}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import MultiSelect, { MultiSelectStateless } from '../../src';
@@ -17,11 +17,11 @@ describe(`${name} - smart`, () => {
 
   describe('render', () => {
     it('should render stateless multi select', () => {
-      expect(mount(<MultiSelect />).find(MultiSelectStateless).length).toBe(1);
+      expect(shallow(<MultiSelect />).find(MultiSelectStateless).length).toBe(1);
     });
 
     it('should pass ExpandIcon to the stateless component if no custom icon provided', () => {
-      const wrapper = mount(<MultiSelect />);
+      const wrapper = shallow(<MultiSelect />);
       const statelessProps = wrapper.find(MultiSelectStateless).props();
       expect(statelessProps.icon).toEqual(<ExpandIcon label="" />);
     });
@@ -36,7 +36,7 @@ describe(`${name} - smart`, () => {
           ],
         },
       ];
-      const wrapper = mount(<MultiSelect
+      const wrapper = shallow(<MultiSelect
         appearance="subtle"
         defaultSelected={[items[0].items[0]]}
         id="id"

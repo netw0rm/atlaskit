@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { colors } from '@atlaskit/theme';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 
@@ -144,7 +144,7 @@ describe(name, () => {
   });
   describe('<CheckboxGroup />', () => {
     it('sanity check for CheckboxGroup', () => {
-      const cb = mount(<CheckboxGroup>
+      const cb = shallow(<CheckboxGroup>
         <Checkbox label="" name="stub" value="stub value" />
         <Checkbox label="" name="stub2" value="stub value2" />
         <Checkbox label="" name="stub3" value="stub value3" />

@@ -27,12 +27,12 @@ describe(name, () => {
     });
 
     it('should render Label when the prop is set', () => {
-      expect(mount(<StatelessSelect />).find(Label).length).toBe(0);
-      expect(mount(<StatelessSelect label="test" />).find(Label).length).toBe(1);
+      expect(shallow(<StatelessSelect />).find(Label).length).toBe(0);
+      expect(shallow(<StatelessSelect label="test" />).find(Label).length).toBe(1);
     });
 
     it('should render Droplist', () => {
-      expect(mount(<StatelessSelect />).find(Droplist).length).toBe(1);
+      expect(shallow(<StatelessSelect />).find(Droplist).length).toBe(1);
     });
 
     it('should render Fieldbase inside Droplist', () => {
@@ -65,7 +65,7 @@ describe(name, () => {
           ],
         },
       ];
-      const select = mount(<StatelessSelect items={selectItems} isOpen />);
+      const select = shallow(<StatelessSelect items={selectItems} isOpen />);
       expect(select.find(Group).length).toBe(1);
       expect(select.find(Item).length).toBe(2);
       expect(select.find(Group).find(Item).length).toBe(2);
@@ -74,7 +74,7 @@ describe(name, () => {
 
   describe('props managements', () => {
     it('should pass props to Label', () => {
-      const select = mount(<StatelessSelect label="test" isRequired id="test2" />);
+      const select = shallow(<StatelessSelect label="test" isRequired id="test2" />);
       const labelProps = select.find(Label).props();
       expect(labelProps.isRequired).toBe(true);
       expect(labelProps.label).toBe('test');
@@ -92,7 +92,7 @@ describe(name, () => {
 
     it('should pass props to Droplist', () => {
       const func = () => {};
-      const select = mount(<StatelessSelect
+      const select = shallow(<StatelessSelect
         position="top right"
         isOpen
         onOpenChange={func}
@@ -138,7 +138,7 @@ describe(name, () => {
           ],
         },
       ];
-      const select = mount(<StatelessSelect
+      const select = shallow(<StatelessSelect
         isOpen
         id="testId"
         name="testName"
@@ -630,7 +630,7 @@ describe(name, () => {
 
     describe('getItemTrueIndex', () => {
       it('should return the index of the item when there is only one group', () => {
-        wrapper = mount(<StatelessSelect
+        wrapper = shallow(<StatelessSelect
           items={[
             {
               heading: 'Group 1',
@@ -649,7 +649,7 @@ describe(name, () => {
       });
 
       it('should return the index of the item when there are multiple groups', () => {
-        wrapper = mount(<StatelessSelect
+        wrapper = shallow(<StatelessSelect
           items={[
             {
               heading: 'Group 1',
@@ -742,7 +742,7 @@ describe(name, () => {
 
     it('should render item label instead of content when hasAutocomplete', () => {
       const item = { value: 1, content: <span>One</span>, label: 'One!' };
-      const wrapper = mount(
+      const wrapper = shallow(
         <StatelessSelect
           hasAutocomplete
           items={[{
@@ -780,7 +780,7 @@ describe(name, () => {
     });
 
     it('should not display loading icon and message when select is not open', () => {
-      const wrapper = mount(<StatelessSelect
+      const wrapper = shallow(<StatelessSelect
         isLoading
         isOpen={false}
       />);

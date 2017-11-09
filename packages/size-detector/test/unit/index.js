@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import SizeDetector from '../../src';
 import { name } from '../../package.json';
 
@@ -40,7 +40,7 @@ describe(name, () => {
   });
 
   it('should call cancelAnimationFrame when unmounted', () => {
-    const wrapper = mount(<SizeDetector>{noOp}</SizeDetector>);
+    const wrapper = shallow(<SizeDetector>{noOp}</SizeDetector>);
     wrapper.unmount();
     expect(window.cancelAnimationFrame).toHaveBeenCalledTimes(1);
   });

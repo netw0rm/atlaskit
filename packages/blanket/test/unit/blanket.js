@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import Blanket from '../../src';
 import { opacity } from '../../src/styled';
@@ -12,13 +12,13 @@ describe('ak-blanket', () => {
   });
 
   it('should be possible to create a component', () => {
-    expect(mount(<Blanket />)).not.toBe(undefined);
+    expect(shallow(<Blanket />)).not.toBe(undefined);
   });
 
   describe('props', () => {
     describe('isTinted', () => {
       it('should be false by default', () => {
-        expect(mount(<Blanket />).prop('isTinted')).toBe(false);
+        expect(shallow(<Blanket />).prop('isTinted')).toBe(false);
       });
 
       it('should get tint styling when prop set', () => {
@@ -34,11 +34,11 @@ describe('ak-blanket', () => {
 
     describe('canClickThrough', () => {
       it('should be false by default', () => {
-        expect(mount(<Blanket />).prop('canClickThrough')).toBe(false);
+        expect(shallow(<Blanket />).prop('canClickThrough')).toBe(false);
       });
       it('when canClickThrough is true, onBlanketClicked should not be triggered', () => {
         const spy = jest.fn();
-        const wrapper = mount(<Blanket canClickThrough onBlanketClicked={spy} />);
+        const wrapper = shallow(<Blanket canClickThrough onBlanketClicked={spy} />);
         wrapper.simulate('click');
         expect(spy).toHaveBeenCalledTimes(0);
       });
@@ -47,7 +47,7 @@ describe('ak-blanket', () => {
     describe('onBlanketClicked', () => {
       it('should trigger when blanket clicked', () => {
         const spy = jest.fn();
-        const wrapper = mount(<Blanket onBlanketClicked={spy} />);
+        const wrapper = shallow(<Blanket onBlanketClicked={spy} />);
         wrapper.simulate('click');
         expect(spy).toHaveBeenCalledTimes(1);
       });

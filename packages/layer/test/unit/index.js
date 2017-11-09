@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import Layer from '../../src';
 
@@ -25,7 +25,7 @@ describe('Layer', () => {
     // This is to avoid the layer appearing in the wrong part of the screen while Popper.js detects
     // where the content should be positioned.
     it('should be rendered with opacity:0 until Popper extracts styles', () => {
-      const wrapper = mount(<Layer><div id="target">Target</div></Layer>);
+      const wrapper = shallow(<Layer><div id="target">Target</div></Layer>);
       expect(wrapper.find('div[style]').props().style.opacity).toBe(0);
 
       const dummyPopperState = {
@@ -68,7 +68,9 @@ describe('Layer', () => {
 
     it('flipped should cause onFlippedChange callback to be called', () => {
       const spy = jest.fn();
-      const wrapper = mount(<Layer onFlippedChange={spy} content={content}><div>Foo</div></Layer>);
+      const wrapper = shallow(
+        <Layer onFlippedChange={spy} content={content}><div>Foo</div></Layer>
+      );
       const state = { flipped: true, actualPosition: 'top left', originalPosition: 'bottom left' };
 
       expect(wrapper.state('flipped')).toBe(false);

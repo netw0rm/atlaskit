@@ -40,7 +40,7 @@ describe(name, () => {
       function expectPropReflectedToInput(prop, inputProp, val) {
         it('should be reflected to the input', () => {
           const props = { [prop]: val };
-          const wrapper = mount(<AkRadio onChange={() => {}} {...props} />);
+          const wrapper = shallow(<AkRadio onChange={() => {}} {...props} />);
           expect(wrapper.find('input').prop(inputProp)).toBe(val);
         });
       }

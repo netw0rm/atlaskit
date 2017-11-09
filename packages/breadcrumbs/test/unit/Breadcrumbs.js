@@ -41,7 +41,7 @@ describe('BreadcrumbsStateless', () => {
     });
 
     it('should render multiple children', () => {
-      const wrapper = mount(
+      const wrapper = shallow(
         <Breadcrumbs
           onExpand={() => {}}
         >
@@ -54,7 +54,7 @@ describe('BreadcrumbsStateless', () => {
     });
 
     it('should not count empty children', () => {
-      const wrapper = mount(
+      const wrapper = shallow(
         <Breadcrumbs onExpand={() => {}} maxItems={3}>
           {null}
           <Item>item</Item>

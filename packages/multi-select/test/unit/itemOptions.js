@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import { name } from '../../package.json';
 import { MultiSelectStateless } from '../../src';
@@ -10,7 +10,7 @@ describe(`${name} - shared functions`, () => {
       { content: 'test1', value: 'test1' },
       { content: 'test2', value: 'test2' },
     ];
-    const wrapper = mount(<MultiSelectStateless items={items} />);
+    const wrapper = shallow(<MultiSelectStateless items={items} />);
     expect(wrapper.state().groupedItems.length).toBe(1);
     expect(wrapper.state().groupedItems[0].items).toBe(items);
   });
@@ -24,7 +24,7 @@ describe(`${name} - shared functions`, () => {
       },
     ];
 
-    const wrapper = mount(<MultiSelectStateless items={groups} />);
+    const wrapper = shallow(<MultiSelectStateless items={groups} />);
     expect(wrapper.state().groupedItems.length).toBe(1);
     expect(wrapper.state().groupedItems[0]).toBe(groups[0]);
   });

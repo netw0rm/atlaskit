@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 
 import { name } from '../../package.json';
 
@@ -79,7 +79,7 @@ describe(`${name} - DropdownItemFocusManager`, () => {
 
   describe('when opened with mouse', () => {
     it('should not focus on first item', () => {
-      const wrapper = mount(
+      const wrapper = shallow(
         <DropdownItemFocusManager>
           <DropdownItemGroup>
             <DropdownItem isDisabled>Item zero</DropdownItem>

@@ -35,21 +35,21 @@ describe(`${name} - stateless`, () => {
     });
 
     it('should render with correct CSS class name', () => {
-      expect(mount(<MultiSelectStateless />).find(SelectWrapper).length).toBe(1);
+      expect(shallow(<MultiSelectStateless />).find(SelectWrapper).length).toBe(1);
     });
 
     it('should render Label when the prop is set', () => {
-      expect(mount(<MultiSelectStateless />).find(Label).length).toBe(0);
-      expect(mount(<MultiSelectStateless label="test" />).find(Label).length).toBe(1);
+      expect(shallow(<MultiSelectStateless />).find(Label).length).toBe(0);
+      expect(shallow(<MultiSelectStateless label="test" />).find(Label).length).toBe(1);
     });
 
     it('should render Droplist', () => {
-      expect(mount(<MultiSelectStateless />).find(Droplist).length).toBe(1);
+      expect(shallow(<MultiSelectStateless />).find(Droplist).length).toBe(1);
     });
 
     it('should pass shouldFlip to Droplist', () => {
       expect(
-        mount(<MultiSelectStateless shouldFlip />).find(Droplist).props().shouldFlip
+        shallow(<MultiSelectStateless shouldFlip />).find(Droplist).props().shouldFlip
       ).toBe(true);
     });
 
@@ -65,11 +65,11 @@ describe(`${name} - stateless`, () => {
     });
 
     it('should render Footer if shouldAllowCreateItem is true and the search value is not empty', () => {
-      expect(mount(<MultiSelectStateless filterValue="test" isOpen shouldAllowCreateItem />).find(Footer).length).toBe(1);
+      expect(shallow(<MultiSelectStateless filterValue="test" isOpen shouldAllowCreateItem />).find(Footer).length).toBe(1);
     });
 
     it('should NOT render Footer if shouldAllowCreateItem is false and footer is not passed', () => {
-      expect(mount(<MultiSelectStateless filterValue="test" isOpen />).find(FooterDiv).length).toBe(0);
+      expect(shallow(<MultiSelectStateless filterValue="test" isOpen />).find(FooterDiv).length).toBe(0);
     });
 
     it('should render search text and label in the footer when shouldAllowCreateItem is true', () => {
@@ -139,7 +139,7 @@ describe(`${name} - stateless`, () => {
       ];
 
       it('should render groups and items inside Droplist (when open)', () => {
-        const select = mount(<MultiSelectStateless items={items} isOpen />);
+        const select = shallow(<MultiSelectStateless items={items} isOpen />);
         expect(select.find(Group).length).toBe(1);
         expect(select.find(Item).length).toBe(2);
         expect(select.find(Group).find(Item).length).toBe(2);
@@ -147,7 +147,7 @@ describe(`${name} - stateless`, () => {
 
       it('should not render a group if all items in that group are selected', () => {
         const selectedItems = [items[0].items[0], items[0].items[1]];
-        const select = mount(<MultiSelectStateless
+        const select = shallow(<MultiSelectStateless
           items={items}
           selectedItems={selectedItems}
           isOpen
@@ -157,7 +157,7 @@ describe(`${name} - stateless`, () => {
 
       it('should render 3 groups with all non-selected items', () => {
         const selectedItems = [itemsIn3Groups[0].items[0], itemsIn3Groups[1].items[1]];
-        const select = mount(<MultiSelectStateless
+        const select = shallow(<MultiSelectStateless
           items={itemsIn3Groups}
           selectedItems={selectedItems}
           isOpen
@@ -171,7 +171,7 @@ describe(`${name} - stateless`, () => {
 
       it('should not render a group if all items in the group are selected', () => {
         const selectedItems = [itemsIn3Groups[1].items[0], itemsIn3Groups[1].items[1]];
-        const select = mount(<MultiSelectStateless
+        const select = shallow(<MultiSelectStateless
           items={itemsIn3Groups}
           selectedItems={selectedItems}
           isOpen
@@ -211,7 +211,7 @@ describe(`${name} - stateless`, () => {
       });
 
       it('should render a no matches found if there is no item at all', () => {
-        const select = mount(<MultiSelectStateless
+        const select = shallow(<MultiSelectStateless
           items={[]}
           selectedItems={[]}
           isOpen
@@ -226,7 +226,7 @@ describe(`${name} - stateless`, () => {
           .map(group => group.items)
           .reduceRight((prev, curr) => prev.concat(curr));
 
-        const select = mount(<MultiSelectStateless
+        const select = shallow(<MultiSelectStateless
           items={itemsIn3Groups}
           selectedItems={selectedItems}
           isOpen
@@ -244,7 +244,7 @@ describe(`${name} - stateless`, () => {
           itemsIn3Groups[2].items[0],
         ];
 
-        const select = mount(<MultiSelectStateless
+        const select = shallow(<MultiSelectStateless
           items={itemsIn3Groups}
           selectedItems={selectedItems}
           isOpen
@@ -254,7 +254,7 @@ describe(`${name} - stateless`, () => {
       });
 
       it('should filter selected items by their values not reference', () => {
-        const select = mount(<MultiSelectStateless
+        const select = shallow(<MultiSelectStateless
           items={items}
           selectedItems={[{ content: 'new', value: 2 }]}
           isOpen
@@ -297,7 +297,7 @@ describe(`${name} - stateless`, () => {
           ],
         },
       ];
-      const select = mount(<MultiSelectStateless
+      const select = shallow(<MultiSelectStateless
         isOpen
         id="testId"
         name="testName"

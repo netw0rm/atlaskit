@@ -42,11 +42,11 @@ describe('FieldTextAreaStateless', () => {
     describe('isReadOnly prop', () => {
       describe('set to true', () => {
         it('should sets its value on the input', () => {
-          expect(mount(<FieldTextArea onChange={() => {}} isReadOnly label="" />).find('textarea').props().readOnly).toBe(true);
+          expect(shallow(<FieldTextArea onChange={() => {}} isReadOnly label="" />).find('textarea').props().readOnly).toBe(true);
         });
 
         it('should reflect its value to the FieldBase', () => {
-          expect(mount(
+          expect(shallow(
             <FieldTextArea onChange={() => {}} isReadOnly label="" />
         ).find(Base).props().isReadOnly).toBe(true);
         });
@@ -128,7 +128,7 @@ describe('FieldTextAreaStateless', () => {
 
     it('onChange should be called when input value changes', () => {
       const spy = jest.fn();
-      const wrapper = mount(<FieldTextAreaStateless onChange={spy} label="" />);
+      const wrapper = shallow(<FieldTextAreaStateless onChange={spy} label="" />);
       wrapper.find(TextArea).simulate('change');
       expect(spy).toHaveBeenCalledTimes(1);
     });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import SmartSelect, { StatelessSelect } from '../../src';
 
 import { name } from '../../package.json';
@@ -16,7 +16,7 @@ describe(`${name} - smart`, () => {
 
   describe('render', () => {
     it('should render stateless single select', () => {
-      expect(mount(<SmartSelect />).find(StatelessSelect).length).toBe(1);
+      expect(shallow(<SmartSelect />).find(StatelessSelect).length).toBe(1);
     });
   });
 
@@ -89,7 +89,7 @@ describe(`${name} - smart`, () => {
   describe('with JSX item content', () => {
     it('should set filterValue initially using item label instead of content', () => {
       const item = { value: 1, content: <span>One</span>, label: 'One!' };
-      const wrapper = mount(
+      const wrapper = shallow(
         <SmartSelect
           items={[{
             items: [item],

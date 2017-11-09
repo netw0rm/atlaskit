@@ -71,7 +71,7 @@ describe(`${name} - deprecated API - core`, () => {
     });
 
     it('should not show a Spinner when it is loading but not open', () => {
-      expect(mount(<Droplist isLoading>{itemsList}</Droplist>).find(Spinner).length).toBe(0);
+      expect(shallow(<Droplist isLoading>{itemsList}</Droplist>).find(Spinner).length).toBe(0);
     });
   });
 });

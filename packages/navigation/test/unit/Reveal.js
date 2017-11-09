@@ -40,7 +40,7 @@ describe('Reveal', () => {
 
   describe('starting open with animation', () => {
     it('should render its children', () => {
-      const wrapper = mount(
+      const wrapper = shallow(
         <Reveal
           openHeight={100}
           shouldAnimate
@@ -95,7 +95,7 @@ describe('Reveal', () => {
 
   describe('closing without animation', () => {
     it('should unmount its children', () => {
-      const wrapper = mount(
+      const wrapper = shallow(
         <Reveal
           isOpen
           shouldAnimate={false}
@@ -135,7 +135,7 @@ describe('Reveal', () => {
     });
 
     it('should remove children after closing', () => {
-      const wrapper = mount(
+      const wrapper = shallow(
         <Reveal
           isOpen
           shouldAnimate
@@ -160,7 +160,7 @@ describe('Reveal', () => {
 
   describe('starting closed without animation', () => {
     it('should not render its children', () => {
-      const wrapper = mount(
+      const wrapper = shallow(
         <Reveal
           isOpen={false}
           shouldAnimate={false}
@@ -176,7 +176,7 @@ describe('Reveal', () => {
 
   describe('starting closed with animation', () => {
     it('should not render its children', () => {
-      const wrapper = mount(
+      const wrapper = shallow(
         <Reveal
           isOpen={false}
           shouldAnimate={false}

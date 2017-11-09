@@ -30,7 +30,7 @@ const defaultProps = {
 describe('@atlaskit/inline-edit', () => {
   it('should render read view inside FieldBase when in read mode', () => {
     const readView = <span>read</span>;
-    const wrapper = mount(<InlineEditStateless {...defaultProps} readView={readView} />);
+    const wrapper = shallow(<InlineEditStateless {...defaultProps} readView={readView} />);
     expect(wrapper.find(FieldBase).length).toBe(1);
     const fieldBase = wrapper.find(FieldBase);
     expect(fieldBase.contains(readView)).toBe(true);
@@ -38,7 +38,9 @@ describe('@atlaskit/inline-edit', () => {
 
   it('should render edit view inside FieldBase when in editing mode', () => {
     const editView = <span>edit</span>;
-    const wrapper = mount(<InlineEditStateless {...defaultProps} isEditing editView={editView} />);
+    const wrapper = shallow(
+      <InlineEditStateless {...defaultProps} isEditing editView={editView} />
+    );
     expect(wrapper.find(FieldBase).length).toBe(1);
     const fieldBase = wrapper.find(FieldBase);
     expect(fieldBase.contains(editView)).toBe(true);
@@ -100,7 +102,7 @@ describe('@atlaskit/inline-edit', () => {
 
     it('should not be called when the edit view is clicked', () => {
       const spy = jest.fn();
-      const wrapper = mount(
+      const wrapper = shallow(
         <InlineEditStateless
           {...defaultProps}
           isEditing
@@ -157,7 +159,7 @@ describe('@atlaskit/inline-edit', () => {
 
     it('it should not call onClick if is read only', () => {
       const spy = jest.fn();
-      const wrapper = mount(
+      const wrapper = shallow(
         <InlineEditStateless
           {...defaultProps}
           label="test"
@@ -202,7 +204,7 @@ describe('@atlaskit/inline-edit', () => {
   describe('isWaiting', () => {
     describe('when isEditing is false', () =>
       it('FieldBase should not have isLoading prop', () => {
-        const wrapper = mount(<InlineEditStateless {...defaultProps} isWaiting />);
+        const wrapper = shallow(<InlineEditStateless {...defaultProps} isWaiting />);
         expect(wrapper.find(FieldBase).prop('isLoading')).toBe(false);
       })
     );
@@ -226,7 +228,7 @@ describe('@atlaskit/inline-edit', () => {
 
   describe('disableEditViewFieldBase', () => {
     it('should not wrap editView in a FieldBase when set to true', () => {
-      const wrapper = mount(
+      const wrapper = shallow(
         <InlineEditStateless
           {...defaultProps}
           isEditing
@@ -238,7 +240,7 @@ describe('@atlaskit/inline-edit', () => {
     });
 
     it('should wrap editView in a FieldBase when set to false', () => {
-      const wrapper = mount(
+      const wrapper = shallow(
         <InlineEditStateless
           {...defaultProps}
           isEditing

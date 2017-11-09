@@ -117,7 +117,7 @@ describe(name, () => {
         });
 
         it('should not render a Lock icon if restrictedTo prop is not set', () => {
-          const wrapper = mount(<Comment avatar="" />);
+          const wrapper = shallow(<Comment avatar="" />);
           expect(wrapper.find(LockFilledIcon).length).toBe(0);
         });
       });
@@ -147,26 +147,26 @@ describe(name, () => {
               <CommentAction>action content</CommentAction>,
               <CommentAction onClick={() => {}}>action content</CommentAction>,
             ];
-            const wrapper = mount(
+            const wrapper = shallow(
               <Comment avatar="" actions={actions} isSaving savingText="Saving..." isError errorActions={actions} />
             );
             expect(wrapper.find(CommentAction).length).toBe(0);
           });
 
           it('should apply .optimistic-saving-content styles', () => {
-            const wrapper = mount(<Comment avatar="" isSaving savingText="Saving..." />);
+            const wrapper = shallow(<Comment avatar="" isSaving savingText="Saving..." />);
             expect(wrapper.find(Content).prop('isDisabled')).toBe(true);
           });
         });
 
         describe('if isSaving prop is not set', () => {
           it('should not render savingText', () => {
-            const wrapper = mount(<Comment avatar="" savingText="Saving..." />);
+            const wrapper = shallow(<Comment avatar="" savingText="Saving..." />);
             expect(wrapper.text()).not.toEqual(expect.stringContaining('Saving...'));
           });
 
           it('should not apply .optimistic-saving-content styles', () => {
-            const wrapper = mount(<Comment avatar="" savingText="Saving..." />);
+            const wrapper = shallow(<Comment avatar="" savingText="Saving..." />);
             expect(wrapper.find(Content).prop('isDisabled')).toBe(false);
           });
         });
@@ -219,7 +219,7 @@ describe(name, () => {
 
         describe('if isError prop is not set', () => {
           it('should not render the icon and errorActions', () => {
-            const wrapper = mount(<Comment avatar="" errorActions={errorActions} />);
+            const wrapper = shallow(<Comment avatar="" errorActions={errorActions} />);
             expect(wrapper.find(WarningIcon).length).toBe(0);
             expect(wrapper.find(CommentAction).length).toBe(0);
           });

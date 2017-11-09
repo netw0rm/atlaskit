@@ -27,7 +27,7 @@ describe('ak-button/default-behaviour', () => {
   });
 
   it('should render span when the button is disabled and has href property', () => {
-    const wrapper = mount(<Button isDisabled href="test" />);
+    const wrapper = shallow(<Button isDisabled href="test" />);
     expect(wrapper.find('StyledSpan').length).toBe(1);
     expect(wrapper.find('button').length).toBe(0);
     expect(wrapper.find('a').length).toBe(0);
@@ -42,7 +42,7 @@ describe('ak-button/default-behaviour', () => {
 
   it('should render icon if the prop iconBefore is set', () => {
     const Icon = <div id="icon" />;
-    const wrapper = mount(<Button href="test" iconBefore={Icon} />);
+    const wrapper = shallow(<Button href="test" iconBefore={Icon} />);
     expect(wrapper.contains(Icon)).toBe(true);
   });
 
@@ -54,7 +54,7 @@ describe('ak-button/default-behaviour', () => {
 
   it('should render icon if the prop iconAfter is set', () => {
     const Icon = <div id="icon" />;
-    const wrapper = mount(<Button href="test" iconAfter={Icon} />);
+    const wrapper = shallow(<Button href="test" iconAfter={Icon} />);
     expect(wrapper.contains(Icon)).toBe(true);
   });
 
@@ -65,12 +65,12 @@ describe('ak-button/default-behaviour', () => {
   });
 
   it('should render button with full container width', () => {
-    const wrapper = mount(<Button shouldFitContainer />);
+    const wrapper = shallow(<Button shouldFitContainer />);
     expect(wrapper.find('ButtonWrapper').prop('fit')).toBe(true);
   });
 
   it('should render button without full container width', () => {
-    const wrapper = mount(<Button />);
+    const wrapper = shallow(<Button />);
     expect(wrapper.find('ButtonWrapper').prop('fit')).toBe(false);
   });
 

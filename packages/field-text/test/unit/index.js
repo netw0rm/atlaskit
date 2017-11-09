@@ -40,11 +40,11 @@ describe('FieldTextStateless', () => {
     describe('isReadOnly prop', () => {
       describe('set to true', () => {
         it('should sets its value on the input', () => {
-          expect(mount(<FieldText label="" isReadOnly />).find('input').props().readOnly).toBe(true);
+          expect(shallow(<FieldText label="" isReadOnly />).find('input').props().readOnly).toBe(true);
         });
 
         it('should reflect its value to the FieldBase', () => {
-          expect(mount(<FieldText label=""isReadOnly />).find(Base).props().isReadOnly).toBe(true);
+          expect(shallow(<FieldText label=""isReadOnly />).find(Base).props().isReadOnly).toBe(true);
         });
       });
 
@@ -142,7 +142,7 @@ describe('FieldTextStateless', () => {
 
     it('onChange should be called when input value changes', () => {
       const spy = jest.fn();
-      const wrapper = mount(<FieldTextStateless label="" onChange={spy} />);
+      const wrapper = shallow(<FieldTextStateless label="" onChange={spy} />);
       wrapper.find(Input).simulate('change');
       expect(spy).toHaveBeenCalledTimes(1);
     });

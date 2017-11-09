@@ -1,5 +1,8 @@
 # @atlaskit/icon
 
+## 10.1.3 (2017-11-09)
+
+* bug fix; add missing color props ([f186c02](https://bitbucket.org/atlassian/atlaskit/commits/f186c02))
 ## 10.1.2 (2017-10-26)
 
 * bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))

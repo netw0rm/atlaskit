@@ -690,7 +690,7 @@ describe('EmojiResource', () => {
       };
 
       fetchMock.mock({
-        matcher: fetchSiteEmojiUrl(missingMediaEmojiId),
+        matcher: `begin:${fetchSiteEmojiUrl(missingMediaEmojiId)}`,
         response: serviceResponse,
         name: 'fetch-site-emoji',
       }).mock({
@@ -734,7 +734,7 @@ describe('EmojiResource', () => {
       };
 
       fetchMock.mock({
-        matcher: fetchSiteEmojiUrl(standardId),
+        matcher: `begin:${fetchSiteEmojiUrl(standardId)}`,
         response: standardResponse,
         name: 'fetch-standard-emoji',
       }).mock({
@@ -772,7 +772,7 @@ describe('EmojiResource', () => {
       };
 
       fetchMock.mock({
-        matcher: fetchSiteEmojiUrl(missingMediaEmojiId),
+        matcher: `begin:${fetchSiteEmojiUrl(missingMediaEmojiId)}`,
         response: serviceResponse,
         name: 'fetch-site-emoji',
       }).mock({
@@ -808,7 +808,7 @@ describe('EmojiResource', () => {
 
     it('not found by id - no media resource - try by shortName', () => {
       fetchMock.mock({
-        matcher: fetchSiteEmojiUrl(missingMediaEmojiId),
+        matcher: `begin:${fetchSiteEmojiUrl(missingMediaEmojiId)}`,
         response: 400,
         name: 'fetch-site-emoji',
       }).mock({

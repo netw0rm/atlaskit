@@ -13,5 +13,7 @@ storiesOf(name, module)
       <pre>{'import \'@atlaskit/polyfills/object-assign\';'}</pre>
       <h3>Array.prototype.includes</h3>
       <pre>{'import \'@atlaskit/polyfills/array-prototype-includes\';'}</pre>
+      <h3>String.prototype.includes</h3>
+      <pre>{'import \'@atlaskit/polyfills/string-prototype-includes\';'}</pre>
     </div>
   ));

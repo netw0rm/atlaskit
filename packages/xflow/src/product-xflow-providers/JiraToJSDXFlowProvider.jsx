@@ -111,19 +111,19 @@ const messages = defineMessages({
   // Request Trial
   accessHeading: {
     id: 'xflow.j2jsd.request-trial.access.heading',
-    defaultMessage: 'Ask your admin for access',
+    defaultMessage: 'A modern, simple service desk',
   },
   accessMessage: {
     id: 'xflow.j2jsd.request-trial.access.message',
-    defaultMessage: 'Send a request for your admin to activate Jira Service Desk',
+    defaultMessage: 'Get a fully featured service desk with self-service, automation, SLAs, and CSAT reporting.',
   },
   notePrompt: {
     id: 'xflow.j2jsd.request-trial.note.prompt',
-    defaultMessage: 'Help your site administrator understand why you would like to use Jira Service Desk:',
+    defaultMessage: 'Send a quick note telling your site admin why you’re keen to try Jira Service Desk:',
   },
   notePlaceholder: {
     id: 'xflow.j2jsd.request-trial.note.placeholder',
-    defaultMessage: 'I would like to try Jira Service Desk because…',
+    defaultMessage: 'I’d like us to give Jira Service Desk a try - it gives dev and IT one platform to work on, and it’s free for 30 days!',
   },
   notePlaceholderShort: {
     id: 'xflow.j2c.request-trial.note.placeholder.short',
@@ -133,10 +133,10 @@ const messages = defineMessages({
 
 export const defaultProps = intl => ({
   config: {
-    productLogo: <JiraServiceDeskLogo />,
+    productLogo: <JiraServiceDeskLogo size={'small'} />,
     requestTrial: {
       accessImage:
-        'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/kEL9zW2kcU8_U4Y_Rc1p3Zmm8J8Jq_JR0ikTg6cEWe8/Multi-Document.svg',
+        'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/FinFRcy0ueg9Kx12tie9q8HTCk_g8scZcvpcevMWLU4/Jira-Service-Desk.svg',
       accessHeading: intl.formatMessage(messages.accessHeading),
       accessMessage: intl.formatMessage(messages.accessMessage),
       accessLearnMoreLink: 'https://www.atlassian.com/software/jira/service-desk',

@@ -137,7 +137,7 @@ const messages = defineMessages({
 
 export const defaultProps = intl => ({
   config: {
-    productLogo: <ConfluenceLogo />,
+    productLogo: <ConfluenceLogo size={'small'} />,
     requestTrial: {
       accessImage:
         'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/kEL9zW2kcU8_U4Y_Rc1p3Zmm8J8Jq_JR0ikTg6cEWe8/Multi-Document.svg',

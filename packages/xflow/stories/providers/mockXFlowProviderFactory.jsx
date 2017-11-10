@@ -1,5 +1,4 @@
 import React from 'react';
-import JiraToJSWXFlowProvider from '../../src/product-xflow-providers/JiraToJSWXFlowProvider';
 
 import mockProductStatusChecker from './mockProductStatusChecker';
 import { INACTIVE } from '../../src/common/productProvisioningStates';
@@ -25,7 +24,7 @@ const overrideImplementations = {
   closeLoadingDialog: notImplemented,
 };
 
-export default class MockJSDXFlowProvider extends JiraToJSWXFlowProvider {
+export default (BaseProvider) => class MockJSDXFlowProvider extends BaseProvider {
   render() {
     const props = {
       ...overrideImplementations,
@@ -35,6 +34,6 @@ export default class MockJSDXFlowProvider extends JiraToJSWXFlowProvider {
       ...this.props,
     };
 
-    return <JiraToJSWXFlowProvider {...props} />;
+    return <BaseProvider {...props} />;
   }
 }

@@ -68,7 +68,7 @@
     "@atlaskit/field-radio-group": "1.6.2",
     "@atlaskit/field-text": "^4.0.1",
     "@atlaskit/inline-dialog": "^3.6.0",
-    "@atlaskit/logo": "^4.0.1",
+    "@atlaskit/logo": "^6.0.0",
     "@atlaskit/navigation": "*",
     "@atlaskit/page": "^5.0.0",
     "@atlaskit/single-select": "^2.0.1",

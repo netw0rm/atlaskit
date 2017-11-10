@@ -12,16 +12,20 @@ const overrideImplementations = {
   isProductInstalledOrActivating: notImplemented,
   canCurrentUserGrantAccessToProducts: notImplemented,
 
-  requestTrialAccess: notImplemented,
-  requestTrialAccessWithNote: notImplemented,
-  requestTrialAccessWithoutNote: notImplemented,
-  cancelRequestTrialAccess: notImplemented,
+  requestTrialWithNote: notImplemented,
+  cancelRequestTrial: notImplemented,
 
+  waitForActivation: notImplemented,
   cancelStartProductTrial: notImplemented,
   grantAccessToUsers: notImplemented,
   retrieveUsers: notImplemented,
   goToProduct: notImplemented,
   closeLoadingDialog: notImplemented,
+  checkProductRequestFlag: notImplemented,
+  closeAlreadyStartedDialog: notImplemented,
+
+  optOutRequestTrialFeature: notImplemented,
+  cancelOptOut: notImplemented,
 };
 
 export default (BaseProvider) => class MockJSDXFlowProvider extends BaseProvider {
@@ -36,4 +40,4 @@ export default (BaseProvider) => class MockJSDXFlowProvider extends BaseProvider
 
     return <BaseProvider {...props} />;
   }
-}
+};

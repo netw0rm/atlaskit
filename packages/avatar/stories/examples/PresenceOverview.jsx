@@ -20,6 +20,7 @@ export default (
       <div style={presenceWrapperStyles}><Presence /></div>
       <div style={presenceWrapperStyles}><Presence presence="online" /></div>
       <div style={presenceWrapperStyles}><Presence presence="busy" /></div>
+      <div style={presenceWrapperStyles}><Presence presence="focus" /></div>
       <div style={presenceWrapperStyles}><Presence presence="offline" /></div>
     </div>
   </div>

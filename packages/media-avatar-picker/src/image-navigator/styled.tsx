@@ -80,3 +80,13 @@ export const DragZoneImage = styled.img`
 export const DragZoneText = styled.div`
   text-align: center;
 `;
+
+export const SelectionBlocker = styled.div`
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background-color: transparent;
+  user-select: none;
+`;

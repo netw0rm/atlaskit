@@ -24,7 +24,7 @@ Add a link to a codepen example using [this codepen](http://go.atlassian.com/ak-
 
 You can get this information by running `yarn ls | grep '@atlaskit'` or `npm list | grep '@atlaskit'` from the command line. 
 
-###Did this work in previous versions of the AtlasKit component?
+### Did this work in previous versions of the AtlasKit component?
 
 Yes / No / Don't know
 

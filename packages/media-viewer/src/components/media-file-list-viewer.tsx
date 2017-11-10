@@ -44,6 +44,15 @@ export class MediaFileListViewer extends Component<MediaFileListViewerProps, Med
     };
   }
 
+  _unique(originalArray: Array<string>): Array<string> {
+    return originalArray.reduce((arr: Array<string>, b) => {
+      if (arr.indexOf(b) < 0 ) {
+        arr.push(b);
+      }
+      return arr;
+    },[]);
+  }
+
   componentDidMount(): void {
     const { context, fileId, fileIds, collectionName, onClose } = this.props;
     const { config } = context;
@@ -54,8 +63,8 @@ export class MediaFileListViewer extends Component<MediaFileListViewerProps, Med
       mediaViewer.on('fv.close', onClose);
     }
 
-    const observableFileItems = fileIds
-      .map(file => context.getMediaItemProvider(file, 'file', collectionName))
+    const observableFileItems = this._unique(fileIds)
+      .map(fileId => context.getMediaItemProvider(fileId, 'file', collectionName))
       .map(provider => provider.observable().map(item => item as FileItem));
 
     this.state = {

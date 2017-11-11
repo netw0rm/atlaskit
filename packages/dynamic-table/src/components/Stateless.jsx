@@ -155,7 +155,6 @@ export default class DynamicTable extends Component {
           <LoadingContainer
             isLoading={isLoading}
             spinnerSize={LARGE}
-            contentsOpacity={isLoading ? 0 : 1}
           >
             {emptyBody}
           </LoadingContainer>

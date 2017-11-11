@@ -10,7 +10,10 @@ export default class LoadingContainer extends Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
     isLoading: PropTypes.bool,
-    spinnerSize: PropTypes.oneOf([SMALL, MEDIUM, LARGE, XLARGE, PropTypes.number]),
+    spinnerSize: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.oneOf([SMALL, MEDIUM, LARGE, XLARGE]),
+    ]),
     contentsOpacity: props.isIn01Range,
   }
 

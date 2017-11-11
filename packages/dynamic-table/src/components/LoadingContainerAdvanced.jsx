@@ -11,7 +11,10 @@ export default class LoadingContainerAdvanced extends Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
     isLoading: PropTypes.bool,
-    spinnerSize: PropTypes.oneOf([SMALL, MEDIUM, LARGE, XLARGE, PropTypes.number]),
+    spinnerSize: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.oneOf([SMALL, MEDIUM, LARGE, XLARGE]),
+    ]),
     contentsOpacity: props.isIn01Range,
     targetRef: PropTypes.func,
   }
@@ -31,9 +34,9 @@ export default class LoadingContainerAdvanced extends Component {
   }
 
   componentWillReceiveProps = (nextProps) => {
-    if (!nextProps.isLoading) {
+    if (!nextProps.isLoading || !this.hasTargetNode(nextProps)) {
       this.detachListeners();
-    } else if (!this.props.isLoading && this.hasTargetNode()) {
+    } else if (!this.props.isLoading) {
       this.attachListeners();
     }
   }
@@ -52,8 +55,8 @@ export default class LoadingContainerAdvanced extends Component {
     this.detachListeners();
   }
 
-  getTargetNode = () => {
-    const { targetRef } = this.props;
+  getTargetNode = (nextProps = this.props) => {
+    const { targetRef } = nextProps;
 
     // targetRef prop may be defined but it is not guaranteed it returns an element
     const targetElement = targetRef ? targetRef() : this.children;
@@ -62,27 +65,27 @@ export default class LoadingContainerAdvanced extends Component {
     return targetNode;
   }
 
-  hasTargetNode = () => !!this.getTargetNode()
+  hasTargetNode = (nextProps) => !!this.getTargetNode(nextProps)
 
-  isVerticallyVisible = (elementRect, clientHeight) => {
+  isVerticallyVisible = (elementRect, viewportHeight) => {
     const { top, bottom, height } = elementRect;
     if (bottom <= 0) {
       return false;
     }
-    return (top + height) > 0 && top < clientHeight;
+    return (top + height) > 0 && top < viewportHeight;
   }
 
-  isFullyVerticallyVisible = (elementRect, clientHeight) => {
+  isFullyVerticallyVisible = (elementRect, viewportHeight) => {
     const { top, bottom } = elementRect;
-    return top >= 0 && bottom <= clientHeight;
+    return top >= 0 && bottom <= viewportHeight;
   }
 
-  attachListeners = () => {
+  attachListeners() {
     window.addEventListener('scroll', this.handleScroll);
     window.addEventListener('resize', this.handleResize);
   }
 
-  detachListeners = () => {
+  detachListeners() {
     window.removeEventListener('scroll', this.handleScroll);
     window.removeEventListener('resize', this.handleResize);
   }
@@ -109,29 +112,29 @@ export default class LoadingContainerAdvanced extends Component {
   }
 
   updateSpinnerPosition = () => {
-    const clientHeight = document.documentElement.clientHeight;
+    const viewportHeight = window.innerHeight;
     const targetNode = this.getTargetNode();
     const targetRect = targetNode.getBoundingClientRect();
     const spinnerNode = findDOMNode(this.spinner); // eslint-disable-line react/no-find-dom-node
     const spinnerRect = spinnerNode.getBoundingClientRect();
     const spinnerHeight = spinnerRect.height;
-    const isInViewport = this.isVerticallyVisible(targetRect, clientHeight);
+    const isInViewport = this.isVerticallyVisible(targetRect, viewportHeight);
     const { top, bottom, height } = targetRect;
 
     if (isInViewport) {
       // The spinner may follow the element only if there is enough space:
       // Let's say the element can fit at least three spinners (vertically)
       const canFollow = height >= spinnerHeight * 3;
-      if (canFollow && !this.isFullyVerticallyVisible(targetRect, clientHeight)) {
+      if (canFollow && !this.isFullyVerticallyVisible(targetRect, viewportHeight)) {
         if (top >= 0) {
           // Only the head of the element is visible
-          const viewportSpaceTakenByElement = clientHeight - top;
+          const viewportSpaceTakenByElement = viewportHeight - top;
           const diff = ((viewportSpaceTakenByElement / 2) + top) - (spinnerHeight / 2);
           const y = viewportSpaceTakenByElement < spinnerHeight * 3 ? top + spinnerHeight : diff;
           this.translateSpinner(spinnerNode, y, true);
-        } else if (top < 0 && bottom > clientHeight) {
+        } else if (top < 0 && bottom > viewportHeight) {
           // The element takes all viewport, nor its head nor tail are visible
-          const y = (clientHeight / 2) - (spinnerHeight / 2);
+          const y = (viewportHeight / 2) - (spinnerHeight / 2);
           this.translateSpinner(spinnerNode, y, true);
         } else {
           // Only the tail of the element is visible
@@ -144,7 +147,7 @@ export default class LoadingContainerAdvanced extends Component {
     } else {
       // If both the element and the spinner are off screen - quit
       // eslint-disable-next-line no-lonely-if
-      if (!this.isVerticallyVisible(spinnerRect, clientHeight)) {
+      if (!this.isVerticallyVisible(spinnerRect, viewportHeight)) {
         return;
       }
     }

@@ -237,6 +237,11 @@ describe(name, () => {
           expect(loadingContainer.props().spinnerSize).toBe('small');
         });
 
+        it('should render a loading container with a proper loading flag', () => {
+          const loadingContainer = wrapper.find(LoadingContainerAdvanced);
+          expect(loadingContainer.props().isLoading).toBe(true);
+        });
+
         it('should override the spinner size on demand', () => {
           const withOverriddenSpinnerSize = mount(
             <DynamicTableStateless
@@ -291,15 +296,6 @@ describe(name, () => {
           const loadingContainer = wrapper.find(LoadingContainer);
           expect(loadingContainer.props().isLoading).toBe(true);
           expect(loadingContainer.props().spinnerSize).toBe('large');
-          expect(loadingContainer.props().contentsOpacity).toBe(0);
-        });
-
-        it('should update a loading container props when the loading mode gets disabled', () => {
-          wrapper.setProps({ isLoading: false });
-          const loadingContainer = wrapper.find(LoadingContainer);
-          expect(loadingContainer.props().isLoading).toBe(false);
-          expect(loadingContainer.props().spinnerSize).toBe('large');
-          expect(loadingContainer.props().contentsOpacity).toBe(1);
         });
 
         it('should keep the loading mode of the table\'s loading container disabled', () => {

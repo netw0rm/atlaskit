@@ -2,8 +2,10 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { PaginationStateless } from '@atlaskit/pagination';
 import TableHead from '../../src/components/TableHead';
-import { EmptyViewContainer } from '../../src/styled/EmptyBody';
+import { EmptyViewContainer, EmptyViewWithFixedHeight } from '../../src/styled/EmptyBody';
 import Body from '../../src/components/Body';
+import LoadingContainer from '../../src/components/LoadingContainer';
+import LoadingContainerAdvanced from '../../src/components/LoadingContainerAdvanced';
 import { Caption } from '../../src/styled/DynamicTable';
 import DynamicTable, { DynamicTableStateless } from '../../src';
 
@@ -208,6 +210,102 @@ describe(name, () => {
       });
       wrapper.find('td').forEach((bodyCell) => {
         expect(bodyCell.prop('onClick')).toBe(tdOnClick);
+      });
+    });
+
+    describe('loading mode', () => {
+      describe('with rows', () => {
+        let wrapper;
+
+        beforeEach(() => {
+          wrapper = mount(
+            <DynamicTableStateless
+              rows={rows}
+              isLoading
+            />
+          );
+        });
+
+        it('should render a loading container with a large spinner when there is more than 2 rows', () => {
+          const loadingContainer = wrapper.find(LoadingContainerAdvanced);
+          expect(loadingContainer.props().spinnerSize).toBe('large');
+
+          wrapper.setProps({ rows: rows.slice(-3) });
+          expect(loadingContainer.props().spinnerSize).toBe('large');
+
+          wrapper.setProps({ rows: rows.slice(-2) });
+          expect(loadingContainer.props().spinnerSize).toBe('small');
+        });
+
+        it('should override the spinner size on demand', () => {
+          const withOverriddenSpinnerSize = mount(
+            <DynamicTableStateless
+              rows={rows}
+              loadingSpinnerSize="small"
+              isLoading
+            />
+          );
+          const loadingContainer = withOverriddenSpinnerSize.find(LoadingContainerAdvanced);
+          expect(loadingContainer.props().spinnerSize).toBe('small');
+        });
+
+        it('should pass a proper target ref', () => {
+          const loadingContainer = wrapper.find(LoadingContainerAdvanced);
+          const body = wrapper.find(Body);
+          const target = loadingContainer.props().targetRef();
+          expect(target).toBe(body.node);
+        });
+
+        it('should not render a loading container for the empty view', () => {
+          const loadingContainer = wrapper.find(LoadingContainer);
+          expect(loadingContainer.length).toBe(0);
+        });
+      });
+
+      describe('without rows (empty)', () => {
+        let wrapper;
+
+        beforeEach(() => {
+          wrapper = mount(
+            <DynamicTableStateless
+              emptyView={<div>No rows</div>}
+              isLoading
+            />
+          );
+        });
+
+        it('should render a blank view of a fixed height when the empty view is defined', () => {
+          const blankView = wrapper.find(EmptyViewWithFixedHeight);
+          expect(blankView.length).toBe(1);
+        });
+
+        it('should render a blank view of a fixed height when the empty view is not defined', () => {
+          const withoutEmptyView = mount(
+            <DynamicTableStateless isLoading />
+          );
+          const blankView = withoutEmptyView.find(EmptyViewWithFixedHeight);
+          expect(blankView.length).toBe(1);
+        });
+
+        it('should render a loading container with proper props', () => {
+          const loadingContainer = wrapper.find(LoadingContainer);
+          expect(loadingContainer.props().isLoading).toBe(true);
+          expect(loadingContainer.props().spinnerSize).toBe('large');
+          expect(loadingContainer.props().contentsOpacity).toBe(0);
+        });
+
+        it('should update a loading container props when the loading mode gets disabled', () => {
+          wrapper.setProps({ isLoading: false });
+          const loadingContainer = wrapper.find(LoadingContainer);
+          expect(loadingContainer.props().isLoading).toBe(false);
+          expect(loadingContainer.props().spinnerSize).toBe('large');
+          expect(loadingContainer.props().contentsOpacity).toBe(1);
+        });
+
+        it('should keep the loading mode of the table\'s loading container disabled', () => {
+          const loadingContainer = wrapper.find(LoadingContainerAdvanced);
+          expect(loadingContainer.props().isLoading).toBe(false);
+        });
       });
     });
 

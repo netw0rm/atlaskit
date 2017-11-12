@@ -13,4 +13,6 @@ childProcess.spawn('../../node_modules/.bin/build-storybook',
   ['-c', '../../build/storybook',
     '-o', outputDir],
   { stdio: 'inherit' }
-).on('error', process.exit);
+).on('close', (code) => {
+  process.exit(code);
+});

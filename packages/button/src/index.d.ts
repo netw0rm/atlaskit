@@ -1,4 +1,4 @@
-import { Component, ReactElement } from 'react';
+import { Component, ReactChild, ReactNode } from 'react';
 
 interface Props {
   appearance?: 'primary' | 'default' | 'subtle' | 'link' | 'subtle-link' | 'warning' | 'danger' | 'help';
@@ -11,8 +11,8 @@ interface Props {
   spacing?: 'default' | 'compact' | 'none';
   isSelected?: boolean;
   theme?: 'default' | 'dark';
-  iconBefore?: ReactElement<any>;
-  iconAfter?: ReactElement<any>;
+  iconBefore?: ReactChild;
+  iconAfter?: ReactChild;
   className?: string;
   onClick?: () => void;
   tabIndex?: number;
@@ -24,7 +24,7 @@ interface Props {
 
 interface ButtonGroupProps {
   appearance?: 'primary' | 'default' | 'subtle' | 'link' | 'subtle-link' | 'warning' | 'danger' | 'help';
-  children?: ReactElement<any>;
+  children?: ReactNode;
 }
 
 export class ButtonGroup extends Component<ButtonGroupProps, {}> { }

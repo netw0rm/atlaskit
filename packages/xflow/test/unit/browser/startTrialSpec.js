@@ -12,13 +12,14 @@ import MockConfluenceXFlow from '../../../stories/providers/MockConfluenceXFlowP
 import mockConfluenceStatusChecker from '../../../stories/providers/mockConfluenceStatusChecker';
 import RequestOrStartTrial from '../../../src/common/components/RequestOrStartTrial';
 import StartTrial from '../../../src/request-or-start-trial/components/StartTrial';
+import ContextualStartTrial from '../../../src/request-or-start-trial/components/ContextualStartTrial';
 import ConfirmTrial from '../../../src/request-or-start-trial/components/ConfirmTrial';
 import GrantAccess from '../../../src/request-or-start-trial/components/GrantAccess';
 import LoadingTime from '../../../src/request-or-start-trial/components/LoadingTime';
 import AlreadyStarted from '../../../src/request-or-start-trial/components/AlreadyStarted';
 import ProgressIndicator from '../../../src/request-or-start-trial/components/ProgressIndicator';
 import ErrorFlag from '../../../src/common/components/ErrorFlag';
-import JiraToConfluenceXFlowProvider from '../../../src/jira-confluence/JiraToConfluenceXFlowProvider';
+import JiraToConfluenceXFlowProvider from '../../../src/product-xflow-providers/JiraToConfluenceXFlowProvider';
 import XFlowIntlProvider from '../../../src/common/components/XFlowIntlProvider';
 import XFlowAnalyticsListener from '../../../src/common/components/XFlowAnalyticsListener';
 
@@ -261,6 +262,84 @@ describe('@atlaskit/xflow', () => {
       );
       const goToProductButton = getXFlowProviderConfig().startTrial.loadingProductGotoProductButton;
       expect(waitingScreen.text()).toMatch(goToProductButton);
+    });
+  });
+
+  describe('rendering contextual start trial', () => {
+    let xflow;
+
+    describe('new to confluence', () => {
+      beforeEach(() => {
+        xflow = mount(
+          <XFlowIntlProvider locale="en_US">
+            <XFlowAnalyticsListener onEvent={noop}>
+              <MockConfluenceXFlow {...defaultProps} canCurrentUserAddProduct={async () => true}>
+                <RequestOrStartTrial
+                  {...defaultRequestOrStartTrialProps}
+                  onTrialActivating={() => true}
+                  contextInfo={{
+                    contextualMessage: 'Project pages are a feature powered by Confluence',
+                    reactivateCTA: 'Reactivate Confluence',
+                    trialCTA: 'Try Confluence free for 30 days',
+                  }}
+                />
+              </MockConfluenceXFlow>
+            </XFlowAnalyticsListener>
+          </XFlowIntlProvider>
+        );
+        expect(xflow.length).toBe(1);
+      });
+
+      it('should render Start Trial component with contextual information', async () => {
+        // eventually render to start trial screen
+        await waitUntil(() => xflow.find(ContextualStartTrial).length === 1);
+        // contextual message
+        expect(xflow.find(ContextualStartTrial).text()).toMatch('Project pages are a feature powered by Confluence');
+        // contextual cta
+        expect(xflow.find(ContextualStartTrial).text()).toMatch('Try Confluence free for 30 days');
+        // trial info footer
+        expect(xflow.find(ContextualStartTrial).text()).toMatch('Once your trial finishes, billing will start.');
+        expect(xflow.find(ContextualStartTrial).text()).toMatch('Your billing contact will be emailed three days before');
+        expect(xflow.find(ContextualStartTrial).text()).toMatch('Cancel your trial at any time in Manage subscriptions.');
+      });
+    });
+
+    describe('returning to confluence', () => {
+      beforeEach(() => {
+        xflow = mount(
+          <XFlowIntlProvider locale="en_US">
+            <XFlowAnalyticsListener onEvent={noop}>
+              <MockConfluenceXFlow
+                {...defaultProps}
+                canCurrentUserAddProduct={async () => true}
+                productStatusChecker={mockConfluenceStatusChecker(DEACTIVATED)}
+              >
+                <RequestOrStartTrial
+                  {...defaultRequestOrStartTrialProps}
+                  contextInfo={{
+                    contextualMessage: 'Project pages are a feature powered by Confluence',
+                    reactivateCTA: 'Reactivate Confluence',
+                    trialCTA: 'Try Confluence free for 30 days',
+                  }}
+                />
+              </MockConfluenceXFlow>
+            </XFlowAnalyticsListener>
+          </XFlowIntlProvider>
+        );
+        expect(xflow.length).toBe(1);
+      });
+
+      it('should render Start Trial component with contextual information', async () => {
+        // eventually render to start trial screen
+        await waitUntil(() => xflow.find(ContextualStartTrial).length === 1);
+        // contextual message
+        expect(xflow.find(ContextualStartTrial).text()).toMatch('Project pages are a feature powered by Confluence');
+        // contextual reactivate cta
+        expect(xflow.find(ContextualStartTrial).text()).toMatch('Reactivate Confluence');
+        // reactivation info footer
+        expect(xflow.find(ContextualStartTrial).text()).toMatch('Once your subscription reactivates, billing will resume.');
+        expect(xflow.find(ContextualStartTrial).text()).toMatch('Cancel your subscription at any time in Manage subscriptions.');
+      });
     });
   });
 

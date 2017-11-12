@@ -1,12 +1,14 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import invariant from 'invariant';
 
-const maxSecondaryItems = 4;
+export const maxSecondaryItems = 5;
 
-const checkIfTooManySecondaryActions = (actions = []) =>
-  invariant(actions.length <= maxSecondaryItems,
-    `cannot have more than ${maxSecondaryItems} secondary actions`);
+function checkIfTooManySecondaryActions(actions = []) {
+  if (actions.length > maxSecondaryItems) {
+    // eslint-disable-next-line no-console
+    console.warn(`AkGlobalNavigation will only render up to ${maxSecondaryItems} secondary actions.`);
+  }
+}
 
 export default class GlobalSecondaryActions extends PureComponent {
   static propTypes = {
@@ -26,7 +28,7 @@ export default class GlobalSecondaryActions extends PureComponent {
     return (
       <div>
         {this.props.actions.map((action, index) => (
-          <div key={index}>{action}</div>
+          index < maxSecondaryItems ? <div key={index}>{action}</div> : null
         ))}
       </div>
     );

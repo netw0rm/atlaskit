@@ -108,6 +108,17 @@ storiesOf('RequestOrStartTrial (Jira Service Desk)')
       </MockJSDXFlowProvider>
     )
   )
+  .add('User can add a product (INACTIVE), Start Trial flow without Grant Access screen', () =>
+    setupStorybookAnalytics(
+      <MockJSDXFlowProvider {...defaultProps} canCurrentUserAddProduct={async () => true}>
+        <RequestOrStartTrial
+          {...defaultRequestOrStartTrialProps}
+          onTrialActivating={action('onTrialActivating')}
+          grantAccessEnabled={false}
+        />
+      </MockJSDXFlowProvider>
+    )
+  )
   .add('User can add a product (DEACTIVATED), Start Trial flow without Grant Access screen', () =>
     setupStorybookAnalytics(
       <MockJSDXFlowProvider

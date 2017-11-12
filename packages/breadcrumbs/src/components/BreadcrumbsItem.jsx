@@ -25,6 +25,10 @@ type Props = {|
   line. If there is no truncationWidth, tooltips are not provided on truncation. */
   truncationWidth?: number,
   target?: '_blank' | '_parent' | '_self' | '_top',
+  /** Provide a custom component to use instead of the default button.
+   *  The custom component should accept a className prop so it can be styled
+   *  and possibly all action handlers */
+  component?: () => ElementType,
 |}
 
 export default class BreadcrumbsItem extends PureComponent {
@@ -68,7 +72,7 @@ export default class BreadcrumbsItem extends PureComponent {
 
   renderButton = () => {
     const {
-      href, iconAfter, iconBefore, onClick, target, text, truncationWidth,
+      href, iconAfter, iconBefore, onClick, target, text, truncationWidth, component,
     } = this.props;
     const { hasOverflow } = this.state;
 
@@ -83,6 +87,7 @@ export default class BreadcrumbsItem extends PureComponent {
         href={href}
         target={target}
         ref={(el: ElementType) => (this.button = el)}
+        component={component}
       >
         {text}
       </Button>

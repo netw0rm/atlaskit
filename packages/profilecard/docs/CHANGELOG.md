@@ -1,5 +1,15 @@
 # @atlaskit/profilecard
 
+## 3.10.0 (2017-11-01)
+
+* bug fix; fix profilecard graphql api client (issues closed: dir-444) ([8adce3a](https://bitbucket.org/atlassian/atlaskit/commits/8adce3a))
+* feature; add card states for deactivated and app users (issues closed: dir-436) ([0343cb6](https://bitbucket.org/atlassian/atlaskit/commits/0343cb6))
+## 3.9.0 (2017-10-27)
+
+
+* feature; add new profile data keys to graphql query ([44d81d4](https://bitbucket.org/atlassian/atlaskit/commits/44d81d4))
+
+* feature; add predicate method to profile card actions (issues closed: dir-423) ([2737016](https://bitbucket.org/atlassian/atlaskit/commits/2737016))
 ## 3.8.1 (2017-10-22)
 
 * bug fix; update styled-components dep and react peerDep ([6a67bf8](https://bitbucket.org/atlassian/atlaskit/commits/6a67bf8))

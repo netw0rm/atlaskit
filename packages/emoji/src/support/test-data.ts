@@ -90,7 +90,7 @@ export const mediaEmoji: EmojiDescriptionWithVariations = {
   searchable: true,
 };
 
-export const loadedMediaEmoji = {
+export const loadedMediaEmoji: EmojiDescriptionWithVariations = {
   ...mediaEmoji,
   representation: {
     imagePath: 'data:;base64,', // assumes an empty result is returned (e.g. via fetchMock for the mediaPath)

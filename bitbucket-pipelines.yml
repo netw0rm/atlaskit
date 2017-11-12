@@ -31,14 +31,10 @@ pipelines:
             # --bail is used to make jest fail fast when it finds a test failure
             - npm run test:unit -- --runInBand --bail
             - npm run test:base
-            - yarn run browserstack/tunnel/start
-            - yarn run test:browserstack
-            - yarn run browserstack/tunnel/stop
             - yarn run release/check/is-workspace-clean --silent
             - yarn run release/check/can-ff --silent || exit 0
             - npm run release
             - yarn run release/storybooks
-            - yarn run release/registry
             - yarn run release/announce
             - ./build/bin/release.restart.last.stopped.pipeline.js
           # caches:
@@ -61,9 +57,6 @@ pipelines:
           # if you find yourself running into out of memory errors, we can move more steps out of this parallel step
           - run-p -ln "validate/package.json" "validate/typescript"
           - run-p -ln "validate/tslint" "validate/eslint"
-          - yarn run browserstack/tunnel/start
-          - yarn run test:browserstack
-          - yarn run browserstack/tunnel/stop
           # --runInBand is used to make jest run in serial rather than parallel to prevent OOM
           # --bail is used to make jest fail fast when it finds a test failure
           - npm run test:unit -- --runInBand --bail
@@ -92,14 +85,3 @@ pipelines:
             - cd packages/website
             - npm run deploy
 
-    run-browserstack: # this is to allow users to manually run BS for a commit
-      - step:
-          script:
-            - export FORCE_BS_TESTS="Yes"
-            - ./build/bin/setup.sh
-            # required so that we can fetch origin
-            - ./build/bin/prep_for_release.sh
-            - yarn
-            - yarn run browserstack/tunnel/start
-            - yarn run test:browserstack
-            - yarn run browserstack/tunnel/stop

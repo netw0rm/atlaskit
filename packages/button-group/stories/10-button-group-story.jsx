@@ -94,10 +94,10 @@ storiesOf(name, module)
   .addCodeExampleStory('with dropdown > button (split button)', () => (
     <div style={{ display: 'block' }}>
       <ButtonGroup>
-        <Button appearance="subtle" iconBefore={<CharlieIcon />} />
-        <Button appearance="subtle" iconBefore={<CharlieIcon />} />
+        <Button appearance="subtle" iconBefore={<CharlieIcon label="button with icon" />} />
+        <Button appearance="subtle" iconBefore={<CharlieIcon label="button with icon" />} />
         <Dropdown items={items}>
-          <Button appearance="subtle" iconBefore={<CharlieIcon />} />
+          <Button appearance="subtle" iconBefore={<CharlieIcon label="button with icon" />} />
         </Dropdown>
       </ButtonGroup>
     </div>

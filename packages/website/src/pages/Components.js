@@ -10,7 +10,7 @@ import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 
 import { Heading, Intro, Section } from '../components/Type';
 import components from '../data';
-import { MOBILE_QUERY } from '../../constants';
+import { MOBILE_QUERY, NEW_WEBSITE_LOCATION } from '../../constants';
 
 const componentKeys = Object.keys(components);
 
@@ -60,10 +60,30 @@ export default class Components extends PureComponent {
 
   renderRow = (component) => {
     const {
-      description, packageName, key, maintainers, name, lastPublishedOn, version,
+      description,
+      key,
+      maintainers,
+      name,
+      lastPublishedOn,
+      packageName,
+      packageHasBeenMoved,
+      version,
     } = component;
 
     const publishTime = new Date(lastPublishedOn);
+    const Destination = () => (
+      packageHasBeenMoved
+        ? (
+          <a href={`${NEW_WEBSITE_LOCATION}/packages/elements/${key}`}>
+            {name}
+          </a>
+        )
+        : (
+          <Link to={`/components/${key}`}>
+            {name}
+          </Link>
+        )
+    );
 
     return {
       cells: [
@@ -71,9 +91,7 @@ export default class Components extends PureComponent {
           key: 'name',
           content: (
             <RowCell>
-              <Link to={`/components/${key}`}>
-                {name}
-              </Link>
+              <Destination />
             </RowCell>
           ),
         },

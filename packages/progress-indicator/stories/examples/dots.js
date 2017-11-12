@@ -6,6 +6,7 @@ import { AtlasKitThemeProvider, colors, themed } from '@atlaskit/theme';
 
 // FIXME: resolve package when available on npm
 // import { ProgressIndicator } from '@atlaskit/progress-indicator';
+
 import { ProgressDots } from '../../src';
 
 const appearances = ['default', 'primary', 'help', 'inverted'];

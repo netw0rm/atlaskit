@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/renderer",
-  "version": "7.0.2",
+  "version": "9.0.0",
   "config": {
     "access": "public"
   },
@@ -24,7 +24,16 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/editor-common": "^2.0.0"
+    "@atlaskit/code": "^2.2.0",
+    "@atlaskit/editor-common": "^2.3.0",
+    "@atlaskit/emoji": "^30.1.4",
+    "@atlaskit/media-card": "^21.3.1",
+    "@atlaskit/media-core": "^10.1.0",
+    "@atlaskit/media-filmstrip": "^5.3.0",
+    "@atlaskit/mention": "^7.3.4",
+    "@atlaskit/profilecard": "^3.7.1",
+    "@atlaskit/task-decision": "^4.0.0",
+    "@atlaskit/util-shared-styles": "^2.1.0"
   },
   "author": "Atlassian Pty. Ltd",
   "maintainers": [
@@ -41,6 +50,8 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
+    "@atlaskit/media-test-helpers": "^8.3.0",
+    "@atlaskit/util-data-test": "^7.0.0",
     "@types/prosemirror-model": "^0.21.0",
     "prosemirror-model": "^0.22.0"
   },

@@ -1,5 +1,14 @@
 # @atlaskit/navigation
 
+## 26.5.1 (2017-10-31)
+
+* bug fix; Increasing allowed secondary nav items to 5 and warning rather than throwing when more exist ([d7eab92](https://bitbucket.org/atlassian/atlaskit/commits/d7eab92))
+## 26.5.0 (2017-10-27)
+
+
+* bug fix; drawer no longer has translateX when not animating (issues closed: ak-3716) ([c65d2eb](https://bitbucket.org/atlassian/atlaskit/commits/c65d2eb))
+
+* feature; use shared HOC from item ([f966d9c](https://bitbucket.org/atlassian/atlaskit/commits/f966d9c))
 ## 26.4.1 (2017-10-26)
 
 * bug fix; drawers now close as expected on IE 11 (issues closed: ak-3718) ([069a82b](https://bitbucket.org/atlassian/atlaskit/commits/069a82b))

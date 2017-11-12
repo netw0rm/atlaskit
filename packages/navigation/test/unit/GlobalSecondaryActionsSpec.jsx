@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import { mount } from 'enzyme';
-import GlobalSecondaryActions from '../../src/components/js/GlobalSecondaryActions';
+import { shallow, mount } from 'enzyme';
+import GlobalSecondaryActions, { maxSecondaryItems } from '../../src/components/js/GlobalSecondaryActions';
 
 const describe = window.describe;
 const it = window.it;
@@ -12,8 +12,19 @@ class Child extends PureComponent {
 }
 
 describe('<GlobalSecondaryActions />', () => {
+  let spy;
+
+  beforeEach(() => {
+    spy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    spy.mockReset();
+    spy.mockRestore();
+  });
+
   it('should render secondary items', () => {
-    const wrapper = mount(
+    const wrapper = shallow(
       <GlobalSecondaryActions
         actions={[<Child />, <Child />]}
       />
@@ -22,23 +33,34 @@ describe('<GlobalSecondaryActions />', () => {
     expect(wrapper.find(Child).length).toBe(2);
   });
 
-  it('should throw an error if attempting to render with more than four secondary actions', () => {
-    const mountWithTooManyActions = () => mount(
+  it('should call console.error if attempting to mount with more than five secondary actions', () => {
+    shallow(
       <GlobalSecondaryActions
-        actions={[<Child />, <Child />, <Child />, <Child />, <Child />]}
+        actions={[<Child />, <Child />, <Child />, <Child />, <Child />, <Child />]}
       />
     );
-    expect(mountWithTooManyActions).toThrow();
+    expect(spy).toHaveBeenCalled();
   });
 
-  it('should throw an error if attempting to update with more than four secondary actions', () => {
-    const wrapper = mount(
+  it('should call console.error if attempting to update with more than five secondary actions', () => {
+    const wrapper = shallow(
       <GlobalSecondaryActions actions={[]} />
     );
+    wrapper.setProps({
+      actions: [<Child />, <Child />, <Child />, <Child />, <Child />, <Child />],
+    });
+    expect(spy).toHaveBeenCalled();
+  });
 
-    const updateWithTooManyActions = () =>
-      wrapper.setProps('actions', [<Child />, <Child />, <Child />, <Child />, <Child />]);
-
-    expect(updateWithTooManyActions).toThrow();
+  it('should only render up to 5 secondary actions', () => {
+    const actions = [<Child />, <Child />, <Child />, <Child />, <Child />, <Child />];
+    const wrapper = mount(
+      <GlobalSecondaryActions
+        actions={actions}
+      />
+    );
+    const children = wrapper.find(Child);
+    expect(children.length).toBe(5);
+    expect(spy).toHaveBeenCalledWith(`AkGlobalNavigation will only render up to ${maxSecondaryItems} secondary actions.`);
   });
 });

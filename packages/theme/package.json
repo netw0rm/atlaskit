@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/theme",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "config": {
     "access": "public"
   },
@@ -20,7 +20,6 @@
   ],
   "devDependencies": {},
   "dependencies": {
-    "@atlaskit/util-shared-styles": "^2.6.0",
     "prop-types": "^15.5.10",
     "styled-components": "^1.4.6"
   },

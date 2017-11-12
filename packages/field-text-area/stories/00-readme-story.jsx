@@ -19,7 +19,7 @@ const fieldTextPropDescriptions = {
   name: 'The name of the field, which is submitted with the form data.',
   placeholder: 'A hint to the user of what can be entered in the control.',
   value: 'The value of the input field.',
-  onChange: 'Callback to update input value',
+  onChange: 'Callback to update input value.',
   id: 'The id of the field text',
   isLabelHidden: 'Whether the field should show a label above it. If set to true no label will be shown and no space will be reserved for it.',
   shouldFitContainer: 'Whether or not the field should fill the width of its container.',

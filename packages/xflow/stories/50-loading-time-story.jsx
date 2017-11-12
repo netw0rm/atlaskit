@@ -18,7 +18,7 @@ const defaultProps = {
   gotoButton: 'Go to Confluence',
   goToProduct: noop,
   status: ACTIVATING,
-  svgImg:
+  headerImage:
     'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/lmp9uitENIE2uALwP2L-0RptjRxiiDMe0atv8gRXyCs/loading_img.svg',
 };
 

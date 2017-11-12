@@ -21,7 +21,7 @@ const globalItemStyles = css`
   fill: ${({ theme }) => getProvided(theme).background.primary};
   align-items: center;
   border: none;
-  border-radius: 50%;
+  border-radius: ${({ appearance }) => (appearance === 'square' ? '5px' : '50%')};
   cursor: pointer;
   display: flex;
   line-height: 1;

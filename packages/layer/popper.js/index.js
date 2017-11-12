@@ -1,7 +1,7 @@
 /* eslint-disable */
 /** This file was copied from https://unpkg.com/popper.js@1.0.8/dist/popper.es5.js and minified
  *  using https://jscompress.com/. This is to get around an issue in CI where popper continues to
- *  not resolve properly. License is copied below and is availble  here https://unpkg.com/popper.js@1.0.8/LICENSE.md
+ *  not resolve properly. License is copied below and is availble here https://unpkg.com/popper.js@1.0.8/LICENSE.md
  */
 /* The MIT License (MIT)
 =====================

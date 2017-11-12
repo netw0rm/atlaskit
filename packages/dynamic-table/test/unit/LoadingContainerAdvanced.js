@@ -156,7 +156,302 @@ describe('LoadingContainerAdvanced', () => {
   });
 
   describe('spinner manipulations', () => {
-    // TODO
+    let wrapper;
+    let componentClientRect;
+    let targetClientRect;
+    let spinnerClientRect;
+    let spinnerStyle;
+
+    const assertSpinnerTransformedProperly = (position, y) => {
+      expect(spinnerStyle.position).toBe(position);
+      expect(spinnerStyle.transform).toBe(y === Number(y) ? `translate3d(0, ${y}px, 0)` : '');
+    };
+
+    const assertSpinnerAlignedUsingDefaultCssRules = () => {
+      assertSpinnerTransformedProperly('', '');
+    };
+
+    const assertSpinnerFixedAndProperlyTransformed = (y) => {
+      assertSpinnerTransformedProperly('fixed', y);
+    };
+
+    const updateSpinnerPosition = () => {
+      wrapper.instance().updateSpinnerPosition();
+    };
+
+    beforeEach(() => {
+      // Define default spinner style
+      spinnerStyle = {
+        position: '',
+        transform: '',
+      };
+
+      // Define default spinner ClientRect (off screen)
+      spinnerClientRect = {
+        top: -50,
+        bottom: 0,
+        height: 50,
+      };
+
+      // We will always return the same ClientRect we return for the target.
+      // May be overridden though.
+      componentClientRect = undefined;
+
+      // Its values has to be defined by the test
+      targetClientRect = undefined;
+
+      // Hardcode viewport height
+      Object.defineProperty(window, 'innerHeight', {
+        writable: true,
+        value: 800,
+      });
+
+      // Mount the component
+      wrapper = mount(
+        <LoadingContainerAdvanced>
+          <Contents />
+        </LoadingContainerAdvanced>
+      );
+      wrappers.push(wrapper);
+
+      // Return fake component node
+      wrapper.instance().getThisNode = jest.fn().mockReturnValue({
+        getBoundingClientRect: () => componentClientRect || targetClientRect,
+      });
+
+      // Return fake target node
+      wrapper.instance().getTargetNode = jest.fn().mockReturnValue({
+        getBoundingClientRect: () => targetClientRect,
+      });
+
+      // Return fake spinner node
+      wrapper.instance().getSpinnerNode = jest.fn().mockReturnValue({
+        style: spinnerStyle,
+        getBoundingClientRect: () => spinnerClientRect,
+      });
+    });
+
+    it('should do nothing when both target and spinner are off screen', () => {
+      targetClientRect = {
+        top: -800,
+        bottom: -400,
+        height: 400,
+      };
+      updateSpinnerPosition();
+      assertSpinnerAlignedUsingDefaultCssRules();
+    });
+
+    describe('centers the spinner using default positioning (defined via styled-component)', () => {
+      it('should center when the target is fully visible', () => {
+        targetClientRect = {
+          top: 0,
+          bottom: 800,
+          height: 800,
+        };
+        updateSpinnerPosition();
+        assertSpinnerAlignedUsingDefaultCssRules();
+
+        targetClientRect = {
+          top: 10,
+          bottom: 610,
+          height: 600,
+        };
+        updateSpinnerPosition();
+        assertSpinnerAlignedUsingDefaultCssRules();
+
+        targetClientRect = {
+          top: 210,
+          bottom: 510,
+          height: 300,
+        };
+        updateSpinnerPosition();
+        assertSpinnerAlignedUsingDefaultCssRules();
+
+        targetClientRect = {
+          top: 600,
+          bottom: 750,
+          height: 150,
+        };
+        updateSpinnerPosition();
+        assertSpinnerAlignedUsingDefaultCssRules();
+      });
+
+      it('should center when the target is too small for the spinner to follow (< 3x spinner height)', () => {
+        targetClientRect = {
+          top: 80,
+          bottom: 100,
+          height: 20,
+        };
+        updateSpinnerPosition();
+        assertSpinnerAlignedUsingDefaultCssRules();
+
+        targetClientRect = {
+          top: -100,
+          bottom: 49,
+          height: 149,
+        };
+        updateSpinnerPosition();
+        assertSpinnerAlignedUsingDefaultCssRules();
+      });
+
+      it('should center when the target is not visible anymore but the spinner still is', () => {
+        targetClientRect = {
+          top: -1000,
+          bottom: -800,
+          height: 200,
+        };
+        spinnerClientRect = {
+          top: 50,
+          bottom: 100,
+          height: 50,
+        };
+        updateSpinnerPosition();
+        assertSpinnerAlignedUsingDefaultCssRules();
+      });
+
+      it('should calculate proper top offset when the target is not the children and has some offset', () => {
+        componentClientRect = {
+          top: 300,
+          bottom: 700,
+          height: 400,
+        };
+        targetClientRect = {
+          top: 450,
+          bottom: 700,
+          height: 250,
+        };
+        updateSpinnerPosition();
+        assertSpinnerTransformedProperly('', 75);
+      });
+    });
+
+    describe('positions the spinner using fixed css rule', () => {
+      it('should position properly when only the head of the target is visible', () => {
+        targetClientRect = {
+          top: 750,
+          bottom: 950,
+          height: 200,
+        };
+        updateSpinnerPosition();
+        assertSpinnerFixedAndProperlyTransformed(800);
+
+        targetClientRect = {
+          top: 790,
+          bottom: 990,
+          height: 200,
+        };
+        updateSpinnerPosition();
+        assertSpinnerFixedAndProperlyTransformed(840);
+
+        targetClientRect = {
+          top: 700,
+          bottom: 900,
+          height: 200,
+        };
+        updateSpinnerPosition();
+        assertSpinnerFixedAndProperlyTransformed(750);
+
+        targetClientRect = {
+          top: 670,
+          bottom: 870,
+          height: 200,
+        };
+        updateSpinnerPosition();
+        assertSpinnerFixedAndProperlyTransformed(720);
+
+        targetClientRect = {
+          top: 650,
+          bottom: 850,
+          height: 200,
+        };
+        updateSpinnerPosition();
+        assertSpinnerFixedAndProperlyTransformed(700);
+      });
+
+      it('should position properly the target which takes all viewport, nor its head nor tail are visible', () => {
+        targetClientRect = {
+          top: -1,
+          bottom: 801,
+          height: 802,
+        };
+        updateSpinnerPosition();
+        assertSpinnerFixedAndProperlyTransformed(375);
+
+        targetClientRect = {
+          top: -50,
+          bottom: 850,
+          height: 900,
+        };
+        updateSpinnerPosition();
+        assertSpinnerFixedAndProperlyTransformed(375);
+
+        targetClientRect = {
+          top: -250,
+          bottom: 850,
+          height: 1100,
+        };
+        updateSpinnerPosition();
+        assertSpinnerFixedAndProperlyTransformed(375);
+
+        targetClientRect = {
+          top: -2250,
+          bottom: 850,
+          height: 2100,
+        };
+        updateSpinnerPosition();
+        assertSpinnerFixedAndProperlyTransformed(375);
+
+        targetClientRect = {
+          top: -2,
+          bottom: 2850,
+          height: 2852,
+        };
+        updateSpinnerPosition();
+        assertSpinnerFixedAndProperlyTransformed(375);
+      });
+
+      it('should position properly when only the tail of the target is visible', () => {
+        targetClientRect = {
+          top: -50,
+          bottom: 650,
+          height: 700,
+        };
+        updateSpinnerPosition();
+        assertSpinnerFixedAndProperlyTransformed(300);
+
+        targetClientRect = {
+          top: -380,
+          bottom: 320,
+          height: 700,
+        };
+        updateSpinnerPosition();
+        assertSpinnerFixedAndProperlyTransformed(135);
+
+        targetClientRect = {
+          top: -456,
+          bottom: 244,
+          height: 700,
+        };
+        updateSpinnerPosition();
+        assertSpinnerFixedAndProperlyTransformed(97);
+
+        targetClientRect = {
+          top: -600,
+          bottom: 100,
+          height: 700,
+        };
+        updateSpinnerPosition();
+        assertSpinnerFixedAndProperlyTransformed('');
+
+        targetClientRect = {
+          top: -670,
+          bottom: 30,
+          height: 700,
+        };
+        updateSpinnerPosition();
+        assertSpinnerFixedAndProperlyTransformed(-70);
+      });
+    });
   });
 
   describe('helpers', () => {

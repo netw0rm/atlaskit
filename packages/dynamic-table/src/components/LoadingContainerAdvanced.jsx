@@ -65,6 +65,10 @@ export default class LoadingContainerAdvanced extends Component {
     return targetNode;
   }
 
+  getThisNode = () => findDOMNode(this) // eslint-disable-line react/no-find-dom-node
+
+  getSpinnerNode = () => findDOMNode(this.spinner) // eslint-disable-line react/no-find-dom-node
+
   hasTargetNode = (nextProps) => !!this.getTargetNode(nextProps)
 
   isVerticallyVisible = (elementRect, viewportHeight) => {
@@ -100,7 +104,7 @@ export default class LoadingContainerAdvanced extends Component {
 
   translateSpinner = (spinnerNode, transformY, isFixed) => {
     spinnerNode.style.position = isFixed ? 'fixed' : '';
-    spinnerNode.style.transform = `translate3d(0, ${transformY}px, 0)`;
+    spinnerNode.style.transform = transformY !== 0 ? `translate3d(0, ${transformY}px, 0)` : '';
   }
 
   updateTargetAppearance = () => {
@@ -115,7 +119,7 @@ export default class LoadingContainerAdvanced extends Component {
     const viewportHeight = window.innerHeight;
     const targetNode = this.getTargetNode();
     const targetRect = targetNode.getBoundingClientRect();
-    const spinnerNode = findDOMNode(this.spinner); // eslint-disable-line react/no-find-dom-node
+    const spinnerNode = this.getSpinnerNode();
     const spinnerRect = spinnerNode.getBoundingClientRect();
     const spinnerHeight = spinnerRect.height;
     const isInViewport = this.isVerticallyVisible(targetRect, viewportHeight);
@@ -156,7 +160,7 @@ export default class LoadingContainerAdvanced extends Component {
     // 1) the element is fully visible
     // 2) the element is too small for the spinner to follow
     // 3) the spinner might still be visible while the element isn't
-    const thisNode = findDOMNode(this); // eslint-disable-line react/no-find-dom-node
+    const thisNode = this.getThisNode();
     const thisTop = thisNode.getBoundingClientRect().top;
     const y = (top - thisTop) / 2;
     this.translateSpinner(spinnerNode, y, false);

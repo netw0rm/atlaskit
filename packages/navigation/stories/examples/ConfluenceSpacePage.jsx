@@ -266,7 +266,7 @@ export default class ConfluenceSpacePage extends PureComponent {
         trigger={(
           <AkGlobalItem href="">
             <Tooltip position="right" description="Your profile and settings">
-              <Avatar size="medium" src={emmaAvatar} borderColor="default" />
+              <Avatar size="small" src={emmaAvatar} borderColor="default" />
             </Tooltip>
           </AkGlobalItem>
             )}
@@ -388,7 +388,7 @@ export default class ConfluenceSpacePage extends PureComponent {
             />
             <h1>Page Title</h1>
             <br />
-            <Avatar size="medium" src={emmaAvatar} borderColor="default" />
+            <Avatar size="small" src={emmaAvatar} borderColor="default" />
             <br />
             <h2>Note</h2>
             <p> Currently, the navigation in Confluence is based on page tree.</p>

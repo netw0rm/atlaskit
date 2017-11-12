@@ -68,11 +68,11 @@ export default class LoadingContainerAdvanced extends Component {
   hasTargetNode = (nextProps) => !!this.getTargetNode(nextProps)
 
   isVerticallyVisible = (elementRect, viewportHeight) => {
-    const { top, bottom, height } = elementRect;
+    const { top, bottom } = elementRect;
     if (bottom <= 0) {
       return false;
     }
-    return (top + height) > 0 && top < viewportHeight;
+    return top < viewportHeight;
   }
 
   isFullyVerticallyVisible = (elementRect, viewportHeight) => {

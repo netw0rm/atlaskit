@@ -151,29 +151,29 @@ describe('LoadingContainerAdvanced', () => {
       it('should detect whether the given rect is vertically visible (at least partially)', () => {
         // Simulating scrolling down the page
         // The element is below the viewport
-        expect(isVerticallyVisible({ top: 1408, bottom: 1608, height: 200 }, 800)).toBe(false);
-        expect(isVerticallyVisible({ top: 801, bottom: 1001, height: 200 }, 800)).toBe(false);
-        expect(isVerticallyVisible({ top: 800, bottom: 1000, height: 200 }, 800)).toBe(false);
+        expect(isVerticallyVisible({ top: 1408, bottom: 1608 }, 800)).toBe(false);
+        expect(isVerticallyVisible({ top: 801, bottom: 1001 }, 800)).toBe(false);
+        expect(isVerticallyVisible({ top: 800, bottom: 1000 }, 800)).toBe(false);
 
         // The first pixel of the element's header is visible
-        expect(isVerticallyVisible({ top: 799, bottom: 999, height: 200 }, 800)).toBe(true);
+        expect(isVerticallyVisible({ top: 799, bottom: 999 }, 800)).toBe(true);
 
         // The last pixel of the element's tail is visible
-        expect(isVerticallyVisible({ top: 600, bottom: 800, height: 200 }, 800)).toBe(true);
+        expect(isVerticallyVisible({ top: 600, bottom: 800 }, 800)).toBe(true);
 
         // The first pixel of the element's header is still visible
-        expect(isVerticallyVisible({ top: 0, bottom: 200, height: 200 }, 800)).toBe(true);
+        expect(isVerticallyVisible({ top: 0, bottom: 200 }, 800)).toBe(true);
 
         // The last pixel of the element's header is not visible anymore
-        expect(isVerticallyVisible({ top: -1, bottom: 199, height: 200 }, 800)).toBe(true);
+        expect(isVerticallyVisible({ top: -1, bottom: 199 }, 800)).toBe(true);
 
         // The last pixel of the element's tails is still visible
-        expect(isVerticallyVisible({ top: -199, bottom: 1, height: 200 }, 800)).toBe(true);
+        expect(isVerticallyVisible({ top: -199, bottom: 1 }, 800)).toBe(true);
 
         // The element goes off screen
-        expect(isVerticallyVisible({ top: -200, bottom: 0, height: 200 }, 800)).toBe(false);
-        expect(isVerticallyVisible({ top: -300, bottom: -100, height: 200 }, 800)).toBe(false);
-        expect(isVerticallyVisible({ top: -808, bottom: -608, height: 200 }, 800)).toBe(false);
+        expect(isVerticallyVisible({ top: -200, bottom: 0 }, 800)).toBe(false);
+        expect(isVerticallyVisible({ top: -300, bottom: -100 }, 800)).toBe(false);
+        expect(isVerticallyVisible({ top: -808, bottom: -608 }, 800)).toBe(false);
       });
     });
 

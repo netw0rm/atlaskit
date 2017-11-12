@@ -111,7 +111,7 @@ export default class LoadingContainerAdvanced extends Component {
     targetNode.style.opacity = isLoading ? contentsOpacity : '';
   }
 
-  updateSpinnerPosition = () => {
+  updateSpinnerPosition() {
     const viewportHeight = window.innerHeight;
     const targetNode = this.getTargetNode();
     const targetRect = targetNode.getBoundingClientRect();

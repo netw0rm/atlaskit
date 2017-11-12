@@ -9,12 +9,23 @@ import LoadingContainerAdvanced from '../../src/components/LoadingContainerAdvan
 describe('LoadingContainerAdvanced', () => {
   const Contents = styled.div``;
 
+  let wrappers;
+
+  beforeEach(() => {
+    wrappers = [];
+  });
+
+  afterEach(() => {
+    wrappers.forEach(wrapper => wrapper.unmount());
+  });
+
   it('should always wrap contents into the container with a relative position so absolute positioned elements inside the children behave consistently despite the loading mode', () => {
     const wrapper = mount(
       <LoadingContainerAdvanced isLoading>
         <Contents />
       </LoadingContainerAdvanced>
     );
+    wrappers.push(wrapper);
     expect(wrapper.find(Container).length).toBe(1);
 
     wrapper.setProps({ isLoading: false });
@@ -27,6 +38,7 @@ describe('LoadingContainerAdvanced', () => {
         <Contents />
       </LoadingContainerAdvanced>
     );
+    wrappers.push(wrapper);
     const container = wrapper.find(Container);
     expect(container.children().is(Contents)).toBe(true);
 
@@ -40,6 +52,7 @@ describe('LoadingContainerAdvanced', () => {
         <Contents />
       </LoadingContainerAdvanced>
     );
+    wrappers.push(wrapper);
     const spinnerBackdrop = wrapper.find(SpinnerBackdrop);
     expect(spinnerBackdrop.length).toBe(0);
   });
@@ -50,6 +63,7 @@ describe('LoadingContainerAdvanced', () => {
         <Contents />
       </LoadingContainerAdvanced>
     );
+    wrappers.push(wrapper);
     expect(wrapper.props().isLoading).toBe(true);
     expect(wrapper.find(Spinner).props().size).toBe('large');
   });
@@ -60,11 +74,12 @@ describe('LoadingContainerAdvanced', () => {
         <Contents />
       </LoadingContainerAdvanced>
     );
+    wrappers.push(wrapper);
     expect(wrapper.find(Spinner).props().size).toBe('xlarge');
   });
 
   describe('target manipulations', () => {
-    const assertNodeStylesAreCorrect = (node, isLoading) => {
+    const assertTargetStylesAreCorrect = (node, isLoading) => {
       expect(node.style.opacity).toBe(isLoading ? '0.22' : '');
       expect(node.style.pointerEvents).toBe(isLoading ? 'none' : '');
     };
@@ -79,7 +94,8 @@ describe('LoadingContainerAdvanced', () => {
           <Contents />
         </LoadingContainerAdvanced>
       );
-      assertNodeStylesAreCorrect(wrapper.find(Contents).getDOMNode(), false);
+      wrappers.push(wrapper);
+      assertTargetStylesAreCorrect(wrapper.find(Contents).getDOMNode(), false);
 
       // Not loading
       wrapper = mount(
@@ -87,7 +103,8 @@ describe('LoadingContainerAdvanced', () => {
           <Contents />
         </LoadingContainerAdvanced>
       );
-      assertNodeStylesAreCorrect(wrapper.find(Contents).getDOMNode(), false);
+      wrappers.push(wrapper);
+      assertTargetStylesAreCorrect(wrapper.find(Contents).getDOMNode(), false);
 
       // Loading and has children
       wrapper = mount(
@@ -95,7 +112,8 @@ describe('LoadingContainerAdvanced', () => {
           <Contents />
         </LoadingContainerAdvanced>
       );
-      assertNodeStylesAreCorrect(wrapper.find(Contents).getDOMNode(), true);
+      wrappers.push(wrapper);
+      assertTargetStylesAreCorrect(wrapper.find(Contents).getDOMNode(), true);
 
       // Loading and has a valid target
       wrapper = mount(
@@ -103,7 +121,8 @@ describe('LoadingContainerAdvanced', () => {
           <Contents innerRef={el => (target = el)} />
         </LoadingContainerAdvanced>
       );
-      assertNodeStylesAreCorrect(wrapper.find(Contents).getDOMNode(), true);
+      wrappers.push(wrapper);
+      assertTargetStylesAreCorrect(wrapper.find(Contents).getDOMNode(), true);
     });
 
     it('should set styles to the children if the targetRef is not defined and revert them on loading mode change', () => {
@@ -112,9 +131,10 @@ describe('LoadingContainerAdvanced', () => {
           <Contents />
         </LoadingContainerAdvanced>
       );
-      assertNodeStylesAreCorrect(wrapper.find(Contents).getDOMNode(), true);
+      wrappers.push(wrapper);
+      assertTargetStylesAreCorrect(wrapper.find(Contents).getDOMNode(), true);
       wrapper.setProps({ isLoading: false });
-      assertNodeStylesAreCorrect(wrapper.find(Contents).getDOMNode(), false);
+      assertTargetStylesAreCorrect(wrapper.find(Contents).getDOMNode(), false);
     });
 
     it('should set styles to the target and revert them on loading mode change', () => {
@@ -128,9 +148,10 @@ describe('LoadingContainerAdvanced', () => {
           </Contents>
         </LoadingContainerAdvanced>
       );
-      assertNodeStylesAreCorrect(wrapper.find(InnerComponent).getDOMNode(), true);
+      wrappers.push(wrapper);
+      assertTargetStylesAreCorrect(wrapper.find(InnerComponent).getDOMNode(), true);
       wrapper.setProps({ isLoading: false });
-      assertNodeStylesAreCorrect(wrapper.find(InnerComponent).getDOMNode(), false);
+      assertTargetStylesAreCorrect(wrapper.find(InnerComponent).getDOMNode(), false);
     });
   });
 
@@ -139,16 +160,21 @@ describe('LoadingContainerAdvanced', () => {
   });
 
   describe('helpers', () => {
-    const wrapper = mount(
-      <LoadingContainerAdvanced targetRef={() => undefined}>
-        <Contents />
-      </LoadingContainerAdvanced>
-    );
+    let wrapper;
+
+    beforeEach(() => {
+      wrapper = mount(
+        <LoadingContainerAdvanced targetRef={() => undefined}>
+          <Contents />
+        </LoadingContainerAdvanced>
+      );
+      wrappers.push(wrapper);
+    });
 
     describe('isVerticallyVisible', () => {
-      const isVerticallyVisible = wrapper.instance().isVerticallyVisible;
-
       it('should detect whether the given rect is vertically visible (at least partially)', () => {
+        const isVerticallyVisible = wrapper.instance().isVerticallyVisible;
+
         // Simulating scrolling down the page
         // The element is below the viewport
         expect(isVerticallyVisible({ top: 1408, bottom: 1608 }, 800)).toBe(false);
@@ -178,9 +204,9 @@ describe('LoadingContainerAdvanced', () => {
     });
 
     describe('isFullyVerticallyVisible', () => {
-      const isFullyVerticallyVisible = wrapper.instance().isFullyVerticallyVisible;
-
       it('should detect whether the given rect is fully vertically visible', () => {
+        const isFullyVerticallyVisible = wrapper.instance().isFullyVerticallyVisible;
+
         // Simulating scrolling down the page
         // The element is below the viewport
         expect(isFullyVerticallyVisible({ top: 1408, bottom: 1608 }, 800)).toBe(false);
@@ -213,50 +239,53 @@ describe('LoadingContainerAdvanced', () => {
   describe('listeners', () => {
     let attachSpy;
     let detachSpy;
+    let updateSpinnerPositionSpy;
 
     beforeEach(() => {
       attachSpy = jest.spyOn(LoadingContainerAdvanced.prototype, 'attachListeners');
       detachSpy = jest.spyOn(LoadingContainerAdvanced.prototype, 'detachListeners');
+      updateSpinnerPositionSpy = jest.spyOn(LoadingContainerAdvanced.prototype, 'updateSpinnerPosition');
     });
 
     afterEach(() => {
       attachSpy.mockRestore();
       detachSpy.mockRestore();
+      updateSpinnerPositionSpy.mockRestore();
     });
 
     it('should attach the listeners on mount only when loading and there is a target node', () => {
       let target;
 
       // targetRef returns invalid target
-      mount(
+      wrappers.push(mount(
         <LoadingContainerAdvanced targetRef={() => undefined}>
           <Contents />
         </LoadingContainerAdvanced>
-      );
+      ));
       expect(attachSpy).not.toHaveBeenCalled();
 
       // Not loading
-      mount(
+      wrappers.push(mount(
         <LoadingContainerAdvanced isLoading={false}>
           <Contents />
         </LoadingContainerAdvanced>
-      );
+      ));
       expect(attachSpy).not.toHaveBeenCalled();
 
       // Loading and has children
-      mount(
+      wrappers.push(mount(
         <LoadingContainerAdvanced>
           <Contents />
         </LoadingContainerAdvanced>
-      );
+      ));
       expect(attachSpy).toHaveBeenCalledTimes(1);
 
       // Loading and has a valid target
-      mount(
+      wrappers.push(mount(
         <LoadingContainerAdvanced targetRef={() => target}>
           <Contents innerRef={el => (target = el)} />
         </LoadingContainerAdvanced>
-      );
+      ));
       expect(attachSpy).toHaveBeenCalledTimes(2);
     });
 
@@ -268,6 +297,7 @@ describe('LoadingContainerAdvanced', () => {
           <Contents innerRef={el => (target = el)} />
         </LoadingContainerAdvanced>
       );
+      wrappers.push(wrapper);
 
       // Not loading
       expect(attachSpy).toHaveBeenCalledTimes(0);
@@ -295,6 +325,7 @@ describe('LoadingContainerAdvanced', () => {
           <Contents />
         </LoadingContainerAdvanced>
       );
+      wrappers.push(wrapper);
 
       // Is loading
       expect(detachSpy).toHaveBeenCalledTimes(0);
@@ -315,9 +346,34 @@ describe('LoadingContainerAdvanced', () => {
           <Contents />
         </LoadingContainerAdvanced>
       );
+      wrappers.push(wrapper);
       expect(detachSpy).toHaveBeenCalledTimes(0);
       wrapper.unmount();
       expect(detachSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should update spinner position on resize', () => {
+      wrappers.push(mount(
+        <LoadingContainerAdvanced>
+          <Contents />
+        </LoadingContainerAdvanced>
+      ));
+      expect(updateSpinnerPositionSpy).toHaveBeenCalledTimes(1);
+      window.dispatchEvent(new Event('resize'));
+      window.dispatchEvent(new Event('resize'));
+      expect(updateSpinnerPositionSpy).toHaveBeenCalledTimes(3);
+    });
+
+    it('should update spinner position on scroll', () => {
+      wrappers.push(mount(
+        <LoadingContainerAdvanced>
+          <Contents />
+        </LoadingContainerAdvanced>
+      ));
+      expect(updateSpinnerPositionSpy).toHaveBeenCalledTimes(1);
+      window.dispatchEvent(new Event('scroll'));
+      window.dispatchEvent(new Event('scroll'));
+      expect(updateSpinnerPositionSpy).toHaveBeenCalledTimes(3);
     });
   });
 });

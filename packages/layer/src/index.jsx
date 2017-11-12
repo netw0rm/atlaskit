@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-// I am disabling eslint in the line below because we have an unexplained, unreproducible issue in
-// CI sometimes where popper is not always resolvable. See AK-2971.
-import Popper from 'popper.js'; // eslint-disable-line  import/no-unresolved, import/extensions
+// We are continually getting errors trying to resolve popper in CI. I've decided to minify the file
+// (saving 55.33kb!!) and just store it locally next to Layer.
+import Popper from '../popper.js';
 import { akZIndexLayer } from '@atlaskit/util-shared-styles';
 
 import { POSITION_ATTRIBUTE_ENUM, getFlipBehavior, positionPropToPopperPosition } from './internal/helpers';

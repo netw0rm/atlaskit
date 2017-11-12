@@ -22,7 +22,7 @@ When you are creating an issue, please include as many details as possible. Fill
 
 Include details about your configuration and environment:
 
-* **Which version of the component are you using?** You can get this information by running `yarn ls | grep '@atlaskit'` or `npm list | grep '@atlaskit'` from the command line.
+* **Which version of the component are you using?** You can get this information by running `yarn list --pattern @atlaskit` or `npm list | grep '@atlaskit'` from the command line.
 * **What's the name and version of the browser and OS you're using**?
 
 

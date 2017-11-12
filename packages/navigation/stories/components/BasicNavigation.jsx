@@ -32,11 +32,13 @@ export default class BasicNavigation extends PureComponent {
     onResizeCallback: PropTypes.func,
     globalTheme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     containerTheme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+    globalPrimaryIcon: PropTypes.node,
   }
 
   static defaultProps = {
     drawers: [],
     onResizeCallback: () => {},
+    globalPrimaryIcon: <AtlassianIcon label="Atlassian icon" size="large" />,
     children: (<div>
       <AkNavigationItem
         icon={<DashboardIcon label="Dashboard" secondaryColor="inherit" />}
@@ -106,7 +108,7 @@ export default class BasicNavigation extends PureComponent {
           <DropdownItemGroup title="Information">
             <DropdownItem>Latest features</DropdownItem>
             <DropdownItem>Blog</DropdownItem>
-            <DropdownItem>Plans & pricing</DropdownItem>
+            <DropdownItem>Plans and pricing</DropdownItem>
             <DropdownItem>Site status</DropdownItem>
             <DropdownItem>Version info</DropdownItem>
           </DropdownItemGroup>
@@ -178,8 +180,8 @@ export default class BasicNavigation extends PureComponent {
 
   render() {
     const backIcon = <Tooltip position="right" description="Back"><ArrowLeftIcon label="Back icon" size="medium" /></Tooltip>;
-    const globalPrimaryIcon = <Tooltip position="right" description="Back"><AtlassianIcon label="Atlassian icon" size="large" /></Tooltip>;
     const ContainerHeader = this.props.containerHeaderComponent || (() => null);
+
     return (
       <Navigation
         containerTheme={this.props.containerTheme}
@@ -191,7 +193,7 @@ export default class BasicNavigation extends PureComponent {
             <AddIcon label="Create icon" secondaryColor="inherit" size="medium" />
           </Tooltip>
         }
-        globalPrimaryIcon={globalPrimaryIcon}
+        globalPrimaryIcon={this.props.globalPrimaryIcon}
         globalPrimaryItemHref="//www.atlassian.com"
         globalSearchIcon={
           <Tooltip position="right" description="Search">
@@ -215,7 +217,7 @@ export default class BasicNavigation extends PureComponent {
             isOpen={this.state.openDrawer === 'search'}
             key="search"
             onBackButton={this.closeDrawer}
-            primaryIcon={globalPrimaryIcon}
+            primaryIcon={this.props.globalPrimaryIcon}
           >
             {
               this.props.searchDrawerContent
@@ -229,7 +231,7 @@ export default class BasicNavigation extends PureComponent {
             isOpen={this.state.openDrawer === 'create'}
             key="create"
             onBackButton={this.closeDrawer}
-            primaryIcon={globalPrimaryIcon}
+            primaryIcon={this.props.globalPrimaryIcon}
           >
             {this.props.createDrawerContent}
           </AkCreateDrawer>),

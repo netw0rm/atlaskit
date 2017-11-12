@@ -19,6 +19,7 @@ const header = (code: string | number): SecurityOptions => ({
 const getSecurityHeader = call => call[0].headers.get(defaultSecurityHeader);
 
 const defaultSecurityCode = '10804';
+const defaultAltScaleParam = 'altScale=XHDPI';
 
 const provider1: EmojiLoaderConfig = {
   url: p1Url,
@@ -59,12 +60,12 @@ describe('EmojiLoader', () => {
       });
     });
 
-    it('is only passed a baseUrl with no params or securityProvider', () => {
+    it('is only passed a baseUrl with no securityProvider and default altScale param', () => {
       const simpleProvider: EmojiLoaderConfig = {
         url: p1Url,
       };
       fetchMock.mock({
-        matcher: `${simpleProvider.url}`,
+        matcher: `end:${defaultAltScaleParam}`,
         response: fetchResponse(providerData1),
       });
 
@@ -77,7 +78,7 @@ describe('EmojiLoader', () => {
     it('can handle when a version is specified in the query params', () => {
       const params = '?maxVersion=2';
       fetchMock.mock({
-        matcher: `end:${params}`,
+        matcher: `end:${params}&${defaultAltScaleParam}`,
         response: fetchResponse(providerData1),
       });
 
@@ -98,7 +99,7 @@ describe('EmojiLoader', () => {
         getRatio: () => 1
       };
       fetchMock.mock({
-        matcher: `${provider1.url}`,
+        matcher: `${provider1.url}?${defaultAltScaleParam}`,
         response: fetchResponse(providerData1),
       });
 
@@ -113,8 +114,9 @@ describe('EmojiLoader', () => {
         ...provider1,
         getRatio: () => 2
       };
+      // Should use double of XHDPI for altScale
       fetchMock.mock({
-        matcher: `end:?scale=XHDPI`,
+        matcher: `end:?scale=XHDPI&altScale=XXXHDPI`,
         response: fetchResponse(providerData1),
       });
 

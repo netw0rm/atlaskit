@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import type { ReactElement } from '../../types';
+import type { ReactElement, IconAppearance } from '../../types';
 
 type Props = {|
   children?: ReactElement,
@@ -11,6 +11,7 @@ type Props = {|
   onMouseEnter?: () => mixed,
   onMouseLeave?: () => mixed,
   tabIndex?: number,
+  appearance?: IconAppearance,
 |}
 
 export default class DefaultLinkComponent extends PureComponent {
@@ -26,6 +27,7 @@ export default class DefaultLinkComponent extends PureComponent {
       onMouseEnter,
       onMouseLeave,
       tabIndex,
+      appearance, // eslint-disable-line no-unused-vars
       ...otherProps
     } = this.props;
 

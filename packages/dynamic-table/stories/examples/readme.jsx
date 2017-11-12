@@ -49,14 +49,14 @@ export default (
     <ul>
       <li>
         <strong>width</strong> is a percentage of the total width of the table the column occupies.
-        </li>
+      </li>
       <li>
         <strong>isSortable</strong> should the column be sortable
         (make sure the <strong>key</strong> is present).
-        </li>
+      </li>
       <li>
         <strong>shouldTruncate</strong> should the {'column\'s'} content be truncated with ellipsis when {'table\'s'} prop <code>isFixedSize === true</code>.
-        </li>
+      </li>
       <li>
         any extra props will be passed down to <code>{'<th>'}</code> tag.
       </li>
@@ -89,11 +89,11 @@ export default (
     </Code>
     <ul>
       <li>
-            any extra props on each <strong>row</strong> will be passed down to <code>{'<tr>'}</code> tag
-        </li>
+        any extra props on each <strong>row</strong> will be passed down to <code>{'<tr>'}</code> tag
+      </li>
       <li>
-            any extra props on each <strong>cell</strong> will be passed down to <code>{'<td>'}</code> tag
-        </li>
+        any extra props on each <strong>cell</strong> will be passed down to <code>{'<td>'}</code> tag
+      </li>
     </ul>
 
     <h3>defaultSortKey</h3>
@@ -105,12 +105,34 @@ export default (
     <p><strong>default</strong>: <code>{'ASC'}</code></p>
     <p>Either <code>{'ASC'}</code> or <code>{'DESC'}</code>.</p>
 
+    <h3>loadingSpinnerSize</h3>
+    <p><strong>type</strong>: <code>string</code></p>
+    <p>
+      {'Spinner\'s'} size in the loading mode.
+    </p>
+    <p>
+      Depending on the amount of entries on the page the spinner changes its size:
+      a small one if the current page has up to 2 rows, if it has more - a large one.
+      <br />
+      If the height of your rows is big enought to use a large spinner, even for a single row,
+      you may override {'spinner\'s'} size by providing a `loadingSpinnerSize` property.
+    </p>
+    <p>
+      <strong>Supported sizes</strong>:<br />
+      <code>{'small'}</code>, <code>{'medium'}</code>, <code>{'large'}</code>, <code>{'xlarge'}</code>.
+    </p>
+
+    <h3>isLoading</h3>
+    <p><strong>type</strong>: bool</p>
+    <p><strong>default</strong>: <code>false</code></p>
+    <p>Adds the spinner to the table indicating that something is in progress.</p>
+
     <h3>isFixedSize</h3>
     <p><strong>type</strong>: bool</p>
     <p><strong>default</strong>: <code>false</code></p>
     <p>
-        Adds <code>table-layout: fixed</code> css rule to the table.
-        Affects whether the columns can be truncated.
+      Adds <code>table-layout: fixed</code> css rule to the table.
+      Affects whether the columns can be truncated.
     </p>
 
     <h3>rowsPerPage</h3>
@@ -120,7 +142,7 @@ export default (
 
     <h3>onSetPage</h3>
     <p><strong>type</strong>: <code>React.PropTypes.func</code></p>
-    <p>Callback, invoked on pagination navigation</p>
+    <p>Callback, invoked on pagination navigation.</p>
 
     <h3>onSort</h3>
     <p><strong>type</strong>: <code>React.PropTypes.func</code></p>

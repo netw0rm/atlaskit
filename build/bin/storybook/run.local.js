@@ -16,7 +16,7 @@ if (process.argv[2]) {
   }
 } else if (!/\/packages\/.+/.test(process.cwd())) {
   // if we arent in a package, exit gracefully
-  console.error('Please specifiy a package to run storybooks for');
+  console.error('Please specify a package to run storybooks for');
   process.exit(1);
 }
 

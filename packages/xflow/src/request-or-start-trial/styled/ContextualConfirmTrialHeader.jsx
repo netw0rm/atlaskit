@@ -6,6 +6,7 @@ const ContextualConfirmTrialHeader = styled.div`
   @media all and (max-height: 560px) {
       min-height: ${math.multiply(gridSize, 6)}px;
       margin-bottom: 0px;
+      background: none;
   }
   
   background: ${colors.B400};

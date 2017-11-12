@@ -1,6 +1,7 @@
 // @flow
 import React, { Children, cloneElement, PureComponent } from 'react';
-import FlagAnimationWrapper from './FlagAnimationWrapper';
+import { Transition } from 'react-transition-group';
+import Wrapper from '../styled/Wrapper';
 import Group, { SROnly, Inner } from '../styled/Group';
 import type { ChildrenType, FunctionType } from '../types';
 
@@ -24,9 +25,18 @@ export default class FlagGroup extends PureComponent {
       const { id } = flag.props;
 
       return (
-        <FlagAnimationWrapper key={id}>
-          {cloneElement(flag, { onDismissed, isDismissAllowed })}
-        </FlagAnimationWrapper>
+        <Transition
+          key={id}
+          addEndListener={(node, done) => {
+            node.addEventListener('animationend', done);
+          }}
+        >
+          {(transitionState) =>
+            <Wrapper transitionState={transitionState}>
+              {cloneElement(flag, { onDismissed, isDismissAllowed })}
+            </Wrapper>
+          }
+        </Transition>
       );
     });
   }

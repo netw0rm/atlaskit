@@ -9,7 +9,7 @@ import Button from '@atlaskit/button';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import ConfluenceIcon from '@atlaskit/icon/glyph/confluence';
-import { ConfluenceLogo } from '@atlaskit/logo';
+import { ConfluenceWordmark } from '@atlaskit/logo';
 import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
 import DiscoverIcon from '@atlaskit/icon/glyph/discover';
 import EditorAlignLeftIcon from '@atlaskit/icon/glyph/editor/align-left';
@@ -232,10 +232,7 @@ export default class ConfluenceHome extends PureComponent {
     const getContainerHeaderComponent = () => (
       <div>
         <AkContainerLogo>
-          <ConfluenceLogo
-            collapseTo="type"
-            size="medium"
-          />
+          <ConfluenceWordmark />
         </AkContainerLogo>
         {this.state.stack.length > 1 ? (
           <AkNavigationItem

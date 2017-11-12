@@ -158,7 +158,7 @@ export const defaultProps = intl => ({
         <FormattedMessage
           id="xflow.j2c.start-trial.confirm-trial.message"
           tagName="p"
-          defaultMessage="Once your trial finishes, billing will start.{br}Easily cancel at any time in Manage applications.{br}We'll email your billing contact 3 days in advance."
+          defaultMessage="Once your trial finishes, billing will start.{br}Easily cancel at any time in Manage subscriptions.{br}We'll email your billing contact 3 days in advance."
           values={{ br: <br /> }}
         />
       ),

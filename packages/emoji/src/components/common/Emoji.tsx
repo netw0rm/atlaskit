@@ -2,6 +2,7 @@ import * as classNames from 'classnames';
 import * as React from 'react';
 import { MouseEvent, SyntheticEvent } from 'react';
 
+import { getPixelRatio } from '../../api/EmojiUtils';
 import * as styles from './styles';
 import { isImageRepresentation, isMediaRepresentation, isSpriteRepresentation, toEmojiId } from '../../type-helpers';
 import { EmojiDescription, OnEmojiEvent, SpriteRepresentation } from '../../types';
@@ -84,6 +85,8 @@ const handleImageError = (props: Props, event: SyntheticEvent<HTMLImageElement>)
   }
 };
 
+const getHeight = (fitToHeight: number): number => getPixelRatio() > 1 ? fitToHeight * 2 : fitToHeight;
+
 // Pure functional components are used in favour of class based components, due to the performance!
 // When rendering 1500+ emoji using class based components had a significant impact.
 const renderAsSprite = (props: Props) => {
@@ -156,7 +159,12 @@ const renderAsImage = (props: Props) => {
   let width;
   let height;
   let src;
-  const representation = emoji.representation;
+
+  let representation = emoji.representation;
+  if (representation && fitToHeight && emoji.altRepresentation && getHeight(fitToHeight) > representation.height) {
+    representation = emoji.altRepresentation;
+  }
+
   if (isImageRepresentation(representation)) {
     src = representation.imagePath;
     width = representation.width;

@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
+import { akZIndexLayer } from '@atlaskit/util-shared-styles';
+
 // We are continually getting errors trying to resolve popper in CI. I've decided to minify the file
 // (saving 55.33kb!!) and just store it locally next to Layer.
 import Popper from '../popper.js';
-import { akZIndexLayer } from '@atlaskit/util-shared-styles';
 
 import { POSITION_ATTRIBUTE_ENUM, getFlipBehavior, positionPropToPopperPosition } from './internal/helpers';
 

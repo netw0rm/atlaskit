@@ -41,6 +41,7 @@ function getLatestPackagesFromNpm(packages) {
 }
 
 module.exports = {
+  getPackageFromNpm,
   getPackagesFromNpmAtVersion,
   getLatestPackagesFromNpm,
 };

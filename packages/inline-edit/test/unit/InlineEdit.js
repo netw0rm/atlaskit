@@ -5,6 +5,7 @@ import CancelIcon from '@atlaskit/icon/glyph/cross';
 import FieldBase, { Label } from '@atlaskit/field-base';
 
 import InlineEditStateless from '../../src/components/InlineEditStateless';
+import FieldBaseWrapper from '../../src/styled/FieldBaseWrapper';
 
 const noop = () => {};
 const Input = props =>
@@ -272,6 +273,36 @@ describe('@atlaskit/inline-edit', () => {
     it('should be reflected to the FieldBase', () => {
       expect(shallow(<InlineEditStateless {...defaultProps} isInvalid />)
         .find(FieldBase).props().isInvalid).toBe(true);
+    });
+  });
+
+  /* This suite can be enabled when we move to styled components v2 (new repo?) and we
+   * can properly use jest-styled-components without disabling mount(...) calls
+   */
+  // eslint-disable-next-line jest/no-disabled-tests
+  xdescribe('field width', () => {
+    it('should not stretch to container width in read mode by default', () => {
+      const wrapper = mount(<InlineEditStateless {...defaultProps} />);
+
+      expect(wrapper.find(FieldBaseWrapper)).toHaveStyleRule('display', 'inline-flex');
+    });
+
+    it('should stretch to container width in read mode when isFitContainerWidthReadView is set', () => {
+      const wrapper = mount(<InlineEditStateless {...defaultProps} isFitContainerWidthReadView />);
+
+      expect(wrapper.find(FieldBaseWrapper)).toHaveStyleRule('display', 'flex');
+    });
+
+    it('should stretch to container width when in edit mode', () => {
+      const wrapper = mount(<InlineEditStateless {...defaultProps} isEditing />);
+
+      expect(wrapper.find(FieldBaseWrapper)).toHaveStyleRule('display', 'flex');
+    });
+
+    it('should have max-width so inline-flex text overflow using ellipses', () => {
+      const wrapper = mount(<InlineEditStateless {...defaultProps} />);
+
+      expect(wrapper.find(FieldBaseWrapper)).toHaveStyleRule('max-width', '100%');
     });
   });
 });

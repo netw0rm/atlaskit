@@ -8,7 +8,7 @@ import {
   getAlreadyRequestedFlag,
 } from '../../../../src/common/services/alreadyRequestedFlag';
 
-describe('alreadyRequestedFlag.js', () => {
+describe('alreadyRequestedFlag', () => {
   const TEST_PRODUCT_KEY = 'Foo';
 
   afterEach(fetchMock.restore);

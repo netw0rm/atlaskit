@@ -208,6 +208,7 @@ class Modal extends Component {
           <FocusLock enabled={stackIndex === 0 && !isExiting} autoFocus={autoFocus}>
             <Dialog
               heightValue={height}
+              isChromeless={isChromeless}
               onClick={this.handleDialogClick}
               role="dialog"
               tabIndex="-1"

@@ -1,5 +1,11 @@
 # @atlaskit/navigation
 
+## 26.6.1 (2017-11-13)
+
+
+
+* bug fix; fixes - secondary icons being cut off in collapsed navigation state (issues closed: ak-3834, ak-3867) ([d0d16f8](https://bitbucket.org/atlassian/atlaskit/commits/d0d16f8))
+
 ## 26.6.0 (2017-11-13)
 
 * feature; nav now works correctly with the latest Logo package, and includes stories showing (issues closed: ak-3487) ([47f2a40](https://bitbucket.org/atlassian/atlaskit/commits/47f2a40))

@@ -21,7 +21,7 @@ pipelines:
       - step:
           script:
             - export FORCE_COLOR=1
-            - ./build/bin/setup.sh
+            - source ./build/bin/setup.sh
             - ./build/bin/prep_for_release.sh
             # --pure-lockfile is so that yarn will not generate a new lock file in CI
             - yarn --pure-lockfile
@@ -49,7 +49,7 @@ pipelines:
         script:
           - export FORCE_COLOR=1
           - export CURRENT_BUILD_TIME=$(date +'%Y-%m-%d_%H_%m_%S')
-          - ./build/bin/setup.sh
+          - source ./build/bin/setup.sh
           # need to run this so we have access to the Bitbucket credentials during generate.changed.packages.file.pr.sh
           - ./build/bin/prep_for_release.sh
           # --pure-lockfile is so that yarn will not generate a new lock file in CI

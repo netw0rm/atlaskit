@@ -1,6 +1,7 @@
 import 'es6-promise/auto';
 import 'whatwg-fetch';
 import bezier from 'cubic-bezier';
+import '@atlaskit/polyfills/array-prototype-includes';
 
 import { ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN } from '../productProvisioningStates';
 

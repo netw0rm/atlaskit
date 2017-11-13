@@ -1,6 +1,7 @@
 import 'es6-promise/auto';
 import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
+import '@atlaskit/polyfills/array-prototype-includes';
 
 import productUsageInactive from '../mock-data/productUsageInactive.json';
 import productUsageActive from '../mock-data/productUsageActive.json';

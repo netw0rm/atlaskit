@@ -35,7 +35,7 @@ const Box = styled.div`
   ${({grow}: {grow?: number}) => grow && `flex-grow: ${grow};` || ''}
 `;
 
-const context = createStorybookContext();
+const context = createStorybookContext() as any;
 
 const exampleActions = [
   {label: 'View', handler: action('View')}

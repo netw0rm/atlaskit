@@ -13,6 +13,7 @@ import { ModalFooter } from '../src';
 
 import AppearanceDemo from './AppearanceDemo';
 import AutofocusDemo from './AutofocusDemo';
+import ContextDemo from './ContextDemo';
 import HeadFootDemo from './HeadFootDemo';
 import HeightDemo from './HeightDemo';
 import ModalDemo from './ModalDemo';
@@ -32,6 +33,7 @@ storiesOf(name, module)
   .add('animated entry/exit', () => <ShowHideDemo />)
   .add('alternative appearances', () => <AppearanceDemo />)
   .add('autofocus behaviour', () => <AutofocusDemo />)
+  .add('context', () => <ContextDemo />)
   .add('multiple modals', () => <MultipleDemo />)
   .add('form submission', () => <SubmitDemo />)
   .add('actions', () => <ModalDemo heading="Multiple Actions" actions={actions} />)

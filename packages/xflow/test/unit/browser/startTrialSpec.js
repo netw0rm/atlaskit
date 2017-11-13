@@ -9,7 +9,7 @@ import {
   DEACTIVATED,
 } from '../../../src/common/productProvisioningStates';
 import MockConfluenceXFlow from '../../../stories/providers/MockConfluenceXFlowProvider';
-import mockConfluenceStatusChecker from '../../../stories/providers/mockConfluenceStatusChecker';
+import mockConfluenceStatusChecker from '../../../stories/providers/mockProductStatusChecker';
 import RequestOrStartTrial from '../../../src/common/components/RequestOrStartTrial';
 import StartTrial from '../../../src/request-or-start-trial/components/StartTrial';
 import ContextualStartTrial from '../../../src/request-or-start-trial/components/ContextualStartTrial';

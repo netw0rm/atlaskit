@@ -2,7 +2,10 @@ import bezier from 'cubic-bezier';
 
 import {
   ACTIVE,
+  // ACTIVATING,
   INACTIVE,
+  // DEACTIVATED,
+  // UNKNOWN
 } from '../../src/common/productProvisioningStates';
 /**
  * This class will poll a specified site for a set period to check if it
@@ -12,7 +15,7 @@ const DEFAULT_POLLING_INTERVAL = 5000;
 const POLLING_TIMEOUT = 300000; // milliseconds;
 const MOCK_ACTIVATION_TIME = 60000; // milliseconds
 
-// Used to caculate progress from time non-linearly
+// Used to calculate progress from time non-linearly
 const easeOutFn = bezier(0, 1, 0, 1, 1000);
 
 let interval = null;

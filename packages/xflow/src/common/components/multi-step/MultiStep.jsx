@@ -30,11 +30,16 @@ export default class MultiStep extends Component {
 
   componentDidUpdate() {
     if (!this.props.children[this.state.step]) {
-      this.props.onComplete();
+      // note: passing the step allow to discriminate between cancel / complete
+      this.props.onComplete(this.state.step);
     }
   }
 
   nextStep = (increment = 1) => {
+    // Note: should only happen during dev when invoking incorrectly
+    if (!Number.isInteger(increment)) { throw new Error('MultiStep: nextStep(n) was passed a non-integer, check your code!'); }
+    if (!Number.isInteger(this.state.step)) { throw new Error('MultiStep: state.step is not an integer, check the "start" prop!'); }
+
     this.setState({
       step: this.state.step + increment,
     });

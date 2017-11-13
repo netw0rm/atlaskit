@@ -41,14 +41,6 @@ const messages = defineMessages({
   },
 
   // - Loading Time dialog
-  loadingProductHeading: {
-    id: 'xflow.j2jc.start-trial.loading-product-trial.heading',
-    defaultMessage: ' ',
-  },
-  loadingProductMessage: {
-    id: 'xflow.j2jc.start-trial.loading-product-trial.message',
-    defaultMessage: ' ',
-  },
   loadingProductGotoProductButton: {
     id: 'xflow.j2jc.start-trial.loading-product-trial.goto-button',
     defaultMessage: 'Create a project',
@@ -138,10 +130,7 @@ export const defaultProps = intl => ({
         </div>
       ),
 
-      loadingProductHeading: intl.formatMessage(messages.loadingProductHeading),
-      loadingProductMessage: intl.formatMessage(messages.loadingProductMessage),
       loadingProductGotoProductButton: intl.formatMessage(messages.loadingProductGotoProductButton),
-      loadingProductHeaderImage: '',
 
       alreadyStartedHeading: intl.formatMessage(messages.alreadyStartedHeading),
 

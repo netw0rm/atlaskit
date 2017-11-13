@@ -1,5 +1,15 @@
 # @atlaskit/navigation
 
+## 26.6.0 (2017-11-13)
+
+* feature; nav now works correctly with the latest Logo package, and indludes stories showing (issues closed: ak-3487) ([47f2a40](https://bitbucket.org/atlassian/atlaskit/commits/47f2a40))
+* bug fix; aK-3745-fix for color of primary icon on drawer to be N500 (issues closed: ak-3745) ([ba4bf5b](https://bitbucket.org/atlassian/atlaskit/commits/ba4bf5b))
+* feature; removing Stride product example storybook (issues closed: ak-3637, hnw-3542) ([8b7f614](https://bitbucket.org/atlassian/atlaskit/commits/8b7f614))
+* feature; removing optional type (issues closed: ak-3637, hnw-3542) ([2cd6b7c](https://bitbucket.org/atlassian/atlaskit/commits/2cd6b7c))
+* feature; adding IconAppearance type to types and utilizing for prop types (issues closed: ak-3637, hnw-3542) ([f2ad644](https://bitbucket.org/atlassian/atlaskit/commits/f2ad644))
+* feature; improving story book for Stride nav example (issues closed: ak-3637, hnw-3542) ([bf6750c](https://bitbucket.org/atlassian/atlaskit/commits/bf6750c))
+* feature; adding stories and documentation (issues closed: ak-3637, hnw-3542) ([412f003](https://bitbucket.org/atlassian/atlaskit/commits/412f003))
+* feature; add support to global nav for square icons (issues closed: ak-3637, hnw-3542) ([794f8c6](https://bitbucket.org/atlassian/atlaskit/commits/794f8c6))
 ## 26.5.1 (2017-10-31)
 
 * bug fix; Increasing allowed secondary nav items to 5 and warning rather than throwing when more exist ([d7eab92](https://bitbucket.org/atlassian/atlaskit/commits/d7eab92))

@@ -310,6 +310,11 @@ describe(name, () => {
         instance.handleTriggerClick({});
         expect(document.activeElement).toBe(instance.inputNode);
       });
+      it('should focus the select after opening', () => {
+        wrapper.setProps({ isOpen: false });
+        instance.handleTriggerClick({});
+        expect(document.activeElement).toBe(instance.triggerNode);
+      });
     });
 
     describe('handleKeyboardInteractions', () => {

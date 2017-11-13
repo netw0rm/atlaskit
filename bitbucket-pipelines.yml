@@ -23,7 +23,8 @@ pipelines:
             - export FORCE_COLOR=1
             - ./build/bin/setup.sh
             - ./build/bin/prep_for_release.sh
-            - yarn
+            # --pure-lockfile is so that yarn will not generate a new lock file in CI
+            - yarn --pure-lockfile
             - ./build/bin/release.stop.pipeline.if.other.master.running.js
             - run-p -ln "validate/package.json" "validate/typescript"
             - run-p -ln "validate/tslint" "validate/eslint"
@@ -51,7 +52,8 @@ pipelines:
           - ./build/bin/setup.sh
           # need to run this so we have access to the Bitbucket credentials during generate.changed.packages.file.pr.sh
           - ./build/bin/prep_for_release.sh
-          - yarn
+          # --pure-lockfile is so that yarn will not generate a new lock file in CI
+          - yarn --pure-lockfile
           # we have to run this after `yarn` to have access to child-process-promise
           - ./build/bin/generate.changed.packages.file.pr.sh
           # if you find yourself running into out of memory errors, we can move more steps out of this parallel step

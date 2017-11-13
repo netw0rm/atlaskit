@@ -171,6 +171,7 @@ export const defaultProps = intl => ({
   checkProductRequestFlag: () => (false),
   setProductRequestFlag: () => { /* do nothing */ },
 
+  // Grant Access has not been developed for Jira Software. Do not activate in Production.
   grantAccessEnabled: false,
 });
 

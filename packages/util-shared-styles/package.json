@@ -21,7 +21,8 @@
   "files": [
     "dist",
     "src",
-    "index.d.ts"
+    "index.d.ts",
+    "build"
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [],

@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@atlaskit/website",
+  "name": "@atlaskit/website-old",
   "version": "697.0.0",
   "description": "The AtlasKit Website",
   "scripts": {

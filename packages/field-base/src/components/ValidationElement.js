@@ -14,8 +14,10 @@ export const WarningIcon = styled.div`
 `;
 
 // Spinner needs set height to avoid height jumping
+// Also needs a margin so there is space between it and preceding text
 const SpinnerParent = styled.div`
   height: 20px;
+  margin-left: 10px;
 `;
 
 const ValidationElement = ({ isDisabled, isInvalid, isLoading }) => {

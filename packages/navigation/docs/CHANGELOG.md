@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 26.6.2 (2017-11-13)
+
+* bug fix; bumping internal dependencies to latest major version ([39a01ca](https://bitbucket.org/atlassian/atlaskit/commits/39a01ca))
 ## 26.6.1 (2017-11-13)
 
 

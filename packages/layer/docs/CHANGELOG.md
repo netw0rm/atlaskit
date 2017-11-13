@@ -1,5 +1,8 @@
 # @atlaskit/layer
 
+## 2.5.7 (2017-11-13)
+
+* bug fix; Replaces popper.js with an inlined version directly in the layer package ([54fe9c2](https://bitbucket.org/atlassian/atlaskit/commits/54fe9c2))
 ## 2.5.6 (2017-10-22)
 
 * bug fix; update styled component dependency and react peerDep ([39f3286](https://bitbucket.org/atlassian/atlaskit/commits/39f3286))

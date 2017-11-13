@@ -73,9 +73,11 @@ export const PositionerRelative = styled.div`
 `;
 
 export const Dialog = styled.div`
-  background-color: ${dialogBgColor};
-  border-radius: ${borderRadius}px;
-  box-shadow: ${boxShadow};
+  ${p => (p.isChromeless ? null : css`
+    background-color: ${dialogBgColor};
+    border-radius: ${borderRadius}px;
+    box-shadow: ${boxShadow};
+  `)}
   color: ${colors.text};
   display: flex;
   flex-direction: column;

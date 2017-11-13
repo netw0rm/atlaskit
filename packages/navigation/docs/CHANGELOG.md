@@ -2,46 +2,45 @@
 
 ## 26.6.0 (2017-11-13)
 
-* feature; nav now works correctly with the latest Logo package, and indludes stories showing (issues closed: ak-3487) ([47f2a40](https://bitbucket.org/atlassian/atlaskit/commits/47f2a40))
-* bug fix; aK-3745-fix for color of primary icon on drawer to be N500 (issues closed: ak-3745) ([ba4bf5b](https://bitbucket.org/atlassian/atlaskit/commits/ba4bf5b))
+* feature; nav now works correctly with the latest Logo package, and includes stories showing (issues closed: ak-3487) ([47f2a40](https://bitbucket.org/atlassian/atlaskit/commits/47f2a40))
+* bug fix; AK-3745-fix for color of primary icon on drawer to be N500 (issues closed: ak-3745) ([ba4bf5b](https://bitbucket.org/atlassian/atlaskit/commits/ba4bf5b))
 * feature; removing Stride product example storybook (issues closed: ak-3637, hnw-3542) ([8b7f614](https://bitbucket.org/atlassian/atlaskit/commits/8b7f614))
 * feature; removing optional type (issues closed: ak-3637, hnw-3542) ([2cd6b7c](https://bitbucket.org/atlassian/atlaskit/commits/2cd6b7c))
 * feature; adding IconAppearance type to types and utilizing for prop types (issues closed: ak-3637, hnw-3542) ([f2ad644](https://bitbucket.org/atlassian/atlaskit/commits/f2ad644))
 * feature; improving story book for Stride nav example (issues closed: ak-3637, hnw-3542) ([bf6750c](https://bitbucket.org/atlassian/atlaskit/commits/bf6750c))
 * feature; adding stories and documentation (issues closed: ak-3637, hnw-3542) ([412f003](https://bitbucket.org/atlassian/atlaskit/commits/412f003))
 * feature; add support to global nav for square icons (issues closed: ak-3637, hnw-3542) ([794f8c6](https://bitbucket.org/atlassian/atlaskit/commits/794f8c6))
+
 ## 26.5.1 (2017-10-31)
 
 * bug fix; Increasing allowed secondary nav items to 5 and warning rather than throwing when more exist ([d7eab92](https://bitbucket.org/atlassian/atlaskit/commits/d7eab92))
+
 ## 26.5.0 (2017-10-27)
 
-
 * bug fix; drawer no longer has translateX when not animating (issues closed: ak-3716) ([c65d2eb](https://bitbucket.org/atlassian/atlaskit/commits/c65d2eb))
-
 * feature; use shared HOC from item ([f966d9c](https://bitbucket.org/atlassian/atlaskit/commits/f966d9c))
+
 ## 26.4.1 (2017-10-26)
 
 * bug fix; drawers now close as expected on IE 11 (issues closed: ak-3718) ([069a82b](https://bitbucket.org/atlassian/atlaskit/commits/069a82b))
+
 ## 26.4.0 (2017-10-25)
 
 * feature; add isSelected prop to GlobalItem (issues closed: ak-3681) ([4ff347f](https://bitbucket.org/atlassian/atlaskit/commits/4ff347f))
+
 ## 26.3.0 (2017-10-24)
 
 * bug fix; countChildren returns total on non element groups ([06e226e](https://bitbucket.org/atlassian/atlaskit/commits/06e226e))
-
-
-
-
 * feature; quickSearch: passing children that do not conform to the "Group > Result" structure (issues closed: dir-428) ([bb94ae8](https://bitbucket.org/atlassian/atlaskit/commits/bb94ae8))
-
 
 ## 26.2.1 (2017-10-22)
 
-
 * bug fix; update styled-components dep and react peerDep ([6a67bf8](https://bitbucket.org/atlassian/atlaskit/commits/6a67bf8))
+
 ## 26.2.0 (2017-10-19)
 
 * feature; quickSearch result components: allow React elements to be passed to the text prop (issues closed: dir-429) ([f9d495d](https://bitbucket.org/atlassian/atlaskit/commits/f9d495d))
+
 ## 26.1.1 (2017-10-19)
 
 * bug fix; partially fix for console errors for navigation component ([b8a1568](https://bitbucket.org/atlassian/atlaskit/commits/b8a1568))
@@ -49,18 +48,17 @@
 ## 26.1.0 (2017-10-18)
 
 * feature; add callbacks around nav's collapse/expand animation (issues closed: ak-3030) ([dbdf710](https://bitbucket.org/atlassian/atlaskit/commits/dbdf710))
+
 ## 26.0.8 (2017-10-17)
 
 * bug fix; fixing selected item text colour for settings and siteSettings nav themes (issues closed: ak-3653) ([cd1daed](https://bitbucket.org/atlassian/atlaskit/commits/cd1daed))
 ## 26.0.7 (2017-10-16)
 
 * bug fix; padding in nav items fixed (issues closed: #ak-3636) ([ceb43e8](https://bitbucket.org/atlassian/atlaskit/commits/ceb43e8))
+
 ## 26.0.6 (2017-10-15)
 
 * bug fix; swap selected and active text color for settings and siteSettings nav themes (issues closed: ak-3653) ([ab9303d](https://bitbucket.org/atlassian/atlaskit/commits/ab9303d))
-
-
-
 
 ## 26.0.5 (2017-10-13)
 

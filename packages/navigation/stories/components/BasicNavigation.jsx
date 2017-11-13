@@ -122,7 +122,7 @@ export default class BasicNavigation extends PureComponent {
         trigger={
           <AkGlobalItem>
             <Tooltip position="right" description="User profile">
-              <AkAvatar size="small" src={emmaAvatar} borderColor="default" />
+              <AkAvatar size="small" src={emmaAvatar} borderColor="transparent" />
             </Tooltip>
           </AkGlobalItem>
         }

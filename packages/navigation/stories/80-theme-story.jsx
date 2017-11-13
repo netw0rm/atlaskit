@@ -79,7 +79,7 @@ const ExampleContainerNavigation = ({ theme, themeName, isCollapsed = false }) =
         icon={<AkAvatar
           presence="online"
           size="small"
-          borderColor="default"
+          borderColor="transparent"
         />}
         text="Another item"
         subText="Part of group 2"
@@ -157,7 +157,7 @@ const ExampleGlobalNavigation = ({ theme }) => (
         ]}
       >{isOpen => (
         <AkGlobalItem isSelected={isOpen}>
-          <AkAvatar size="small" borderColor="default" />
+          <AkAvatar size="small" borderColor="transparent" />
         </AkGlobalItem>
       )}</SelectableDropdownMenu>,
     ]}

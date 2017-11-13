@@ -303,7 +303,7 @@ export default class ConfluenceHome extends PureComponent {
         trigger={isOpen => (
           <AkGlobalItem href="" isSelected={isOpen}>
             <Tooltip position="right" description="Your profile and settings">
-              <Avatar size="small" src={emmaAvatar} borderColor="default" />
+              <Avatar size="small" src={emmaAvatar} borderColor="transparent" />
             </Tooltip>
           </AkGlobalItem>
           )}

@@ -38,6 +38,7 @@ function getPresence() {
   switch (true) {
     case chance < 0.25: return 'busy';
     case chance < 0.5: return 'online';
+    case chance < 0.75: return 'focus';
     default: return 'offline';
   }
 }
@@ -102,10 +103,14 @@ storiesOf(name, module)
       <h2>Presence</h2>
 
       <h5>Presence Types</h5>
-      <Note>Supports &quot;busy&quot;, &quot;offline&quot;, and &quot;online&quot;</Note>
+      <Note>
+        Supports &quot;busy&quot;, &quot;focus&quot;,
+        &quot;offline&quot;, and &quot;online&quot;
+      </Note>
       <AvatarRow>
         <DefaultAvatar src={avatarSource} size="large" />
         <DefaultAvatar src={avatarSource} size="large" presence="busy" />
+        <DefaultAvatar src={avatarSource} size="large" presence="focus" />
         <DefaultAvatar src={avatarSource} size="large" presence="offline" />
         <DefaultAvatar src={avatarSource} size="large" presence="online" />
       </AvatarRow>
@@ -143,10 +148,14 @@ storiesOf(name, module)
       <h2>Presence</h2>
 
       <h5>Presence Types</h5>
-      <Note>Supports &quot;busy&quot;, &quot;offline&quot;, and &quot;online&quot;</Note>
+      <Note>
+        Supports &quot;busy&quot;, &quot;focus&quot;,
+        &quot;offline&quot;, and &quot;online&quot;
+      </Note>
       <AvatarRow>
         <SquareAvatar src={nucleusImage} size="large" />
         <SquareAvatar src={nucleusImage} size="large" presence="busy" />
+        <SquareAvatar src={nucleusImage} size="large" presence="focus" />
         <SquareAvatar src={nucleusImage} size="large" presence="offline" />
         <SquareAvatar src={nucleusImage} size="large" presence="online" />
       </AvatarRow>

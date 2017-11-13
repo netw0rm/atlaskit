@@ -7,7 +7,6 @@ LERNA_LOC="$BIN_PATH/lerna"
 PSA="$BIN_PATH/psa"
 CHALK="$BIN_PATH/chalk"
 VALIDATE_LOC="$BIN_PATH/validate-commit-msg"
-BIN_FILES=$(ls $BIN_PATH)
 
 echo "BIN PATH $BIN_PATH"
 echo "CHALK $CHALK"

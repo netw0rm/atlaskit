@@ -3,7 +3,7 @@ import 'whatwg-fetch';
 
 import { getCurrentUsername, queryUsername, getInstanceName, getAvatarUrl } from './../common/tenantContext';
 
-export const NOTIFY_ENDPOINT_EAST = 'https://xflow.us-east-1.prod.public.atl-paas.net/notify-users-of-product-access';
+export const NOTIFY_ENDPOINT_EAST = 'https://api-private.atlassian.com/xflow/notify-users-of-product-access';
 
 function getAtlassianAccountId({ attributes: { attributes } }) {
   if (!attributes) return '';

@@ -113,7 +113,7 @@ class ConfirmRequest extends Component {
                 </Lozenge>
               </RequestTrialLozengeDiv>
             </RequestTrialHeader>
-            <RequestTrialImage src={contextInfo && contextInfo.contextualImage ? contextInfo.contextualImage : image} alt="files" />
+            <RequestTrialImage src={(contextInfo && contextInfo.contextualImage) ? contextInfo.contextualImage : image} alt="files" />
           </div>
         }
         footer={

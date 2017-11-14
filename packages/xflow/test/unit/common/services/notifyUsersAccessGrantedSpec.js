@@ -11,9 +11,6 @@ import userAdminResponse from '../mock-data/isUserTrustedSiteAdmin.json';
 import accessgrantedJiraUsersResponse from '../mock-data/accessgrantedJiraUsers.json';
 import accessgrantedNoUsersResponse from '../mock-data/accessgrantedNoUsers.json';
 import jiraUsersResponse from '../mock-data/jiraUsers.json';
-// import jiraSoftwareUsersResponse from '../mock-data/jiraSoftwareUsers.json';
-// import jiraCoreUsersResponse from '../mock-data/jiraCoreUsers.json';
-// import jiraServiceDeskUsersResponse from '../mock-data/jiraServiceDeskUsers.json';
 
 const mockNotifyEastEndpointWithResponse = (response) => {
   fetchMock.mock(

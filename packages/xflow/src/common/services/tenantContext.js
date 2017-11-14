@@ -66,8 +66,6 @@ export const isUserTrusted = username =>
     return isSiteAdmin;
   });
 
-export const getUserDisplayName = username =>
-  queryUsername(username || getCurrentUsername()).then(data => data.displayName || '');
 
 export const getInstanceName = () => window.location.hostname;
 

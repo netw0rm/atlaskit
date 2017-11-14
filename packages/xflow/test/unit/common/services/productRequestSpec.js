@@ -23,7 +23,6 @@ describe('productRequest', () => {
     tenantContext.getCloudId = jest.fn().mockReturnValue(Promise.resolve('some-cloud-id'));
     tenantContext.getCurrentUsername = jest.fn().mockReturnValue('exampleUser');
     tenantContext.getInstanceName = jest.fn().mockReturnValue('example.atlassian.net');
-    tenantContext.getUserDisplayName = jest.fn().mockReturnValue('example user');
     tenantContext.queryUsername = jest.fn().mockReturnValue(Promise.resolve({}));
   });
 

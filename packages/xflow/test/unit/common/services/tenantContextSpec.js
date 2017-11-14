@@ -4,7 +4,6 @@ import fetchMock from 'fetch-mock';
 
 import {
   isUserTrusted,
-  getUserDisplayName,
   getCloudId,
   JIRA_CLOUD_ID_URL,
   CONFLUENCE_CLOUD_ID_URL,
@@ -12,7 +11,6 @@ import {
 import jiraAdminResponse from '../mock-data/isUserTrustedJiraAdmin.json';
 import nonAdminResponse from '../mock-data/isUserTrustedNonAdmin.json';
 import siteAdminResponse from '../mock-data/isUserTrustedSiteAdmin.json';
-import queryUsernameResponse from '../mock-data/queryUsername.json';
 
 const TEST_USERNAME = 'admin%40acme.org';
 
@@ -54,39 +52,6 @@ describe('tenantContext', () => {
       } catch (e) {
         expect(e).toEqual(
           new Error('Unable to retrieve cloud id. Status: 500')
-        );
-      }
-    });
-  });
-
-  describe('getUserDisplayName', () => {
-    it('should return the expected display name', async () => {
-      const EXPECTED_DISPLAY_NAME = 'Alex Smith';
-      mockEndpointWithResponse(queryUsernameResponse);
-      const result = await getUserDisplayName(TEST_USERNAME);
-      return expect(result).toBe(EXPECTED_DISPLAY_NAME);
-    });
-
-    it('will reject with an error if the endpoint returns a 404', async () => {
-      expect.assertions(1);
-      mockEndpointWithFailureStatus(404);
-      try {
-        await getUserDisplayName(TEST_USERNAME);
-      } catch (e) {
-        expect(e).toEqual(
-          new Error('Unable to retrieve information about a user. Status: 404')
-        );
-      }
-    });
-
-    it('will reject with an error if the endpoint returns a 500', async () => {
-      expect.assertions(1);
-      mockEndpointWithFailureStatus(500);
-      try {
-        await getUserDisplayName(TEST_USERNAME);
-      } catch (e) {
-        expect(e).toEqual(
-          new Error('Unable to retrieve information about a user. Status: 500')
         );
       }
     });

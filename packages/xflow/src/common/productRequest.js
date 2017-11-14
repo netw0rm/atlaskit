@@ -10,8 +10,7 @@ import {
   queryUsername,
 } from './tenantContext';
 
-export const PRODUCT_REQUEST_ENDPOINT_EAST =
-  'https://api-private.atlassian.com/xflow/request-admins-for-product-trial';
+import { productRequestEndpoint } from './xflowService';
 
 async function getCurrentUserAvatarUrl() {
   const currentUser = getCurrentUsername();
@@ -31,13 +30,13 @@ export default (productKey) => async (comment) => {
     const displayName = await getUserDisplayName();
     const instanceName = getInstanceName();
 
-    const response = await fetch(PRODUCT_REQUEST_ENDPOINT_EAST, {
+    const response = await fetch(productRequestEndpoint(), {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        credentials: 'include',
         cloud_id: cloudId,
         cloud_instance: instanceName,
         product_key: productKey,

@@ -3,14 +3,12 @@ import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
 
 import * as tenantContext from '../../../src/common/tenantContext';
-
-import productRequest, {
-  PRODUCT_REQUEST_ENDPOINT_EAST,
-} from '../../../src/common/productRequest';
+import { productRequestEndpoint } from '../../../src/common/xflowService';
+import productRequest from '../../../src/common/productRequest';
 
 const mockRequestTrialEastEndpointWithResponse = (response) => {
   fetchMock.mock(
-    PRODUCT_REQUEST_ENDPOINT_EAST,
+    productRequestEndpoint(),
     { body: response },
     {
       method: 'POST',
@@ -51,8 +49,8 @@ describe('productRequest', () => {
     );
   });
 
-  it('should return a rejected promise if PRODUCT_REQUEST_ENDPOINT_EAST returns a 500 response', async () => {
-    fetchMock.mock(PRODUCT_REQUEST_ENDPOINT_EAST, 500);
+  it('should return a rejected promise if productRequestEndpoint returns a 500 response', async () => {
+    fetchMock.mock(productRequestEndpoint, 500);
     expect.assertions(1);
     const requestConfluenceTrial = productRequest('confluence.ondemand');
 

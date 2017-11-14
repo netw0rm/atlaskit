@@ -3,7 +3,6 @@
 
 import 'es6-promise/auto';
 import 'whatwg-fetch';
-import getPageMeta from './getPageMeta';
 
 const SITE_ADMINS_GROUP_NAME = 'site-admins';
 
@@ -11,11 +10,10 @@ export const JIRA_CLOUD_ID_URL = '/rest/product-fabric/1.0/cloud/id';
 export const CONFLUENCE_CLOUD_ID_URL = '/wiki/rest/product-fabric/1.0/cloud/id';
 const DEFAULT_AVATAR_URL = 'https://i2.wp.com/avatar-cdn.atlassian.com/default/96?ssl=1';
 const AVATAR_REGEXP = /^https:\/\/avatar-cdn.atlassian.com\/[A-Za-z0-9]+/;
-export const getCurrentUsername = () => getPageMeta('ajs-remote-user') || getPageMeta('remote-username');
 
 /**
  * Gets the largest avatar url
- * @param avatarUrls avatar urls, usually from queryUsername response
+ * @param avatarUrls avatar urls, usually from fetchCurrentUser() response
  * @returns urls
  */
 export const getAvatarUrl = ({ avatarUrls }) => {
@@ -60,28 +58,6 @@ export const fetchCurrentUserDisplayName = () =>
 export const fetchCurrentUserAvatarUrl = () =>
   currentUserPromise.then(getAvatarUrl);
 
-/**
- * Query the user endpoint and retrieve information relating to the specified username.
- *
- * Returns a promise with data. If a problem occurs, reject the promise.
- */
-export const queryUsername = username =>
-  fetch(
-    `/rest/api/latest/user?expand=groups&username=${encodeURIComponent(
-      username || getCurrentUsername()
-    )}`,
-    {
-      credentials: 'same-origin',
-    }
-  ).then((response) => {
-    if (response.status !== 200) {
-      throw new Error(
-        `Unable to retrieve information about a user. Status: ${response.status}`
-      );
-    }
-
-    return response.json();
-  });
 
 export const isCurrentUserSiteAdmin = () =>
   fetchCurrentUser()

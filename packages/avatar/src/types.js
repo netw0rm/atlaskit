@@ -58,7 +58,7 @@ export type AvatarPropTypesBase = {
   /** Assign specific tabIndex order to the underlying node. */
   tabIndex?: number,
   /** Pass target down to the anchor, if href is provided. */
-  target?: '_blank' | '_self',
+  target?: '_blank' | '_self' | '_top' | '_parent',
 }
 
 export type AvatarPropTypes = AvatarPropTypesBase & {

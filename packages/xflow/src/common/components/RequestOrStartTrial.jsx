@@ -37,6 +37,7 @@ class RequestOrStartTrial extends Component {
     checkProductRequestFlag: PropTypes.func,
     contextInfo: PropTypes.shape({
       contextualImage: PropTypes.string,
+      contextualHeading: PropTypes.string,
       contextualMessage: PropTypes.string,
       reactivateCTA: PropTypes.string,
       trialCTA: PropTypes.string,

@@ -278,7 +278,8 @@ describe('@atlaskit/xflow', () => {
                   {...defaultRequestOrStartTrialProps}
                   onTrialActivating={() => true}
                   contextInfo={{
-                    contextualMessage: 'Project pages are a feature powered by Confluence',
+                    contextualHeading: 'Project pages are powered by Confluence',
+                    contextualMessage: 'Create, share, and collaborate on all your project docs in one place, with Confluence pages.',
                     reactivateCTA: 'Reactivate Confluence',
                     trialCTA: 'Try Confluence free for 30 days',
                   }}
@@ -317,7 +318,8 @@ describe('@atlaskit/xflow', () => {
                 <RequestOrStartTrial
                   {...defaultRequestOrStartTrialProps}
                   contextInfo={{
-                    contextualMessage: 'Project pages are a feature powered by Confluence',
+                    contextualHeading: 'Project pages are powered by Confluence',
+                    contextualMessage: 'Create, share, and collaborate on all your project docs in one place, with Confluence pages.',
                     reactivateCTA: 'Reactivate Confluence',
                     trialCTA: 'Try Confluence free for 30 days',
                   }}

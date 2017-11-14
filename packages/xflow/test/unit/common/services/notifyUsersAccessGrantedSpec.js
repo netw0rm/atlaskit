@@ -7,7 +7,7 @@ import * as tenantContext from '../../../../src/common/services/tenantContext';
 import { notifyAccessEndpoint } from '../../../../src/common/services/xflowService';
 import notifyUsersAccessGranted from '../../../../src/common/services/notifyUsersAccessGranted';
 
-import userAdminResponse from '../mock-data/isUserTrustedSiteAdmin.json';
+import userAdminResponse from '../mock-data/fetchUserAndGroupsSiteAdmin.json';
 import accessgrantedJiraUsersResponse from '../mock-data/accessgrantedJiraUsers.json';
 import accessgrantedNoUsersResponse from '../mock-data/accessgrantedNoUsers.json';
 import jiraUsersResponse from '../mock-data/jiraUsers.json';

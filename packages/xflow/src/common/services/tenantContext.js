@@ -1,6 +1,9 @@
+/** Utils to query infos about the current tenant = site
+ */
+
 import 'es6-promise/auto';
 import 'whatwg-fetch';
-import getMeta from './getMeta';
+import getPageMeta from './getPageMeta';
 
 const SITE_ADMINS_GROUP_NAME = 'site-admins';
 
@@ -8,7 +11,7 @@ export const JIRA_CLOUD_ID_URL = '/rest/product-fabric/1.0/cloud/id';
 export const CONFLUENCE_CLOUD_ID_URL = '/wiki/rest/product-fabric/1.0/cloud/id';
 const DEFAULT_AVATAR_URL = 'https://i2.wp.com/avatar-cdn.atlassian.com/default/96?ssl=1';
 const AVATAR_REGEXP = /^https:\/\/avatar-cdn.atlassian.com\/[A-Za-z0-9]+/;
-export const getCurrentUsername = () => getMeta('ajs-remote-user') || getMeta('remote-username');
+export const getCurrentUsername = () => getPageMeta('ajs-remote-user') || getPageMeta('remote-username');
 
 /**
  * Gets the largest avatar url
@@ -46,13 +49,14 @@ export const queryUsername = username =>
       throw new Error(
         `Unable to retrieve information about a user. Status: ${response.status}`
       );
-    } else {
-      return response.json();
     }
+
+    return response.json();
   });
 
 export const isUserTrusted = username =>
-  queryUsername(username || getCurrentUsername()).then((data) => {
+  queryUsername(username || getCurrentUsername())
+  .then((data) => {
     let isSiteAdmin;
     try {
       isSiteAdmin = data.groups.items.some(group => group.name === SITE_ADMINS_GROUP_NAME);

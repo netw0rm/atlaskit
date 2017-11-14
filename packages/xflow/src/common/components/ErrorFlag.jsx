@@ -33,8 +33,8 @@ class ErrorFlagBase extends Component {
     }
     return (
       <FlagGroup onDismissed={onDismissed}>
-        {showFlag ?
-          <Flag
+        {showFlag
+          ? <Flag
             icon={Icon}
             actions={flagActions}
             id="ErrorFlag"

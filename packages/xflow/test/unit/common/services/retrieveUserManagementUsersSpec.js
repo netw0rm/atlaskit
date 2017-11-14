@@ -7,14 +7,14 @@ import retrieveUserManagementUsers, {
     JIRA_CORE_GROUP,
     JIRA_SERVICE_DESK_GROUP,
     SITE_ADMINS_GROUP,
-} from '../../../src/common/retrieveUserManagementUsers';
+} from '../../../../src/common/services/retrieveUserManagementUsers';
 
-import groupSearch from './mock-data/groupSearch.json';
-import jiraUsersResponse from './mock-data/jiraUsers.json';
-import jiraSoftwareUsersResponse from './mock-data/jiraSoftwareUsers.json';
-import jiraCoreUsersResponse from './mock-data/jiraCoreUsers.json';
-import jiraServiceDeskUsersResponse from './mock-data/jiraServiceDeskUsers.json';
-import missingJiraCoreGroupResponse from './mock-data/missingJiraCoreGroup.json';
+import groupSearch from '../mock-data/groupSearch.json';
+import jiraUsersResponse from '../mock-data/jiraUsers.json';
+import jiraSoftwareUsersResponse from '../mock-data/jiraSoftwareUsers.json';
+import jiraCoreUsersResponse from '../mock-data/jiraCoreUsers.json';
+import jiraServiceDeskUsersResponse from '../mock-data/jiraServiceDeskUsers.json';
+import missingJiraCoreGroupResponse from '../mock-data/missingJiraCoreGroup.json';
 
 const GROUPS_ENDPOINT = '/admin/rest/um/1/group/search';
 
@@ -25,8 +25,6 @@ describe('retrieveUserManagementUsers', () => {
   let retrieveJiraUsers;
 
   beforeEach(() => {
-    fetchMock.restore();
-
     retrieveJiraUsers = retrieveUserManagementUsers([
       JIRA_SOFTWARE_GROUP,
       JIRA_CORE_GROUP,
@@ -34,6 +32,7 @@ describe('retrieveUserManagementUsers', () => {
       SITE_ADMINS_GROUP,
     ]);
   });
+  afterEach(fetchMock.restore);
 
   /**
    * test scenario where there are no JIRA users (i.e. all site-admin instance)`

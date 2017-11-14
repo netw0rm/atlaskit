@@ -1,5 +1,6 @@
 import 'es6-promise/auto';
 import 'whatwg-fetch';
+import '@atlaskit/polyfills/array-prototype-includes';
 
 // This aligns with User Management's pagination value
 const PAGINATION = 30;
@@ -15,7 +16,7 @@ const usernamesEndpoint = (groupName, startIndex) =>
   `/admin/rest/um/1/group/user/direct?groupname=${groupName}` +
   `&activeFilter=active&start-index=${startIndex}&max-results=${PAGINATION}`;
 
-const CACHE_TIMEOUT = 100000; // 100 seconds
+const CACHE_TIMEOUT_MS = 100 * 1000;
 const cache = new Map();
 
 const resolveGroupnameErrors = async response => {
@@ -25,7 +26,7 @@ const resolveGroupnameErrors = async response => {
     // if this request returns with 404 error "Group does not exist", return an empty array
     if (result.errors) {
       result.errors.forEach(error => {
-        if (error.message && error.message.indexOf('does not exist') !== -1) {
+        if (error.message && error.message.includes('does not exist')) {
           resolvedErrorResponse = [];
         }
       });
@@ -35,9 +36,9 @@ const resolveGroupnameErrors = async response => {
   if (resolvedErrorResponse === null) {
     // if unhandled error, throw
     throw new Error(`Unable to retrieve active users. Status: ${response.status}`);
-  } else {
-    return resolvedErrorResponse;
   }
+
+  return resolvedErrorResponse;
 };
 
 /**
@@ -131,7 +132,7 @@ export default validGroups => {
       // Avoid fetching twice.
       if (cache.has(fetchGroup)) {
         const data = cache.get(fetchGroup);
-        if (Date.now() - data.timestamp < CACHE_TIMEOUT) {
+        if (Date.now() - data.timestamp < CACHE_TIMEOUT_MS) {
           return await data.promise;
         }
         cache.delete(fetchGroup);

@@ -1,22 +1,23 @@
 import 'es6-promise/auto';
 import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
+import '@atlaskit/polyfills/array-prototype-includes';
 
-import productUsageInactive from './mock-data/productUsageInactive.json';
-import productUsageActive from './mock-data/productUsageActive.json';
+import productUsageInactive from '../mock-data/productUsageInactive.json';
+import productUsageActive from '../mock-data/productUsageActive.json';
 
-import pricingInactive from './mock-data/pricingInactiveConfluence.json';
-import pricingActivating from './mock-data/pricingActivatingConfluence.json';
-import pricingActive from './mock-data/pricingActiveConfluence.json';
+import pricingInactive from '../mock-data/pricingInactiveConfluence.json';
+import pricingActivating from '../mock-data/pricingActivatingConfluence.json';
+import pricingActive from '../mock-data/pricingActiveConfluence.json';
 
-import prospectivePricesInactive from './mock-data/prospectivePricesInactiveConfluence.json';
-import prospectivePricesDeactivated from './mock-data/prospectivePricesDeactivatedConfluence.json';
+import prospectivePricesInactive from '../mock-data/prospectivePricesInactiveConfluence.json';
+import prospectivePricesDeactivated from '../mock-data/prospectivePricesDeactivatedConfluence.json';
 
 import productStatusChecker, {
   PRODUCT_USAGE_URL,
   PRICING_URL,
   PROSPECTIVE_PRICES_URL,
-} from '../../../src/common/productStatusChecker';
+} from '../../../../src/common/services/productStatusChecker';
 
 import {
   ACTIVE,
@@ -24,7 +25,7 @@ import {
   INACTIVE,
   DEACTIVATED,
   UNKNOWN,
-} from '../../../src/common/productProvisioningStates';
+} from '../../../../src/common/productProvisioningStates';
 
 jest.useFakeTimers();
 
@@ -73,10 +74,10 @@ describe('productStatusChecker', () => {
 
   beforeEach(() => {
     jest.clearAllTimers();
-    fetchMock.restore();
 
     confluenceStatusChecker = productStatusChecker('confluence.ondemand');
   });
+  afterEach(fetchMock.restore);
 
   afterEach(() => {
     confluenceStatusChecker.reset();

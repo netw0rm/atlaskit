@@ -4,12 +4,10 @@ import fetchMock from 'fetch-mock';
 
 import optOutRequestTrialFeature, {
   optOutEndpoint,
-} from '../../../src/common/optOutRequestTrialFeature';
+} from '../../../../src/common/services/optOutRequestTrialFeature';
 
 describe('optOutRequestTrialFeature', () => {
-  beforeEach(() => {
-    fetchMock.restore();
-  });
+  afterEach(fetchMock.restore);
 
   it('should return a resolved promise with no value if the endpoint returns a 204 response', async () => {
     fetchMock.mock(optOutEndpoint, 204);

@@ -2,19 +2,19 @@ import React from 'react';
 import { ConfluenceLogo } from '@atlaskit/logo';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { isUserTrusted } from '../common/tenantContext';
+import { isUserTrusted } from '../common/services/tenantContext';
 import productXFlowProviderFactory from '../common/productXFlowProviderFactory';
-import { setAlreadyRequestedFlag, getAlreadyRequestedFlag } from '../common/alreadyRequestedFlag';
-import productRequest from '../common/productRequest';
-import startProductTrial from '../common/startProductTrial';
-import productStatusChecker from '../common/productStatusChecker';
-import grantAccessToUsers from '../common/grantAccessToUsers';
+import { setAlreadyRequestedFlag, getAlreadyRequestedFlag } from '../common/services/alreadyRequestedFlag';
+import productRequest from '../common/services/productRequest';
+import startProductTrial from '../common/services/startProductTrial';
+import productStatusChecker from '../common/services/productStatusChecker';
+import grantAccessToUsers from '../common/services/grantAccessToUsers';
 import retrieveUserManagementUsers, {
     JIRA_SOFTWARE_GROUP,
     JIRA_CORE_GROUP,
     JIRA_SERVICE_DESK_GROUP,
     SITE_ADMINS_GROUP,
-} from '../common/retrieveUserManagementUsers';
+} from '../common/services/retrieveUserManagementUsers';
 
 const VALID_GROUPS = [
   JIRA_SOFTWARE_GROUP,

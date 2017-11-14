@@ -1,14 +1,15 @@
 import 'es6-promise/auto';
 import 'whatwg-fetch';
 import bezier from 'cubic-bezier';
+import '@atlaskit/polyfills/array-prototype-includes';
 
-import { ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN } from './productProvisioningStates';
+import { ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN } from '../productProvisioningStates';
 
 const DEFAULT_POLLING_INTERVAL = 5000;
 const POLLING_TIMEOUT = 300000; // 5 minutes, milliseconds;
 const PROGRESS_COMPLETE_DELAY = 20000;
 
-// Used to caculate progress from time non-linearly
+// Used to calculate progress from time non-linearly
 const easeOutFn = bezier(0.075, 0.82, 0.165, 1.0, 1000);
 
 export const PRODUCT_USAGE_URL = '/admin/rest/billing/api/instance/product-usage';

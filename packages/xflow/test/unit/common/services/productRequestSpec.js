@@ -2,11 +2,11 @@ import 'es6-promise/auto';
 import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
 
-import * as tenantContext from '../../../src/common/tenantContext';
+import * as tenantContext from '../../../../src/common/services/tenantContext';
 
 import productRequest, {
   PRODUCT_REQUEST_ENDPOINT_EAST,
-} from '../../../src/common/productRequest';
+} from '../../../../src/common/services/productRequest';
 
 const mockRequestTrialEastEndpointWithResponse = (response) => {
   fetchMock.mock(
@@ -21,7 +21,6 @@ const mockRequestTrialEastEndpointWithResponse = (response) => {
 
 describe('productRequest', () => {
   beforeEach(() => {
-    fetchMock.restore();
     tenantContext.getAvatarUrl = jest.fn().mockReturnValue('some-avatar-url');
     tenantContext.getCloudId = jest.fn().mockReturnValue(Promise.resolve('some-cloud-id'));
     tenantContext.getCurrentUsername = jest.fn().mockReturnValue('exampleUser');
@@ -29,6 +28,8 @@ describe('productRequest', () => {
     tenantContext.getUserDisplayName = jest.fn().mockReturnValue('example user');
     tenantContext.queryUsername = jest.fn().mockReturnValue(Promise.resolve({}));
   });
+
+  afterEach(fetchMock.restore);
 
   it('should return a resolved promise with no value if the endpoint returns a 200 response', async () => {
     const xflowResponse = { message: 'request received' };

@@ -1,7 +1,7 @@
 import 'es6-promise/auto';
 import 'whatwg-fetch';
 
-import { getCurrentUsername, queryUsername, getInstanceName, getAvatarUrl } from './../common/tenantContext';
+import { getCurrentUsername, queryUsername, getInstanceName, getAvatarUrl } from './tenantContext';
 
 export const NOTIFY_ENDPOINT_EAST = 'https://xflow.us-east-1.prod.public.atl-paas.net/notify-users-of-product-access';
 

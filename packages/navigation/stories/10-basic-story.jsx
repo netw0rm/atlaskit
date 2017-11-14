@@ -381,7 +381,6 @@ storiesOf(name, module)
           style={{
             backgroundColor: 'red',
             position: 'relative',
-            zIndex: 0,
             height: 200,
             textAlign: 'right',
           }}

@@ -107,6 +107,8 @@ storiesOf(name, module)
       <InlineEdit
         label="Read-only"
         readView="Can't touch this"
+        onConfirm={() => {}}
+        onCancel={() => {}}
       />
     </div>
   ))
@@ -116,6 +118,8 @@ storiesOf(name, module)
         label="Read-only"
         readView="Can't touch this"
         isLabelHidden
+        onConfirm={() => {}}
+        onCancel={() => {}}
       />
     </div>
   ))
@@ -126,6 +130,8 @@ storiesOf(name, module)
         label="full-hover"
         readView="Hover all the way"
         editView="Not an inspiring edit view"
+        onConfirm={() => {}}
+        onCancel={() => {}}
       />
     </div>
   ))
@@ -157,6 +163,9 @@ storiesOf(name, module)
         readView="Can't touch this"
         isEditing
         isWaiting
+        onConfirm={() => {}}
+        onCancel={() => {}}
+        onEditRequested={() => {}}
       />
     </div>
   ))
@@ -190,6 +199,8 @@ storiesOf(name, module)
             <Tag text="Watermelon" />
           </Group>
         )}
+        onConfirm={() => {}}
+        onCancel={() => {}}
       />
     </div>
   ))
@@ -228,6 +239,8 @@ storiesOf(name, module)
           </div>
         )}
         editView="This is a terrible edit view"
+        onConfirm={() => {}}
+        onCancel={() => {}}
       />
     </div>
   ))
@@ -236,6 +249,7 @@ storiesOf(name, module)
       <ModalDialog
         width="200px"
         isOpen
+        onClose={() => {}}
       >
         <div style={{ height: '200px' }}>
           <TextInlineEdit

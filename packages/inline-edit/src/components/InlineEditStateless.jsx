@@ -221,6 +221,9 @@ export default class InlineEdit extends PureComponent {
   }
 
   render() {
+    const showEditView = this.shouldShowEditView();
+    const displayFullWidth = showEditView || this.props.isFitContainerWidthReadView;
+
     return (
       <RootWrapper isEditing={this.props.isEditing}>
         <div style={{ position: (this.props.isLabelHidden ? 'absolute' : 'relative') }}>
@@ -242,8 +245,9 @@ export default class InlineEdit extends PureComponent {
             onMouseEnter={this.onFieldBaseWrapperMouseEnter}
             onMouseLeave={this.onFieldBaseWrapperMouseLeave}
             onMouseDown={this.onMouseDown}
+            displayFullWidth={displayFullWidth}
           >
-            {this.shouldShowEditView() ? this.renderEditView() : this.renderReadView()}
+            {showEditView ? this.renderEditView() : this.renderReadView()}
           </FieldBaseWrapper>
           {!this.shouldRenderSpinner() ? this.renderActionButtons() : null}
         </ContentWrapper>

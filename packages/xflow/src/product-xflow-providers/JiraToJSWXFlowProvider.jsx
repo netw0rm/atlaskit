@@ -1,7 +1,7 @@
 import React from 'react';
 import { JiraSoftwareLogo } from '@atlaskit/logo';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { isUserTrusted } from '../common/services/tenantContext';
+import { isCurrentUserSiteAdmin } from '../common/services/tenantContext';
 import productXFlowProviderFactory from '../common/productXFlowProviderFactory';
 import grantAccessToUsers from '../common/services/grantAccessToUsers';
 import productStatusChecker from '../common/services/productStatusChecker';
@@ -150,8 +150,8 @@ export const defaultProps = intl => ({
       ),
     },
   },
-  canCurrentUserAddProduct: isUserTrusted,
-  canCurrentUserGrantAccessToProducts: isUserTrusted,
+  canCurrentUserAddProduct: isCurrentUserSiteAdmin,
+  canCurrentUserGrantAccessToProducts: isCurrentUserSiteAdmin,
 
   requestTrialAccess: async () => {},
   requestTrialAccessWithNote: async () => {},

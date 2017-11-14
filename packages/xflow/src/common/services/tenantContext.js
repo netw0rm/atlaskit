@@ -83,12 +83,12 @@ export const queryUsername = username =>
     return response.json();
   });
 
-export const isUserTrusted = username =>
-  queryUsername(username || getCurrentUsername())
-  .then((data) => {
+export const isCurrentUserSiteAdmin = () =>
+  fetchCurrentUser()
+  .then(user => {
     let isSiteAdmin;
     try {
-      isSiteAdmin = data.groups.items.some(group => group.name === SITE_ADMINS_GROUP_NAME);
+      isSiteAdmin = user.groups.items.some(group => group.name === SITE_ADMINS_GROUP_NAME);
     } catch (e) {
       isSiteAdmin = false;
     }

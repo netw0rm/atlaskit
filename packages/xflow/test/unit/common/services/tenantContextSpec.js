@@ -3,8 +3,9 @@ import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
 
 import {
-  isUserTrusted,
+  isCurrentUserSiteAdmin,
   fetchCloudId,
+  fetchCurrentUser,
   JIRA_CLOUD_ID_URL,
   CONFLUENCE_CLOUD_ID_URL,
 } from '../../../../src/common/services/tenantContext';
@@ -12,20 +13,19 @@ import jiraAdminResponse from '../mock-data/fetchUserAndGroupsJiraAdmin.json';
 import nonAdminResponse from '../mock-data/fetchUserAndGroupsNonAdmin.json';
 import siteAdminResponse from '../mock-data/fetchUserAndGroupsSiteAdmin.json';
 
-const TEST_USERNAME = 'admin%40acme.org';
-
 const mockEndpointWithResponse = (response) => {
-  const url = `/rest/api/latest/user?expand=groups&username=${encodeURIComponent(TEST_USERNAME)}`;
+  const url = '/rest/api/2/myself?expand=groups';
   fetchMock.mock(url, response, { method: 'GET' });
 };
 
 const mockEndpointWithFailureStatus = (status) => {
-  const url = `/rest/api/latest/user?expand=groups&username=${encodeURIComponent(TEST_USERNAME)}`;
+  const url = '/rest/api/2/myself?expand=groups';
   fetchMock.mock(url, status);
 };
 
 describe('tenantContext', () => {
   afterEach(fetchMock.restore);
+  afterEach(() => fetchCurrentUser.resetCache());
 
   describe('fetchCloudId()', () => {
     it('should return the expected cloud id from Jira', async () => {
@@ -57,22 +57,22 @@ describe('tenantContext', () => {
     });
   });
 
-  describe('isUserTrusted', () => {
-    it('will return false if they are only a Jira administrator', async () => {
+  describe('isCurrentUserSiteAdmin', () => {
+    it('will return false if he/she is only a Jira administrator', async () => {
       mockEndpointWithResponse(jiraAdminResponse);
-      const result = await isUserTrusted(TEST_USERNAME);
+      const result = await isCurrentUserSiteAdmin();
       return expect(result).toBe(false);
     });
 
-    it('will return false if they are a non-administrator', async () => {
+    it('will return false if she/he is not an admin', async () => {
       mockEndpointWithResponse(nonAdminResponse);
-      const result = await isUserTrusted(TEST_USERNAME);
+      const result = await isCurrentUserSiteAdmin();
       return expect(result).toBe(false);
     });
 
-    it('will return true if they are a site administrator', async () => {
+    it('will return true if she/he is a site admin', async () => {
       mockEndpointWithResponse(siteAdminResponse);
-      const result = await isUserTrusted(TEST_USERNAME);
+      const result = await isCurrentUserSiteAdmin();
       return expect(result).toBe(true);
     });
 
@@ -80,10 +80,10 @@ describe('tenantContext', () => {
       expect.assertions(1);
       mockEndpointWithFailureStatus(404);
       try {
-        await isUserTrusted(TEST_USERNAME);
+        await isCurrentUserSiteAdmin();
       } catch (e) {
         expect(e).toEqual(
-          new Error('Unable to retrieve information about a user. Status: 404')
+          new Error('Unable to retrieve information about current user. Status: 404')
         );
       }
     });
@@ -92,10 +92,10 @@ describe('tenantContext', () => {
       expect.assertions(1);
       mockEndpointWithFailureStatus(500);
       try {
-        await isUserTrusted(TEST_USERNAME);
+        await isCurrentUserSiteAdmin();
       } catch (e) {
         expect(e).toEqual(
-          new Error('Unable to retrieve information about a user. Status: 500')
+          new Error('Unable to retrieve information about current user. Status: 500')
         );
       }
     });

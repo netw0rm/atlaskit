@@ -223,6 +223,7 @@ storiesOf(name, module)
         <Input
           id="fieldbase"
           value="input children"
+          isEditing={false}
           onChange={() => {}}
         />
       </BasicFieldBase>
@@ -235,6 +236,7 @@ storiesOf(name, module)
         <Input
           id="fieldbase"
           value="input children"
+          isEditing={false}
           onChange={() => {}}
         />
       </BasicFieldBase>
@@ -247,6 +249,7 @@ storiesOf(name, module)
         <Input
           id="fieldbase"
           value="input children"
+          isEditing={false}
           onChange={() => {}}
         />
       </BasicFieldBase>

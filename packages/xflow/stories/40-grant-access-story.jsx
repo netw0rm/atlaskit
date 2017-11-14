@@ -57,7 +57,7 @@ const defaultProps = {
   },
 };
 
-storiesOf('GrantAccess')
+storiesOf('request-or-start-trial/GrantAccess')
   .add('Grant Access dialog', () => setupStorybookAnalytics(<GrantAccessBase {...defaultProps} />))
   .add('Grant Access dialog, Manage ("everyone" selected)', () =>
     setupStorybookAnalytics(

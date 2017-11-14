@@ -4,7 +4,7 @@ import ProgressBar from '../src/common/components/ProgressBar';
 
 import setupStorybookAnalytics from './util/setupStorybookAnalytics';
 
-storiesOf('ProgressBar')
+storiesOf('common/ProgressBar')
   .add('Empty Progress Bar', () => setupStorybookAnalytics(<ProgressBar progress={0} />))
   .add('25% Full', () => setupStorybookAnalytics(<ProgressBar progress={0.25} />))
   .add('50% Full', () => setupStorybookAnalytics(<ProgressBar progress={0.5} />))

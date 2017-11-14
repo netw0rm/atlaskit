@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import { QS_ANALYTICS_EV_SUBMIT } from '../constants';
-import { AkNavigationItem } from '../../../../../src';
+import AkNavigationItem from '../../NavigationItem';
 
 const BASE_RESULT_TYPE = 'base';
 

@@ -1,5 +1,8 @@
 # @atlaskit/single-select
 
+## 3.0.1 (2017-11-13)
+
+* bug fix; fix single select focus in IE11 (issues closed: ak-3832) ([2b83759](https://bitbucket.org/atlassian/atlaskit/commits/2b83759))
 ## 3.0.0 (2017-10-26)
 
 * breaking; If your item.content is JSX (instead of a string) then you must also supply the new item.label ([9d61a1b](https://bitbucket.org/atlassian/atlaskit/commits/9d61a1b))

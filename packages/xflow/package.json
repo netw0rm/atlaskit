@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/xflow",
-  "version": "6.6.0",
+  "version": "6.8.0",
   "config": {
     "access": "public"
   },
@@ -26,6 +26,7 @@
     "@atlaskit/lozenge": "^3.4.2",
     "@atlaskit/modal-dialog": "^2.6.0",
     "@atlaskit/multi-select": "^6.9.3",
+    "@atlaskit/polyfills": "^1.1.0",
     "@atlaskit/spinner": "^3.4.2",
     "@atlaskit/theme": "^2.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",

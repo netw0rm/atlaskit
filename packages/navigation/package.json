@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/navigation",
-  "version": "26.6.0",
+  "version": "26.6.3",
   "config": {
     "access": "public"
   },
@@ -30,12 +30,12 @@
     "@atlaskit/blanket": "^3.0.0",
     "@atlaskit/dropdown-menu": "^3.8.0",
     "@atlaskit/field-base": "^8.0.1",
-    "@atlaskit/icon": "^9.0.0",
+    "@atlaskit/icon": "^10.1.2",
     "@atlaskit/item": "^4.2.0",
     "@atlaskit/polyfills": "^1.0.0",
     "@atlaskit/size-detector": "^2.0.0",
     "@atlaskit/theme": "^2.1.0",
-    "@atlaskit/tooltip": "^6.0.0",
+    "@atlaskit/tooltip": "^7.0.0",
     "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "babel-runtime": "^6.25.0",
@@ -56,22 +56,22 @@
   "author": "Atlassian Pty Ltd",
   "maintainers": [
     {
-      "name": "Alex R"
+      "name": "Sean C"
     }
   ],
   "license": "Apache-2.0",
   "devDependencies": {
     "@atlaskit/app-switcher": "^3.2.0",
-    "@atlaskit/badge": "^4.5.2",
-    "@atlaskit/banner": "2.4.2",
+    "@atlaskit/badge": "^6.1.2",
+    "@atlaskit/banner": "^4.0.3",
     "@atlaskit/button": "^5.1.1",
     "@atlaskit/field-radio-group": "1.6.2",
     "@atlaskit/field-text": "^4.0.1",
-    "@atlaskit/inline-dialog": "^3.6.0",
+    "@atlaskit/inline-dialog": "^5.0.4",
     "@atlaskit/logo": "^6.0.0",
     "@atlaskit/navigation": "*",
     "@atlaskit/page": "^5.0.0",
-    "@atlaskit/single-select": "^2.0.1",
+    "@atlaskit/single-select": "^3.0.0",
     "@atlaskit/util-common-test": "*",
     "@atlaskit/util-readme": "^1.0.5",
     "faker": "^4.1.0",

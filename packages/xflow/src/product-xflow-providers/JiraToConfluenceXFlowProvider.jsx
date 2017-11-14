@@ -2,19 +2,19 @@ import React from 'react';
 import { ConfluenceLogo } from '@atlaskit/logo';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { isUserTrusted } from '../common/tenantContext';
+import { isUserTrusted } from '../common/services/tenantContext';
 import productXFlowProviderFactory from '../common/productXFlowProviderFactory';
-import { setAlreadyRequestedFlag, getAlreadyRequestedFlag } from '../common/alreadyRequestedFlag';
-import productRequest from '../common/productRequest';
-import startProductTrial from '../common/startProductTrial';
-import productStatusChecker from '../common/productStatusChecker';
-import grantAccessToUsers from '../common/grantAccessToUsers';
+import { setAlreadyRequestedFlag, getAlreadyRequestedFlag } from '../common/services/alreadyRequestedFlag';
+import productRequest from '../common/services/productRequest';
+import startProductTrial from '../common/services/startProductTrial';
+import productStatusChecker from '../common/services/productStatusChecker';
+import grantAccessToUsers from '../common/services/grantAccessToUsers';
 import retrieveUserManagementUsers, {
     JIRA_SOFTWARE_GROUP,
     JIRA_CORE_GROUP,
     JIRA_SERVICE_DESK_GROUP,
     SITE_ADMINS_GROUP,
-} from '../common/retrieveUserManagementUsers';
+} from '../common/services/retrieveUserManagementUsers';
 
 const VALID_GROUPS = [
   JIRA_SOFTWARE_GROUP,
@@ -56,11 +56,11 @@ const messages = defineMessages({
   },
   grantAccessDefaultAccess: {
     id: 'xflow.j2c.start-trial.grant-access.default-access',
-    defaultMessage: 'Everyone in JIRA will have access to Confluence.',
+    defaultMessage: 'Everyone in Jira will have access to Confluence.',
   },
   grantAccessOptionItemsLabelEveryone: {
     id: 'xflow.j2c.start-trial.grant-access.option.everyone',
-    defaultMessage: 'Everyone in JIRA',
+    defaultMessage: 'Everyone in Jira',
   },
   grantAccessOptionItemsLabelSiteAdmins: {
     id: 'xflow.j2c.start-trial.grant-access.option.site-admins',
@@ -137,7 +137,7 @@ const messages = defineMessages({
 
 export const defaultProps = intl => ({
   config: {
-    productLogo: <ConfluenceLogo />,
+    productLogo: <ConfluenceLogo size={'small'} />,
     requestTrial: {
       accessImage:
         'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/kEL9zW2kcU8_U4Y_Rc1p3Zmm8J8Jq_JR0ikTg6cEWe8/Multi-Document.svg',

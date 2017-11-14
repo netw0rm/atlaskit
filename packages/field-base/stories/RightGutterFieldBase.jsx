@@ -14,7 +14,7 @@ export default (props) => {
       />
       <div style={{ backgroundColor: 'white', display: 'flex', alignItems: 'center' }}>
         <FieldBase isFitContainerWidthEnabled>
-          <Input id={id} value="Input children" isEditing />
+          <Input id={id} value="Input children" isEditing readOnly />
         </FieldBase>
         <div style={{ marginLeft: 4 }}>
           {props.rightGutter}

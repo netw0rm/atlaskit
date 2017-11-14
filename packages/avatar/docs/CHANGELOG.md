@@ -1,5 +1,12 @@
 # @atlaskit/avatar
 
+## 8.2.0 (2017-11-14)
+
+* feature; aK-3883 Expose boundariesElement property on AvatarGroup component ([78001fd](https://bitbucket.org/atlassian/atlaskit/commits/78001fd))
+## 8.1.0 (2017-11-13)
+
+* feature; add support for focus presence type (issues closed: ak-3758) ([06b6da3](https://bitbucket.org/atlassian/atlaskit/commits/06b6da3))
+* bug fix; AvatarGroup more indicator fixed in Firefox (issues closed: ak-3791) ([6c9464e](https://bitbucket.org/atlassian/atlaskit/commits/6c9464e))
 ## 8.0.11 (2017-11-02)
 
 * bug fix; added missing dependencies (issues closed: ak-3782) ([4dbc3ef](https://bitbucket.org/atlassian/atlaskit/commits/4dbc3ef))

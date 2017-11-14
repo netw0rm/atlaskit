@@ -11,7 +11,11 @@ export interface MediaState {
   fileType?: string;
   fileMimeType?: string;
   progress?: number;
-  thumbnail?: Blob;
+  thumbnail?: {
+    src: string;
+    height?: number;
+    width?: number;
+  };
   finalizeCb?: () => void;
   error?: {
     name: string,

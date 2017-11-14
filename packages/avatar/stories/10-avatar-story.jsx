@@ -398,6 +398,29 @@ storiesOf(name, module)
                 </button>
               ) : null}
             </div>
+
+            <HR />
+            <h5>Constrained by the scrollparent</h5>
+            <div>
+              <p>Expand and scroll up to reposition the avatar group menu</p>
+              <div
+                style={{ border: '1px solid black', height: '200px', width: '300px', overflow: 'scroll' }}
+                ref={ref => { this.scroll = ref; }}
+              >
+                <div style={{ width: '300px', height: '600px', paddingTop: '200px' }} >
+                  <AvatarGroup
+                    boundariesElement="scrollParent"
+                    onAvatarClick={console.log}
+                    data={stackSourceURLs.slice(0, 6).map(i => ({
+                      key: i,
+                      name: `Stack Avatar ${i + 1}`,
+                      src: avatarSource,
+                      size: avatarSize,
+                    }))}
+                  />
+                </div>
+              </div>
+            </div>
           </Wrapper>
         );
       }

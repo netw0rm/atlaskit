@@ -35,6 +35,7 @@ type Props = {
   onMoreClick?: FunctionType,
   /** Defines the size of the avatar */
   size?: SizeType,
+  boundariesElement?: 'viewport'|'window'|'scrollParent',
 };
 
 export default class AvatarGroup extends Component {
@@ -48,7 +49,9 @@ export default class AvatarGroup extends Component {
   }
 
   renderMoreDropdown(max: number, total: number) {
-    const { appearance, data, borderColor, onMoreClick, onAvatarClick, size } = this.props;
+    const {
+      appearance, data, borderColor, onMoreClick, onAvatarClick, size, boundariesElement,
+    } = this.props;
 
     // bail if there's not enough items
     if (total <= max) return null;
@@ -80,7 +83,7 @@ export default class AvatarGroup extends Component {
     }));
 
     return (
-      <DropdownMenu items={[{ items }]} onItemActivated={onAvatarClick} position="bottom right">
+      <DropdownMenu items={[{ items }]} onItemActivated={onAvatarClick} position="bottom right" boundariesElement={boundariesElement} shouldFlip>
         <MoreButton />
       </DropdownMenu>
     );

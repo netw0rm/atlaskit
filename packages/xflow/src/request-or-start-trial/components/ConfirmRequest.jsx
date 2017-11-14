@@ -19,6 +19,13 @@ class ConfirmRequest extends Component {
   static propTypes = {
     alreadyRequested: PropTypes.bool.isRequired,
     cancelRequestTrial: PropTypes.func,
+    contextInfo: PropTypes.shape({
+      contextualImage: PropTypes.string,
+      contextualHeading: PropTypes.string.isRequired,
+      contextualMessage: PropTypes.string.isRequired,
+      reactivateCTA: PropTypes.string.isRequired,
+      trialCTA: PropTypes.string.isRequired,
+    }),
     firePrivateAnalyticsEvent: PropTypes.func.isRequired,
     heading: PropTypes.string.isRequired,
     image: PropTypes.string.isRequired,
@@ -76,7 +83,15 @@ class ConfirmRequest extends Component {
   };
 
   render() {
-    const { alreadyRequested, productLogo, image, learnMoreLink, heading, message } = this.props;
+    const {
+      alreadyRequested,
+      contextInfo,
+      productLogo,
+      image,
+      learnMoreLink,
+      heading,
+      message,
+    } = this.props;
     return (
       <ModalDialog
         isOpen
@@ -98,7 +113,7 @@ class ConfirmRequest extends Component {
                 </Lozenge>
               </RequestTrialLozengeDiv>
             </RequestTrialHeader>
-            <RequestTrialImage src={image} alt="files" />
+            <RequestTrialImage src={contextInfo && contextInfo.contextualImage ? contextInfo.contextualImage : image} alt="files" />
           </div>
         }
         footer={
@@ -143,8 +158,10 @@ class ConfirmRequest extends Component {
         }
       >
         <RequestTrialDiv>
-          <RequestTrialHeading>{heading}</RequestTrialHeading>
-          {React.isValidElement(message) ? message : <p>{message}</p>}
+          <RequestTrialHeading>
+            {contextInfo ? contextInfo.contextualHeading : heading}
+          </RequestTrialHeading>
+          {contextInfo ? <p>{contextInfo.contextualMessage}</p> : <p>{message}</p>}
         </RequestTrialDiv>
       </ModalDialog>
     );

@@ -221,6 +221,7 @@ class RequestOrStartTrial extends Component {
                   alreadyRequested={alreadyRequested}
                   onComplete={onComplete}
                   onTrialRequested={onTrialRequested}
+                  contextInfo={contextInfo}
                 />);
               }
               default: {

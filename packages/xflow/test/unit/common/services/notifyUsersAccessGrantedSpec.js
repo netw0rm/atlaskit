@@ -35,8 +35,7 @@ describe('notifyUsersAccessGranted', () => {
   });
 
   it('should return a resolved promise with no value if the endpoint returns a 200 response', async () => {
-    tenantContext.getCurrentUsername = jest.fn().mockReturnValue('admin');
-    tenantContext.queryUsername = jest.fn().mockReturnValue(Promise.resolve(userAdminResponse));
+    tenantContext.fetchCurrentUser = jest.fn().mockReturnValue(Promise.resolve(userAdminResponse));
     tenantContext.getInstanceName = jest.fn().mockReturnValue('example.atlassian.net');
 
     mockNotifyEastEndpointWithResponse(accessgrantedJiraUsersResponse);

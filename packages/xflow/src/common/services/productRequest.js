@@ -2,21 +2,13 @@ import 'es6-promise/auto';
 import 'whatwg-fetch';
 
 import {
-  getAvatarUrl,
-  getCurrentUsername,
   fetchCloudId,
   getInstanceName,
-  getUserDisplayName,
-  queryUsername,
+  fetchCurrentUserAvatarUrl,
+  fetchCurrentUserDisplayName,
 } from './tenantContext';
 
 import { productRequestEndpoint } from './xflowService';
-
-async function getCurrentUserAvatarUrl() {
-  const currentUser = getCurrentUsername();
-  const userDetails = await queryUsername(currentUser);
-  return getAvatarUrl(userDetails);
-}
 
 /**
  * This class will allow a user to request a product trial from site admins on the instance
@@ -25,10 +17,10 @@ async function getCurrentUserAvatarUrl() {
  */
 export default (productKey) => async (comment) => {
   try {
-    const avatar = await getCurrentUserAvatarUrl();
-    const displayName = await getUserDisplayName();
     const cloudId = await fetchCloudId();
     const instanceName = getInstanceName();
+    const avatar = await fetchCurrentUserAvatarUrl();
+    const displayName = await fetchCurrentUserDisplayName();
 
     const response = await fetch(productRequestEndpoint(), {
       method: 'POST',

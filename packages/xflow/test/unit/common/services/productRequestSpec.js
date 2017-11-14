@@ -19,11 +19,10 @@ const mockRequestTrialEastEndpointWithResponse = (response) => {
 
 describe('productRequest', () => {
   beforeEach(() => {
-    tenantContext.getAvatarUrl = jest.fn().mockReturnValue('some-avatar-url');
-    tenantContext.getCurrentUsername = jest.fn().mockReturnValue('exampleUser');
     tenantContext.fetchCloudId = jest.fn().mockReturnValue(Promise.resolve('some-cloud-id'));
     tenantContext.getInstanceName = jest.fn().mockReturnValue('example.atlassian.net');
-    tenantContext.queryUsername = jest.fn().mockReturnValue(Promise.resolve({}));
+    tenantContext.fetchCurrentUserAvatarUrl = jest.fn().mockReturnValue(Promise.resolve('some-avatar-url'));
+    tenantContext.fetchCurrentUserDisplayName = jest.fn().mockReturnValue(Promise.resolve('Example User'));
   });
 
   afterEach(fetchMock.restore);
@@ -43,7 +42,7 @@ describe('productRequest', () => {
         cloud_instance: 'example.atlassian.net',
         product_key: 'confluence.ondemand',
         requested_access_by_avatar: 'some-avatar-url',
-        requested_access_by_name: 'example user',
+        requested_access_by_name: 'Example User',
         requested_access_comment_text: 'Please let me innovate',
       })
     );

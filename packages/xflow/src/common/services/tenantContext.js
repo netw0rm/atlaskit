@@ -31,6 +31,32 @@ export const getAvatarUrl = ({ avatarUrls }) => {
   return url;
 };
 
+let currentUserPromise = null;
+export function fetchCurrentUser() {
+  // WIP only works in JIRA context (not confluence)
+  currentUserPromise = currentUserPromise || fetch(
+      '/rest/api/2/myself?expand=groups',
+      { credentials: 'same-origin' }
+    )
+    .then((response) => {
+      if (response.status !== 200) {
+        throw new Error(
+          `Unable to retrieve information about current user. Status: ${response.status}`
+        );
+      }
+
+      return response.json();
+    });
+
+  return currentUserPromise;
+}
+
+export const fetchCurrentUserDisplayName = () =>
+  currentUserPromise.then(user => user.displayName);
+
+export const fetchCurrentUserAvatarUrl = () =>
+  currentUserPromise.then(getAvatarUrl);
+
 /**
  * Query the user endpoint and retrieve information relating to the specified username.
  *

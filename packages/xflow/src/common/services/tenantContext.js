@@ -50,6 +50,9 @@ export function fetchCurrentUser() {
 
   return currentUserPromise;
 }
+fetchCurrentUser.resetCache = () => {
+  currentUserPromise = null;
+};
 
 export const fetchCurrentUserDisplayName = () =>
   currentUserPromise.then(user => user.displayName);
@@ -91,7 +94,6 @@ export const isUserTrusted = username =>
     }
     return isSiteAdmin;
   });
-
 
 export const getInstanceName = () => window.location.hostname;
 

@@ -37,6 +37,7 @@ export default (productKey) => async (comment) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        credentials: 'include',
         cloud_id: cloudId,
         cloud_instance: instanceName,
         product_key: productKey,

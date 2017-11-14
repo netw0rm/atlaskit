@@ -50,7 +50,7 @@ describe('productRequest', () => {
   });
 
   it('should return a rejected promise if productRequestEndpoint returns a 500 response', async () => {
-    fetchMock.mock(productRequestEndpoint, 500);
+    fetchMock.mock(productRequestEndpoint(), 500);
     expect.assertions(1);
     const requestConfluenceTrial = productRequest('confluence.ondemand');
 

@@ -70,7 +70,7 @@ describe('notifyUsersAccessGranted', () => {
   });
 
   it('should return a rejected promise if both endpoints return a 500 response', async () => {
-    fetchMock.mock(notifyAccessEndpoint, 500);
+    fetchMock.mock(notifyAccessEndpoint(), 500);
     expect.assertions(1);
 
     try {

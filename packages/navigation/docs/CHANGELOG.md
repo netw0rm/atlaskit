@@ -1,5 +1,10 @@
 # @atlaskit/navigation
 
+## 26.6.4 (2017-11-14)
+
+
+* bug fix; implemented code review comments: using theme package to get layer value and removed ([b1a84f5](https://bitbucket.org/atlassian/atlaskit/commits/b1a84f5))
+* bug fix; added story to where the page components have position: relative style (issues closed: ak-3792, ak3851) ([e162415](https://bitbucket.org/atlassian/atlaskit/commits/e162415))
 ## 26.6.3 (2017-11-14)
 
 * bug fix; fix cyclic imports in navigation component causing es6 build errors (issues closed: ak-3746) ([9499b26](https://bitbucket.org/atlassian/atlaskit/commits/9499b26))

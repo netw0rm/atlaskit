@@ -19,7 +19,7 @@ const ResizerButtonInner = styled.button`
   border: none;
   color: transparent;
   width: ${gridSize * 3}px;
-  left: -1px;
+  left: -6px;
   cursor: pointer;
 
   &:focus {

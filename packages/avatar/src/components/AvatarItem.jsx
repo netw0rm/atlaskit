@@ -44,7 +44,7 @@ type Props = {
   /** SecondaryText text */
   secondaryText?: string,
   /** Pass target down to the anchor, if href is provided. */
-  target?: '_blank' | '_self',
+  target?: '_blank' | '_self' | '_top' | '_parent',
   /** Whether or not overflowing primary and secondary text is truncated */
   enableTextTruncate?: boolean,
 };

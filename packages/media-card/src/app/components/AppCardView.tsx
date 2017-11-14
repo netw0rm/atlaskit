@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {AppCardModel, AppCardAction} from '../model';
+import {AppCardModel, AppCardAction, AppCardActionCallbackHandlers} from '../model';
 import {HeaderView} from './HeaderView';
 import {DescriptionView} from './DescriptionView';
 import {DetailsView} from './DetailsView';
@@ -13,7 +13,7 @@ const previewWidth = 116;
 export interface AppCardViewProps {
   model: AppCardModel;
   onClick?: () => void;
-  onActionClick?: (action: AppCardAction) => void;
+  onActionClick?: (action: AppCardAction, handlers: AppCardActionCallbackHandlers) => void;
 }
 
 export class AppCardView extends React.Component<AppCardViewProps, {}> {

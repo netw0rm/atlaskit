@@ -1,5 +1,9 @@
 # @atlaskit/util-shared-styles
 
+## 2.10.5 (2017-11-14)
+
+* bug fix; remove es6 bundles from util-shared-styles (issues closed: ak-3746) ([30b8c28](https://bitbucket.org/atlassian/atlaskit/commits/30b8c28))
+* bug fix; fix build dir not being included in util-shared-styles dist package (issues closed: ak-3746) ([113e514](https://bitbucket.org/atlassian/atlaskit/commits/113e514))
 ## 2.10.4 (2017-10-22)
 
 * bug fix; update styled components dep and react peerDep ([5539ada](https://bitbucket.org/atlassian/atlaskit/commits/5539ada))

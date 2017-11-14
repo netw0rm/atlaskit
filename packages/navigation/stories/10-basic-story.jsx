@@ -367,26 +367,26 @@ storiesOf(name, module)
           href="#2"
         />
       </BasicNavigation>
-      <p>
+      <div>
         <div
           style={{
-            backgroundColor: 'red',
+            backgroundColor: '#ff4c4c',
             height: 200,
-            textAlign: 'right',
+            textAlign: 'center',
           }}
         >
-          Is beneath the blanket
-      </div>
+          Without position: relative
+        </div>
         <div
           style={{
-            backgroundColor: 'red',
+            backgroundColor: '#7694ff',
             position: 'relative',
             height: 200,
-            textAlign: 'right',
+            textAlign: 'center',
           }}
         >
-          Should be beneath the blanket
-    </div>
-      </p>
+          With position: relative
+        </div>
+      </div>
     </div>
   ));

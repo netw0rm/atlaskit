@@ -294,8 +294,10 @@ describe('@atlaskit/xflow', () => {
       it('should render Start Trial component with contextual information', async () => {
         // eventually render to start trial screen
         await waitUntil(() => xflow.find(ContextualStartTrial).length === 1);
+        // contextual heading
+        expect(xflow.find(ContextualStartTrial).text()).toMatch('Project pages are powered by Confluence');
         // contextual message
-        expect(xflow.find(ContextualStartTrial).text()).toMatch('Project pages are a feature powered by Confluence');
+        expect(xflow.find(ContextualStartTrial).text()).toMatch('Create, share, and collaborate on all your project docs in one place, with Confluence pages.');
         // contextual cta
         expect(xflow.find(ContextualStartTrial).text()).toMatch('Try Confluence free for 30 days');
         // trial info footer
@@ -334,8 +336,10 @@ describe('@atlaskit/xflow', () => {
       it('should render Start Trial component with contextual information', async () => {
         // eventually render to start trial screen
         await waitUntil(() => xflow.find(ContextualStartTrial).length === 1);
+        // contextual heading
+        expect(xflow.find(ContextualStartTrial).text()).toMatch('Project pages are powered by Confluence');
         // contextual message
-        expect(xflow.find(ContextualStartTrial).text()).toMatch('Project pages are a feature powered by Confluence');
+        expect(xflow.find(ContextualStartTrial).text()).toMatch('Create, share, and collaborate on all your project docs in one place, with Confluence pages.');
         // contextual reactivate cta
         expect(xflow.find(ContextualStartTrial).text()).toMatch('Reactivate Confluence');
         // reactivation info footer

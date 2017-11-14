@@ -280,7 +280,7 @@ storiesOf(name, module)
         )}
       />
     </HtmlPage>
-    ))
+  ))
   .add('with horizontal scrollable container', () => (
     <HtmlPage>
       <BasicNavigation
@@ -353,4 +353,40 @@ storiesOf(name, module)
         />
       </BasicNavigation>
     </HtmlPage>
+  ))
+  .add('with position: relative on elements beneath blanket', () => (
+    <div>
+      <BasicNavigation containerTheme={presetThemes.container} hasScrollHintTop>
+        <AkNavigationItem
+          text="Test page"
+          href="#1"
+        />
+        <AkNavigationItem
+          icon={<NucleusIcon />}
+          text="Item with an icon"
+          href="#2"
+        />
+      </BasicNavigation>
+      <div>
+        <div
+          style={{
+            backgroundColor: '#ff4c4c',
+            height: 200,
+            textAlign: 'center',
+          }}
+        >
+          Without position: relative
+        </div>
+        <div
+          style={{
+            backgroundColor: '#7694ff',
+            position: 'relative',
+            height: 200,
+            textAlign: 'center',
+          }}
+        >
+          With position: relative
+        </div>
+      </div>
+    </div>
   ));

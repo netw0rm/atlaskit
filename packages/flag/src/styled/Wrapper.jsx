@@ -30,12 +30,12 @@ const animationLeave = keyframes`
   }
 `;
 
-const getAnimation = ({ isEntering, isLeaving }) => {
-  if (isEntering) {
+const getAnimation = ({ transitionState }) => {
+  if (transitionState === 'entering') {
     return `${animationEnter} ${flagAnimationDuration}`;
   }
 
-  if (isLeaving) {
+  if (transitionState === 'exiting') {
     return `${animationLeave} ${flagAnimationDuration}`;
   }
 
@@ -61,7 +61,7 @@ const Wrapper = styled.div`
   &:nth-child(2) { z-index: 4; }
 
   /* The 2nd flag should be placed at 0,0 position when the 1st flag is animating out. */
-  ${({ isLeaving }) => (isLeaving ? (`
+  ${({ transitionState }) => (transitionState === 'exiting' ? (`
     && + * {
       transform: translate(0, 0);
     }

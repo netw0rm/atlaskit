@@ -8,7 +8,7 @@ export type ElementType = PropType<Element<mixed>, any>;
 export type FunctionType = (...args: Array<any>) => mixed;
 
 export type AppearanceType = 'circle' | 'square';
-export type PresenceType = ('online' | 'busy' | 'offline') | ComponentType;
+export type PresenceType = ('online' | 'busy' | 'focus' | 'offline') | ComponentType;
 export type SizeType = 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge' | 'xxlarge';
 export type StatusType = 'approved' | 'declined' | 'locked';
 export type StyledComponentType = 'custom' | 'button' | 'link' | 'span';
@@ -58,7 +58,7 @@ export type AvatarPropTypesBase = {
   /** Assign specific tabIndex order to the underlying node. */
   tabIndex?: number,
   /** Pass target down to the anchor, if href is provided. */
-  target?: '_blank' | '_self',
+  target?: '_blank' | '_self' | '_top' | '_parent',
 }
 
 export type AvatarPropTypes = AvatarPropTypesBase & {

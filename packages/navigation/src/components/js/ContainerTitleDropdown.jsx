@@ -4,7 +4,7 @@ import { ThemeProvider, withTheme } from 'styled-components';
 import { itemThemeNamespace } from '@atlaskit/item';
 import AkDropdownMenu from '@atlaskit/dropdown-menu';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
-import { AkNavigationItem } from '../../../src/index';
+import AkNavigationItem from './NavigationItem';
 import ContainerTitleIcon from '../styled/ContainerTitleIcon';
 import ContainerTitleText from '../styled/ContainerTitleText';
 import type { ReactElement } from '../../types';

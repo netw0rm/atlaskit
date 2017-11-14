@@ -8,7 +8,7 @@ const DrawerPrimaryIcon = styled.div`
   height: ${drawerBackIconSize}px;
   justify-content: center;
   width: ${drawerBackIconSize}px;
-  color: ${themed({ light: colors.N300, dark: colors.DN300 })};
+  color: ${themed({ light: colors.N500, dark: colors.DN500 })};
 `;
 
 DrawerPrimaryIcon.displayName = 'DrawerPrimaryIcon';

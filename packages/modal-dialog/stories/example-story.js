@@ -78,12 +78,7 @@ storiesOf(name, module)
   ))
   .add('chromeless', () => (
     <ModalDemo isChromeless width="20em">
-      <div
-        style={{
-          backgroundColor: 'white',
-          padding: '1em',
-        }}
-      >
+      <div style={{ color: 'white' }}>
         <h4>Look ma, no chrome!</h4>
         <p>Ecosystem vendors use this option with some of their
           apps so they can provide their own dialog style.</p>

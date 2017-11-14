@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/avatar",
-  "version": "8.0.10",
+  "version": "8.2.1",
   "config": {
     "access": "public"
   },
@@ -41,6 +41,7 @@
     "@atlaskit/util-shared-styles": "^2.1.0",
     "babel-runtime": "^6.11.6",
     "prop-types": "^15.5.10",
+    "prop-types-extra": "^1.0.1",
     "styled-components": "^1.4.6"
   },
   "devDependencies": {

@@ -211,7 +211,7 @@ export default class JIRAExample extends PureComponent {
         ]}
       >
         <AkGlobalItem href="">
-          <Avatar size="medium" src={emmaAvatar} />
+          <Avatar size="small" src={emmaAvatar} borderColor="transparent" />
         </AkGlobalItem>
       </AkDropdownMenu>
       );

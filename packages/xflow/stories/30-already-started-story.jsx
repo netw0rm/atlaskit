@@ -27,7 +27,7 @@ const defaultProps = {
   },
 };
 
-storiesOf('AlreadyStarted')
+storiesOf('request-or-start-trial/AlreadyStarted')
   .add('Already Started (ACTIVATING) progress bar (0%)', () =>
     setupStorybookAnalytics(
       <AlreadyStartedBase {...defaultProps} onComplete={() => Promise.resolve(true)} />

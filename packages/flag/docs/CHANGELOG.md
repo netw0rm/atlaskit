@@ -1,5 +1,13 @@
 # @atlaskit/flag
 
+## 6.1.6 (2017-11-13)
+
+* bug fix; update flag's react-transition-group dependency from v1 to v2 (issues closed: ak-3755) ([32f3af3](https://bitbucket.org/atlassian/atlaskit/commits/32f3af3))
+
+
+## 6.1.5 (2017-11-02)
+
+* bug fix; added missing dependencies (issues closed: ak-3782) ([4dbc3ef](https://bitbucket.org/atlassian/atlaskit/commits/4dbc3ef))
 ## 6.1.4 (2017-10-26)
 
 * bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))

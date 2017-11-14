@@ -59,8 +59,14 @@ export interface AppCardContext {
 export interface AppCardAction {
   title: string;
   target: {
-    app?: string;
+    receiver?: string;
     key: string;
   };
   parameters?: object;
+}
+
+export interface AppCardActionCallbackHandlers {
+  progress();
+  success(message?: string);
+  failure(message?: string, tryAgain?: boolean, tryAgainLinkText?: string);
 }

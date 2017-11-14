@@ -181,7 +181,7 @@ const metaActions: AppCardAction[] = [
   {
     title: 'Open',
     target: {
-      app: 'some.app1',
+      receiver: 'some.receiver1',
       key: 'test.target.open'
     },
     parameters: {
@@ -191,7 +191,7 @@ const metaActions: AppCardAction[] = [
   {
     title: 'Join',
     target: {
-      app: 'some.app2',
+      receiver: 'some.receiver2',
       key: 'test.target.join'
     },
     parameters: {
@@ -201,7 +201,7 @@ const metaActions: AppCardAction[] = [
   {
     title: 'Reply',
     target: {
-      app: 'some.app3',
+      receiver: 'some.receiver3',
       key: 'test.target.reply'
     },
     parameters: {
@@ -209,6 +209,50 @@ const metaActions: AppCardAction[] = [
     }
   }
 ];
+
+const loadingStatesActions: AppCardAction[] = [
+    {
+    title: 'Success',
+    target: {
+      receiver: 'some.receiver2',
+      key: 'success'
+    },
+    parameters: {
+      expenseId: 'some-id2'
+    }
+  },
+  {
+    title: 'Failure',
+    target: {
+      receiver: 'some.receiver1',
+      key: 'failure'
+    },
+    parameters: {
+      expenseId: 'some-id1'
+    }
+  },
+  {
+    title: 'Loading',
+    target: {
+      receiver: 'some.receiver3',
+      key: 'loading'
+    },
+    parameters: {
+      expenseId: 'some-id3'
+    }
+  },
+  {
+    title: 'Failure with try again button',
+    target: {
+      receiver: 'some.receiver1',
+      key: 'failure-with-retry'
+    },
+    parameters: {
+      expenseId: 'some-id1'
+    }
+  },
+];
+
 const detailsWithSecondaryActions: AppCardModel = {
   ...modelWithShortTitle,
   actions: metaActions
@@ -261,7 +305,7 @@ const confluenceActivityModel: AppCardModel = {
     {
       title: 'Reply',
       target: {
-        app: 'some.app1',
+        receiver: 'some.receiver1',
         key: 'test.target.reply'
       },
       parameters: {
@@ -271,7 +315,7 @@ const confluenceActivityModel: AppCardModel = {
     {
       title: 'Other',
       target: {
-        app: 'some.app2',
+        receiver: 'some.receiver2',
         key: 'test.target.other'
       },
       parameters: {
@@ -295,7 +339,7 @@ const jiraIssueModel: AppCardModel = {
     {
       title: 'View',
       target: {
-        app: 'some.app1',
+        receiver: 'some.receiver1',
         key: 'test.target.view'
       },
       parameters: {
@@ -305,7 +349,7 @@ const jiraIssueModel: AppCardModel = {
     {
       title: 'Other',
       target: {
-        app: 'some.app2',
+        receiver: 'some.receiver2',
         key: 'test.target.other'
       },
       parameters: {
@@ -329,7 +373,7 @@ const dropboxFileModel: AppCardModel = {
     {
       title: 'Download',
       target: {
-        app: 'some.app1',
+        receiver: 'some.receiver1',
         key: 'test.target.download'
       },
       parameters: {
@@ -339,7 +383,7 @@ const dropboxFileModel: AppCardModel = {
     {
       title: 'Other',
       target: {
-        app: 'some.app2',
+        receiver: 'some.receiver2',
         key: 'test.target.other'
       },
       parameters: {
@@ -366,7 +410,7 @@ const trelloBoardModel: AppCardModel = {
     {
       title: 'Join',
       target: {
-        app: 'some.app1',
+        receiver: 'some.receiver1',
         key: 'test.target.join'
       },
       parameters: {
@@ -376,7 +420,7 @@ const trelloBoardModel: AppCardModel = {
     {
       title: 'Other',
       target: {
-        app: 'some.app2',
+        receiver: 'some.receiver2',
         key: 'test.target.other'
       },
       parameters: {
@@ -410,7 +454,7 @@ const trelloCardModel: AppCardModel = {
     {
       title: 'Open',
       target: {
-        app: 'some.app1',
+        receiver: 'some.receiver1',
         key: 'test.target.open'
       },
       parameters: {
@@ -420,7 +464,7 @@ const trelloCardModel: AppCardModel = {
     {
       title: 'Other',
       target: {
-        app: 'some.app2',
+        receiver: 'some.receiver2',
         key: 'test.target.other'
       },
       parameters: {
@@ -432,6 +476,32 @@ const trelloCardModel: AppCardModel = {
 
 const handleClick = () => action('clicked on the card')();
 const handleActionClick = (a: AppCardAction) => action('clicked on the action')(a.title, a);
+const handleActionWithLoadingStatesClick = (a: AppCardAction, handlers) => {
+  action('clicked on the action')(a.title, a);
+  handlers.progress();
+  switch (a.target.key){
+    case 'success':
+      setTimeout(() => {
+        handlers.success('Yey. It works.');
+      }, 2000);
+      break;
+    case 'failure':
+      setTimeout(() => {
+        handlers.failure('There is a glitch.');
+      }, 2000);
+      break;
+    case 'loading':
+      setTimeout(() => {
+        handlers.success();
+      }, 2000);
+      break;
+    case 'failure-with-retry':
+      setTimeout(() => {
+        handlers.failure('Some error', true, 'Try again btn text');
+      }, 2000);
+      break;
+  }
+};
 
 const FixedWidthContainer = styled.div`
   width: 450px
@@ -550,6 +620,39 @@ storiesOf('AppCardView', {})
 
         </Section>
       </FixedWidthContainer>
+
+      <Section title="With loading states">
+          <AppCardView
+            model={{...modelWithMostOfTheThings, actions: loadingStatesActions.slice(0,1)}}
+            onClick={handleClick}
+            onActionClick={handleActionWithLoadingStatesClick}
+          />
+          <AppCardView
+            model={{...modelWithMostOfTheThings, actions: loadingStatesActions.slice(0,2)}}
+            onClick={handleClick}
+            onActionClick={handleActionWithLoadingStatesClick}
+          />
+          <AppCardView
+            model={{...modelWithMostOfTheThings, actions: loadingStatesActions}}
+            onClick={handleClick}
+            onActionClick={handleActionWithLoadingStatesClick}
+          />
+          <AppCardView
+            model={{...modelWithMostOfTheThingsAndWithBackground, actions: loadingStatesActions.slice(0,1)}}
+            onClick={handleClick}
+            onActionClick={handleActionWithLoadingStatesClick}
+          />
+          <AppCardView
+            model={{...modelWithMostOfTheThingsAndWithBackground, actions: loadingStatesActions.slice(0,2)}}
+            onClick={handleClick}
+            onActionClick={handleActionWithLoadingStatesClick}
+          />
+          <AppCardView
+            model={{...modelWithMostOfTheThingsAndWithBackground, actions: loadingStatesActions}}
+            onClick={handleClick}
+            onActionClick={handleActionWithLoadingStatesClick}
+          />
+      </Section>
 
     </div>
   ))

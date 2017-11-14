@@ -1,5 +1,11 @@
 # @atlaskit/app-switcher
 
+## 3.2.2 (2017-11-14)
+
+* bug fix; bumping internal dependencies to latest major versions ([c9f1af6](https://bitbucket.org/atlassian/atlaskit/commits/c9f1af6))
+
+
+
 ## 3.2.1 (2017-10-22)
 
 * bug fix; update dependencies for react-16 ([077d1ad](https://bitbucket.org/atlassian/atlaskit/commits/077d1ad))

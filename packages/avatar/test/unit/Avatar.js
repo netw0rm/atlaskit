@@ -12,6 +12,7 @@ import { AVATAR_SIZES } from '../../src/styled/constants';
 
 const busy = 'busy';
 const offline = 'offline';
+const focus = 'focus';
 const online = 'online';
 const SIZES = ['xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge'];
 
@@ -48,7 +49,7 @@ describe('Avatar', () => {
       expect(wrapper.find(Presence).find('svg').length).toBe(0);
     });
 
-    [online, busy, offline].forEach((presence) => {
+    [online, busy, offline, focus].forEach((presence) => {
       describe(`when presence is set to '${presence}'`, () => {
         let wrapper;
         beforeEach(() => (wrapper = mount(<Avatar presence={presence} />)));

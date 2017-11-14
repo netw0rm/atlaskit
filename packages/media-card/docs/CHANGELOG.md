@@ -1,5 +1,12 @@
 # @atlaskit/media-card
 
+## 22.1.0 (2017-11-14)
+
+* feature; application card actions: add a loading state during the execution of the action ([872b7b2](https://bitbucket.org/atlassian/atlaskit/commits/872b7b2))
+## 22.0.0 (2017-11-09)
+
+* breaking; rename applicationCard.actions.target.app to receiver in Atlaskit scheme ([760070c](https://bitbucket.org/atlassian/atlaskit/commits/760070c))
+* breaking; rename applicationCard.actions.target.app to receiver in Atlaskit scheme ([760070c](https://bitbucket.org/atlassian/atlaskit/commits/760070c))
 ## 21.5.0 (2017-10-26)
 
 

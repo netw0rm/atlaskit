@@ -123,7 +123,7 @@ storiesOf(name, module)
   ))
   .add('Flag on top of Modal', () => (
     <StoryPadding>
-      <Modal header="Modal" isOpen>
+      <Modal heading="Modal" isOpen onClose={() => {}}>
         <div style={{ minHeight: 240 }}>
           I am a modal, flag should be visible above me
         </div>

@@ -1,5 +1,11 @@
 # @atlaskit/inline-edit
 
+## 4.5.5 (2017-11-14)
+
+
+
+
+* bug fix; fix inline-edit component edit mode triggering when clicking outside hover width (issues closed: ak-3800) ([16fd4c0](https://bitbucket.org/atlassian/atlaskit/commits/16fd4c0))
 ## 4.5.4 (2017-10-26)
 
 * bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))

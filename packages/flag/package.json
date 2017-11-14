@@ -1,10 +1,10 @@
 {
   "name": "@atlaskit/flag",
-  "version": "6.1.4",
+  "version": "6.1.6",
   "config": {
     "access": "public"
   },
-  "description": "Flags are used for confirmations, alerts, and acknowledgments that require minimal user interaction",
+  "description": "Flags are used for confirmations, alerts, and acknowledgments that require minimal user interaction.",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "jsnext:experimental:main": "dist/es/index.js",
@@ -38,7 +38,8 @@
     "@atlaskit/util-shared-styles": "^2.10.3",
     "babel-runtime": "^6.11.6",
     "prop-types": "^15.5.10",
-    "react-transition-group": "^1.2.0",
+    "prop-types-extra": "^1.0.1",
+    "react-transition-group": "^2.2.1",
     "styled-components": "^1.4.6"
   },
   "devDependencies": {

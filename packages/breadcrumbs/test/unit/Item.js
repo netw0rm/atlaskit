@@ -76,6 +76,32 @@ describe('BreadcrumbsItem', () => {
         expect(wrapper.find(Button).prop('onClick')).toBe(onClick);
       });
     });
+    /* eslint-disable react/prop-types, no-unused-vars */
+    describe('component prop', () => {
+      it('should be reflected to the Button', () => {
+        let expectedProps;
+        const Link = (props) => {
+          const {
+            innerRef,
+            truncationWidth,
+            iconAfter,
+            iconBefore,
+            children,
+            to,
+            ...rest
+          } = props;
+          expectedProps = rest;
+          return <a href={to} {...rest}>{children}</a>;
+        };
+        const actualComponent = mount(
+          <Item component={props => <Link to={'/custom/component'} {...props}>Custom component</Link>} />
+        ).find(Link);
+        expect(actualComponent.length).toBe(1);
+        Object.keys(expectedProps).forEach(expectedProp =>
+          expect(Object.keys(actualComponent.props()).includes(expectedProp)).toBe(true));
+        expect(actualComponent.props().to).toBe('/custom/component');
+      });
+    });
   });
 
   describe('overflow calculation', () => {

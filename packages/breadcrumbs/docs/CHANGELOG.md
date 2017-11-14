@@ -1,5 +1,10 @@
 # @atlaskit/breadcrumbs
 
+## 3.1.0 (2017-11-03)
+
+
+
+* feature; breadcrumbsItem supports a custom component (issues closed: ak-3721) ([14fdedf](https://bitbucket.org/atlassian/atlaskit/commits/14fdedf))
 ## 3.0.3 (2017-10-31)
 
 * bug fix; update button dep ([069d0f4](https://bitbucket.org/atlassian/atlaskit/commits/069d0f4))

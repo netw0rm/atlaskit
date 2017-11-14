@@ -73,6 +73,7 @@ export interface EmojiDescription extends EmojiId {
   createdDate?: string;
   creatorUserId?: string;
   representation: EmojiRepresentation;
+  altRepresentation?: EmojiRepresentation;
   searchable: boolean;
 }
 
@@ -106,6 +107,7 @@ export interface EmojiServiceDescription {
   type: string;
   category: string;
   representation: EmojiServiceRepresentation;
+  altRepresentations?: AltRepresentations;
   searchable: boolean;
 }
 
@@ -113,6 +115,9 @@ export interface EmojiServiceDescriptionWithVariations extends EmojiServiceDescr
   skinVariations?: EmojiServiceDescription[];
 }
 
+export interface AltRepresentations {
+  [key: string]: EmojiServiceRepresentation;
+}
 
 export interface SpriteSheets {
   [index: string]: SpriteSheet;

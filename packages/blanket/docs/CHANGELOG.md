@@ -1,5 +1,10 @@
 # @atlaskit/blanket
 
+## 4.0.0 (2017-11-14)
+
+* bug fix; implemented code review comments: using theme package to get layer value and removed ([b1a84f5](https://bitbucket.org/atlassian/atlaskit/commits/b1a84f5))
+* breaking; added z-index to blanket ([4665973](https://bitbucket.org/atlassian/atlaskit/commits/4665973))
+* breaking; aK-3851-fix added z-index to blanket, reverts b344810 (issues closed: ak-3851) ([4665973](https://bitbucket.org/atlassian/atlaskit/commits/4665973))
 ## 3.0.3 (2017-10-26)
 
 * bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))

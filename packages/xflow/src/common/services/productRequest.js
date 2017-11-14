@@ -3,8 +3,8 @@ import 'whatwg-fetch';
 
 import {
   getAvatarUrl,
-  getCloudId,
   getCurrentUsername,
+  fetchCloudId,
   getInstanceName,
   getUserDisplayName,
   queryUsername,
@@ -26,8 +26,8 @@ async function getCurrentUserAvatarUrl() {
 export default (productKey) => async (comment) => {
   try {
     const avatar = await getCurrentUserAvatarUrl();
-    const cloudId = await getCloudId();
     const displayName = await getUserDisplayName();
+    const cloudId = await fetchCloudId();
     const instanceName = getInstanceName();
 
     const response = await fetch(productRequestEndpoint(), {

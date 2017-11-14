@@ -20,8 +20,8 @@ const mockRequestTrialEastEndpointWithResponse = (response) => {
 describe('productRequest', () => {
   beforeEach(() => {
     tenantContext.getAvatarUrl = jest.fn().mockReturnValue('some-avatar-url');
-    tenantContext.getCloudId = jest.fn().mockReturnValue(Promise.resolve('some-cloud-id'));
     tenantContext.getCurrentUsername = jest.fn().mockReturnValue('exampleUser');
+    tenantContext.fetchCloudId = jest.fn().mockReturnValue(Promise.resolve('some-cloud-id'));
     tenantContext.getInstanceName = jest.fn().mockReturnValue('example.atlassian.net');
     tenantContext.queryUsername = jest.fn().mockReturnValue(Promise.resolve({}));
   });

@@ -4,7 +4,7 @@ import fetchMock from 'fetch-mock';
 
 import {
   isUserTrusted,
-  getCloudId,
+  fetchCloudId,
   JIRA_CLOUD_ID_URL,
   CONFLUENCE_CLOUD_ID_URL,
 } from '../../../../src/common/services/tenantContext';
@@ -27,11 +27,11 @@ const mockEndpointWithFailureStatus = (status) => {
 describe('tenantContext', () => {
   afterEach(fetchMock.restore);
 
-  describe('getCloudId', () => {
+  describe('fetchCloudId()', () => {
     it('should return the expected cloud id from Jira', async () => {
       const EXPECTED_CLOUD_ID = 'not-an-instance-name';
       fetchMock.mock(JIRA_CLOUD_ID_URL, { cloudId: EXPECTED_CLOUD_ID }, { method: 'GET' });
-      const result = await getCloudId();
+      const result = await fetchCloudId();
       return expect(result).toBe(EXPECTED_CLOUD_ID);
     });
 
@@ -39,7 +39,7 @@ describe('tenantContext', () => {
       const EXPECTED_CLOUD_ID = 'instance-without-jira';
       fetchMock.mock(JIRA_CLOUD_ID_URL, 500);
       fetchMock.mock(CONFLUENCE_CLOUD_ID_URL, { cloudId: EXPECTED_CLOUD_ID }, { method: 'GET' });
-      const result = await getCloudId();
+      const result = await fetchCloudId();
       return expect(result).toBe(EXPECTED_CLOUD_ID);
     });
 
@@ -48,7 +48,7 @@ describe('tenantContext', () => {
       fetchMock.mock(JIRA_CLOUD_ID_URL, 500);
       fetchMock.mock(CONFLUENCE_CLOUD_ID_URL, 500);
       try {
-        await getCloudId();
+        await fetchCloudId();
       } catch (e) {
         expect(e).toEqual(
           new Error('Unable to retrieve cloud id. Status: 500')

@@ -20,7 +20,7 @@ describe('<SearchDrawer />', () => {
     it('should render the backIcon in the correct position default to false', () => {
       expect(mount(
         <AkSearchDrawer {...requiredProps} />
-      ).find(Drawer).props().backIconOffset).toBe(searchIconOffset);
+      ).find(Drawer).props().iconOffset).toBe(searchIconOffset);
     });
   });
 });

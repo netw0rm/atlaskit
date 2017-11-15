@@ -20,7 +20,7 @@ describe('<CreateDrawer />', () => {
     it('should render the backIcon in the correct position default to false', () => {
       expect(mount(
         <AkCreateDrawer {...requiredProps} />
-      ).find(Drawer).props().backIconOffset).toBe(createIconOffset);
+      ).find(Drawer).props().iconOffset).toBe(createIconOffset);
     });
   });
 });

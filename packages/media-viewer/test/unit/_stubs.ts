@@ -2,7 +2,7 @@ import * as events from 'events';
 import { Subject } from 'rxjs/Subject';
 import {
   ContextConfig,
-  MediaCollection, MediaCollectionProvider
+  MediaCollection, MediaCollectionProvider, MediaItemProvider, MediaItem
 } from '@atlaskit/media-core';
 
 export class Stubs {
@@ -39,10 +39,17 @@ export class Stubs {
     };
   }
 
-  static context(config: ContextConfig, collectionProvider?: MediaCollectionProvider) {
+  static mediaItemProvider(subject?: Subject<MediaItem>) {
+    return {
+      observable: jest.fn(() => subject || new Subject<MediaItem>())
+    };
+  }
+
+  static context(config: ContextConfig, collectionProvider?: MediaCollectionProvider, mediaItemProvider?: MediaItemProvider) {
     return {
       config,
-      getMediaCollectionProvider: jest.fn(() => collectionProvider || Stubs.mediaCollectionProvider())
+      getMediaCollectionProvider: jest.fn(() => collectionProvider || Stubs.mediaCollectionProvider()),
+      getMediaItemProvider: jest.fn(() => mediaItemProvider || Stubs.mediaItemProvider())
     };
   }
 }

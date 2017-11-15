@@ -14,7 +14,7 @@ export interface MediaFileListViewerProps {
   readonly selectedItem: MediaViewerItem;
   readonly surroundingItems: Array<MediaViewerItem>;
 
-  readonly collectionName: string;
+  readonly collectionName?: string;
 
   readonly MediaViewer: MediaViewerConstructor;
   readonly mediaViewerConfiguration?: MediaViewerConfig;

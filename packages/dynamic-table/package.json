@@ -30,7 +30,7 @@
     "@atlaskit/spinner": "^4.0.2",
     "@atlaskit/theme": "^2.0.0",
     "@atlaskit/util-common": "^1.1.0",
-    "@atlaskit/util-shared-styles": "^1.0.1",
+    "@atlaskit/util-shared-styles": "^2.10.5",
     "babel-runtime": "^6.11.6",
     "prop-types": "^15.5.10",
     "styled-components": "^1.4.6"

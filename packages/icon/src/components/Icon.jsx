@@ -41,7 +41,10 @@ export const IconWrapper = styled.span`${spanStyles}`;
 class Icon extends PureComponent {
   static propTypes = {
     /** Glyph to show by Icon component (not required when you import a glyph directly) */
-    glyph: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,
+    glyph: PropTypes.func,
+    /** More performant than the glyph prop, but potentially dangerous if the SVG string hasn't
+    been "sanitised" */
+    dangerouslySetGlyph: PropTypes.string,
     /** String to apply as the SVG title element */
     label: PropTypes.string.isRequired,
     /** onClick handler for the icon element */
@@ -60,7 +63,8 @@ class Icon extends PureComponent {
 
   render() {
     const {
-      glyph,
+      glyph: Glyph,
+      dangerouslySetGlyph,
       onClick,
       primaryColor,
       secondaryColor,
@@ -68,7 +72,7 @@ class Icon extends PureComponent {
     } = this.props;
 
     // handling the glyphs as strings
-    if (typeof glyph === 'string') {
+    if (dangerouslySetGlyph) {
       return (
         <IconWrapper
           onClick={onClick}
@@ -77,7 +81,7 @@ class Icon extends PureComponent {
           size={size}
           role="img"
           aria-label={this.props.label}
-          dangerouslySetInnerHTML={{ __html: glyph }}
+          dangerouslySetInnerHTML={{ __html: dangerouslySetGlyph }}
         />
       );
     }
@@ -91,7 +95,7 @@ class Icon extends PureComponent {
         role="img"
         aria-label={this.props.label}
       >
-        {glyph}
+        <Glyph role="presentation" />
       </IconWrapper>
     );
   }

@@ -21,6 +21,26 @@ describe(name, () => {
 
     const MyIcon = props => <Icon glyph={secretWrapper} {...props} />;
 
+    describe('glyph prop', () => {
+      const id = 'customSvg';
+      const customGlyphJsx = () => <svg id={id} />;
+      const wrapper = mount(<Icon glyph={customGlyphJsx} label="" />);
+
+      it('should render an SVG provided via JSX', () => {
+        expect(wrapper.html().includes(`<svg id="${id}"`)).toBe(true);
+      });
+    });
+
+    describe('dangerouslySetGlyph prop', () => {
+      const id = 'customSvg';
+      const customGlyphString = `<svg id=${id}></svg>`;
+      const wrapper = mount(<Icon dangerouslySetGlyph={customGlyphString} label="" />);
+
+      it('should render an SVG provided as a string', () => {
+        expect(wrapper.html().includes(`<svg id="${id}"`)).toBe(true);
+      });
+    });
+
     describe('exports', () => {
       it('exports the React component, and size', () => {
         expect(Icon).not.toBe(undefined);

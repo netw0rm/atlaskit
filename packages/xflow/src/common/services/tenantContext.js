@@ -30,10 +30,10 @@ export const getAvatarUrl = ({ avatarUrls }) => {
   return url;
 };
 
-let currentUserPromise = null;
+let currentUserPromiseCached = null;
 export function fetchCurrentUser() {
   // WIP only works in JIRA context (not confluence)
-  currentUserPromise = currentUserPromise || fetch(
+  currentUserPromiseCached = currentUserPromiseCached || fetch(
       JIRA_CURRENT_USER_AND_GROUPS_URL,
       { credentials: 'same-origin' }
     )
@@ -47,10 +47,10 @@ export function fetchCurrentUser() {
       return response.json();
     });
 
-  return currentUserPromise;
+  return currentUserPromiseCached;
 }
 fetchCurrentUser.resetCache = () => {
-  currentUserPromise = null;
+  currentUserPromiseCached = null;
 };
 
 export const fetchCurrentUserDisplayName = () =>

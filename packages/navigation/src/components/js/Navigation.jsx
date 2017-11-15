@@ -303,12 +303,21 @@ export default class Navigation extends PureComponent {
     this.props.onToggleEnd();
   }
 
+  renderDrawersWithIconsOffsetForHome = () =>
+    this.props.drawers.map(drawer =>
+      React.cloneElement(drawer, { isHomeInGlobalNav: true })
+    );
+
+  renderDrawers() {
+    const { drawers, globalHomeIcon } = this.props;
+    return globalHomeIcon ? this.renderDrawersWithIconsOffsetForHome() : drawers;
+  }
+
   render() {
     const {
       children,
       containerHeaderComponent,
       containerScrollRef,
-      drawers,
       globalCreateIcon,
       globalHomeHref,
       globalHomeIcon,
@@ -434,7 +443,7 @@ export default class Navigation extends PureComponent {
               {resizer}
             </NavigationFixedContainer>
           </Spacer>
-          {drawers}
+          {this.renderDrawers()}
         </div>
       </WithElectronTheme>
     );

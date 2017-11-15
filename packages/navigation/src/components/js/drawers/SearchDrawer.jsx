@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import Drawer from '../Drawer';
-import { searchIconOffset } from '../../../shared-variables';
+import { additionalOffsetIfHomeIcon, searchIconOffset } from '../../../shared-variables';
 import type { DrawerProps } from '../../../types';
 
 /*
@@ -11,10 +11,12 @@ being the offset.
 export default class SearchDrawer extends PureComponent {
   props: DrawerProps
   render() {
+    const iconOffset = this.props.isHomeInGlobalNav
+      ? searchIconOffset + additionalOffsetIfHomeIcon
+      : searchIconOffset;
     return (
       <Drawer
-        iconOffset={searchIconOffset}
-        backIconOffset={searchIconOffset}
+        iconOffset={iconOffset}
         width={this.props.isFullWidth ? 'full' : 'wide'}
         {...this.props}
       />

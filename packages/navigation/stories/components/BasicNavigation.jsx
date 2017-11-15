@@ -6,6 +6,7 @@ import SearchIcon from '@atlaskit/icon/glyph/search';
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
+import HomeIcon from '@atlaskit/icon/glyph/home-filled';
 import SettingsIcon from '@atlaskit/icon/glyph/settings';
 import IssuesIcon from '@atlaskit/icon/glyph/issues';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
@@ -191,6 +192,12 @@ export default class BasicNavigation extends PureComponent {
         globalCreateIcon={
           <Tooltip position="right" description="Create">
             <AddIcon label="Create icon" secondaryColor="inherit" size="medium" />
+          </Tooltip>
+        }
+        globalHomeHref="//www.atlassian.com"
+        globalHomeIcon={
+          <Tooltip position="right" description="Home">
+            <HomeIcon label="Home" secondaryColor="inherit" size="medium" />
           </Tooltip>
         }
         globalPrimaryIcon={this.props.globalPrimaryIcon}

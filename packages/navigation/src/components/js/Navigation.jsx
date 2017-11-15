@@ -57,6 +57,10 @@ type Props = {|
   /** Icon to be used as the 'create' icon. onCreateDrawerOpen is called when it
   is clicked. */
   globalCreateIcon?: ReactElement,
+  /** Link to be passed to the linkComponent that wraps the globalHomeIcon. */
+  globalHomeHref?: string,
+  /** Icon to be used as the 'home' icon.  Should link to Atlassian Home */
+  globalHomeIcon?: ReactElement,
   /** Icon to be displayed at the top of the GlobalNavigation. This is wrapped in
   the linkComponent. */
   globalPrimaryIcon?: ReactElement,
@@ -306,6 +310,8 @@ export default class Navigation extends PureComponent {
       containerScrollRef,
       drawers,
       globalCreateIcon,
+      globalHomeHref,
+      globalHomeIcon,
       globalPrimaryIcon,
       globalPrimaryIconAppearance,
       globalPrimaryItemHref,
@@ -366,6 +372,8 @@ export default class Navigation extends PureComponent {
         <GlobalNavigation
           theme={globalTheme}
           createIcon={globalCreateIcon}
+          homeHref={globalHomeHref}
+          homeIcon={globalHomeIcon}
           linkComponent={linkComponent}
           onCreateActivate={onCreateDrawerOpen}
           onSearchActivate={onSearchDrawerOpen}

@@ -10,6 +10,8 @@ import GlobalPrimaryActionsItemsWrapper from '../styled/GlobalPrimaryActionsItem
 export default class GlobalPrimaryActions extends PureComponent {
   static propTypes = {
     createIcon: PropTypes.node,
+    homeHref: PropTypes.string,
+    homeIcon: PropTypes.node,
     linkComponent: PropTypes.func,
     onCreateActivate: PropTypes.func,
     onSearchActivate: PropTypes.func,
@@ -26,6 +28,8 @@ export default class GlobalPrimaryActions extends PureComponent {
   render() {
     const {
       createIcon,
+      homeHref,
+      homeIcon,
       linkComponent,
       onCreateActivate,
       onSearchActivate,
@@ -49,6 +53,15 @@ export default class GlobalPrimaryActions extends PureComponent {
           </GlobalPrimaryActionsPrimaryItem>
         : null}
         <GlobalPrimaryActionsItemsWrapper>
+          {homeIcon ?
+            <GlobalItem
+              href={homeHref}
+              linkComponent={linkComponent}
+              size="medium"
+            >
+              {homeIcon}
+            </GlobalItem>
+          : null}
           {searchIcon ?
             <DrawerTrigger onActivate={onSearchActivate}>
               {searchIcon}

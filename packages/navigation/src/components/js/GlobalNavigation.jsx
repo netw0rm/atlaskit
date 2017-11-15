@@ -14,6 +14,10 @@ import type { Provided } from '../../theme/types';
 type Props = {|
   /** The icon to be used for the create button */
   createIcon?: ReactElement,
+  /** A link to place around the home icon. */
+  homeHref?: string,
+  /** The icon to be used for the home button */
+  homeIcon?: ReactElement,
   /** A component that will be used to render links. A default link component is
   used if none is provided. */
   linkComponent?: ReactClass,
@@ -53,6 +57,8 @@ export default class GlobalNavigation extends PureComponent {
   render() {
     const {
       createIcon,
+      homeHref,
+      homeIcon,
       linkComponent,
       onCreateActivate,
       onSearchActivate,
@@ -70,6 +76,8 @@ export default class GlobalNavigation extends PureComponent {
           <GlobalNavigationPrimaryContainer>
             <GlobalPrimaryActions
               createIcon={createIcon}
+              homeHref={homeHref}
+              homeIcon={homeIcon}
               linkComponent={linkComponent}
               onCreateActivate={onCreateActivate}
               onSearchActivate={onSearchActivate}

@@ -2,8 +2,7 @@ import 'es6-promise/auto';
 import 'whatwg-fetch';
 
 import { getCurrentUsername, queryUsername, getInstanceName, getAvatarUrl } from './tenantContext';
-
-export const NOTIFY_ENDPOINT_EAST = 'https://xflow.us-east-1.prod.public.atl-paas.net/notify-users-of-product-access';
+import { notifyAccessEndpoint } from './xflowService';
 
 function getAtlassianAccountId({ attributes: { attributes } }) {
   if (!attributes) return '';
@@ -14,6 +13,7 @@ function getAtlassianAccountId({ attributes: { attributes } }) {
 
 async function notifyUsers(endpoint, instance, grantedAccessBy, grantedAccessTo, productKey) {
   const response = await fetch(endpoint, {
+    credentials: 'include',
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ export default async (users, productKey) => {
   }));
 
   return await notifyUsers(
-    NOTIFY_ENDPOINT_EAST,
+    notifyAccessEndpoint(),
     instance,
     grantedAccessBy,
     grantedAccessTo,

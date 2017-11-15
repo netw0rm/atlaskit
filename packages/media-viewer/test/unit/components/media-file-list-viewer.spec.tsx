@@ -85,7 +85,7 @@ describe('<MediaFileListViewer />', () => {
   });
 
   it('should construct a media viewer with no collectionName provided', () => {
-    const context = Stubs.context(contextConfig);
+    const context = Stubs.context(contextConfig) as any;
     const mediaViewerConstructor = Stubs.mediaViewerConstructor();
     const additionalConfiguration = { enableMiniMode: true };
     mount(
@@ -98,13 +98,13 @@ describe('<MediaFileListViewer />', () => {
         basePath={basePath}
       />);
     expect(context.getMediaItemProvider).toHaveBeenCalledTimes(3);
-    expect(context.getMediaItemProvider).toHaveBeenCalledWith('some-id', 'file', undefined]);
-    expect(context.getMediaItemProvider).toHaveBeenCalledWith('some-id-2', 'file', undefined]);
-    expect(context.getMediaItemProvider).toHaveBeenCalledWith('some-id-3', 'file', undefined]);
+    expect(context.getMediaItemProvider).toHaveBeenCalledWith('some-id', 'file', undefined);
+    expect(context.getMediaItemProvider).toHaveBeenCalledWith('some-id-2', 'file', undefined);
+    expect(context.getMediaItemProvider).toHaveBeenCalledWith('some-id-3', 'file', undefined);
   });
 
   it('should construct a media viewer with a collectionName', () => {
-    const context = Stubs.context(contextConfig);
+    const context = Stubs.context(contextConfig) as any;
     const mediaViewerConstructor = Stubs.mediaViewerConstructor();
     const additionalConfiguration = { enableMiniMode: true };
     mount(
@@ -118,8 +118,8 @@ describe('<MediaFileListViewer />', () => {
         basePath={basePath}
       />);
     expect(context.getMediaItemProvider).toHaveBeenCalledTimes(3);
-    expect(context.getMediaItemProvider).toHaveBeenCalledWith('some-id', 'file', 'some-collection']);
-    expect(context.getMediaItemProvider).toHaveBeenCalledWith('some-id-2', 'file', 'some-collection']);
-    expect(context.getMediaItemProvider).toHaveBeenCalledWith('some-id-3', 'file', 'some-collection']);
+    expect(context.getMediaItemProvider).toHaveBeenCalledWith('some-id', 'file', 'some-collection');
+    expect(context.getMediaItemProvider).toHaveBeenCalledWith('some-id-2', 'file', 'some-collection');
+    expect(context.getMediaItemProvider).toHaveBeenCalledWith('some-id-3', 'file', 'some-collection');
   });
 });

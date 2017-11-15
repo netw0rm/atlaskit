@@ -11,6 +11,8 @@ import { withXFlowProvider } from '../../common/components/XFlowProvider';
 import RequestTrialHeading from '../styled/RequestTrialHeading';
 import RequestTrialFooter from '../styled/RequestTrialFooter';
 import NoteText from '../styled/NoteText';
+import NoteContent from '../styled/NoteContent';
+import NotePrompt from '../styled/NotePrompt';
 
 const messages = defineMessages({
   errorFlagTitle: {
@@ -188,8 +190,8 @@ class RequestTrialNote extends Component {
             </RequestTrialFooter>
           }
         >
-          <div>
-            {React.isValidElement(prompt) ? prompt : <p>{prompt}</p>}
+          <NoteContent>
+            {React.isValidElement(prompt) ? prompt : <NotePrompt>{prompt}</NotePrompt>}
             <NoteText
               innerRef={noteText => {
                 this.noteText = noteText;
@@ -197,7 +199,7 @@ class RequestTrialNote extends Component {
               placeholder={placeholder}
               maxLength={300}
             />
-          </div>
+          </NoteContent>
         </ModalDialog>
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}

@@ -1,6 +1,8 @@
 // @flow
 import React, { Children, cloneElement, PureComponent } from 'react';
 import { Transition } from 'react-transition-group';
+import { withRenderTarget } from '@atlaskit/layer-manager';
+
 import Wrapper from '../styled/Wrapper';
 import Group, { SROnly, Inner } from '../styled/Group';
 import type { ChildrenType, FunctionType } from '../types';
@@ -14,7 +16,7 @@ type Props = {
   onDismissed?: FunctionType,
 };
 
-export default class FlagGroup extends PureComponent {
+class FlagGroup extends PureComponent {
   props: Props; // eslint-disable-line react/sort-comp
 
   renderChildren = () => {
@@ -52,3 +54,8 @@ export default class FlagGroup extends PureComponent {
     );
   }
 }
+
+export default withRenderTarget({
+  target: 'flag',
+  withTransitionGroup: false,
+}, FlagGroup);

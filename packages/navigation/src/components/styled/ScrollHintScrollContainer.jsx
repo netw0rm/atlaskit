@@ -19,7 +19,7 @@ const ScrollHintScrollContainer = styled.div`
   height: 100%;
   justify-content: flex-start;
   transition: padding ${drawerContainerHeaderAnimationSpeed};
-  padding: 0 ${scrollHintSpacing}px ${bottomPadding}px ${scrollHintSpacing}px;
+  padding: 0 0 ${bottomPadding}px ${scrollHintSpacing}px;
 
   ${whenCollapsed`
     overflow-y: hidden;

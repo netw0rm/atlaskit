@@ -76,7 +76,14 @@ export default class AvatarGroup extends Component {
     // crop and prepare the dropdown items
     const items = data.slice(max).map(avatar => ({
       content: avatar.name,
-      elemBefore: <Avatar {...avatar} size="small" borderColor="transparent" />,
+      elemBefore: (
+        <Avatar
+          {...avatar}
+          borderColor="transparent"
+          enableTooltip={false}
+          size="small"
+        />
+      ),
       href: avatar.href,
       rel: avatar.target ? 'noopener noreferrer' : null,
       target: avatar.target,

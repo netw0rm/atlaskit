@@ -12,6 +12,10 @@ export const JIRA_CURRENT_USER_AND_GROUPS_URL = '/rest/api/2/myself?expand=group
 const DEFAULT_AVATAR_URL = 'https://i2.wp.com/avatar-cdn.atlassian.com/default/96?ssl=1';
 const AVATAR_REGEXP = /^https:\/\/avatar-cdn.atlassian.com\/[A-Za-z0-9]+/;
 
+function fetchSameOrigin(url) {
+  return fetch(url, { credentials: 'same-origin' });
+}
+
 /**
  * Gets the largest avatar url
  * @param avatarUrls avatar urls, usually from fetchCurrentUser() response
@@ -33,10 +37,8 @@ export const getAvatarUrl = ({ avatarUrls }) => {
 let currentUserPromiseCached = null;
 export function fetchCurrentUser() {
   // WIP only works in JIRA context (not confluence)
-  currentUserPromiseCached = currentUserPromiseCached || fetch(
-      JIRA_CURRENT_USER_AND_GROUPS_URL,
-      { credentials: 'same-origin' }
-    )
+  currentUserPromiseCached = currentUserPromiseCached
+    || fetchSameOrigin(JIRA_CURRENT_USER_AND_GROUPS_URL)
     .then((response) => {
       if (response.status !== 200) {
         throw new Error(
@@ -77,13 +79,9 @@ export const getInstanceName = () => window.location.hostname;
  * Attempt to fetch cloud id from JIRA, then Confluence, otherwise throw an error
  */
 export const fetchCloudId = async () => {
-  let response = await fetch(JIRA_CLOUD_ID_URL, {
-    credentials: 'same-origin',
-  });
+  let response = await fetchSameOrigin(JIRA_CLOUD_ID_URL);
   if (!response.ok) {
-    response = await fetch(CONFLUENCE_CLOUD_ID_URL, {
-      credentials: 'same-origin',
-    });
+    response = await fetchSameOrigin(CONFLUENCE_CLOUD_ID_URL);
   }
   if (!response.ok) {
     throw new Error(`Unable to retrieve cloud id. Status: ${response.status}`);

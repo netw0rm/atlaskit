@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { unthemedColors } from '../../shared-variables';
+import { unthemedColors, resizerClickableWidth } from '../../shared-variables';
 
-const resizerClickableWidth = 12;
 const resizerVisibleWidth = 2;
 
 const ResizerInner = styled.div`

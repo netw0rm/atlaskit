@@ -58,7 +58,6 @@ export const fetchCurrentUserDisplayName = () =>
 export const fetchCurrentUserAvatarUrl = () =>
   currentUserPromise.then(getAvatarUrl);
 
-
 export const isCurrentUserSiteAdmin = () =>
   fetchCurrentUser()
   .then(user => {

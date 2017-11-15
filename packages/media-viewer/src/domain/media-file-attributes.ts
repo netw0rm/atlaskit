@@ -6,6 +6,8 @@ import { ArtifactFormat } from './artifact-format';
 import { MediaFileAttributes } from '../mediaviewer';
 import { MediaViewerItem } from '../components/media-viewer';
 
+const zip = (a, b) => a.map((e, i) => [e, b[i]]);
+
 export class MediaFileAttributesFactory {
   static create(id = '', details: FileDetails, serviceHost: string): MediaFileAttributes {
     const getArtifactUrl = (name: string) => {
@@ -40,25 +42,22 @@ export class MediaFileAttributesFactory {
     };
   }
 
-  static getUniqueMediaViewerId(selectedItem: MediaViewerItem) {
-    return `${selectedItem.id}-${selectedItem.occurrenceKey}`;
+  static getUniqueMediaViewerId(id: string, occurrenceKey: string) {
+    return `${id}-${occurrenceKey}`;
   }
 
-  static fromFileItem(item: FileItem, serviceHost: string): MediaFileAttributes {
-    return MediaFileAttributesFactory.create(item.details.id, item.details, serviceHost);
-  }
-
-  static fromMediaCollectionFileItem(item: MediaCollectionFileItem, serviceHost: string): MediaFileAttributes {
-    const id = MediaFileAttributesFactory.getUniqueMediaViewerId({
-      id: item.details.id as string,
-      occurrenceKey: item.details.occurrenceKey,
-      type: 'file'
-    });
+  static fromFileItem(item: FileItem, occurrenceKey: string , serviceHost: string): MediaFileAttributes {
+    const id = MediaFileAttributesFactory.getUniqueMediaViewerId(item.details.id, occurrenceKey);
     return MediaFileAttributesFactory.create(id, item.details, serviceHost);
   }
 
-  static fromFileItemList(items: Array<FileItem>, serviceHost: string): Array<MediaFileAttributes> {
-    return items.map(item => MediaFileAttributesFactory.fromFileItem(item, serviceHost));
+  static fromFileItemList(items: Array<FileItem>, occurrenceKeys: Array<string>, serviceHost: string): Array<MediaFileAttributes> {
+    return zip(items, occurrenceKeys).map(i => MediaFileAttributesFactory.fromFileItem(i[0], i[1], serviceHost));
+  }
+
+  static fromMediaCollectionFileItem(item: MediaCollectionFileItem, serviceHost: string): MediaFileAttributes {
+    const id = MediaFileAttributesFactory.getUniqueMediaViewerId(item.details.id, item.details.occurrenceKey);
+    return MediaFileAttributesFactory.create(id, item.details, serviceHost);
   }
 
   static fromMediaCollection(collection: MediaCollection, serviceHost: string): Array<MediaFileAttributes> {

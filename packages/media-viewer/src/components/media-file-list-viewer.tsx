@@ -68,9 +68,14 @@ export class MediaFileListViewer extends Component<MediaFileListViewerProps, Med
         .zip(...observableFileItems)
         .subscribe({
           next: fileItems => {
-            const files = MediaFileAttributesFactory.fromFileItemList(fileItems, serviceHost);
-            mediaViewer.setFiles(files);
-            mediaViewer.open({ id: selectedItem.id });
+            const occurrenceKeys = filesToProcess.map(f => f.occurrenceKey);
+
+            const mvClassicFiles = MediaFileAttributesFactory.fromFileItemList(fileItems, occurrenceKeys, serviceHost);
+            const selectedMvClassicId = mvClassicFiles
+              .find(f => f.id === selectedItem.id && f.occurrenceKey === selectedItem.occurrenceKey);
+
+            mediaViewer.setFiles(mvClassicFiles);
+            mediaViewer.open({ id: selectedMvClassicId });
           }
         }),
       mediaViewer

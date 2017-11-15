@@ -1,5 +1,8 @@
 # @atlaskit/avatar
 
+## 8.2.3 (2017-11-15)
+
+* bug fix; explicitly disable tooltip on avatar when rendered in a group dropdown ([593f2e9](https://bitbucket.org/atlassian/atlaskit/commits/593f2e9))
 ## 8.2.2 (2017-11-15)
 
 

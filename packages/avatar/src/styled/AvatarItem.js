@@ -14,10 +14,10 @@ const focusBorderColor = themed({
   dark: colors.B75,
 });
 
-export function getBackgroundColor({ href, isActive, isHover, isSelected, onClick }) {
+export function getBackgroundColor({ background, href, isActive, isHover, isSelected, onClick }) {
   const isInteractive = href || onClick;
 
-  let backgroundColor = colors.background;
+  let backgroundColor = background || colors.background;
 
   // Interaction: Hover
   if (isInteractive && (isHover || isSelected)) {

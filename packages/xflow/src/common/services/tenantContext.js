@@ -8,6 +8,7 @@ const SITE_ADMINS_GROUP_NAME = 'site-admins';
 
 export const JIRA_CLOUD_ID_URL = '/rest/product-fabric/1.0/cloud/id';
 export const CONFLUENCE_CLOUD_ID_URL = '/wiki/rest/product-fabric/1.0/cloud/id';
+export const JIRA_CURRENT_USER_AND_GROUPS_URL = '/rest/api/2/myself?expand=groups';
 const DEFAULT_AVATAR_URL = 'https://i2.wp.com/avatar-cdn.atlassian.com/default/96?ssl=1';
 const AVATAR_REGEXP = /^https:\/\/avatar-cdn.atlassian.com\/[A-Za-z0-9]+/;
 
@@ -33,7 +34,7 @@ let currentUserPromise = null;
 export function fetchCurrentUser() {
   // WIP only works in JIRA context (not confluence)
   currentUserPromise = currentUserPromise || fetch(
-      '/rest/api/2/myself?expand=groups',
+      JIRA_CURRENT_USER_AND_GROUPS_URL,
       { credentials: 'same-origin' }
     )
     .then((response) => {

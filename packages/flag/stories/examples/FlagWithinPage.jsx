@@ -7,8 +7,9 @@ import { colors } from '@atlaskit/theme';
 import FieldRadioGroup from '@atlaskit/field-radio-group';
 import SuccessIcon from '@atlaskit/icon/glyph/check-circle';
 import LayerManager from '@atlaskit/layer-manager';
+
 import Flag, { FlagGroup } from '../../src';
-import ExamplePage from './ExamplePage';
+import ExamplePage from '../components/ExamplePage';
 import { AppearanceArray } from '../../src/types';
 
 const appearanceItems = AppearanceArray.map(val => (
@@ -23,20 +24,18 @@ const color = {
   warning: colors.Y200,
 };
 
-function getRandomDescription() {
-  const descriptions = [
-    'Marzipan croissant pie. Jelly beans gingerbread caramels brownie icing.',
-    'Fruitcake topping wafer pie candy dragée sesame snaps cake. Cake cake cheesecake. Pie tiramisu carrot cake tart tart dessert cookie. Lemon drops cookie tootsie roll marzipan liquorice cotton candy brownie halvah.',
-  ];
-
-  return descriptions[Math.floor(Math.random() * descriptions.length)];
+type State = {
+  useLayerManager: boolean;
+  flags: any[],
+  chosenAppearance: any
 }
 
-export default class AnimationDemo extends PureComponent {
+export default class FlagWithinPage extends PureComponent<{}, State> {
   createdFlagCount = 0; // eslint-disable-line react/sort-comp
   state = {
     chosenAppearance: Flag.defaultProps.appearance,
     flags: [],
+    useLayerManager: true,
   };
 
   componentDidMount() { this.addFlag(); }
@@ -44,7 +43,7 @@ export default class AnimationDemo extends PureComponent {
   newFlag = (timeOffset: number = 0) => ({
     appearance: this.state.chosenAppearance,
     created: Date.now() - (timeOffset * 1000),
-    description: getRandomDescription(),
+    description: 'Test description',
     index: this.createdFlagCount++,
     title: 'Whoa a new flag',
   })
@@ -61,33 +60,45 @@ export default class AnimationDemo extends PureComponent {
     this.setState(state => ({ flags: state.flags.slice(1) }));
   }
 
+  toggleLayerManager = () => {
+    this.setState({
+      useLayerManager: !this.state.useLayerManager,
+    });
+  }
+
   render() {
     console.log(this.state.flags.map(flag => flag.appearance));
 
+    const { useLayerManager } = this.state;
+
+    const Wrapper = useLayerManager ? LayerManager : 'div';
+
     return (
-      <LayerManager>
-        <div>
-          <ExamplePage>
-            <div>
-              <p>Add some flags then try clicking the <em>Dismiss</em> icon.</p>
-              <p>When a flag is dismissed, an event should be shown in the action logger panel.</p>
-              <FieldRadioGroup
-                items={appearanceItems}
-                label="Pick your new flag appearance:"
-                onRadioChange={(e) => {
-                  this.setState({ chosenAppearance: e.target.value });
-                }}
-              />
-              <p>
-                <Button
-                  appearance="primary"
-                  onClick={this.addFlag}
-                >
-                  Add another flag
-                </Button>
-              </p>
-            </div>
-          </ExamplePage>
+      <Wrapper>
+        <ExamplePage>
+          <div>
+            <p>Flags are rendered to the Layer Manager ancestor component if one exists.</p>
+            <p>Flags are appended to the body when no ancestor Layer Manager exists.</p>
+            <p>
+              <Button appearance="primary" onClick={this.toggleLayerManager}>Toggle Layer Manager</Button>
+            </p>
+            <p>Layer Manager status: <b>{ useLayerManager ? 'Exists' : 'Does not exist' }</b></p>
+            <FieldRadioGroup
+              items={appearanceItems}
+              label="Pick your new flag appearance:"
+              onRadioChange={(e) => {
+                this.setState({ chosenAppearance: e.target.value });
+              }}
+            />
+            <p>
+              <Button
+                appearance="primary"
+                onClick={this.addFlag}
+              >
+                Add another flag
+              </Button>
+            </p>
+          </div>
           <FlagGroup onDismissed={this.flagDismissed}>
             {this.state.flags.map(flag => (
               <Flag
@@ -106,10 +117,10 @@ export default class AnimationDemo extends PureComponent {
                 title={`${flag.index}: ${flag.title}`}
               />
             )
-          )}
+            )}
           </FlagGroup>
-        </div>
-      </LayerManager>
+        </ExamplePage>
+      </Wrapper>
     );
   }
 }

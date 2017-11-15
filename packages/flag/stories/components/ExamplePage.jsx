@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import Navigation, { AkNavigationItem } from '@atlaskit/navigation';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 
-export default class Flag extends PureComponent {
+export default class ExamplePage extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
   };

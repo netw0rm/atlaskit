@@ -54,7 +54,7 @@ fetchCurrentUser.resetCache = () => {
 };
 
 export const fetchCurrentUserDisplayName = () =>
-  fetchCurrentUser().then(user => user.displayName);
+  fetchCurrentUser().then(user => user.displayName || user.name || user.emailAddress || '');
 
 export const fetchCurrentUserAvatarUrl = () =>
   fetchCurrentUser().then(getAvatarUrl);

@@ -54,10 +54,10 @@ fetchCurrentUser.resetCache = () => {
 };
 
 export const fetchCurrentUserDisplayName = () =>
-  currentUserPromise.then(user => user.displayName);
+  fetchCurrentUser().then(user => user.displayName);
 
 export const fetchCurrentUserAvatarUrl = () =>
-  currentUserPromise.then(getAvatarUrl);
+  fetchCurrentUser().then(getAvatarUrl);
 
 export const isCurrentUserSiteAdmin = () =>
   fetchCurrentUser()

@@ -11,8 +11,15 @@ import RequestTrialNote from './RequestTrialNote';
 
 class RequestTrial extends Component {
   static propTypes = {
-    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
     alreadyRequested: PropTypes.bool.isRequired,
+    contextInfo: PropTypes.shape({
+      contextualImage: PropTypes.string,
+      contextualHeading: PropTypes.string,
+      contextualMessage: PropTypes.string,
+      reactivateCTA: PropTypes.string,
+      trialCTA: PropTypes.string,
+    }),
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
     onComplete: PropTypes.func,
     onTrialRequested: PropTypes.func,
   };
@@ -26,6 +33,7 @@ class RequestTrial extends Component {
   render() {
     const {
       alreadyRequested,
+      contextInfo,
       firePrivateAnalyticsEvent,
       onComplete,
       onTrialRequested,
@@ -35,6 +43,8 @@ class RequestTrial extends Component {
         <Step
           render={(nextStep, cancel) =>
             <ConfirmRequest
+              alreadyRequested={alreadyRequested}
+              contextInfo={contextInfo}
               onComplete={async () => {
                 await onTrialRequested();
                 if (alreadyRequested) {
@@ -44,7 +54,6 @@ class RequestTrial extends Component {
                 }
                 nextStep();
               }}
-              alreadyRequested={alreadyRequested}
               onCancel={cancel}
             />}
         />

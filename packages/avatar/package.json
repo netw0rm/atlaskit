@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/avatar",
-  "version": "8.2.1",
+  "version": "8.2.3",
   "config": {
     "access": "public"
   },

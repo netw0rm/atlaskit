@@ -9,9 +9,9 @@ import {
   noDialogContainerBoxShadow,
 } from '../../shared-styles';
 
-export const selected = 'selected';
+export const selected = 'emoji-typeahead-selected';
 
-export const emojiTypeAhead = 'emoji-typeahead';
+export const emojiTypeAhead = 'emoji-typeahead-element';
 
 export const typeAheadListContainer = 'typeahead-list-container';
 

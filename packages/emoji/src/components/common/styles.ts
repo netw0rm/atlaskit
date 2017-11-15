@@ -13,9 +13,9 @@ import { defaultEmojiHeight } from '../../constants';
 import { akEmojiSelectedBackgroundColor } from '../../shared-styles';
 import { style, keyframes } from 'typestyle';
 
-export const selected = 'selected';
-export const selectOnHover = 'selectOnHover';
-export const emojiSprite = 'emoji-sprite';
+export const selected = 'emoji-common-selected';
+export const selectOnHover = 'emoji-common-select-on-hover';
+export const emojiSprite = 'emoji-common-emoji-sprite';
 
 const checkerBoard = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYAQMAAADaua+7AAAABlBMVEXY3OHs7vHTc6akAAAAE0lEQVR4AWNg4P9PEv7/gYEUDAC8yyPd+MDI9AAAAABJRU5ErkJggg==';
 
@@ -59,7 +59,7 @@ export const emojiContainer = style({
   },
 });
 
-export const placeholder = 'placeholder';
+export const placeholder = 'emoji-common-placeholder';
 
 export const placeholderContainer = style({
   display: 'inline-block',
@@ -155,15 +155,15 @@ export const emojiTooltip = style({
 
 // Emoji Preview
 
-export const buttons = 'buttons';
-export const preview = 'preview';
-export const previewImg = 'preview-image';
-export const previewText = 'preview-text';
-export const name = 'name';
-export const shortName = 'shortname';
-export const previewSingleLine = 'preview-single-line';
-export const toneSelectorContainer = 'tone-selector-container';
-export const withToneSelector = 'with-tone-selector';
+export const buttons = 'emoji-common-buttons';
+export const preview = 'emoji-common-preview';
+export const previewImg = 'emoji-common-preview-image';
+export const previewText = 'emoji-common-preview-text';
+export const name = 'emoji-common-name';
+export const shortName = 'emoji-common-shortname';
+export const previewSingleLine = 'emoji-common-preview-single-line';
+export const toneSelectorContainer = 'emoji-common-tone-selector-container';
+export const withToneSelector = 'emoji-common-with-tone-selector';
 
 export const emojiPreview = style({
   display: 'flex',

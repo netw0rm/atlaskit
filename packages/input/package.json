@@ -24,7 +24,7 @@
     "react-dom": "^15.3.2 || ^16.0.0"
   },
   "dependencies": {
-    "@atlaskit/util-shared-styles": "^1.0.0",
+    "@atlaskit/util-shared-styles": "^2.10.5",
     "babel-runtime": "^6.11.6",
     "keycode": "^2.1.8",
     "prop-types": "^15.5.10",

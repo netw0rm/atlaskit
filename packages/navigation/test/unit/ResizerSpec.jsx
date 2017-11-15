@@ -46,6 +46,11 @@ describe('<Resizer />', () => {
       expect(resizeSpy).not.toHaveBeenCalled();
       expect(resizeEndSpy).not.toHaveBeenCalled();
     });
+    it('mousedown adds appropriate mouse event listeners to the window', () => {
+      global.addEventListener = jest.fn();
+      resizer.find(ResizerInner).simulate('mousedown', { screenX: 100, preventDefault: () => { } });
+      expect(global.addEventListener).toHaveBeenCalledTimes(3);
+    });
 
     // TODO: onResize and onResizeEnd won't play nice with document event listeners
   });

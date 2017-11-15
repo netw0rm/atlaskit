@@ -109,7 +109,7 @@ export const itemsWithTooltips = (
     {
       ['right', 'left', 'top', 'bottom'].map((tooltipPos, i) => (
         <Tooltip
-          description="Oh, hello there!"
+          content="Oh, hello there!"
           position={tooltipPos}
           key={i}
         >

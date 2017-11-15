@@ -1,6 +1,6 @@
 function getXFlowEndPoint() {
-  return window.location.hostname.endsWith('jira-dev.com') ? 'https://api-private.stg.atlassian.com/xflow' :
-    'https://api-private.atlassian.com/xflow';
+  return process.env.NODE_ENV === 'production' ? 'https://api-private.atlassian.com/xflow' :
+      'https://api-private.stg.atlassian.com/xflow';
 }
 
 export const notifyAccessEndpoint = () =>

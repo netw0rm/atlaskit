@@ -36,10 +36,10 @@ describe('Avatar', () => {
   });
 
   describe('name property', () => {
-    it('should set the title of the internal span', () => {
+    it('should set the alt of the internal span', () => {
       const name = 'John Smith';
       const wrapper = mount(<Avatar name={name} src={src} />);
-      expect(wrapper.find(AvatarImage).getDOMNode().title).toBe(name);
+      expect(wrapper.find(AvatarImage).props().alt).toBe(name);
     });
   });
 

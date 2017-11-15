@@ -32,6 +32,19 @@ storiesOf('RequestTrial')
       />
     )
   )
+  .add('Request Trial with Context Info (INACTIVE)', () =>
+    setupStorybookAnalytics(
+      <ConfirmRequestBase
+        {...defaultProps}
+        contextInfo={{
+          contextualHeading: 'Project Pages are powered by Confluence',
+          contextualMessage: 'Create, share, and collaborate on all your project docs in one place, with Confluence pages.',
+        }}
+        onComplete={() => Promise.resolve(true)}
+        onCancel={() => Promise.resolve(true)}
+      />
+    )
+  )
   .add('RequestTrialWithNote (INACTIVE), success flag after Send Note', () =>
     setupStorybookAnalytics(
       <RequestTrialNoteBase

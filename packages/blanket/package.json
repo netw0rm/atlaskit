@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/blanket",
-  "version": "3.0.3",
+  "version": "4.0.1",
   "config": {
     "access": "public"
   },
@@ -32,7 +32,7 @@
   "devDependencies": {
     "@atlaskit/blanket": "*",
     "@atlaskit/util-readme": "^3.0.0",
-    "@atlaskit/button": "^1.0.0"
+    "@atlaskit/button": "^5.4.8"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [

@@ -13,6 +13,7 @@ import SpinnerDiv from '../../common/styled/SpinnerDiv';
 import ContextualConfirmTrialHeader from '../styled/ContextualConfirmTrialHeader';
 import ContextualConfirmTrialImage from '../styled/ContextualConfirmTrialImage';
 import ContextualConfirmTrialFooter from '../styled/ContextualConfirmTrialFooter';
+import ContextualConfirmTrialHeading from '../styled/ContextualConfirmTrialHeading';
 import ConfirmTrialAdminInfo from '../styled/ConfirmTrialAdminInfo';
 import ConfirmTrialAdminInfoImage from '../styled/ConfirmTrialAdminInfoImage';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
@@ -43,6 +44,7 @@ class ContextualConfirmTrial extends Component {
     status: PropTypes.oneOf([INACTIVE, DEACTIVATED]),
     contextInfo: PropTypes.shape({
       contextualImage: PropTypes.string,
+      contextualHeading: PropTypes.string.isRequired,
       contextualMessage: PropTypes.string.isRequired,
       reactivateCTA: PropTypes.string.isRequired,
       trialCTA: PropTypes.string.isRequired,
@@ -225,9 +227,10 @@ class ContextualConfirmTrial extends Component {
     : this.renderReactivateFooter());
 
   renderContextualContent = (status, contextInfo) => (<ContextualConfirmTrialContent id="xflow-confirm-trial">
-    <h2>
-      {contextInfo.contextualMessage}
-    </h2>
+    <ContextualConfirmTrialHeading>
+      {contextInfo.contextualHeading}
+    </ContextualConfirmTrialHeading>
+    <p>{contextInfo.contextualMessage}</p>
     <SpinnerDiv topMultiplier={2}>
       <Spinner isCompleting={!this.state.spinnerActive} />
     </SpinnerDiv>
@@ -252,7 +255,7 @@ class ContextualConfirmTrial extends Component {
       <ModalDialog
         isOpen
         width="medium"
-        height={'510px'}
+        height={'556px'}
         header={
           this.renderHeader(image, contextInfo)
         }

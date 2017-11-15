@@ -375,6 +375,7 @@ storiesOf(name, module)
                 src: avatarSource,
                 size: avatarSize,
               }))}
+              size={avatarSize}
             />
 
             <HR />
@@ -391,6 +392,7 @@ storiesOf(name, module)
                   src: avatarSource,
                   size: avatarSize,
                 }))}
+                size={avatarSize}
               />
               {mode === 'grid' ? (
                 <button onClick={() => this.setState({ mode: 'stack' })}>

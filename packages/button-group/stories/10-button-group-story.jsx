@@ -3,7 +3,6 @@ import Button from '@atlaskit/button';
 import Dropdown from '@atlaskit/dropdown-menu';
 import CharlieIcon from '@atlaskit/icon/glyph/atlassian';
 import React from 'react';
-
 import ButtonGroup from '../src';
 import { name } from '../package.json';
 

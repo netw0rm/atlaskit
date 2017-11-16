@@ -101,8 +101,7 @@ const truncateTextFlexParent = p => p.truncate && css`
 
 export const Content = styled.div`
   ${truncateTextFlexParent}
-  flex-grow: 1;
-  flex-basis: 100%;
+  flex: 1 1 100%;
   line-height: 1.4;
   padding-left: ${gridSize}px;
 `;

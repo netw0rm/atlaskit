@@ -27,7 +27,7 @@
   ],
   "dependencies": {
     "@atlaskit/analytics": "^2.0.0",
-    "@atlaskit/avatar": "^8.0.0",
+    "@atlaskit/avatar": "^8.2.3",
     "@atlaskit/button": "^3.5.3",
     "@atlaskit/icon": "^7.0.1",
     "@atlaskit/spinner": "^3.4.2",

@@ -94,7 +94,7 @@ export const emojiButton = style({
 
       $nest: {
         // Scale sprite to fit regardless of default emoji size
-        '&>.emoji-sprite': {
+        [`&>.${emojiSprite}`]: {
           height: '24px',
           width: '24px',
         }

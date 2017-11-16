@@ -13,7 +13,7 @@ export const selected = 'emoji-typeahead-selected';
 
 export const emojiTypeAhead = 'emoji-typeahead-element';
 
-export const typeAheadListContainer = 'typeahead-list-container';
+export const typeAheadListContainer = 'emoji-typeahead-list-container';
 
 export const typeAheadList = style({
   background: 'white',

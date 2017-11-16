@@ -361,8 +361,10 @@ describe(name, () => {
   describe('component structure', () => {
     it('should have role="img"', () => {
       const AtlassianIcon = components.atlassian.component;
-      const wrapper = mount(<AtlassianIcon label="My label" />);
-      expect(wrapper.find('svg').is('[role="img"]')).toBe(true);
+      const wrapper = mount(<div><AtlassianIcon label="My label" /></div>);
+      const span = wrapper.find('span').first();
+
+      expect(span.is('[role="img"]')).toBe(true);
     });
 
     it('should be possible to create the components', () => {
@@ -381,19 +383,9 @@ describe(name, () => {
         const AtlassianIcon = components.atlassian.component;
         const label = 'my label';
         const wrapper = mount(<AtlassianIcon label={label} />);
-        const svgWrapper = wrapper.find('svg').first();
+        const span = wrapper.find('span').first();
 
-        expect(svgWrapper.is('[aria-labelledby]')).toBe(true);
-
-        const svg = svgWrapper.get(0);
-        const labelledBy = svg.getAttribute('aria-labelledby');
-        const ids = labelledBy.split(/\s+/);
-        expect(ids.length).toBeGreaterThanOrEqual(1, 'The labelled-by attribute must reference some node');
-
-        // The SVG should contain the provided label
-        expect(svgWrapper.containsAnyMatchingElements(
-          ids.map(id => <title id={id}>{label}</title>)
-        )).toBe(true);
+        expect(span.is('[aria-label="my label"]')).toBe(true);
       });
     });
   });

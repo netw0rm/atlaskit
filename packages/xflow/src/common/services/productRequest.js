@@ -10,8 +10,7 @@ import {
   queryUsername,
 } from './tenantContext';
 
-export const PRODUCT_REQUEST_ENDPOINT_EAST =
-  'https://xflow.us-east-1.prod.public.atl-paas.net/request-admins-for-product-trial';
+import { productRequestEndpoint } from './xflowService';
 
 async function getCurrentUserAvatarUrl() {
   const currentUser = getCurrentUsername();
@@ -31,8 +30,9 @@ export default (productKey) => async (comment) => {
     const displayName = await getUserDisplayName();
     const instanceName = getInstanceName();
 
-    const response = await fetch(PRODUCT_REQUEST_ENDPOINT_EAST, {
+    const response = await fetch(productRequestEndpoint(), {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },

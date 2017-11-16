@@ -1,9 +1,10 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { AvatarDefaultProps } from '../../src/components/Avatar';
-import AvatarImage, { DefaultImage } from '../../src/components/AvatarImage';
+import AvatarImage, { DefaultImage, clearCache } from '../../src/components/AvatarImage';
 
 const src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
+const src2 = 'https://pbs.twimg.com/profile_images/803832195970433027/aaoG6PJI_400x400.jpg';
 const imgSpan = '[role="img"]';
 
 // mock default props, as they'd be inherited from Avatar
@@ -58,11 +59,15 @@ describe('Avatar', () =>
     describe('src property', () => {
       describe('set at mount time', () => {
         let wrapper;
-        beforeEach(() => (wrapper = mount(<AvatarImage src={src} />)));
+        beforeEach(() => {
+          wrapper = mount(<AvatarImage src={src} />);
+        });
+        afterEach(() => {
+          clearCache();
+        });
 
         it('should set the background image on the internal span to src', () => {
           expect(wrapper.prop('src')).toBe(src);
-          wrapper.find('img').simulate('load');
           const span = wrapper.find(imgSpan).getDOMNode();
           expect(span.style.backgroundImage).toBe(`url(${src})`);
         });
@@ -72,8 +77,6 @@ describe('Avatar', () =>
         );
 
         it('should set isLoading=false when a same src is provided as the src already loaded', () => {
-          expect(wrapper.state('isLoading')).toBe(true);
-          wrapper.find('img').simulate('load');
           expect(wrapper.state('isLoading')).toBe(false);
           wrapper.setProps({ src });
           expect(wrapper.state('isLoading')).toBe(false);
@@ -81,26 +84,20 @@ describe('Avatar', () =>
         });
 
         it('should set isLoading=true when a new src is provided', () => {
-          wrapper.setProps({ src });
-          expect(wrapper.state('isLoading')).toBe(true);
-          expect(wrapper.state('hasError')).toBe(false);
+          const stateSpy = jest.spyOn(wrapper.instance(), 'setState');
+          wrapper.setProps({ src: src2 });
+          expect(stateSpy.mock.calls[0][0]).toEqual({ isLoading: true });
         });
 
         it('should set isLoading=false & hasError=false when src is loaded without errors', () => {
-          wrapper.find('img').simulate('load');
           expect(wrapper.state('isLoading')).toBe(false);
           expect(wrapper.state('hasError')).toBe(false);
         });
 
         it('should set isLoading=false & hasError=true when a new invalid src is provided', () => {
-          wrapper.find('img').simulate('error');
+          wrapper.instance().handleLoadError();
           expect(wrapper.state('isLoading')).toBe(false);
           expect(wrapper.state('hasError')).toBe(true);
-        });
-
-        it('should NOT render an img tag when src is NOT set', () => {
-          wrapper = mount(<AvatarImage />);
-          expect(wrapper.find('img').exists()).toBe(false);
         });
       });
 
@@ -108,10 +105,11 @@ describe('Avatar', () =>
         it('should load image successfully when src set', () => {
           const wrapper = mount(<AvatarImage />);
           expect(wrapper.state('isLoading')).toBe(false);
+
+          const stateSpy = jest.spyOn(wrapper.instance(), 'setState');
           wrapper.setProps({ src });
-          expect(wrapper.state('isLoading')).toBe(true);
-          wrapper.find('img').simulate('load');
-          expect(wrapper.state('isLoading')).toBe(false);
+          expect(stateSpy.mock.calls[0][0]).toEqual({ isLoading: true });
+          expect(stateSpy.mock.calls[1][0]).toEqual({ hasError: false, isLoading: false });
         });
       });
     });

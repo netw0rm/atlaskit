@@ -152,4 +152,5 @@ export const search = {
   },
 };
 
-export const resizerClickableWidth = 12;
+export const resizerClickableWidth = 16;
+export const resizerVisibleWidth = 2;

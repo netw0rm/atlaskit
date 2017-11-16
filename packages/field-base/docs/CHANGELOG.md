@@ -1,5 +1,8 @@
 # @atlaskit/field-base
 
+## 8.1.5 (2017-11-15)
+
+* bug fix; bumping internal dependencies to latest major version ([a9658f4](https://bitbucket.org/atlassian/atlaskit/commits/a9658f4))
 ## 8.1.4 (2017-11-14)
 
 

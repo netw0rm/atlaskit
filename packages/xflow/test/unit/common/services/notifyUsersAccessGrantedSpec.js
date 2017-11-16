@@ -4,9 +4,8 @@ import fetchMock from 'fetch-mock';
 
 import * as tenantContext from '../../../../src/common/services/tenantContext';
 
-import notifyUsersAccessGranted, {
-  NOTIFY_ENDPOINT_EAST,
-} from '../../../../src/common/services/notifyUsersAccessGranted';
+import { notifyAccessEndpoint } from '../../../../src/common/services/xflowService';
+import notifyUsersAccessGranted from '../../../../src/common/services/notifyUsersAccessGranted';
 
 import userAdminResponse from '../mock-data/isUserTrustedSiteAdmin.json';
 import accessgrantedJiraUsersResponse from '../mock-data/accessgrantedJiraUsers.json';
@@ -18,7 +17,7 @@ import jiraUsersResponse from '../mock-data/jiraUsers.json';
 
 const mockNotifyEastEndpointWithResponse = (response) => {
   fetchMock.mock(
-    NOTIFY_ENDPOINT_EAST,
+    notifyAccessEndpoint(),
     { body: response },
     {
       method: 'POST',
@@ -32,7 +31,7 @@ describe('notifyUsersAccessGranted', () => {
 
   it('should return no users and it should never contact the endpoint', async () => {
     const SHOULD_NEVER_CALL = 'SHOULD_NEVER_CALL';
-    fetchMock.mock(NOTIFY_ENDPOINT_EAST, {}, { name: SHOULD_NEVER_CALL });
+    fetchMock.mock(notifyAccessEndpoint(), {}, { name: SHOULD_NEVER_CALL });
     const result = await notifyUsersAccessGranted([], 'confluence');
     expect(result).toEqual(accessgrantedNoUsersResponse);
     expect(fetchMock.called(SHOULD_NEVER_CALL)).toBe(false);
@@ -69,7 +68,7 @@ describe('notifyUsersAccessGranted', () => {
   });
 
   it('should return a rejected promise if both endpoints return a 500 response', async () => {
-    fetchMock.mock(NOTIFY_ENDPOINT_EAST, 500);
+    fetchMock.mock(notifyAccessEndpoint(), 500);
     expect.assertions(1);
 
     try {

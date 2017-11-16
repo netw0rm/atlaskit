@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const sourceTrace = require('source-trace');
 // This threshold corresponds to 5% of the latest bundle value
-const thresholdBundle = 3000;
+const thresholdBundle = 3300;
 
 let threshold;
 

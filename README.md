@@ -12,6 +12,16 @@ AtlasKit is the technical implementation of the [Atlassian Design Guidelines][AD
 Usage
 ======
 
+#### Pre-requisites
+It's strongly advised to use the AtlasKit CSS reset in your whole project, or some AtlasKit components
+may diverge in appearance:
+
+```javascript
+import '@atlaskit/css-reset';
+```
+
+In general, you should avoid directly styling base elements (ex. p, h1, h2…) and uses classes instead.
+
 #### Example for React projects
 
 AtlasKit components are built for React. Here's an example of using the Avatar component:
@@ -56,8 +66,8 @@ Installation
 
 #### Before you start
 
-* [node](https://nodejs.org/) version should be 6 or above (to check `node -v`)
-* [npm](https://www.npmjs.com/) version should be 3 or above (to check `npm --version`) or use [nvm](https://github.com/creationix/nvm)
+* [node](https://nodejs.org/) version should be 6 or above (to check `node -v`) or use [nvm](https://github.com/creationix/nvm)
+* [npm](https://www.npmjs.com/) version should be 3 or above (to check `npm --version`)
 * [yarn](https://yarnpkg.com/) should be installed globally (see yarn website for installation instructions)
 * [watchman](https://facebook.github.io/watchman/docs/install.html) should be installed to enable running tests in watch mode
 

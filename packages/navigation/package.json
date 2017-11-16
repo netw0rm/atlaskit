@@ -27,7 +27,7 @@
   "dependencies": {
     "@atlaskit/analytics": "^2.0.0",
     "@atlaskit/avatar": "^8.0.0",
-    "@atlaskit/blanket": "^3.0.0",
+    "@atlaskit/blanket": "^4.0.0",
     "@atlaskit/dropdown-menu": "^3.8.0",
     "@atlaskit/field-base": "^8.0.1",
     "@atlaskit/icon": "^10.1.2",

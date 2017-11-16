@@ -16,6 +16,7 @@ import NucleusIcon from './components/NucleusIcon';
 import ContainerRefScrollExample from './examples/ContainerRefScrollExample';
 import ToggleCallbackNavigation from './examples/ToggleCallbackNavigation';
 import Avatar from '@atlaskit/avatar';
+import IframeExample from './components/IframeExample';
 
 const dropdownItemsSample = (
   <DropdownItemGroup title="Cities">
@@ -390,52 +391,6 @@ storiesOf(name, module)
       </div>
     </div>
   ))
-  .add('with iframe', () => {
-    const iframe = (
-      <iframe style={{ height: '50%' }} />
-    );
-    const content = (
-      <div>
-        <p>Dragging in or out of an iframe (or root window) will end the resize as mouse events
-           are not captured over or outside of an iframe.
-        </p>
-        <p>Turn off the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/pointer-events">
-          pointer-events</a> css property to allow dragging over an embedded iframe.
-        </p>
-      </div>
-    );
-    return (
-      <HtmlPage content={content} >
-        <BasicNavigation containerTheme={presetThemes.container} hasScrollHintTop>
-          <AkNavigationItem
-            text="Test page"
-            href="#1"
-          />
-          <AkNavigationItem
-            icon={<NucleusIcon />}
-            text="Item with an icon"
-            href="#2"
-          />
-          <AkNavigationItem
-            icon={<NucleusIcon />}
-            text="Item with two lines"
-            subText="Another line of text, which could possibly be long"
-            href="#3"
-          />
-          <AkNavigationItem
-            icon={<NucleusIcon />}
-            text="A really, really, quite long, actually super long container name"
-            href="#4"
-          />
-          <AkNavigationItem
-            icon={<NucleusIcon />}
-            text="A really, really, quite long, actually super long container name with action"
-            subText="Another line of text, which could possibly be long"
-            action={<span>text</span>}
-            href="#5"
-          />
-        </BasicNavigation>
-        <iframe />
-      </HtmlPage>
-    );
-  });
+  .add('with iframe', () => (
+    <IframeExample />
+  ));

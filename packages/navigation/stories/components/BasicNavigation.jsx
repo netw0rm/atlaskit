@@ -178,6 +178,11 @@ export default class BasicNavigation extends PureComponent {
     });
   }
 
+  resizeStart = () => {
+    action('resizeStart')();
+    this.props.onResizeStartCallback();
+  }
+
   render() {
     const backIcon = <Tooltip position="right" description="Back"><ArrowLeftIcon label="Back icon" size="medium" /></Tooltip>;
     const ContainerHeader = this.props.containerHeaderComponent || (() => null);
@@ -203,7 +208,7 @@ export default class BasicNavigation extends PureComponent {
         isOpen={this.state.isOpen}
         onCreateDrawerOpen={() => { this.openDrawer('create'); }}
         onResize={this.resize}
-        onResizeStart={action('resizeStart')}
+        onResizeStart={this.resizeStart}
         onSearchDrawerOpen={() => { this.openDrawer('search'); }}
         openDrawer={this.state.openDrawer}
         position="right bottom"

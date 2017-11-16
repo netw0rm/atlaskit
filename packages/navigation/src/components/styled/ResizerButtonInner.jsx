@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { animationTime, animationTimeUnitless, unthemedColors, gridSize } from '../../shared-variables';
+import { animationTime, animationTimeUnitless, unthemedColors, gridSize, resizerVisibleWidth } from '../../shared-variables';
 import { focusOutline } from '../../utils/mixins';
 
 const toggleButtonHeight = gridSize * 4.5;
@@ -19,7 +19,7 @@ const ResizerButtonInner = styled.button`
   border: none;
   color: transparent;
   width: ${gridSize * 3}px;
-  left: -6px;
+  left: -${resizerVisibleWidth / 2}px;
   cursor: pointer;
 
   &:focus {
@@ -33,7 +33,7 @@ const ResizerButtonInner = styled.button`
     border-radius: ${toggleArrowHeight}px;
     height: ${toggleArrowHeight / 2}px;
     position: absolute;
-    left: 13px;
+    left: 8px;
     opacity: ${props => (props.isVisible ? 1 : 0)};
     transition: ${transformTransition}, ${opacityTransition};
     transform: rotate(0deg);

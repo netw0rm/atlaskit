@@ -1,18 +1,12 @@
 const SVGO = require('svgo');
 
 const preventFocusing = require('./plugins/preventFocusing');
-const addPresentationAttribute = require('./plugins/addPresentationAttribute');
+const addRoleAttribute = require('./plugins/addRoleAttribute');
 const callbackOnDefinedFill = require('./plugins/callbackOnDefinedFill');
 const callbackOnStyleElement = require('./plugins/callbackOnStyleElement');
-const addAriaLabels = require('./plugins/addAriaLabels');
-const convertAttributesToCamelcase = require('./plugins/convertAttributesToCamelcase');
 
 module.exports = () => {
   const initialiseCustomSVGO = (filename) => {
-    const addAriaLabelsPlugin = Object.assign({}, addAriaLabels, {
-      params: { title: '{title}' },
-    });
-
     const callbackOnDefinedFillPlugin = Object.assign({}, callbackOnDefinedFill, {
       params: Object.assign({}, callbackOnDefinedFill.params, {
         callback: fill => console.warn(`"${filename}": has a fill of "${fill}"`),
@@ -23,9 +17,7 @@ module.exports = () => {
       full: true,
       plugins: [
         { preventFocusing },
-        { convertAttributesToCamelcase },
-        { addAttributesToSVGElement: { attributes: ['{...svgProps}'] } },
-        { addPresentationAttribute },
+        { addRoleAttribute },
         { cleanupIDs: {
           // This is used to prefix IDs of LinearGradient fills with a unique ID in case multiple
           // icons with gradients (company/product icons) are shown on the same page.
@@ -36,7 +28,6 @@ module.exports = () => {
         { callbackOnDefinedFillPlugin },
         { callbackOnStyleElement },
         { removeStyleElement: true },
-        { addAriaLabelsPlugin },
       ],
     });
   };

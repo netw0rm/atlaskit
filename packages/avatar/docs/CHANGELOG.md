@@ -1,5 +1,8 @@
 # @atlaskit/avatar
 
+## 8.2.4 (2017-11-15)
+
+* bug fix; fix incorrect border radius on Avatars (issues closed: ak-3897) ([6570495](https://bitbucket.org/atlassian/atlaskit/commits/6570495))
 ## 8.2.3 (2017-11-15)
 
 * bug fix; explicitly disable tooltip on avatar when rendered in a group dropdown ([593f2e9](https://bitbucket.org/atlassian/atlaskit/commits/593f2e9))

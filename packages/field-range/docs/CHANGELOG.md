@@ -1,5 +1,8 @@
 # @atlaskit/field-range
 
+## 2.4.5 (2017-11-15)
+
+* bug fix; bumping internal dependencies to latest major version ([7857613](https://bitbucket.org/atlassian/atlaskit/commits/7857613))
 ## 2.4.4 (2017-10-26)
 
 * bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))

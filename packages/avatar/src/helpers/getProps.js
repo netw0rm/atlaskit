@@ -1,6 +1,7 @@
 const getAppearanceProps = (props) => {
   const {
     appearance,
+    backgroundColor,
     borderColor,
     groupAppearance,
     isActive,
@@ -14,6 +15,7 @@ const getAppearanceProps = (props) => {
 
   return {
     appearance,
+    backgroundColor,
     borderColor,
     groupAppearance,
     isActive,

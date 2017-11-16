@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 4.3.0 (2017-11-16)
+
+* feature; fS-1387 Bump avatar version and set Participants boundaries to scrollParent ([c7e44e9](https://bitbucket.org/atlassian/atlaskit/commits/c7e44e9))
 ## 4.2.0 (2017-10-05)
 
 

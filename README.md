@@ -56,8 +56,8 @@ Installation
 
 #### Before you start
 
-* [node](https://nodejs.org/) version should be 6 or above (to check `node -v`)
-* [npm](https://www.npmjs.com/) version should be 3 or above (to check `npm --version`) or use [nvm](https://github.com/creationix/nvm)
+* [node](https://nodejs.org/) version should be 6 or above (to check `node -v`) or use [nvm](https://github.com/creationix/nvm)
+* [npm](https://www.npmjs.com/) version should be 3 or above (to check `npm --version`)
 * [yarn](https://yarnpkg.com/) should be installed globally (see yarn website for installation instructions)
 * [watchman](https://facebook.github.io/watchman/docs/install.html) should be installed to enable running tests in watch mode
 

@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import ProgressBar from '../src/common/components/ProgressBar';
 
@@ -10,7 +10,7 @@ storiesOf('common/ProgressBar')
   .add('50% Full', () => setupStorybookAnalytics(<ProgressBar progress={0.5} />))
   .add('Complete', () =>
     setupStorybookAnalytics(
-      <ProgressBar progress={1} onComplete={() => console.log('Progress completed')} />
+      <ProgressBar progress={1} onComplete={action('ProgressBar onComplete')} />
     )
   )
   .add('Indeterminate state', () =>

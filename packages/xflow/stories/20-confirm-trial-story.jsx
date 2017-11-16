@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import { ConfluenceLogo } from '@atlaskit/logo';
 
@@ -29,9 +29,7 @@ const defaultProps = {
   spinnerActive: false,
   getStartedButtonDisabled: false,
   onComplete: () => {},
-  goToProduct: () => {
-    console.log('Go to Confluence!');
-  },
+  goToProduct: action('ConfirmTrialBase goToProduct'),
 };
 
 storiesOf('request-or-start-trial/ConfirmTrial')

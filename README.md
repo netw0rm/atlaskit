@@ -12,6 +12,16 @@ AtlasKit is the technical implementation of the [Atlassian Design Guidelines][AD
 Usage
 ======
 
+#### Pre-requisites
+It's strongly advised to use the AtlasKit CSS reset in your whole project, or some AtlasKit components
+may diverge in appearance:
+
+```javascript
+import '@atlaskit/css-reset';
+```
+
+In general, you should avoid directly styling base elements (ex. p, h1, h2…) and uses classes instead.
+
 #### Example for React projects
 
 AtlasKit components are built for React. Here's an example of using the Avatar component:

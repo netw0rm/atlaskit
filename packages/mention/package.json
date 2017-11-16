@@ -31,9 +31,9 @@
   ],
   "dependencies": {
     "@atlaskit/avatar": "^8.0.0",
-    "@atlaskit/icon": "^8.0.0",
+    "@atlaskit/icon": "^10.0.0",
     "@atlaskit/lozenge": "^3.4.2",
-    "@atlaskit/tooltip": "^5.0.1",
+    "@atlaskit/tooltip": "^8.0.0",
     "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "babel-runtime": "^6.11.6",

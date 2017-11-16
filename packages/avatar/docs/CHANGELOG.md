@@ -1,5 +1,9 @@
 # @atlaskit/avatar
 
+## 8.3.0 (2017-11-16)
+
+
+* feature; added a new prop background in AvatarItem to have custom background (issues closed: ak-3706) ([e93888c](https://bitbucket.org/atlassian/atlaskit/commits/e93888c))
 ## 8.2.4 (2017-11-15)
 
 * bug fix; fix incorrect border radius on Avatars (issues closed: ak-3897) ([6570495](https://bitbucket.org/atlassian/atlaskit/commits/6570495))

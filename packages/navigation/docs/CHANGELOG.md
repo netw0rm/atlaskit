@@ -1,5 +1,10 @@
 # @atlaskit/navigation
 
+## 26.7.1 (2017-11-16)
+
+
+
+* bug fix; shift nav resizer to the right to prevent overlap with scrollbar (issues closed: ak-3362) ([1d63ebf](https://bitbucket.org/atlassian/atlaskit/commits/1d63ebf))
 ## 26.7.0 (2017-11-16)
 
 * feature; update navigation's dependecy to blanket v4 (issues closed: ak-3851) ([72a2e06](https://bitbucket.org/atlassian/atlaskit/commits/72a2e06))

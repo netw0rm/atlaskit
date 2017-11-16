@@ -26,34 +26,26 @@ describe('PresenceParser', () => {
   afterEach(() => {
     consoleErrorStub.restore();
   });
-  it('should parse valid responses to presence updates', (done) => {
+
+  it('should parse presences into correct states', () => {
     const parser = new DefaultPresenceParser();
-    const update = parser.parse(validPresenceData);
-    let count = 0;
-    validPresenceData['data'].PresenceBulk.forEach((response) => {
-      if (response.state) {
-        expect(update[response.userId].status).to.equal(parser.mapState(response.state));
-        count++;
-      }
-    });
-    if (count === 6) {
-      done();
-    }
+    const parsedPresences = parser.parse(validPresenceData);
+    expect(parsedPresences['0'].status).to.equal('offline');
+    expect(parsedPresences['1'].status).to.equal('online');
+    expect(parsedPresences['5'].status).to.equal('busy');
+    expect(parsedPresences['6'].status).to.equal('focus');
   });
 
-  it('should generate update despite invalid presence data', (done) => {
+  it('should parse presences despite invalid presence data', () => {
     const parser = new DefaultPresenceParser();
-    const update = parser.parse(invalidPresenceData);
-    let count = 0;
-    invalidPresenceData['data'].PresenceBulk.forEach((response) => {
-      if (response.userId && response.state) {
-        expect(update[response.userId].status).to.equal(parser.mapState(response.state));
-        count++;
-      }
-    });
-    if (count === 2) {
-      done();
-    }
+    const parsedPresences = parser.parse(invalidPresenceData);
+    expect(Object.keys(parsedPresences)).to.have.lengthOf(3);
+  });
+
+  it('should ignore presence stateMetadata if not valid JSON', () => {
+    const parser = new DefaultPresenceParser();
+    const parsedPresences = parser.parse(invalidPresenceData);
+    expect(parsedPresences['42563'].status).to.equal('busy');
   });
 });
 
@@ -118,42 +110,23 @@ describe('PresenceCache', () => {
   it('should retrieve a set of missing users given an array of their IDs', () => {
     const extraIds: string[] = ['13-thirteen-13', 'Roger-rolo-the-steam-roller-Lo'];
     cache.update(testPresenceMap);
-    expect(cache.getMissingUserIds(testIds.concat(extraIds))).to.deep.equal(testIds.slice(6, 9).concat(extraIds));
+    expect(cache.getMissingUserIds(testIds.concat(extraIds))).to.deep.equal(testIds.slice(7, 9).concat(extraIds));
   });
 
-  it('should insert and store user ids on demand', (done) => {
+  it('should insert and store user ids on demand', () => {
     // Check cache only adds entries when hit by presence service
     expect(cache.contains(testIds[0])).to.equal(false);
     cache.update(testPresenceMap);
-    let cacheHits = 0;
-    testIds.forEach((id) => {
-      if (cache.contains(id) === true) {
-        cacheHits++;
-      }
-    });
-    if (cacheHits === 6) {
-      done();
+    let cacheHits = testIds.filter((id) => cache.contains(id)).length;
+    expect(cacheHits).to.equal(7);
+  });
+
+  it('should store correctly parsed responses from presence service', () => {
+    cache.update(testPresenceMap);
+    // Check cache stores correct mapping
+    for (let userId in testPresenceMap) {
+      expect(cache.get(userId).status).to.equal(testPresenceMap[userId].status);
     }
-  });
-
-  it('should store correctly parsed responses from presence service', () => {
-    cache.update(testPresenceMap);
-    // Check cache stores correct mapping
-    validPresenceData['data'].PresenceBulk.forEach((response) => {
-      if (response.state) {
-        expect(cache.get(response.userId).status).to.equal(parser.mapState(response.state));
-      }
-    });
-  });
-
-  it('should store correctly parsed responses from presence service', () => {
-    cache.update(testPresenceMap);
-    // Check cache stores correct mapping
-    validPresenceData['data'].PresenceBulk.forEach((response) => {
-      if (response.state) {
-        expect(cache.get(response.userId).status).to.equal(parser.mapState(response.state));
-      }
-    });
   });
 
   it('should delete the entry if the user presence it gets has expired', () => {

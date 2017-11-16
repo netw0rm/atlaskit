@@ -1,13 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 45.1 (43504) - http://www.bohemiancoding.com/sketch -->
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
     <title>editor/text-color</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Original" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="editor/text-color">
-            <path d="M14,13.5 L10,13.5 L9,16 L7,16 L10.814433,6 L13.185567,6 L17,16 L15,16 L14,13.5 Z M13.5,11.9999999 L12,7.5 C11.5729013,8.89911635 10.5,11.9999999 10.5,11.9999999 L13.5,11.9999999 Z" id="Shape" fill="#42526E"></path>
-            <rect id="Rectangle-7" fill="#79F2C0" x="6" y="17" width="12" height="2" rx="0.5"></rect>
+    <g id="Desktop" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="editor/text-color" fill="#42526E">
+            <rect id="text-color" x="5" y="5" width="14" height="14" rx="2"></rect>
         </g>
     </g>
 </svg>

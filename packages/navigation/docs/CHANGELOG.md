@@ -1,5 +1,9 @@
 # @atlaskit/navigation
 
+## 26.7.0 (2017-11-16)
+
+* feature; update navigation's dependecy to blanket v4 (issues closed: ak-3851) ([72a2e06](https://bitbucket.org/atlassian/atlaskit/commits/72a2e06))
+
 ## 26.6.4 (2017-11-14)
 
 

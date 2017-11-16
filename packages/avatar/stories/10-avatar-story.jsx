@@ -184,7 +184,7 @@ storiesOf(name, module)
         src={nucleusImage}
       />
     </Wrapper>
-    ))
+  ))
   .add('Coloured Backgrounds', () => {
     const colors = [akColorPrimary1, akColorPrimary2, akColorN20, akColorPrimary3];
     const presences = [null, 'online', 'offline', 'busy'];
@@ -431,7 +431,9 @@ storiesOf(name, module)
     <Wrapper>
       <h2>Avatar Item <New /></h2>
       <Note>
-        <p>Preformatted item to fulfil a common pattern. Accepts an <code>{'<Avatar/>'}</code>, <code>primaryText</code> and <code>secondaryText</code>.</p>
+        <p>Preformatted item to fulfil a common pattern. Accepts an
+          <code>{'<Avatar/>'}</code>, <code>primaryText</code>, <code>secondaryText</code> and <code>backgroundColor</code>.
+        </p>
         <p>Handles mouse and keyboard events when passed <code>href</code> or <code>onClick</code> props to maintain pseudo-state.{''}</p>
       </Note>
       {devs.map((d, i) => (
@@ -445,6 +447,20 @@ storiesOf(name, module)
       ))}
     </Wrapper>
   ))
+  .add('Avatar Item with custom background color', () => {
+    const customBackgrounds = ['rgba(0, 20, 255, 0.5)', '#ededed', 'transparent'];
+    return (
+      <Wrapper>
+        {customBackgrounds.map((color, index) => (
+          <AvatarItem
+            avatar={<Avatar src={avatarSource} presence="busy" />}
+            key={index}
+            backgroundColor={color}
+          />
+        ))}
+      </Wrapper>
+    );
+  })
   .add('Loading an Image', () => {
     function getInitialState() {
       return {

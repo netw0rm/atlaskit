@@ -24,7 +24,7 @@ import type {
 type Props = {
   avatar: ElementType,
   /** Change background color */
-  background?: string,
+  backgroundColor?: string,
   /** A custom component to use instead of the default span. */
   component?: ComponentType,
   /** Provides a url for avatars being used as a link. */

@@ -1,5 +1,8 @@
 # @atlaskit/droplist
 
+## 4.11.3 (2017-11-15)
+
+* bug fix; bumping to latest major version of internal dependencies ([be44c19](https://bitbucket.org/atlassian/atlaskit/commits/be44c19))
 ## 4.11.2 (2017-10-22)
 
 * bug fix; update dependencies for react-16 ([077d1ad](https://bitbucket.org/atlassian/atlaskit/commits/077d1ad))

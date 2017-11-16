@@ -1,21 +1,15 @@
 const SVGO = require('svgo');
 
 const preventFocusing = require('./plugins/preventFocusing');
-const addPresentationAttribute = require('./plugins/addPresentationAttribute');
+const addRoleAttribute = require('./plugins/addRoleAttribute');
 const callbackOnDefinedFill = require('./plugins/callbackOnDefinedFill');
 const callbackOnStyleElement = require('./plugins/callbackOnStyleElement');
-const addAriaLabels = require('./plugins/addAriaLabels');
-const convertAttributesToCamelcase = require('./plugins/convertAttributesToCamelcase');
 const replaceIDs = require('./plugins/replaceIDs');
 
 module.exports = () => {
   const replaceIDPlaceholderStr = 'idPlaceholder';
   const dynamicIDVarName = 'id';
   const initialiseCustomSVGO = (filename) => {
-    const addAriaLabelsPlugin = Object.assign({}, addAriaLabels, {
-      params: { title: '{title}' },
-    });
-
     const callbackOnDefinedFillPlugin = Object.assign({}, callbackOnDefinedFill, {
       params: Object.assign({}, callbackOnDefinedFill.params, {
         callback: fill => console.warn(`"${filename}": has a fill of "${fill}"`),
@@ -26,14 +20,11 @@ module.exports = () => {
       full: true,
       plugins: [
         { preventFocusing },
-        { convertAttributesToCamelcase },
-        { addAttributesToSVGElement: { attributes: ['{...svgProps}'] } },
-        { addPresentationAttribute },
+        { addRoleAttribute },
         { replaceIDs },
         { callbackOnDefinedFillPlugin },
         { callbackOnStyleElement },
         { removeStyleElement: true },
-        { addAriaLabelsPlugin },
       ],
     });
   };

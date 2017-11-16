@@ -6,7 +6,7 @@ import { shallow, mount } from 'enzyme';
 import { Presence } from '../../src';
 import getPresenceSVG from '../../src/helpers/getPresenceSVG';
 
-const PRESENCE_TYPES = ['busy', 'offline', 'online'];
+const PRESENCE_TYPES = ['busy', 'focus', 'offline', 'online'];
 
 describe('Avatar', () => {
   describe('Presence', () => {

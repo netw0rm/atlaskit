@@ -151,7 +151,7 @@ const mergeMetadata = component => getExternalMetadata(component.pkg.name)
 Promise.all(sortedPackages.map(mergeMetadata))
   .then(data => template({ components: data }).replace(/\n\s+\n/g, '\n'))
   .then(data => fs.writeFileSync(path.resolve('src', 'data.js'), data, 'utf8'))
-  .then(() => console.info(`📦  => Wrote data.json for ${packages.length} AtlasKit components`))
+  .then(() => console.info(`📦  => Wrote data.js for ${packages.length} AtlasKit components`))
   .catch(console.error);
 
 // We're done!

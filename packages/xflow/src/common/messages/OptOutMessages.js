@@ -1,7 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 const optOutMessages = defineMessages({
-  // - Opt out
   optOutHeading: {
     id: 'xflow.opt-out.heading',
     defaultMessage: 'Trial requests',

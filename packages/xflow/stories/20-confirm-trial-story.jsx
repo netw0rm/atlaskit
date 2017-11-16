@@ -14,7 +14,7 @@ const defaultProps = {
   trialMessage: (
     <p>
       Once your trial finishes, billing will start.<br />
-      Easily cancel at anytime in <strong>Manage Application</strong>.<br />
+      Easily cancel at anytime in <strong>Manage subscriptions</strong>.<br />
       We will email your billing contact 3 days in advance.
     </p>
   ),
@@ -34,7 +34,7 @@ const defaultProps = {
   },
 };
 
-storiesOf('ConfirmTrial')
+storiesOf('request-or-start-trial/ConfirmTrial')
   .add('Confirm Trial dialog (INACTIVE)', () =>
     setupStorybookAnalytics(
       <ConfirmTrialBase

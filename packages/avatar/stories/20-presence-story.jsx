@@ -81,6 +81,10 @@ storiesOf(name, module)
         </div>
 
         <div style={styles.presenceWrapper}>
+          <Presence presence="focus" />
+        </div>
+
+        <div style={styles.presenceWrapper}>
           <Presence>
             <div style={{ height: '100%', width: '100%', backgroundColor: 'rebeccapurple' }} />
           </Presence>

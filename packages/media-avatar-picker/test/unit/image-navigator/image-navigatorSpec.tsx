@@ -58,7 +58,7 @@ describe('Image navigator', () => {
       });
 
       it('should have min scale set to minimum allowed', () => {
-        const expectedMinScale = (CONTAINER_SIZE / 2) / Math.max(imageWidth, imageHeight);
+        const expectedMinScale = Math.max(CONTAINER_SIZE / imageWidth, CONTAINER_SIZE / imageHeight);
         expect(slider.props().min).toBe(expectedMinScale * 100);
       });
     });
@@ -83,8 +83,8 @@ describe('Image navigator', () => {
         imageCropper.props().onImageSize(imageWidth, imageHeight);
       });
 
-      it('should have image scale maxed at 1', () => {
-        expect(imageCropper.props().scale).toBe(1);
+      it('should have image scale maxed to fit CONTAINER_SIZE', () => {
+        expect(imageCropper.props().scale).toBe(2);
       });
     });
 
@@ -105,34 +105,43 @@ describe('Image navigator', () => {
     });
 
     describe('when image is dragged', () => {
+      let imageHeight = CONTAINER_SIZE * 2;
+      let imageWidth = CONTAINER_SIZE * 2;
+      beforeEach(() => {
+        imageCropper.props().onImageSize(imageWidth, imageHeight);
+        slider.props().onChange(100);
+        onPositionChanged = jest.fn();
+        component.setProps({ onPositionChanged });
+      });
+
       it('should change state during drag', () => {
         const imageDragStartPos = component.state().imageDragStartPos;
 
         imageCropper.props().onDragStarted();
-        document.dispatchEvent(createMouseEvent('mousemove', {screenX: 20, screenY: 30}));
-        expect(component.state().cursorInitPos).toEqual({x: 20, y: 30});
-        expect(component.state().imagePos).toEqual({x: imageDragStartPos.x, y: imageDragStartPos.y});
+        document.dispatchEvent(createMouseEvent('mousemove', {screenX: 0, screenY: 0}));
+        expect(component.state().cursorInitPos).toEqual({x: 0, y: 0});
+        expect(component.state().imagePos).toEqual({x: 0, y: 0});
 
-        document.dispatchEvent(createMouseEvent('mousemove', {screenX: 50, screenY: 70}));
-        expect(component.state().cursorInitPos).toEqual({x: 20, y: 30});
-        expect(component.state().imagePos).toEqual({x: imageDragStartPos.x + 30, y: imageDragStartPos.y + 40});
+        document.dispatchEvent(createMouseEvent('mousemove', {screenX: -20, screenY: -30}));
+        expect(component.state().cursorInitPos).toEqual({x: 0, y: 0});
+        expect(component.state().imagePos).toEqual({x: imageDragStartPos.x - 20, y: imageDragStartPos.y - 30});
 
         document.dispatchEvent(createMouseEvent('mouseup'));
         expect(component.state().cursorInitPos).toBe(undefined);
-        expect(component.state().imageDragStartPos).toEqual({x: imageDragStartPos.x + 30, y: imageDragStartPos.y + 40});
+        expect(component.state().imageDragStartPos).toEqual({x: imageDragStartPos.x - 20, y: imageDragStartPos.y - 30});
       });
       it('should call onPositionChanged on drop', () => {
         const imageDragStartPos = component.state().imageDragStartPos;
 
         imageCropper.props().onDragStarted();
-        document.dispatchEvent(createMouseEvent('mousemove', {screenX: 20, screenY: 30}));
+        document.dispatchEvent(createMouseEvent('mousemove', {screenX: 0, screenY: 0}));
         expect(onPositionChanged).not.toHaveBeenCalled();
 
-        document.dispatchEvent(createMouseEvent('mousemove', {screenX: 50, screenY: 70}));
+        document.dispatchEvent(createMouseEvent('mousemove', {screenX: -20, screenY: -30}));
         expect(onPositionChanged).not.toHaveBeenCalled();
 
         document.dispatchEvent(createMouseEvent('mouseup'));
-        expect(onPositionChanged).toHaveBeenCalledWith(imageDragStartPos.x + 30, imageDragStartPos.y + 40);
+        expect(onPositionChanged).toHaveBeenCalledWith(imageDragStartPos.x + 20, imageDragStartPos.y + 30);
       });
     });
     describe('when image is scaled', () => {

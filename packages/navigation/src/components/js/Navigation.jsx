@@ -9,7 +9,7 @@ import NavigationGlobalNavigationWrapper from '../styled/NavigationGlobalNavigat
 import NavigationContainerNavigationWrapper from '../styled/NavigationContainerNavigationWrapper';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import Resizer from './Resizer';
-import type { ReactElement, ReactClass } from '../../types';
+import type { ReactElement, ReactClass, IconAppearance } from '../../types';
 import type { Provided } from '../../theme/types';
 import Spacer from './Spacer';
 import {
@@ -60,6 +60,8 @@ type Props = {|
   /** Icon to be displayed at the top of the GlobalNavigation. This is wrapped in
   the linkComponent. */
   globalPrimaryIcon?: ReactElement,
+  /** Appearance of globalPrimaryIcon for shape styling of drop shadows */
+  globalPrimaryIconAppearance?: IconAppearance,
   /** Link to be passed to the linkComponent that wraps the globalCreateIcon. */
   globalPrimaryItemHref?: string,
   /** Icon to be used as the 'create' icon. onSearchDrawerOpen is called when it
@@ -148,6 +150,7 @@ export default class Navigation extends PureComponent {
 
   static defaultProps = {
     drawers: [],
+    globalPrimaryIconAppearance: 'round',
     globalSecondaryActions: [],
     isCollapsible: true,
     isOpen: true,
@@ -304,6 +307,7 @@ export default class Navigation extends PureComponent {
       drawers,
       globalCreateIcon,
       globalPrimaryIcon,
+      globalPrimaryIconAppearance,
       globalPrimaryItemHref,
       globalSearchIcon,
       globalSecondaryActions,
@@ -366,6 +370,7 @@ export default class Navigation extends PureComponent {
           onCreateActivate={onCreateDrawerOpen}
           onSearchActivate={onSearchDrawerOpen}
           primaryIcon={globalPrimaryIcon}
+          primaryIconAppearance={globalPrimaryIconAppearance}
           primaryItemHref={globalPrimaryItemHref}
           searchIcon={globalSearchIcon}
           secondaryActions={globalSecondaryActions}

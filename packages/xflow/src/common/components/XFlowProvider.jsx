@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { injectIntl, intlShape } from 'react-intl';
 
 import { ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN } from '../productProvisioningStates';
-import optOutRequestTrialFeature from '../optOutRequestTrialFeature';
-import cancelOptOut from '../cancelOptOut';
+import optOutRequestTrialFeature from '../services/optOutRequestTrialFeature';
+import cancelOptOut from '../services/cancelOptOut';
 import optOutMessagesDefaultProps from '../messages/OptOutMessages';
 
 export const xFlowShape = PropTypes.shape({
@@ -55,6 +55,8 @@ export const xFlowShape = PropTypes.shape({
 
   progress: PropTypes.number,
   status: PropTypes.oneOf([ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN]),
+
+  grantAccessEnabled: PropTypes.bool,
 
   canCurrentUserAddProduct: PropTypes.func,
   getProductActivationState: PropTypes.func,

@@ -13,6 +13,7 @@ import SpinnerDiv from '../../common/styled/SpinnerDiv';
 import ContextualConfirmTrialHeader from '../styled/ContextualConfirmTrialHeader';
 import ContextualConfirmTrialImage from '../styled/ContextualConfirmTrialImage';
 import ContextualConfirmTrialFooter from '../styled/ContextualConfirmTrialFooter';
+import ContextualConfirmTrialHeading from '../styled/ContextualConfirmTrialHeading';
 import ConfirmTrialAdminInfo from '../styled/ConfirmTrialAdminInfo';
 import ConfirmTrialAdminInfoImage from '../styled/ConfirmTrialAdminInfoImage';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
@@ -43,6 +44,7 @@ class ContextualConfirmTrial extends Component {
     status: PropTypes.oneOf([INACTIVE, DEACTIVATED]),
     contextInfo: PropTypes.shape({
       contextualImage: PropTypes.string,
+      contextualHeading: PropTypes.string.isRequired,
       contextualMessage: PropTypes.string.isRequired,
       reactivateCTA: PropTypes.string.isRequired,
       trialCTA: PropTypes.string.isRequired,
@@ -168,7 +170,10 @@ class ContextualConfirmTrial extends Component {
         <ConfirmTrialAdminInfoImage imageType="settings" />
         <FormattedMessage
           id="xflow.generic.confirm-trial.settings-info"
-          defaultMessage="Cancel your trial at any time in Manage applications."
+          defaultMessage="Cancel your trial at any time in {manageApplicationsLink}."
+          values={{
+            manageApplicationsLink: this.renderManageApplicationsLink(),
+          }}
         />
       </ConfirmTrialAdminInfo>
     </ContextualConfirmTrialFooter>
@@ -180,27 +185,52 @@ class ContextualConfirmTrial extends Component {
         <ConfirmTrialAdminInfoImage imageType="card" />
         <FormattedMessage
           id="xflow.generic.confirm-reactivation.card-info"
-          defaultMessage="Once you reactivate a subscription, billing will start at the end of your chosen billing cycle."
+          defaultMessage="Once your subscription reactivates, billing will resume."
         />
       </ConfirmTrialAdminInfo>
       <ConfirmTrialAdminInfo columnSize="medium">
         <ConfirmTrialAdminInfoImage imageType="settings" />
         <FormattedMessage
           id="xflow.generic.confirm-reactivation.settings-info"
-          defaultMessage="Cancel your subscription at any time in Manage applications."
+          defaultMessage="Cancel your subscription at any time in {manageApplicationsLink}."
+          values={{
+            manageApplicationsLink: this.renderManageApplicationsLink(),
+          }}
         />
       </ConfirmTrialAdminInfo>
     </ContextualConfirmTrialFooter>
   );
+
+  renderManageApplicationsLink = () => {
+    const { status, firePrivateAnalyticsEvent } = this.props;
+    return (
+      <a
+        href="/admin/billing/applications"
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => firePrivateAnalyticsEvent(
+          status === INACTIVE
+            ? 'xflow.confirm-trial.manage-subscriptions.clicked'
+            : 'xflow.reactivate-trial.manage-subscriptions.clicked'
+        )}
+      >
+        <FormattedMessage
+          id="xflow.generic.confirm-trial.settings-info.manage-applications.link"
+          defaultMessage="Manage subscriptions"
+        />
+      </a>
+    );
+  }
 
   renderFooter = (status) => (status === INACTIVE
     ? this.renderInactiveFooter()
     : this.renderReactivateFooter());
 
   renderContextualContent = (status, contextInfo) => (<ContextualConfirmTrialContent id="xflow-confirm-trial">
-    <h2>
-      {contextInfo.contextualMessage}
-    </h2>
+    <ContextualConfirmTrialHeading>
+      {contextInfo.contextualHeading}
+    </ContextualConfirmTrialHeading>
+    <p>{contextInfo.contextualMessage}</p>
     <SpinnerDiv topMultiplier={2}>
       <Spinner isCompleting={!this.state.spinnerActive} />
     </SpinnerDiv>
@@ -225,7 +255,7 @@ class ContextualConfirmTrial extends Component {
       <ModalDialog
         isOpen
         width="medium"
-        height={'510px'}
+        height={'556px'}
         header={
           this.renderHeader(image, contextInfo)
         }

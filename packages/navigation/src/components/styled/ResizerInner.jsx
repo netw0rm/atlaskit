@@ -1,8 +1,7 @@
 import styled from 'styled-components';
-import { unthemedColors } from '../../shared-variables';
+import { unthemedColors, resizerVisibleWidth } from '../../shared-variables';
 
-const resizerClickableWidth = 12;
-const resizerVisibleWidth = 2;
+const resizerClickableWidth = 16;
 
 const ResizerInner = styled.div`
   cursor: ew-resize;
@@ -11,7 +10,7 @@ const ResizerInner = styled.div`
   /* position: absolute so that it will not effect the width of the navigation */
   position: absolute;
 
-  right: -${resizerClickableWidth / 2}px;
+  right: -${resizerClickableWidth}px;
   width: ${resizerClickableWidth}px;
 
   &:hover::before {
@@ -22,7 +21,7 @@ const ResizerInner = styled.div`
     width: ${resizerVisibleWidth}px;
     height: 100%;
     position: absolute;
-    left: ${(resizerClickableWidth - resizerVisibleWidth) / 2}px;
+    left: -${resizerVisibleWidth / 2}px;
   }
 `;
 

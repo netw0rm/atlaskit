@@ -7,10 +7,17 @@ import ScaleLargeIcon from '@atlaskit/icon/glyph/media-services/scale-large';
 import ScaleSmallIcon from '@atlaskit/icon/glyph/media-services/scale-small';
 import {ImageCropper, OnLoadHandler} from '../image-cropper';
 import Slider from '@atlaskit/field-range';
-import {Container, SliderContainer, FileInput, ImageUploader, DragZone, DragZoneImage, DragZoneText} from './styled';
+import {Container, SliderContainer, FileInput, ImageUploader, DragZone, DragZoneImage, DragZoneText, SelectionBlocker} from './styled';
 import {uploadPlaceholder} from './images';
+import {constrainPos, constrainScale} from '../constraint-util';
 
 export const CONTAINER_SIZE = akGridSizeUnitless * 32;
+
+// Large images (a side > CONTAINER_SIZE) will have a scale between 0 - 1.0
+// Small images (a side < CONTAINER_SIZE) will have scales greater than 1.0
+// Therefore the context of the slider range min-max depends on the size of the image.
+// This constant is used for the max value for smaller images, as the (scale * 100) will be greater than 100.
+export const MAX_SMALL_IMAGE_SCALE = 2500;
 
 export interface CropProperties {
   x: number;
@@ -72,15 +79,22 @@ export class ImageNavigator extends Component<Props, State> {
 
   onMouseMove = (e) => {
     if (this.state.isDragging) {
+      const {imageDragStartPos, scale} = this.state;
+      const imageWidth = this.state.imageWidth as number;
+      const imageHeight = this.state.imageHeight as number;
       const {screenX: x, screenY: y} = e;
       const cursorInitPos = this.state.cursorInitPos || {x, y};
-
+      const constrainedPos = constrainPos(
+        imageDragStartPos.x + (x - cursorInitPos.x),
+        imageDragStartPos.y + (y - cursorInitPos.y),
+        imageWidth,
+        imageHeight,
+        scale,
+        CONTAINER_SIZE
+      );
       this.setState({
         cursorInitPos,
-        imagePos: {
-          x: this.state.imageDragStartPos.x + (x - cursorInitPos.x),
-          y: this.state.imageDragStartPos.y + (y - cursorInitPos.y),
-        }
+        imagePos: constrainedPos
       });
     }
   }
@@ -88,8 +102,8 @@ export class ImageNavigator extends Component<Props, State> {
   onMouseUp = () => {
     const { imagePos, scale } = this.state;
     this.props.onPositionChanged(
-      Math.abs(imagePos.x) / scale,
-      Math.abs(imagePos.y) / scale);
+      Math.abs(Math.round(imagePos.x / scale)),
+      Math.abs(Math.round(imagePos.y / scale)));
     this.setState({
       cursorInitPos: undefined,
       isDragging: false,
@@ -108,8 +122,17 @@ export class ImageNavigator extends Component<Props, State> {
    * @param scale New scale in 0-100 format.
    */
   onScaleChange = (scale) => {
-    const newScale = scale / 100;
-    const oldScale = this.state.scale;
+    const {imageWidth: imgWidth, imageHeight: imgHeight, scale: currentScale} = this.state;
+    const imageWidth = imgWidth as number;
+    const imageHeight = imgHeight as number;
+    const newScale = constrainScale(
+      scale / 100,
+      currentScale,
+      imageWidth,
+      imageHeight,
+      CONTAINER_SIZE
+    );
+    const oldScale = currentScale;
     const scaleRelation = newScale / oldScale;
     const oldCenterPixel: Position = {
       x: CONTAINER_SIZE / 2 - this.state.imagePos.x,
@@ -119,16 +142,21 @@ export class ImageNavigator extends Component<Props, State> {
       x: scaleRelation * oldCenterPixel.x,
       y: scaleRelation * oldCenterPixel.y,
     };
-    const imagePos = {
-      x: CONTAINER_SIZE / 2 - newCenterPixel.x,
-      y: CONTAINER_SIZE / 2 - newCenterPixel.y,
-    };
+    const imagePos = constrainPos(
+      CONTAINER_SIZE / 2 - newCenterPixel.x,
+      CONTAINER_SIZE / 2 - newCenterPixel.y,
+      imageWidth,
+      imageHeight,
+      currentScale,
+      CONTAINER_SIZE
+    );
     const haveRenderedImage = !!this.state.imageWidth;
     if (haveRenderedImage) {
       // adjust cropping properties by scale value
-      const x = Math.abs(imagePos.x) / newScale;
-      const y = Math.abs(imagePos.y) / newScale;
-      const size = CONTAINER_SIZE / newScale;
+      const x = Math.abs(Math.round(imagePos.x / newScale));
+      const y = Math.abs(Math.round(imagePos.y / newScale));
+      const minSize = Math.min(imageWidth, imageHeight);
+      const size = minSize < CONTAINER_SIZE ? minSize : Math.round(CONTAINER_SIZE / newScale);
       this.props.onPositionChanged(x, y);
       this.props.onSizeChanged(size);
     }
@@ -146,7 +174,7 @@ export class ImageNavigator extends Component<Props, State> {
    */
   onImageSize = (width, height) => {
     const { imageFile, imagePos } = this.state;
-    const scale = this.calculateInitialScale(width, height);
+    const scale = this.calculateMinScale(width, height);
     // imageFile will be undefined when this component is rendered with
     // an imageSource value rather than a new image being uploaded or dropped.
     // This means that cropping does not work when imageSource is provided
@@ -161,19 +189,13 @@ export class ImageNavigator extends Component<Props, State> {
     this.setState({
       imageWidth: width,
       imageHeight: height,
-      minScale: (CONTAINER_SIZE / 2) / Math.max(width, height) * 100,
+      minScale: scale,
       scale,
     });
   }
 
-  calculateInitialScale(width: number, height: number): number {
-    if (width < CONTAINER_SIZE && height < CONTAINER_SIZE) {
-      return 1;
-    } else if (width > height) {
-      return CONTAINER_SIZE / height;
-    } else {
-      return CONTAINER_SIZE / width;
-    }
+  calculateMinScale(width: number, height: number): number {
+    return Math.max(CONTAINER_SIZE / width, CONTAINER_SIZE / height);
   }
 
   readFile(imageFile: File) {
@@ -262,8 +284,10 @@ export class ImageNavigator extends Component<Props, State> {
       imageWidth,
       imagePos,
       scale,
-      minScale
+      isDragging
     } = this.state;
+
+    const minScale = this.state.minScale as number;
 
     return (
       <div>
@@ -282,13 +306,14 @@ export class ImageNavigator extends Component<Props, State> {
         <SliderContainer>
           <ScaleSmallIcon label="scale-small-icon" />
           <Slider
-            value={100 * scale}
-            min={minScale}
-            max={100}
+            value={scale * 100}
+            min={minScale * 100}
+            max={minScale > 1 ? MAX_SMALL_IMAGE_SCALE: 100}
             onChange={this.onScaleChange}
           />
           <ScaleLargeIcon label="scale-large-icon" />
         </SliderContainer>
+        {isDragging ? <SelectionBlocker /> : null}
       </div>
     );
   }

@@ -1,5 +1,32 @@
 # @atlaskit/avatar
 
+## 8.3.1 (2017-11-16)
+
+* bug fix; avatar flex styles are now explicit to fix Firefox issue (issues closed: ak-3898) ([73ac57d](https://bitbucket.org/atlassian/atlaskit/commits/73ac57d))
+## 8.3.0 (2017-11-16)
+
+
+* feature; added a new prop background in AvatarItem to have custom background (issues closed: ak-3706) ([e93888c](https://bitbucket.org/atlassian/atlaskit/commits/e93888c))
+## 8.2.4 (2017-11-15)
+
+* bug fix; fix incorrect border radius on Avatars (issues closed: ak-3897) ([6570495](https://bitbucket.org/atlassian/atlaskit/commits/6570495))
+## 8.2.3 (2017-11-15)
+
+* bug fix; explicitly disable tooltip on avatar when rendered in a group dropdown ([593f2e9](https://bitbucket.org/atlassian/atlaskit/commits/593f2e9))
+## 8.2.2 (2017-11-15)
+
+
+* bug fix; improve avatar perf by caching  styled components (issues closed: ak-3699) ([0e6fa65](https://bitbucket.org/atlassian/atlaskit/commits/0e6fa65))
+## 8.2.1 (2017-11-14)
+
+* bug fix; add additional link target options (issues closed: ak-3886) ([a932aa8](https://bitbucket.org/atlassian/atlaskit/commits/a932aa8))
+## 8.2.0 (2017-11-14)
+
+* feature; aK-3883 Expose boundariesElement property on AvatarGroup component ([78001fd](https://bitbucket.org/atlassian/atlaskit/commits/78001fd))
+## 8.1.0 (2017-11-13)
+
+* feature; add support for focus presence type (issues closed: ak-3758) ([06b6da3](https://bitbucket.org/atlassian/atlaskit/commits/06b6da3))
+* bug fix; AvatarGroup more indicator fixed in Firefox (issues closed: ak-3791) ([6c9464e](https://bitbucket.org/atlassian/atlaskit/commits/6c9464e))
 ## 8.0.11 (2017-11-02)
 
 * bug fix; added missing dependencies (issues closed: ak-3782) ([4dbc3ef](https://bitbucket.org/atlassian/atlaskit/commits/4dbc3ef))

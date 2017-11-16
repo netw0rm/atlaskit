@@ -1,5 +1,8 @@
 # @atlaskit/input
 
+## 1.6.1 (2017-11-15)
+
+* bug fix; bumping internal dependencies to latest major version ([d5b6fb9](https://bitbucket.org/atlassian/atlaskit/commits/d5b6fb9))
 ## 1.6.0 (2017-10-24)
 
 

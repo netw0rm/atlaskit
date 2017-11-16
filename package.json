@@ -227,5 +227,8 @@
     "validate/tslint/changed/fix": "./build/bin/lint.tslint.changed.sh --fix",
     "validate/tslint/fix": "lerna run -- lint -- --fix",
     "validate/typescript": "lerna run validate/typescript"
+  },
+  "resolutions": {
+    "**/react": "15.4.2"
   }
 }

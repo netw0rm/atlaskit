@@ -5,7 +5,7 @@ import XFlowAnalyticsListener from '../components/XFlowAnalyticsListener';
 
 import { withXFlowProvider } from './XFlowProvider';
 import InitializingScreen from './InitializingScreen';
-import { ContextualStartTrial, StartTrial, RequestTrial, AlreadyStarted } from '../../request-or-start-trial/';
+import { ContextualStartTrial, StartTrial, RequestTrial, AlreadyStarted } from '../../request-or-start-trial';
 import ErrorFlag from '../../common/components/ErrorFlag';
 import RequestOrStartTrialDialog from '../styled/RequestOrStartTrialDialog';
 
@@ -37,16 +37,19 @@ class RequestOrStartTrial extends Component {
     checkProductRequestFlag: PropTypes.func,
     contextInfo: PropTypes.shape({
       contextualImage: PropTypes.string,
+      contextualHeading: PropTypes.string,
       contextualMessage: PropTypes.string,
       reactivateCTA: PropTypes.string,
       trialCTA: PropTypes.string,
     }),
+    grantAccessEnabled: PropTypes.bool,
   };
 
   static defaultProps = {
     onComplete: () => {},
     onTrialRequested: () => {},
     onTrialActivating: () => {},
+    grantAccessEnabled: true,
   };
 
   state = {
@@ -150,6 +153,7 @@ class RequestOrStartTrial extends Component {
       sourceComponent,
       sourceContext,
       contextInfo,
+      grantAccessEnabled,
     } = this.props;
     const {
       activationState,
@@ -196,7 +200,7 @@ class RequestOrStartTrial extends Component {
                       <ContextualStartTrial
                         onComplete={onComplete}
                         onTrialActivating={onTrialActivating}
-                        showGrantAccess={activationState === INACTIVE}
+                        showGrantAccess={activationState === INACTIVE && grantAccessEnabled}
                         contextInfo={contextInfo}
                       />
                     )
@@ -204,7 +208,7 @@ class RequestOrStartTrial extends Component {
                       <StartTrial
                         onComplete={onComplete}
                         onTrialActivating={onTrialActivating}
-                        showGrantAccess={activationState === INACTIVE}
+                        showGrantAccess={activationState === INACTIVE && grantAccessEnabled}
                       />
                     )
                 );
@@ -217,6 +221,7 @@ class RequestOrStartTrial extends Component {
                   alreadyRequested={alreadyRequested}
                   onComplete={onComplete}
                   onTrialRequested={onTrialRequested}
+                  contextInfo={contextInfo}
                 />);
               }
               default: {
@@ -239,10 +244,12 @@ export default withXFlowProvider(
       checkProductRequestFlag,
       getProductActivationState,
       waitForActivation,
+      grantAccessEnabled,
   } }) => ({
     canCurrentUserAddProduct,
     checkProductRequestFlag,
     getProductActivationState,
     waitForActivation,
+    grantAccessEnabled,
   })
 );

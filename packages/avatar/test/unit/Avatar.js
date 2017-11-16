@@ -12,6 +12,7 @@ import { AVATAR_SIZES } from '../../src/styled/constants';
 
 const busy = 'busy';
 const offline = 'offline';
+const focus = 'focus';
 const online = 'online';
 const SIZES = ['xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge'];
 
@@ -35,10 +36,10 @@ describe('Avatar', () => {
   });
 
   describe('name property', () => {
-    it('should set the title of the internal span', () => {
+    it('should set the alt of the internal span', () => {
       const name = 'John Smith';
       const wrapper = mount(<Avatar name={name} src={src} />);
-      expect(wrapper.find(AvatarImage).getDOMNode().title).toBe(name);
+      expect(wrapper.find(AvatarImage).props().alt).toBe(name);
     });
   });
 
@@ -48,7 +49,7 @@ describe('Avatar', () => {
       expect(wrapper.find(Presence).find('svg').length).toBe(0);
     });
 
-    [online, busy, offline].forEach((presence) => {
+    [online, busy, offline, focus].forEach((presence) => {
       describe(`when presence is set to '${presence}'`, () => {
         let wrapper;
         beforeEach(() => (wrapper = mount(<Avatar presence={presence} />)));

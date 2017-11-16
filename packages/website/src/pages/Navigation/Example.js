@@ -28,7 +28,7 @@ export default class extends Component {
           <p>Back to the website:</p>
           <ButtonGroup>
             <Button component={Link} to="/">Home</Button>
-            <Button component={Link} to="/patterns/navigation">Navigation</Button>
+            <Button component={Link} to="/components/navigation">Navigation</Button>
           </ButtonGroup>
           <p>All Navigation Examples:</p>
           <ul>

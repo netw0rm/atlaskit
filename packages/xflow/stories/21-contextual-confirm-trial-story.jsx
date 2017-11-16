@@ -16,13 +16,14 @@ const defaultProps = {
     console.log('Go to Confluence!');
   },
   contextInfo: {
-    contextualMessage: 'Project pages are a feature powered by Confluence',
+    contextualHeading: 'Project pages are powered by Confluence',
+    contextualMessage: 'Create, share, and collaborate on all your project docs in one place, with Confluence pages.',
     reactivateCTA: 'Reactivate Confluence',
     trialCTA: 'Try Confluence free for 30 days',
   },
 };
 
-storiesOf('ContextualConfirmTrial')
+storiesOf('request-or-start-trial/ContextualConfirmTrial')
   .add('Confirm Trial dialog (INACTIVE)', () =>
     setupStorybookAnalytics(
       <ConfirmTrialBase
@@ -40,7 +41,8 @@ storiesOf('ContextualConfirmTrial')
         onCancel={() => Promise.resolve(true)}
         contextInfo={{
           contextualImage: 'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/kEL9zW2kcU8_U4Y_Rc1p3Zmm8J8Jq_JR0ikTg6cEWe8/Multi-Document.svg',
-          contextualMessage: 'Project pages are a feature powered by Confluence',
+          contextualHeading: 'Project pages are powered by Confluence',
+          contextualMessage: 'Create, share, and collaborate on all your project docs in one place, with Confluence pages.',
           reactivateCTA: 'Reactivate Confluence',
           trialCTA: 'Try Confluence free for 30 days',
         }}

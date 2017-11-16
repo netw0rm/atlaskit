@@ -1,5 +1,10 @@
 # @atlaskit/reduced-ui-pack
 
+## 8.2.0 (2017-11-16)
+
+* feature; new and updated icons for the editor (issues closed: ak-3720) ([2c709e2](https://bitbucket.org/atlassian/atlaskit/commits/2c709e2))
+
+
 ## 8.1.0 (2017-10-10)
 
 * feature; added 8 new icons, updated 4 others (issues closed: ak-3590) ([0cff900](https://bitbucket.org/atlassian/atlaskit/commits/0cff900))

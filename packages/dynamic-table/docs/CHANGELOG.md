@@ -1,5 +1,22 @@
 # @atlaskit/dynamic-table
 
+## 6.1.1 (2017-11-15)
+
+* bug fix; bumping internal dependencies to the latest major versions ([dd59c0a](https://bitbucket.org/atlassian/atlaskit/commits/dd59c0a))
+## 6.1.0 (2017-11-13)
+
+
+
+
+
+
+
+
+
+
+
+
+* feature; add a loading state to the dynamic table ([08974ae](https://bitbucket.org/atlassian/atlaskit/commits/08974ae))
 ## 6.0.2 (2017-10-26)
 
 * bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))

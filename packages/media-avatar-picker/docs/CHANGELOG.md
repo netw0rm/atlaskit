@@ -1,5 +1,8 @@
 # @atlaskit/media-avatar-picker
 
+## 3.1.0 (2017-11-16)
+
+* feature; contrain media-avatar-picker panning and zooming ([be3a131](https://bitbucket.org/atlassian/atlaskit/commits/be3a131))
 ## 3.0.1 (2017-09-18)
 
 * bug fix; update media-core and media-test-helpers version ([00108cf](https://bitbucket.org/atlassian/atlaskit/commits/00108cf))

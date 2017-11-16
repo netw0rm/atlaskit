@@ -12,16 +12,16 @@ storiesOf('Avatar Picker', {})
     <AvatarPickerDialog
       avatars={avatars}
       imageSource={tallImage}
-      onImagePicked={action('onSaveImage')}
-      onAvatarPicked={action('onSaveAvatar')}
+      onImagePicked={action('onImagePicked')}
+      onAvatarPicked={action('onAvatarPicked')}
       onCancel={action('onCancel')}
     />
   ))
   .add('Without imageSource', () => (
     <AvatarPickerDialog
       avatars={avatars}
-      onImagePicked={action('onSaveImage')}
-      onAvatarPicked={action('onSaveAvatar')}
+      onImagePicked={action('onImagePicked')}
+      onAvatarPicked={action('onAvatarPicked')}
       onCancel={action('onCancel')}
     />
   ));

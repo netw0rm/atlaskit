@@ -1,5 +1,8 @@
 # @atlaskit/avatar
 
+## 8.3.1 (2017-11-16)
+
+* bug fix; avatar flex styles are now explicit to fix Firefox issue (issues closed: ak-3898) ([73ac57d](https://bitbucket.org/atlassian/atlaskit/commits/73ac57d))
 ## 8.3.0 (2017-11-16)
 
 

@@ -1,5 +1,8 @@
 # @atlaskit/icon
 
+## 10.3.0 (2017-11-16)
+
+* feature; new and updated icons for the editor (issues closed: ak-3720) ([2c709e2](https://bitbucket.org/atlassian/atlaskit/commits/2c709e2))
 ## 10.2.0 (2017-11-15)
 
 * feature; added a new prop for icons to make them more performant. ([7dc38f7](https://bitbucket.org/atlassian/atlaskit/commits/7dc38f7))

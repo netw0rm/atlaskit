@@ -11,6 +11,22 @@ yarn add @atlaskit/media-avatar-picker
 
 ## Using the component
 
+The `AvatarPickerDialog` contains the `ImageNavigator`, which contains the `ImageCropper`.
+
+The overall purpose is to allow the user to select an image, then pan and zoom to a desired clipped view.
+
+The default zoom level should fit image within the crop area. Images smaller than the crop area are scaled up, and are not zoomable.
+
+The component constrains the panning and scaling of the image to ensure that only valid regions are selectable by the user.
+
+### Exported data
+
+The `onImagePicked` property of the AvatarPickerDialog exposes an `x` `y` coordinate set, and a `size` value. This is used to produce a clipped rect from the source image.
+
+The `x` and `y` values are relative to the coordinate system of the source image.
+
+The `size` value is relative to the coordinate system of the source image. Since the avatar crop/display size is square, this is a single value representing both the width and height of the clipped rect, with the origin at the `x` and `y` values. The size value is essentially the transformed crop area onto the source image, starting at the x,y origin.
+
 ### AvatarPickerDialog
 
 ```

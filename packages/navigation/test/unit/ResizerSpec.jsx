@@ -8,6 +8,7 @@ import {
   standardOpenWidth as standardOpenWidthGenerator,
   globalOpenWidth as globalOpenWidthGenerator,
 } from '../../src/shared-variables';
+import { dispatchMouseEvent } from './_event-util';
 
 const standardOpenWidth = standardOpenWidthGenerator(false);
 const globalOpenWidth = globalOpenWidthGenerator(false);
@@ -46,13 +47,71 @@ describe('<Resizer />', () => {
       expect(resizeSpy).not.toHaveBeenCalled();
       expect(resizeEndSpy).not.toHaveBeenCalled();
     });
-    it('mousedown adds appropriate mouse event listeners to the window', () => {
-      global.addEventListener = jest.fn();
+    it('mousemove triggers onResize', () => {
       resizer.find(ResizerInner).simulate('mousedown', { screenX: 100, preventDefault: () => { } });
-      expect(global.addEventListener).toHaveBeenCalledTimes(3);
-    });
+      dispatchMouseEvent('mousemove', { screenX: 200 });
+      // Mouse move callbacks are wrapped with request animation frame so need
+      // trigger a requestAnimationFrame step
+      requestAnimationFrame.step();
 
-    // TODO: onResize and onResizeEnd won't play nice with document event listeners
+      expect(resizeSpy).toHaveBeenCalled();
+      expect(resizeEndSpy).not.toHaveBeenCalled();
+    });
+    it('mouseup triggers onResizeEnd', () => {
+      resizer.find(ResizerInner).simulate('mousedown', { screenX: 100, preventDefault: () => { } });
+      dispatchMouseEvent('mouseup', { screenX: 200 });
+      expect(resizeEndSpy).toHaveBeenCalled();
+    });
+    it('mouseout onto out of bounds elements triggers onResizeEnd', () => {
+      resizer.find(ResizerInner).simulate('mousedown', { screenX: 100, preventDefault: () => { } });
+      dispatchMouseEvent('mouseout', {
+        relatedTarget: document.createElement('iframe'),
+      });
+      expect(resizeEndSpy).toHaveBeenCalled();
+
+      resizeEndSpy.mockReset();
+      resizer.find(ResizerInner).simulate('mousedown', { screenX: 100, preventDefault: () => { } });
+      dispatchMouseEvent('mouseout', {
+        relatedTarget: document.createElement('html'),
+      });
+      expect(resizeEndSpy).toHaveBeenCalled();
+
+      resizeEndSpy.mockReset();
+      resizer.find(ResizerInner).simulate('mousedown', { screenX: 100, preventDefault: () => { } });
+      dispatchMouseEvent('mouseout', {
+        relatedTarget: null,
+      });
+      expect(resizeEndSpy).toHaveBeenCalled();
+
+      resizeEndSpy.mockReset();
+      resizer.find(ResizerInner).simulate('mousedown', { screenX: 100, preventDefault: () => { } });
+      dispatchMouseEvent('mouseout', {
+        relatedTarget: document.createElement('div'),
+      });
+      expect(resizeEndSpy).not.toHaveBeenCalled();
+    });
+    it('should unbind all window listeners when resize ends', () => {
+      const addSpy = jest.spyOn(window, 'addEventListener');
+      const removeSpy = jest.spyOn(window, 'removeEventListener');
+
+      // Clear any mock info from previous tests
+      addSpy.mockReset();
+      removeSpy.mockReset();
+
+      resizer.find(ResizerInner).simulate('mousedown', { screenX: 100, preventDefault: () => { } });
+
+      expect(addSpy).toHaveBeenCalled();
+      expect(removeSpy).not.toHaveBeenCalled();
+
+      dispatchMouseEvent('mouseup', 100);
+
+      expect(addSpy.mock.calls.length)
+        .toBe(removeSpy.mock.calls.length);
+
+      // cleanup
+      addSpy.mockRestore();
+      removeSpy.mockRestore();
+    });
   });
 
   describe('resizer button', () => {

@@ -1,4 +1,4 @@
-AaaatlasKit
+AaaaatlasKit
 ==============
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![node](https://img.shields.io/badge/node-6.10%2B-brightgreen.svg)]()

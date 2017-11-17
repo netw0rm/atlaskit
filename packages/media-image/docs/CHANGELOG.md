@@ -1,5 +1,9 @@
 # @atlaskit/media-image
 
+## 2.2.0 (2017-11-17)
+
+* feature; updated media-core version across products ([1a9541a](https://bitbucket.org/atlassian/atlaskit/commits/1a9541a))
+* feature; upgrade version of mediapicker to 11.1.6 and media-core to 11.0.0 across packages ([aaa7aa0](https://bitbucket.org/atlassian/atlaskit/commits/aaa7aa0))
 ## 2.1.1 (2017-09-18)
 
 * bug fix; update media-core and media-test-helpers version ([00108cf](https://bitbucket.org/atlassian/atlaskit/commits/00108cf))

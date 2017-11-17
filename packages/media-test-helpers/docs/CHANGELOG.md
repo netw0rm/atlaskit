@@ -1,5 +1,9 @@
 # @atlaskit/media-test-helpers
 
+## 8.5.0 (2017-11-17)
+
+* feature; updated media-core version across products ([1a9541a](https://bitbucket.org/atlassian/atlaskit/commits/1a9541a))
+* feature; upgrade version of mediapicker to 11.1.6 and media-core to 11.0.0 across packages ([aaa7aa0](https://bitbucket.org/atlassian/atlaskit/commits/aaa7aa0))
 ## 8.4.0 (2017-10-10)
 
 * bug fix; fixed incompatible types between axioPromise and Promise. ([a227432](https://bitbucket.org/atlassian/atlaskit/commits/a227432))

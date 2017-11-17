@@ -1,5 +1,8 @@
 # @atlaskit/emoji
 
+## 30.3.0 (2017-11-17)
+
+* feature; upgrade version of mediapicker to 11.1.6 and media-core to 11.0.0 across packages ([aaa7aa0](https://bitbucket.org/atlassian/atlaskit/commits/aaa7aa0))
 ## 30.2.0 (2017-11-09)
 
 

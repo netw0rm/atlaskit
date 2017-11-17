@@ -113,7 +113,7 @@ class ItemThemeDemo extends PureComponent {
               lots and lots and lots and lots and lots and lots and lots and lots and lots !
             </Item>
             <Item
-              elemAfter={<CheckCircleIcon size="medium" />}
+              elemAfter={<CheckCircleIcon size="medium" label="" />}
             >
               Notice how the icon colour changes based on theme, item with lots and lots and lots
               and lots and lots and lots and lots and lots and lots and lots of text and lots and

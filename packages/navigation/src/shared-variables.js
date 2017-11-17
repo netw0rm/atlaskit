@@ -151,3 +151,5 @@ export const search = {
     height: gridSize * 4,
   },
 };
+
+export const resizerVisibleWidth = 2;

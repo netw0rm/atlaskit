@@ -1,5 +1,8 @@
 # @atlaskit/dropdown-menu
 
+## 3.11.2 (2017-11-16)
+
+* bug fix; bumping internal dependencies to latest major version ([7b22368](https://bitbucket.org/atlassian/atlaskit/commits/7b22368))
 ## 3.11.1 (2017-11-02)
 
 * bug fix; added missing dependencies (issues closed: ak-3782) ([4dbc3ef](https://bitbucket.org/atlassian/atlaskit/commits/4dbc3ef))

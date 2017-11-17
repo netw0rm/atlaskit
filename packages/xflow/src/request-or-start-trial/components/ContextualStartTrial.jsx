@@ -17,6 +17,7 @@ class ContextualStartTrial extends Component {
     onTrialActivating: PropTypes.func,
     contextInfo: PropTypes.shape({
       contextualImage: PropTypes.string,
+      contextualHeading: PropTypes.string.isRequired,
       contextualMessage: PropTypes.string.isRequired,
       reactivateCTA: PropTypes.string.isRequired,
       trialCTA: PropTypes.string.isRequired,

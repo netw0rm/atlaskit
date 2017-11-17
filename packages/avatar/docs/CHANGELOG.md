@@ -1,5 +1,22 @@
 # @atlaskit/avatar
 
+## 8.3.1 (2017-11-16)
+
+* bug fix; avatar flex styles are now explicit to fix Firefox issue (issues closed: ak-3898) ([73ac57d](https://bitbucket.org/atlassian/atlaskit/commits/73ac57d))
+## 8.3.0 (2017-11-16)
+
+
+* feature; added a new prop background in AvatarItem to have custom background (issues closed: ak-3706) ([e93888c](https://bitbucket.org/atlassian/atlaskit/commits/e93888c))
+## 8.2.4 (2017-11-15)
+
+* bug fix; fix incorrect border radius on Avatars (issues closed: ak-3897) ([6570495](https://bitbucket.org/atlassian/atlaskit/commits/6570495))
+## 8.2.3 (2017-11-15)
+
+* bug fix; explicitly disable tooltip on avatar when rendered in a group dropdown ([593f2e9](https://bitbucket.org/atlassian/atlaskit/commits/593f2e9))
+## 8.2.2 (2017-11-15)
+
+
+* bug fix; improve avatar perf by caching  styled components (issues closed: ak-3699) ([0e6fa65](https://bitbucket.org/atlassian/atlaskit/commits/0e6fa65))
 ## 8.2.1 (2017-11-14)
 
 * bug fix; add additional link target options (issues closed: ak-3886) ([a932aa8](https://bitbucket.org/atlassian/atlaskit/commits/a932aa8))

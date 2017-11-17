@@ -1,5 +1,8 @@
 # @atlaskit/dynamic-table
 
+## 6.1.1 (2017-11-15)
+
+* bug fix; bumping internal dependencies to the latest major versions ([dd59c0a](https://bitbucket.org/atlassian/atlaskit/commits/dd59c0a))
 ## 6.1.0 (2017-11-13)
 
 

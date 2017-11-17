@@ -6,8 +6,9 @@ import Button from '@atlaskit/button';
 import { colors } from '@atlaskit/theme';
 import FieldRadioGroup from '@atlaskit/field-radio-group';
 import SuccessIcon from '@atlaskit/icon/glyph/check-circle';
+import LayerManager from '@atlaskit/layer-manager';
 import Flag, { FlagGroup } from '../../src';
-import ExampleNavigation from './ExampleNavigation';
+import ExamplePage from './ExamplePage';
 import { AppearanceArray } from '../../src/types';
 
 const appearanceItems = AppearanceArray.map(val => (
@@ -64,49 +65,51 @@ export default class AnimationDemo extends PureComponent {
     console.log(this.state.flags.map(flag => flag.appearance));
 
     return (
-      <div>
-        <ExampleNavigation>
-          <div>
-            <p>Add some flags then try clicking the <em>Dismiss</em> icon.</p>
-            <p>When a flag is dismissed, an event should be shown in the action logger panel.</p>
-            <FieldRadioGroup
-              items={appearanceItems}
-              label="Pick your new flag appearance:"
-              onRadioChange={(e) => {
-                this.setState({ chosenAppearance: e.target.value });
-              }}
-            />
-            <p>
-              <Button
-                appearance="primary"
-                onClick={this.addFlag}
-              >
-                Add another flag
-              </Button>
-            </p>
-          </div>
-        </ExampleNavigation>
-        <FlagGroup onDismissed={this.flagDismissed}>
-          {this.state.flags.map(flag => (
-            <Flag
-              appearance={flag.appearance}
-              actions={[
-                { content: 'Nice one!', onClick: action('Nice one!') },
-                { content: 'Not right now thanks', onClick: action('Not right now thanks') },
-              ]}
-              description={flag.description}
-              icon={<SuccessIcon
-                secondaryColor={color[flag.appearance]}
-                label="Success"
-              />}
-              id={flag.index}
-              key={flag.index}
-              title={`${flag.index}: ${flag.title}`}
-            />
-          )
-        )}
-        </FlagGroup>
-      </div>
+      <LayerManager>
+        <div>
+          <ExamplePage>
+            <div>
+              <p>Add some flags then try clicking the <em>Dismiss</em> icon.</p>
+              <p>When a flag is dismissed, an event should be shown in the action logger panel.</p>
+              <FieldRadioGroup
+                items={appearanceItems}
+                label="Pick your new flag appearance:"
+                onRadioChange={(e) => {
+                  this.setState({ chosenAppearance: e.target.value });
+                }}
+              />
+              <p>
+                <Button
+                  appearance="primary"
+                  onClick={this.addFlag}
+                >
+                  Add another flag
+                </Button>
+              </p>
+            </div>
+          </ExamplePage>
+          <FlagGroup onDismissed={this.flagDismissed}>
+            {this.state.flags.map(flag => (
+              <Flag
+                appearance={flag.appearance}
+                actions={[
+                  { content: 'Nice one!', onClick: action('Nice one!') },
+                  { content: 'Not right now thanks', onClick: action('Not right now thanks') },
+                ]}
+                description={flag.description}
+                icon={<SuccessIcon
+                  secondaryColor={color[flag.appearance]}
+                  label="Success"
+                />}
+                id={flag.index}
+                key={flag.index}
+                title={`${flag.index}: ${flag.title}`}
+              />
+            )
+          )}
+          </FlagGroup>
+        </div>
+      </LayerManager>
     );
   }
 }

@@ -4,6 +4,7 @@ import { shallow, mount } from 'enzyme';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronUpIcon from '@atlaskit/icon/glyph/chevron-up';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
+import LayerManager from '@atlaskit/layer-manager';
 
 import Flag, { FlagGroup } from '../../src';
 import { name } from '../../package.json';
@@ -270,12 +271,14 @@ describe(name, () => {
   describe('FlagGroup', () => {
     it('should render the correct number of Flag children', () => {
       const wrapper = mount(
-        <FlagGroup>
-          {generateFlag()}
-          {generateFlag()}
-          {generateFlag()}
-        </FlagGroup>
-        );
+        <LayerManager>
+          <FlagGroup>
+            {generateFlag()}
+            {generateFlag()}
+            {generateFlag()}
+          </FlagGroup>
+        </LayerManager>
+      );
       expect(wrapper.find(Container).length).toBe(3);
     }
     );
@@ -283,14 +286,16 @@ describe(name, () => {
     it('onDismissed should be called when child Flag is dismissed', () => {
       const spy = jest.fn();
       const wrapper = mount(
-        <FlagGroup onDismissed={spy}>
-          {generateFlag({
-            id: 'a',
-            isDismissAllowed: true,
-            onDismissed: spy,
-          })}
-          {generateFlag({ id: 'b' })}
-        </FlagGroup>
+        <LayerManager>
+          <FlagGroup onDismissed={spy}>
+            {generateFlag({
+              id: 'a',
+              isDismissAllowed: true,
+              onDismissed: spy,
+            })}
+            {generateFlag({ id: 'b' })}
+          </FlagGroup>
+        </LayerManager>
       );
       wrapper.find(DismissButton).simulate('click');
       wrapper.find(Container).first().simulate('animationEnd');

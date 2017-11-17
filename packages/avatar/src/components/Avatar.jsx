@@ -8,20 +8,16 @@ import Image from './AvatarImage';
 import Status from './Status';
 
 import Outer, { PresenceWrapper, StatusWrapper } from '../styled/Avatar';
-import { getInnerStyles } from '../styled/utils';
 import Tooltip from '../styled/Tooltip';
 
 import { omit } from '../utils';
-import { getProps, getStyledComponent } from '../helpers';
+import { getProps, getStyledAvatar } from '../helpers';
 import { mapProps, withPseudoState } from '../hoc';
 
 import type {
   AvatarPropTypes,
   AvatarPropTypesBase,
-  ComponentType,
-  ElementType,
   FunctionType,
-  StyledComponentType,
 } from '../types';
 
 export const AvatarDefaultProps = {
@@ -30,34 +26,17 @@ export const AvatarDefaultProps = {
   size: 'medium',
 };
 
+const warn = (message) => {
+  if (process.env.NODE_ENV !== 'production') {
+    console.warn(message); // eslint-disable-line no-console
+  }
+};
+
 class Avatar extends Component {
   props: AvatarPropTypes; // eslint-disable-line react/sort-comp
   node: { blur?: FunctionType, focus?: FunctionType };
-  cache: {
-    button?: ElementType,
-    custom?: ComponentType,
-    link?: ElementType,
-    span?: ElementType,
-  } = {};
 
   static defaultProps = AvatarDefaultProps;
-
-  getCachedComponent(type: StyledComponentType) {
-    if (!this.cache[type]) {
-      this.cache[type] = getStyledComponent[type](getInnerStyles);
-    }
-    return this.cache[type];
-  }
-  getStyledComponent() {
-    const { component, href, onClick } = this.props;
-    let node: StyledComponentType = 'span';
-
-    if (component) node = 'custom';
-    else if (href) node = 'link';
-    else if (onClick) node = 'button';
-
-    return this.getCachedComponent(node);
-  }
 
   // expose blur/focus to consumers via ref
   blur = (e: FocusEvent) => {
@@ -88,11 +67,11 @@ class Avatar extends Component {
 
     // add warnings for various invalid states
     if (!validIconSizes.includes(size) && (showPresence || showStatus)) {
-      console.warn(`Avatar size "${String(size)}" does NOT support ${showPresence ? 'presence' : 'status'}`);
+      warn(`Avatar size "${String(size)}" does NOT support ${showPresence ? 'presence' : 'status'}`);
       return null;
     }
     if (showPresence && showStatus) {
-      console.warn('Avatar supports `presence` OR `status` properties, not both.');
+      warn('Avatar supports `presence` OR `status` properties, not both.');
       return null;
     }
 
@@ -142,7 +121,7 @@ class Avatar extends Component {
     const props: AvatarInnerProps = getProps(this);
 
     // provide element type based on props
-    const Inner: any = this.getStyledComponent();
+    const Inner: any = getStyledAvatar(this.props);
 
     // augment the onClick handler
     props.onClick = onClick && this.guardedClick;

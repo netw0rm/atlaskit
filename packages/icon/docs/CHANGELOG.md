@@ -1,5 +1,13 @@
 # @atlaskit/icon
 
+## 10.3.0 (2017-11-16)
+
+* feature; new and updated icons for the editor (issues closed: ak-3720) ([2c709e2](https://bitbucket.org/atlassian/atlaskit/commits/2c709e2))
+## 10.2.0 (2017-11-15)
+
+* feature; added a new prop for icons to make them more performant. ([7dc38f7](https://bitbucket.org/atlassian/atlaskit/commits/7dc38f7))
+
+* feature; icon component performance improved and the glyph can now be passed as a string. ([317274c](https://bitbucket.org/atlassian/atlaskit/commits/317274c))
 ## 10.1.3 (2017-11-09)
 
 * bug fix; add missing color props ([f186c02](https://bitbucket.org/atlassian/atlaskit/commits/f186c02))

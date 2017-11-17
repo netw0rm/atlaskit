@@ -25,11 +25,18 @@ export function getBorderRadius(
 export const getSize = (props: { size: SizeType }) => AVATAR_SIZES[props.size]; // for testing
 export function getAvatarDimensions(
   props: { size: SizeType },
-  config: { includeBorderWidth: boolean } = { includeBorderWidth: false }
+  config: {
+    includeBorderWidth: boolean,
+    sizeOnly: boolean,
+  } = {
+    includeBorderWidth: false,
+    sizeOnly: false,
+  }
 ) {
   const borderWidth: number = config.includeBorderWidth ? (BORDER_WIDTH[props.size] * 2) : 0;
   const size: number = AVATAR_SIZES[props.size] + borderWidth;
-  return `
+
+  return config.sizeOnly ? size : `
     height: ${size}px;
     width: ${size}px;
   `;

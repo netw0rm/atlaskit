@@ -184,7 +184,8 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
             {...defaultRequestOrStartTrialProps}
             onTrialActivating={action('onTrialActivating')}
             contextInfo={{
-              contextualMessage: 'Project pages are a feature powered by Confluence',
+              contextualHeading: 'Project pages are powered by Confluence',
+              contextualMessage: 'Create, share, and collaborate on all your project docs in one place, with Confluence pages.',
               reactivateCTA: 'Reactivate Confluence',
               trialCTA: 'Try Confluence free for 30 days',
             }}
@@ -202,7 +203,8 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
             <RequestOrStartTrial
               {...defaultRequestOrStartTrialProps}
               contextInfo={{
-                contextualMessage: 'Project pages are a feature powered by Confluence',
+                contextualHeading: 'Project pages are powered by Confluence',
+                contextualMessage: 'Create, share, and collaborate on all your project docs in one place, with Confluence pages.',
                 reactivateCTA: 'Reactivate Confluence',
                 trialCTA: 'Try Confluence free for 30 days',
               }}

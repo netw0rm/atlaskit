@@ -165,6 +165,58 @@ describe('Profilecard', () => {
 
         expect(result.timestring).toEqual('Mon 0:00pm');
       });
+
+      describe('presence', () => {
+        it('should set null presence if not present in data', () => {
+          const data = {
+            User: {},
+          };
+
+          const result = modifyResponse(data);
+
+          expect(result.presence).toEqual(null);
+        });
+
+        it('should set presence to state', () => {
+          const data = {
+            User: {},
+            Presence: {
+              state: 'available',
+            },
+          };
+
+          const result = modifyResponse(data);
+
+          expect(result.presence).toEqual('available');
+        });
+
+        it('should set presence to busy correctly', () => {
+          const data = {
+            User: {},
+            Presence: {
+              state: 'busy',
+            },
+          };
+
+          const result = modifyResponse(data);
+
+          expect(result.presence).toEqual('busy');
+        });
+
+        it('should set presence to focus correctly', () => {
+          const data = {
+            User: {},
+            Presence: {
+              state: 'busy',
+              stateMetadata: '{"focus":{}}',
+            },
+          };
+
+          const result = modifyResponse(data);
+
+          expect(result.presence).toEqual('focus');
+        });
+      });
     });
   });
 });

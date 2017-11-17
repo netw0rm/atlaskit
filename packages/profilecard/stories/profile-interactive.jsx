@@ -175,6 +175,7 @@ export default function interActiveCard(dependencies) {
                 <li>{this.createRadioPresenceAttribute('available')}</li>
                 <li>{this.createRadioPresenceAttribute('busy')}</li>
                 <li>{this.createRadioPresenceAttribute('unavailable')}</li>
+                <li>{this.createRadioPresenceAttribute('focus')}</li>
                 <li>{this.createRadioPresenceAttribute('none')}</li>
               </ul>
             </div>

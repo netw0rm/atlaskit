@@ -1,5 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
+import fetchMock from 'fetch-mock';
+
 import waitUntil from '../../util/wait-until';
 import clickOnText from '../../util/click-on-text';
 import {
@@ -126,6 +128,9 @@ const defaultRequestOrStartTrialProps = {
 };
 
 describe('@atlaskit/xflow', () => {
+  beforeEach(() => fetchMock.catch(417));
+  afterEach(fetchMock.restore);
+
   describe('new to confluence', () => {
     let xflow;
 

@@ -1,10 +1,15 @@
 import React from 'react';
 import { mount } from 'enzyme';
+import fetchMock from 'fetch-mock';
+
 import { LoadingTimeBase } from '../../../src/request-or-start-trial/components/LoadingTime';
 import { withAnalyticsSpy, waitFor } from '../../util';
 import { ACTIVATING, ACTIVE } from '../../../src/common/productProvisioningStates';
 
 describe('<LoadingTime> analytics', () => {
+  beforeEach(() => fetchMock.catch(417));
+  afterEach(fetchMock.restore);
+
   const noop = () => {
   };
 

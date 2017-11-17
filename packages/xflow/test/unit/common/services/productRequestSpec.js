@@ -18,14 +18,15 @@ const mockRequestTrialEastEndpointWithResponse = (response) => {
 };
 
 describe('productRequest', () => {
+  beforeEach(() => fetchMock.catch(417));
+  afterEach(fetchMock.restore);
+
   beforeEach(() => {
     tenantContext.fetchCloudId = jest.fn().mockReturnValue(Promise.resolve('some-cloud-id'));
     tenantContext.getInstanceName = jest.fn().mockReturnValue('example.atlassian.net');
     tenantContext.fetchCurrentUserAvatarUrl = jest.fn().mockReturnValue(Promise.resolve('some-avatar-url'));
     tenantContext.fetchCurrentUserDisplayName = jest.fn().mockReturnValue(Promise.resolve('Example User'));
   });
-
-  afterEach(fetchMock.restore);
 
   it('should return a resolved promise with no value if the endpoint returns a 200 response', async () => {
     const xflowResponse = { message: 'request received' };

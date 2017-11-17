@@ -1,10 +1,15 @@
 import React from 'react';
 import { mount } from 'enzyme';
+import fetchMock from 'fetch-mock';
+
 import { GrantAccessBase } from '../../../src/request-or-start-trial/components/GrantAccess';
 import { withAnalyticsSpy, waitFor } from '../../util';
 import { ACTIVATING } from '../../../src/common/productProvisioningStates';
 
 describe('<GrantAccess> analytics', () => {
+  beforeEach(() => fetchMock.catch(417));
+  afterEach(fetchMock.restore);
+
   const noop = () => {
   };
 

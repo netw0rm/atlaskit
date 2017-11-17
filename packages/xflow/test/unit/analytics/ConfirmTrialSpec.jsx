@@ -1,11 +1,16 @@
 import React from 'react';
 import { mount } from 'enzyme';
+import fetchMock from 'fetch-mock';
+
 import { ConfirmTrialBase } from '../../../src/request-or-start-trial/components/ConfirmTrial';
 import { withAnalyticsSpy, waitFor } from '../../util';
 
 import { INACTIVE } from '../../../src/common/productProvisioningStates';
 
 describe('<ConfirmTrial> analytics', () => {
+  beforeEach(() => fetchMock.catch(417));
+  afterEach(fetchMock.restore);
+
   const noop = () => {};
 
   const defaultProps = {

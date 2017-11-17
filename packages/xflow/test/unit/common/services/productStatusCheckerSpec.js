@@ -72,12 +72,14 @@ const toBeOneOf = (...values) => ({
 describe('productStatusChecker', () => {
   let confluenceStatusChecker;
 
+  beforeEach(() => fetchMock.catch(417));
+  afterEach(fetchMock.restore);
+
   beforeEach(() => {
     jest.clearAllTimers();
 
     confluenceStatusChecker = productStatusChecker('confluence.ondemand');
   });
-  afterEach(fetchMock.restore);
 
   afterEach(() => {
     confluenceStatusChecker.reset();

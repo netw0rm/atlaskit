@@ -19,6 +19,7 @@ import siteAdminResponse from '../mock-data/fetchUserAndGroupsSiteAdmin.json';
 describe('tenantContext', () => {
   const DUMMY_HTML_SINCE_NO_ENDPOINT = '<html>some html...'; // real case when a url is not recognized -> returns home page
 
+  beforeEach(() => fetchMock.catch(417));
   afterEach(fetchMock.restore);
   afterEach(() => fetchCurrentUser.resetCache());
 

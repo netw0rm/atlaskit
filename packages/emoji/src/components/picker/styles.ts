@@ -19,12 +19,17 @@ import {
 } from '../../shared-styles';
 
 import {
+  emojiSprite,
+  placeholder,
+} from '../common/styles';
+
+import {
   emojiPickerHeight,
   emojiPickerWidth,
 } from '../../constants';
 
-export const active = 'active';
-export const disable = 'disable';
+export const active = 'emoji-picker-active';
+export const disable = 'emoji-picker-disable';
 
 // Level 1 - picker
 
@@ -45,7 +50,7 @@ export const emojiPicker = style({
 
 /// Category Selector
 
-export const addButton = 'add-button';
+export const addButton = 'emoji-picker-add-button';
 
 export const categorySelector = style({
   flex: '0 0 auto',
@@ -248,13 +253,13 @@ export const emojiItem = style({
           display: 'block',
         },
         // Scale sprite to fit regardless of default emoji size
-        '&>.emoji-sprite': {
+        [`&>.${emojiSprite}`]: {
           height: '24px',
           width: '24px',
         },
       },
     },
-    '&>.placeholder': {
+    [`&>.${placeholder}`]: {
       padding: '0',
       margin: '7px',
     }

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
-import uid from 'uid';
+import uuid from 'uuid';
 
 import { colors } from '../../../theme/src';
 
@@ -72,7 +72,7 @@ class Icon extends PureComponent {
    * to replace.
    */
   static insertDynamicGradientID(svgStr) {
-    const id = uid();
+    const id = uuid();
 
     const replacedSvgStr = svgStr
       .replace(/id="([^"]+)-idPlaceholder"/g, `id=$1-${id}`)

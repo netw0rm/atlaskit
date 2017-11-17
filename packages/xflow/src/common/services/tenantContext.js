@@ -3,7 +3,7 @@
 
 import 'es6-promise/auto';
 import 'whatwg-fetch';
-import pAny from 'p-any';
+import { promiseAny } from '@promise-utils/any';
 
 const SITE_ADMINS_GROUP_NAME = 'site-admins';
 
@@ -65,7 +65,7 @@ export const getAvatarUrl = ({ avatarUrls }) => {
 let currentUserPromiseCached = null;
 export function fetchCurrentUser() {
   // WIP only works in JIRA context (not confluence)
-  currentUserPromiseCached = currentUserPromiseCached || (() => pAny([
+  currentUserPromiseCached = currentUserPromiseCached || (() => promiseAny(
     // Jira allows fetching user + group in one go
     fetchSameOrigin(JIRA_CURRENT_USER_AND_GROUPS_URL, 'Jira endpoint:'),
     // Confluence needs 2 calls:
@@ -77,12 +77,10 @@ export function fetchCurrentUser() {
           user.groups.items = groups.results;
           return user;
         })),
-  ])
-  .catch(aggregateErr => {
-    aggregateErr.message = 'Unable to retrieve information about current user: ';
-    aggregateErr.message += [...aggregateErr].map(err => err.message).join(', ');
-
-    throw aggregateErr;
+  )
+  .catch(err => {
+    err.message = `Unable to retrieve information about current user: ${err.message}`;
+    throw err;
   })
   )();
 
@@ -116,15 +114,13 @@ export const getInstanceName = () => window.location.hostname;
  * Attempt to fetch cloud id from JIRA, then Confluence, otherwise throw an error
  */
 export const fetchCloudId = async () => {
-  const response = await pAny([
+  const response = await promiseAny(
     fetchSameOrigin(JIRA_CLOUD_ID_URL, 'Jira endpoint:'),
     fetchSameOrigin(CONFLUENCE_CLOUD_ID_URL, 'Confluence endpoint:'),
-  ])
-  .catch(aggregateErr => {
-    aggregateErr.message = 'Unable to retrieve cloud id: ';
-    aggregateErr.message += [...aggregateErr].map(err => err.message).join(', ');
-
-    throw aggregateErr;
+  )
+  .catch(err => {
+    err.message = `Unable to retrieve cloud id: ${err.message}`;
+    throw err;
   });
 
   return response.cloudId;

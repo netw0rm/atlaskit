@@ -193,25 +193,25 @@ export default class BasicNavigation extends PureComponent {
       <Navigation
         containerTheme={this.props.containerTheme}
         globalTheme={this.props.globalTheme}
-        backIconOffset={this.state.backIconOffset}
         containerHeaderComponent={ContainerHeader}
-        globalCreateIcon={
-          <Tooltip position="right" content="Create">
-            <AddIcon label="Create icon" secondaryColor="inherit" size="medium" />
-          </Tooltip>
-        }
+        globalPrimaryActions={[
+          (<AkGlobalItem size="medium" onClick={() => { this.openDrawer('search'); }}>
+            <Tooltip position="right" description="Search">
+              <SearchIcon label="Search icon" secondaryColor="inherit" size="medium" />
+            </Tooltip>
+          </AkGlobalItem>),
+          (<AkGlobalItem size="medium" onClick={() => { this.openDrawer('create'); }}>
+            <Tooltip position="right" description="Create">
+              <AddIcon label="Create icon" secondaryColor="inherit" size="medium" />
+            </Tooltip>
+          </AkGlobalItem>),
+        ]}
         globalPrimaryIcon={this.props.globalPrimaryIcon}
         globalPrimaryItemHref="//www.atlassian.com"
-        globalSearchIcon={
-          <Tooltip position="right" content="Search">
-            <SearchIcon label="Search icon" secondaryColor="inherit" size="medium" />
-          </Tooltip>}
         globalSecondaryActions={this.props.globalSecondaryActions}
         isOpen={this.state.isOpen}
-        onCreateDrawerOpen={() => { this.openDrawer('create'); }}
         onResize={this.resize}
         onResizeStart={this.resizeStart}
-        onSearchDrawerOpen={() => { this.openDrawer('search'); }}
         openDrawer={this.state.openDrawer}
         position="right bottom"
         resizeHandler={action('resize')}

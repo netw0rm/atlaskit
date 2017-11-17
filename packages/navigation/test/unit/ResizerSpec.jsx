@@ -62,27 +62,32 @@ describe('<Resizer />', () => {
       dispatchMouseEvent('mouseup', { screenX: 200 });
       expect(resizeEndSpy).toHaveBeenCalled();
     });
-    it('mouseout onto out of bounds elements triggers onResizeEnd', () => {
-      resizer.find(ResizerInner).simulate('mousedown', { screenX: 100, preventDefault: () => { } });
-      dispatchMouseEvent('mouseout', {
-        relatedTarget: document.createElement('iframe'),
+    describe('onResizeEnd should be triggered when mousing over out of bounds elements', () => {
+      it('should trigger an onResizeEnd when moving over an iframe', () => {
+        resizer.find(ResizerInner).simulate('mousedown', { screenX: 100, preventDefault: () => { } });
+        dispatchMouseEvent('mouseout', {
+          relatedTarget: document.createElement('iframe'),
+        });
+        expect(resizeEndSpy).toHaveBeenCalled();
       });
-      expect(resizeEndSpy).toHaveBeenCalled();
-
-      resizeEndSpy.mockReset();
-      resizer.find(ResizerInner).simulate('mousedown', { screenX: 100, preventDefault: () => { } });
-      dispatchMouseEvent('mouseout', {
-        relatedTarget: document.createElement('html'),
+      it('should trigger an onResizeEnd when moving over an html element', () => {
+        resizeEndSpy.mockReset();
+        resizer.find(ResizerInner).simulate('mousedown', { screenX: 100, preventDefault: () => { } });
+        dispatchMouseEvent('mouseout', {
+          relatedTarget: document.createElement('html'),
+        });
+        expect(resizeEndSpy).toHaveBeenCalled();
       });
-      expect(resizeEndSpy).toHaveBeenCalled();
-
-      resizeEndSpy.mockReset();
-      resizer.find(ResizerInner).simulate('mousedown', { screenX: 100, preventDefault: () => { } });
-      dispatchMouseEvent('mouseout', {
-        relatedTarget: null,
+      it('should trigger an onResizeEnd when moving out of the window (null)', () => {
+        resizeEndSpy.mockReset();
+        resizer.find(ResizerInner).simulate('mousedown', { screenX: 100, preventDefault: () => { } });
+        dispatchMouseEvent('mouseout', {
+          relatedTarget: null,
+        });
+        expect(resizeEndSpy).toHaveBeenCalled();
       });
-      expect(resizeEndSpy).toHaveBeenCalled();
-
+    });
+    it('should not trigger onResizeEnd when mousing over a standard element', () => {
       resizeEndSpy.mockReset();
       resizer.find(ResizerInner).simulate('mousedown', { screenX: 100, preventDefault: () => { } });
       dispatchMouseEvent('mouseout', {

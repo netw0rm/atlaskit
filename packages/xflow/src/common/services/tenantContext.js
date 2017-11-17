@@ -10,7 +10,11 @@ const SITE_ADMINS_GROUP_NAME = 'site-admins';
 export const JIRA_CLOUD_ID_URL = '/rest/product-fabric/1.0/cloud/id';
 export const CONFLUENCE_CLOUD_ID_URL = '/wiki/rest/product-fabric/1.0/cloud/id';
 export const JIRA_CURRENT_USER_AND_GROUPS_URL = '/rest/api/2/myself?expand=groups';
+
+// https://developer.atlassian.com/cloud/confluence/rest/#api-user-current-get
 export const CONFLUENCE_CURRENT_USER_URL = '/wiki/rest/api/user/current';
+
+// https://developer.atlassian.com/cloud/confluence/rest/#api-user-memberof-get
 export const CONFLUENCE_USER_GROUPS_URL = accountId => `/wiki/rest/api/user/memberof?accountId=${accountId}`;
 
 const DEFAULT_AVATAR_URL = 'https://i2.wp.com/avatar-cdn.atlassian.com/default/96?ssl=1';
@@ -64,7 +68,6 @@ export const getAvatarUrl = ({ avatarUrls }) => {
 
 let currentUserPromiseCached = null;
 export function fetchCurrentUser() {
-  // WIP only works in JIRA context (not confluence)
   currentUserPromiseCached = currentUserPromiseCached || (() => promiseAny(
     // Jira allows fetching user + group in one go
     fetchSameOrigin(JIRA_CURRENT_USER_AND_GROUPS_URL, 'Jira endpoint:'),

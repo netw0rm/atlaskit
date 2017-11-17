@@ -63,6 +63,24 @@ class Icon extends PureComponent {
     onClick: () => {},
   }
 
+  /* Icons need unique gradient IDs across instances for different gradient definitions to work
+   * correctly.
+   * A step in the icon build process replaces linear gradient IDs and their references in paths
+   * to a placeholder string so we can replace them with a dynamic ID here.
+   * Replacing the original IDs with placeholders in the build process is more robust than not
+   * using placeholders as we do not have to rely on regular expressions to find specific element
+   * to replace.
+   */
+  static insertDynamicGradientID(svgStr) {
+    const id = uid();
+
+    const replacedSvgStr = svgStr
+      .replace(/id="([^"]+)-idPlaceholder"/g, `id=$1-${id}`)
+      .replace(/fill="url\(#([^"]+)-idPlaceholder\)"/g, `fill="url(#$1-${id})"`);
+
+    return replacedSvgStr;
+  }
+
   render() {
     const {
       glyph: Glyph,
@@ -72,8 +90,6 @@ class Icon extends PureComponent {
       secondaryColor,
       size,
     } = this.props;
-
-    const id = uid();
 
     // handling the glyphs as strings
     if (dangerouslySetGlyph) {
@@ -85,7 +101,7 @@ class Icon extends PureComponent {
           size={size}
           role="img"
           aria-label={this.props.label}
-          dangerouslySetInnerHTML={{ __html: dangerouslySetGlyph }}
+          dangerouslySetInnerHTML={{ __html: Icon.insertDynamicGradientID(dangerouslySetGlyph) }}
         />
       );
     }
@@ -99,7 +115,7 @@ class Icon extends PureComponent {
         role="img"
         aria-label={this.props.label}
       >
-        <Glyph role="presentation" id={id} />
+        <Glyph role="presentation" />
       </IconWrapper>
     );
   }

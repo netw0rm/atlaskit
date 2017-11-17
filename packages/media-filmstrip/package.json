@@ -58,7 +58,7 @@
     "@atlaskit/field-range": "^2.0.0",
     "@atlaskit/media-core": "^11.0.0",
     "@atlaskit/media-card": "^21.0.2",
-    "@atlaskit/media-test-helpers": "^8.2.1",
+    "@atlaskit/media-test-helpers": "^8.4.0",
     "akutil-common-test": "*"
   },
   "keywords": [

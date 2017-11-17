@@ -42,16 +42,6 @@ storiesOf(`${name} - Global Primary Items`, module)
               <HomeFilledIcon label="Home icon" secondaryColor="inherit" size="medium" />
             </Tooltip>
           </AkGlobalItem>),
-          (<AkGlobalItem size="medium">
-            <Tooltip position="right" description="Search">
-              <SearchIcon label="Search icon" secondaryColor="inherit" size="medium" />
-            </Tooltip>
-          </AkGlobalItem>),
-          (<AkGlobalItem size="medium">
-            <Tooltip position="right" description="Create">
-              <AddIcon label="Create icon" secondaryColor="inherit" size="medium" />
-            </Tooltip>
-          </AkGlobalItem>),
         ]}
       />
     </HtmlPage>

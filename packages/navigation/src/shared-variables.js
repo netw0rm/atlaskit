@@ -94,11 +94,12 @@ export const globalPrimaryActions = (() => {
     bottom: gridSize * 2,
   };
 
-  const innerHeight = (itemSizes.medium * 3) + (gridSize * 2);
-
-  const height = {
-    inner: innerHeight,
-    outer: gridSize + margin.bottom + innerHeight,
+  const height = (actionCount: number) => {
+    const innerHeight = (itemSizes.medium * (actionCount + 1)) + (gridSize * 2);
+    return {
+      inner: innerHeight,
+      outer: gridSize + margin.bottom + innerHeight,
+    };
   };
 
   return {

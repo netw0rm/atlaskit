@@ -3,6 +3,28 @@ import 'whatwg-fetch';
 import { LRUCache } from 'lru-fast';
 
 /**
+ * Transform presence response to atlaskit/avatar compatible presence value
+ * @param presenceResponse
+ * @returns {string}
+ */
+const calculatePresence = (presenceResponse) => {
+  if (!presenceResponse) {
+    return null;
+  }
+
+  let state = presenceResponse.state;
+  const stateMetadata = presenceResponse.stateMetadata ?
+    JSON.parse(presenceResponse.stateMetadata) : null;
+
+  if (state === 'busy') {
+    if (stateMetadata && stateMetadata.focus) {
+      state = 'focus';
+    }
+  }
+  return state;
+};
+
+/**
  * Transform response from GraphQL
  * - Prefix `timestring` with `remoteWeekdayString` depending on `remoteWeekdayIndex`
  * - Remove properties which will be not used later
@@ -11,7 +33,7 @@ import { LRUCache } from 'lru-fast';
  * @return {object}
  */
 export const modifyResponse = (response) => {
-  const presence = response.Presence && response.Presence.state;
+  const presence = calculatePresence(response.Presence);
   const data = { ...response.User, presence };
 
   const localWeekdayIndex = new Date().getDay().toString();
@@ -67,7 +89,8 @@ const buildUserQuery = (cloudId, userId) => ({
     Presence: Presence(organizationId: $cloudId, userId: $userId) {
       state,
       type,
-      date
+      date,
+      stateMetadata
     }
   }`,
   variables: {
@@ -79,7 +102,7 @@ const buildUserQuery = (cloudId, userId) => ({
 /**
 * @param {string} serviceUrl - GraphQL service endpoint
 * @param {string} userId
-* @param {string} cloudI
+* @param {string} cloudId
 */
 const requestService = (serviceUrl, cloudId, userId) => {
   const headers = buildHeaders();

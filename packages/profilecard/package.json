@@ -22,7 +22,7 @@
     "index.d.ts"
   ],
   "dependencies": {
-    "@atlaskit/avatar": "^8.0.5",
+    "@atlaskit/avatar": "8.2.4",
     "@atlaskit/button": "^5.4.2",
     "@atlaskit/icon": "^10.1.0",
     "@atlaskit/layer": "^2.5.4",

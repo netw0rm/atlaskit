@@ -15,6 +15,7 @@
     "start": "yarn build-data && yarn serve"
   },
   "dependencies": {
+    "@atlaskit/analytics": "^2.3.2",
     "@atlaskit/button": "^5.1.2",
     "@atlaskit/button-group": "^1.5.3",
     "@atlaskit/css-reset": "^1.1.5",
@@ -52,6 +53,7 @@
     "react": "^15.3.2",
     "react-docgen": "^2.14.1",
     "react-dom": "^15.3.2",
+    "react-ga": "^2.3.5",
     "react-helmet": "^5.0.3",
     "react-markdown": "^2.5.0",
     "react-media": "^1.5.1",

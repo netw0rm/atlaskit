@@ -1,6 +1,7 @@
 /* eslint-disable no-confusing-arrow */
 
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Helmet from 'react-helmet';
@@ -14,8 +15,7 @@ import LightbulbIcon from '@atlaskit/icon/glyph/lightbulb';
 import LightbulbFilledIcon from '@atlaskit/icon/glyph/lightbulb-filled';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import { AtlasKitThemeProvider, borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
-
-import { MOBILE_QUERY } from '../../../constants';
+import { GOOGLE_ANALYTICS_ID, MOBILE_QUERY } from '../../../constants';
 
 import Page from '../../components/Page';
 
@@ -31,10 +31,25 @@ import InstallGuide from '../../pages/InstallGuide';
 
 import Nav from '../Nav';
 import MobileNav from '../MobileNav';
+import GoogleAnalyticsListener from '../../components/GoogleAnalyticsListener';
 
 import ScrollToTop from './ScrollToTop';
 
 const LOCAL_STORAGE_THEME_MODE_KEY = 'atlaskit-website-themeMode';
+
+const SiteAnlaytics = ({ children }) => {
+  if (process.env.ATLASKIT_SITE_ENV === 'production') {
+    return (
+      <GoogleAnalyticsListener gaId={GOOGLE_ANALYTICS_ID}>
+        {children}
+      </GoogleAnalyticsListener>
+    );
+  }
+  return children;
+};
+SiteAnlaytics.propTypes = {
+  children: PropTypes.node,
+};
 
 const Routes = () =>
   <Switch>
@@ -54,14 +69,6 @@ const Routes = () =>
     <Route path="/changelog/:component/:semver?" component={Changelog} />
     <Route component={NoMatch} />
   </Switch>;
-
-const MobileView = () =>
-  <div>
-    <MobileNav />
-    <Routes />
-    <Footer />
-  </div>;
-
 const Footer = () =>
   <FooterContainer>
     {/* <ul>
@@ -98,25 +105,36 @@ export default class App extends PureComponent {
     localStorage.setItem(LOCAL_STORAGE_THEME_MODE_KEY, themeMode);
     this.setState({ themeMode });
   };
+  renderMobileView = () => (
+    <SiteAnlaytics>
+      <div>
+        <MobileNav />
+        <Routes />
+        <Footer />
+      </div>
+    </SiteAnlaytics>
+  );
   renderDesktopView = () => {
     const { isSearchDrawerOpen, navigationWidth } = this.state;
-
     return (
-      <Page
-        navigationWidth={navigationWidth}
-        navigation={
-          <Nav
-            isSearchDrawerOpen={isSearchDrawerOpen}
-            onSearchDrawerToggle={this.handleSearchToggle}
-          />
-        }
-      >
-        <Routes />
-      </Page>
+      <SiteAnlaytics>
+        <Page
+          navigationWidth={navigationWidth}
+          navigation={
+            <Nav
+              isSearchDrawerOpen={isSearchDrawerOpen}
+              onSearchDrawerToggle={this.handleSearchToggle}
+            />
+          }
+        >
+          <Routes />
+        </Page>
+      </SiteAnlaytics>
     );
   };
   render() {
     const DesktopView = this.renderDesktopView;
+    const MobileView = this.renderMobileView;
     const { themeMode } = this.state;
     return (
       <Router>

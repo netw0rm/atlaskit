@@ -34,7 +34,7 @@ describe('<GlobalPrimaryActionsList />', () => {
     expect(spy).not.toHaveBeenCalled();
   });
 
-  it('should call console.error if attempting to mount with more than 3 actions', () => {
+  it('should call console.warn if attempting to mount with more than 3 actions', () => {
     shallow(
       <GlobalPrimaryActionsList
         actions={[<Child />, <Child />, <Child />, <Child />]}
@@ -43,7 +43,7 @@ describe('<GlobalPrimaryActionsList />', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  it('should not call console.error if attempting to update with 3 or fewer actions', () => {
+  it('should not call console.warn if attempting to update with 3 or fewer actions', () => {
     const wrapper = shallow(
       <GlobalPrimaryActionsList actions={[]} />
     );
@@ -54,7 +54,7 @@ describe('<GlobalPrimaryActionsList />', () => {
     expect(spy).not.toHaveBeenCalled();
   });
 
-  it('should call console.error if attempting to update with more than 3 actions', () => {
+  it('should call console.warn if attempting to update with more than 3 actions', () => {
     const wrapper = shallow(
       <GlobalPrimaryActionsList actions={[]} />
     );

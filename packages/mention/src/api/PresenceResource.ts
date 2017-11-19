@@ -255,6 +255,8 @@ export class DefaultPresenceCache implements PresenceCache {
 }
 
 export class DefaultPresenceParser implements PresenceParser {
+  static FOCUS_STATE = 'focus';
+
   mapState(state: string): string {
     if (state === 'unavailable') {
       return 'offline';
@@ -272,13 +274,41 @@ export class DefaultPresenceParser implements PresenceParser {
       // Store map of state and time indexed by userId.  Ignore null results.
       for (const user of results) {
         if (user.userId && user.state) {
-          presences[user.userId] = { status: this.mapState(user.state) };
+          const state = DefaultPresenceParser.extractState(user);
+          presences[user.userId] = {
+            status: this.mapState(state)
+          };
         } else if (!user.hasOwnProperty('userId') || !user.hasOwnProperty('state')) {
           console.error('Unexpected response from presence service contains keys: ' + Object.keys(user));
         }
       }
     }
     return presences;
+  }
+
+  private static extractState(presence): string {
+    if (DefaultPresenceParser.isFocusState(presence)) {
+      return DefaultPresenceParser.FOCUS_STATE;
+    }
+    return presence.state;
+  }
+
+  /*
+    This is a bit of an odd exception. In the case where a user is in "Focus Mode", their presence state
+    is returned as 'busy' along with a `stateMetadata` object containing a `focus` field.
+    In this case we ignore the value of the `state` field and treat the presence as a 'focus' state.
+   */
+  private static isFocusState(presence): boolean {
+    if (presence.stateMetadata) {
+      try {
+        const metadata = JSON.parse(presence.stateMetadata);
+        return metadata && !!metadata.focus;
+      } catch (e) {
+        console.error(`Failed to parse presence's stateMetadata for user with id ${presence.userId}: ${presence.stateMetadata}`);
+        console.error(e);
+      }
+    }
+    return false;
   }
 }
 

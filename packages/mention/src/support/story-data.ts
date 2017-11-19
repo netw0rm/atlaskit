@@ -72,6 +72,9 @@ export const mentions = [
     mentionName: 'wheresmyshirt',
     nickname: 'jim',
     accessLevel: 'NONE',
+    presence: {
+      status: 'focus',
+    },
   },
   {
     id: '12312312',

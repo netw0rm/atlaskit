@@ -1,5 +1,11 @@
 # @atlaskit/media-editor
 
+## 3.3.0 (2017-11-17)
+
+* feature; updated media-core version across products ([1a9541a](https://bitbucket.org/atlassian/atlaskit/commits/1a9541a))
+* feature; upgrade version of mediapicker to 11.1.6 and media-core to 11.0.0 across packages ([aaa7aa0](https://bitbucket.org/atlassian/atlaskit/commits/aaa7aa0))
+
+
 ## 3.2.0 (2017-08-11)
 
 * feature; bump :allthethings: ([f4b1375](https://bitbucket.org/atlassian/atlaskit/commits/f4b1375))

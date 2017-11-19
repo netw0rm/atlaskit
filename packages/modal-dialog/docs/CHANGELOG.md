@@ -1,5 +1,9 @@
 # @atlaskit/modal-dialog
 
+## 3.2.2 (2017-11-17)
+
+* bug fix; bumping internal dependencies to latest major version ([3aefbce](https://bitbucket.org/atlassian/atlaskit/commits/3aefbce))
+
 ## 3.2.1 (2017-11-13)
 
 * bug fix; remove chrome from the wrapping dialog (issues closed: #67) ([21f3a0e](https://bitbucket.org/atlassian/atlaskit/commits/21f3a0e))

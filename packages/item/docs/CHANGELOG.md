@@ -1,5 +1,8 @@
 # @atlaskit/item
 
+## 4.2.2 (2017-11-17)
+
+* bug fix; bumping internal dependencies to the latest major version ([005780c](https://bitbucket.org/atlassian/atlaskit/commits/005780c))
 ## 4.2.1 (2017-10-27)
 
 * bug fix; fix typing ([cbaa440](https://bitbucket.org/atlassian/atlaskit/commits/cbaa440))

@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 26.7.2 (2017-11-16)
+
+* bug fix; prevent horizontal scrolling in collapsed navigation (issues closed: ak-3588) ([9aa8eb5](https://bitbucket.org/atlassian/atlaskit/commits/9aa8eb5))
 ## 26.7.1 (2017-11-16)
 
 

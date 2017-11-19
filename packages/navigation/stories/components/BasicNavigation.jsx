@@ -83,7 +83,7 @@ export default class BasicNavigation extends PureComponent {
         </AkNavigationItemGroup>
       </div>),
     globalSecondaryActions: [
-      <Tooltip position="right" description="Back">
+      <Tooltip position="right" content="Back">
         <SelectableDropdownMenu
           appearance="tall"
           position="right bottom"
@@ -123,7 +123,7 @@ export default class BasicNavigation extends PureComponent {
         position="right bottom"
         trigger={
           <AkGlobalItem>
-            <Tooltip position="right" description="User profile">
+            <Tooltip position="right" content="User profile">
               <AkAvatar size="small" src={emmaAvatar} borderColor="transparent" />
             </Tooltip>
           </AkGlobalItem>
@@ -179,7 +179,7 @@ export default class BasicNavigation extends PureComponent {
   }
 
   render() {
-    const backIcon = <Tooltip position="right" description="Back"><ArrowLeftIcon label="Back icon" size="medium" /></Tooltip>;
+    const backIcon = <Tooltip position="right" content="Back"><ArrowLeftIcon label="Back icon" size="medium" /></Tooltip>;
     const ContainerHeader = this.props.containerHeaderComponent || (() => null);
 
     return (
@@ -189,14 +189,14 @@ export default class BasicNavigation extends PureComponent {
         backIconOffset={this.state.backIconOffset}
         containerHeaderComponent={ContainerHeader}
         globalCreateIcon={
-          <Tooltip position="right" description="Create">
+          <Tooltip position="right" content="Create">
             <AddIcon label="Create icon" secondaryColor="inherit" size="medium" />
           </Tooltip>
         }
         globalPrimaryIcon={this.props.globalPrimaryIcon}
         globalPrimaryItemHref="//www.atlassian.com"
         globalSearchIcon={
-          <Tooltip position="right" description="Search">
+          <Tooltip position="right" content="Search">
             <SearchIcon label="Search icon" secondaryColor="inherit" size="medium" />
           </Tooltip>}
         globalSecondaryActions={this.props.globalSecondaryActions}

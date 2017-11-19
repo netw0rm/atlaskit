@@ -1,5 +1,11 @@
 # @atlaskit/mention
 
+## 8.1.0 (2017-11-19)
+
+
+* feature; add support for showing focus state on mention picker's avatars (issues closed: fs-1487) ([fe5b287](https://bitbucket.org/atlassian/atlaskit/commits/fe5b287))
+* feature; updated icon and tooltip dependencies ([a10f196](https://bitbucket.org/atlassian/atlaskit/commits/a10f196))
+
 ## 8.0.1 (2017-10-22)
 
 * bug fix; update styled-components dep and react peerDep ([6a67bf8](https://bitbucket.org/atlassian/atlaskit/commits/6a67bf8))

@@ -9,7 +9,7 @@ export default class DummyComment extends PureComponent {
     return (
       <Comment
         author={<CommentAuthor>John Smith</CommentAuthor>}
-        avatar={<Avatar src={sampleAvatarImg} label="User avatar" size={'large'} />}
+        avatar={<Avatar src={sampleAvatarImg} name="User avatar" size="large" />}
         time={<CommentTime>30, August 2016</CommentTime>}
         type="internal"
         content={'This is some content'}

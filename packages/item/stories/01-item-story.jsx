@@ -1,7 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Question from '@atlaskit/icon/glyph/question';
-import Arrow from '@atlaskit/icon/glyph/arrow-right-long';
+import Arrow from '@atlaskit/icon/glyph/arrow-right';
 import Avatar from '@atlaskit/avatar';
 import Lozenge from '@atlaskit/lozenge';
 import Tooltip from '@atlaskit/tooltip';
@@ -161,10 +161,10 @@ storiesOf(`${name}`, module)
     <GroupsWrapper>
       <p>Hover over each item to reveal tooltips:</p>
       <ItemsNarrowContainer>
-        <Tooltip description="I'm a tooltip" position="right">
+        <Tooltip content="I'm a tooltip" position="right">
           <Item>Tooltip to the right</Item>
         </Tooltip>
-        <Tooltip description="I'm a tooltip">
+        <Tooltip content="I'm a tooltip">
           <Item>Item wrapped in a tooltip</Item>
         </Tooltip>
       </ItemsNarrowContainer>

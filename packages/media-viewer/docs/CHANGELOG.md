@@ -1,5 +1,9 @@
 # @atlaskit/media-viewer
 
+## 8.1.0 (2017-11-17)
+
+* feature; expand media-viewer peer dependencies range on media-core ([075b97f](https://bitbucket.org/atlassian/atlaskit/commits/075b97f))
+* feature; upgrade version of mediapicker to 11.1.6 and media-core to 11.0.0 across packages ([aaa7aa0](https://bitbucket.org/atlassian/atlaskit/commits/aaa7aa0))
 ## 8.0.0 (2017-09-18)
 
 

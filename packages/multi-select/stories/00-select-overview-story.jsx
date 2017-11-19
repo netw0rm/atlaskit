@@ -141,10 +141,12 @@ storiesOf(name, module)
       </p>
       <table>
         <thead>
-          <th>Name (* is required)</th>
-          <th>Type</th>
-          <th>Default value</th>
-          <th>Description</th>
+          <tr>
+            <th>Name (* is required)</th>
+            <th>Type</th>
+            <th>Default value</th>
+            <th>Description</th>
+          </tr>
         </thead>
         <tbody>
           {Object.keys(itemPropDescriptions).map(propName => PropDef({

@@ -1,5 +1,8 @@
 # @atlaskit/pagination
 
+## 3.5.7 (2017-11-17)
+
+* bug fix; bumping internal dependencies to latest version ([6d8d9b1](https://bitbucket.org/atlassian/atlaskit/commits/6d8d9b1))
 ## 3.5.6 (2017-10-26)
 
 * bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))

@@ -3,135 +3,197 @@ import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
 
 import {
-  isUserTrusted,
-  getUserDisplayName,
-  getCloudId,
+  isCurrentUserSiteAdmin,
+  fetchCloudId,
+  fetchCurrentUser,
   JIRA_CLOUD_ID_URL,
   CONFLUENCE_CLOUD_ID_URL,
+  JIRA_CURRENT_USER_AND_GROUPS_URL,
+  CONFLUENCE_CURRENT_USER_URL,
+  CONFLUENCE_USER_GROUPS_URL,
 } from '../../../../src/common/services/tenantContext';
-import jiraAdminResponse from '../mock-data/isUserTrustedJiraAdmin.json';
-import nonAdminResponse from '../mock-data/isUserTrustedNonAdmin.json';
-import siteAdminResponse from '../mock-data/isUserTrustedSiteAdmin.json';
-import queryUsernameResponse from '../mock-data/queryUsername.json';
-
-const TEST_USERNAME = 'admin%40acme.org';
-
-const mockEndpointWithResponse = (response) => {
-  const url = `/rest/api/latest/user?expand=groups&username=${encodeURIComponent(TEST_USERNAME)}`;
-  fetchMock.mock(url, response, { method: 'GET' });
-};
-
-const mockEndpointWithFailureStatus = (status) => {
-  const url = `/rest/api/latest/user?expand=groups&username=${encodeURIComponent(TEST_USERNAME)}`;
-  fetchMock.mock(url, status);
-};
+import jiraAdminResponse from '../mock-data/fetchUserAndGroupsJiraAdmin.json';
+import nonAdminResponse from '../mock-data/fetchUserAndGroupsNonAdmin.json';
+import siteAdminResponse from '../mock-data/fetchUserAndGroupsSiteAdmin.json';
 
 describe('tenantContext', () => {
+  const DUMMY_HTML_SINCE_NO_ENDPOINT = '<html>some html...'; // real case when a url is not recognized -> returns home page
+
+  beforeEach(() => fetchMock.catch(417));
   afterEach(fetchMock.restore);
+  afterEach(() => fetchCurrentUser.resetCache());
 
-  describe('getCloudId', () => {
-    it('should return the expected cloud id from Jira', async () => {
-      const EXPECTED_CLOUD_ID = 'not-an-instance-name';
-      fetchMock.mock(JIRA_CLOUD_ID_URL, { cloudId: EXPECTED_CLOUD_ID }, { method: 'GET' });
-      const result = await getCloudId();
-      return expect(result).toBe(EXPECTED_CLOUD_ID);
+  describe('fetchCurrentUser()', () => {
+    const EXPECTED_USER = {
+      displayName: 'foo',
+      accountId: '12345',
+      groups: {
+        items: [
+          {
+            name: 'site-admins',
+            self: 'https://foo',
+          },
+        ],
+      },
+    };
+
+    describe('when in a JIRA-only instance', () => {
+      it('should return the current user', async () => {
+        fetchMock.getOnce(JIRA_CURRENT_USER_AND_GROUPS_URL, EXPECTED_USER);
+        fetchMock.getOnce(CONFLUENCE_CURRENT_USER_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
+        const result = await fetchCurrentUser();
+        return expect(result).toEqual(EXPECTED_USER);
+      });
     });
 
-    it('should return the expected cloud id from Confluence if Jira fails', async () => {
-      const EXPECTED_CLOUD_ID = 'instance-without-jira';
-      fetchMock.mock(JIRA_CLOUD_ID_URL, 500);
-      fetchMock.mock(CONFLUENCE_CLOUD_ID_URL, { cloudId: EXPECTED_CLOUD_ID }, { method: 'GET' });
-      const result = await getCloudId();
-      return expect(result).toBe(EXPECTED_CLOUD_ID);
+    describe('when in a Confluence-only instance', () => {
+      it('should return the current user', async () => {
+        fetchMock.getOnce(JIRA_CURRENT_USER_AND_GROUPS_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
+        fetchMock.getOnce(CONFLUENCE_CURRENT_USER_URL, {
+          displayName: 'foo',
+          accountId: '12345',
+          // no groups
+        });
+        fetchMock.getOnce(CONFLUENCE_USER_GROUPS_URL(EXPECTED_USER.accountId), {
+          results: [
+            {
+              name: 'site-admins',
+              self: 'https://foo',
+            },
+          ],
+        });
+        const result = await fetchCurrentUser();
+        return expect(result).toEqual(EXPECTED_USER);
+      });
     });
 
-    it('will reject with an error if both endpoints return a 500', async () => {
+    describe('when in a Confluence + Jira instance', () => {
+      it('should return the current user', async () => {
+        fetchMock.getOnce(JIRA_CURRENT_USER_AND_GROUPS_URL, EXPECTED_USER);
+        fetchMock.getOnce(CONFLUENCE_CURRENT_USER_URL, {
+          displayName: 'foo',
+          accountId: '12345',
+          // no groups
+        });
+        fetchMock.getOnce(CONFLUENCE_USER_GROUPS_URL(EXPECTED_USER.accountId), {
+          results: [
+            {
+              name: 'site-admins',
+              self: 'https://foo',
+            },
+          ],
+        });
+        const result = await fetchCurrentUser();
+        return expect(result).toEqual(EXPECTED_USER);
+      });
+    });
+
+    it('should reject with an error if both endpoints return a 500', async () => {
       expect.assertions(1);
-      fetchMock.mock(JIRA_CLOUD_ID_URL, 500);
-      fetchMock.mock(CONFLUENCE_CLOUD_ID_URL, 500);
+      fetchMock.getOnce(JIRA_CURRENT_USER_AND_GROUPS_URL, 500);
+      fetchMock.getOnce(CONFLUENCE_CURRENT_USER_URL, 500);
       try {
-        await getCloudId();
-      } catch (e) {
-        expect(e).toEqual(
-          new Error('Unable to retrieve cloud id. Status: 500')
-        );
+        await fetchCurrentUser();
+      } catch (err) {
+        expect(err.message.startsWith('Unable to retrieve information about current user:')).toBe(true);
+      }
+    });
+
+    it('should reject with an error if both endpoints are not recognized', async () => {
+      expect.assertions(1);
+      fetchMock.getOnce(JIRA_CURRENT_USER_AND_GROUPS_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
+      fetchMock.getOnce(CONFLUENCE_CURRENT_USER_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
+      try {
+        await fetchCurrentUser();
+      } catch (err) {
+        expect(err.message.startsWith('Unable to retrieve information about current user:')).toBe(true);
       }
     });
   });
 
-  describe('getUserDisplayName', () => {
-    it('should return the expected display name', async () => {
-      const EXPECTED_DISPLAY_NAME = 'Alex Smith';
-      mockEndpointWithResponse(queryUsernameResponse);
-      const result = await getUserDisplayName(TEST_USERNAME);
-      return expect(result).toBe(EXPECTED_DISPLAY_NAME);
+  describe('fetchCloudId()', () => {
+    const EXPECTED_CLOUD_ID = 'I-m-a-cloud-id';
+
+    describe('when in a JIRA-only instance', () => {
+      it('should return the expected cloud id', async () => {
+        fetchMock.getOnce(JIRA_CLOUD_ID_URL, { cloudId: EXPECTED_CLOUD_ID });
+        fetchMock.getOnce(CONFLUENCE_CLOUD_ID_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
+        const result = await fetchCloudId();
+        return expect(result).toBe(EXPECTED_CLOUD_ID);
+      });
     });
 
-    it('will reject with an error if the endpoint returns a 404', async () => {
+    describe('when in a Confluence-only instance', () => {
+      it('should return the expected cloud id', async () => {
+        fetchMock.getOnce(JIRA_CLOUD_ID_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
+        fetchMock.getOnce(CONFLUENCE_CLOUD_ID_URL, { cloudId: EXPECTED_CLOUD_ID });
+        const result = await fetchCloudId();
+        return expect(result).toBe(EXPECTED_CLOUD_ID);
+      });
+    });
+
+    describe('when in a Confluence + Jira instance', () => {
+      it('should return the expected cloud id', async () => {
+        fetchMock.getOnce(JIRA_CLOUD_ID_URL, { cloudId: EXPECTED_CLOUD_ID });
+        fetchMock.getOnce(CONFLUENCE_CLOUD_ID_URL, { cloudId: EXPECTED_CLOUD_ID });
+        const result = await fetchCloudId();
+        return expect(result).toBe(EXPECTED_CLOUD_ID);
+      });
+    });
+
+    it('should reject with an error if both endpoints return a 500', async () => {
       expect.assertions(1);
-      mockEndpointWithFailureStatus(404);
+      fetchMock.getOnce(JIRA_CLOUD_ID_URL, 500);
+      fetchMock.getOnce(CONFLUENCE_CLOUD_ID_URL, 500);
       try {
-        await getUserDisplayName(TEST_USERNAME);
-      } catch (e) {
-        expect(e).toEqual(
-          new Error('Unable to retrieve information about a user. Status: 404')
-        );
+        await fetchCloudId();
+      } catch (err) {
+        expect(err.message.startsWith('Unable to retrieve cloud id')).toBe(true);
       }
     });
 
-    it('will reject with an error if the endpoint returns a 500', async () => {
+    it('should reject with an error if both endpoints are not recognized', async () => {
       expect.assertions(1);
-      mockEndpointWithFailureStatus(500);
+      fetchMock.getOnce(JIRA_CLOUD_ID_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
+      fetchMock.getOnce(CONFLUENCE_CLOUD_ID_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
       try {
-        await getUserDisplayName(TEST_USERNAME);
-      } catch (e) {
-        expect(e).toEqual(
-          new Error('Unable to retrieve information about a user. Status: 500')
-        );
+        await fetchCloudId();
+      } catch (err) {
+        expect(err.message.startsWith('Unable to retrieve cloud id')).toBe(true);
       }
     });
   });
 
-  describe('isUserTrusted', () => {
-    it('will return false if they are only a Jira administrator', async () => {
-      mockEndpointWithResponse(jiraAdminResponse);
-      const result = await isUserTrusted(TEST_USERNAME);
+  describe('isCurrentUserSiteAdmin', () => {
+    it('will return false if he/she is only a Jira administrator', async () => {
+      fetchMock.getOnce(JIRA_CURRENT_USER_AND_GROUPS_URL, jiraAdminResponse);
+      fetchMock.getOnce(CONFLUENCE_CURRENT_USER_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
+      const result = await isCurrentUserSiteAdmin();
       return expect(result).toBe(false);
     });
 
-    it('will return false if they are a non-administrator', async () => {
-      mockEndpointWithResponse(nonAdminResponse);
-      const result = await isUserTrusted(TEST_USERNAME);
+    it('will return false if she/he is not an admin', async () => {
+      fetchMock.getOnce(JIRA_CURRENT_USER_AND_GROUPS_URL, nonAdminResponse);
+      fetchMock.getOnce(CONFLUENCE_CURRENT_USER_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
+      const result = await isCurrentUserSiteAdmin();
       return expect(result).toBe(false);
     });
 
-    it('will return true if they are a site administrator', async () => {
-      mockEndpointWithResponse(siteAdminResponse);
-      const result = await isUserTrusted(TEST_USERNAME);
+    it('will return true if she/he is a site admin', async () => {
+      fetchMock.getOnce(JIRA_CURRENT_USER_AND_GROUPS_URL, siteAdminResponse);
+      fetchMock.getOnce(CONFLUENCE_CURRENT_USER_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
+      const result = await isCurrentUserSiteAdmin();
       return expect(result).toBe(true);
     });
 
-    it('will reject with an error if the endpoint returns a 404', async () => {
+    it('will reject with an error if all endpoint have an error', async () => {
       expect.assertions(1);
-      mockEndpointWithFailureStatus(404);
+      fetchMock.getOnce(CONFLUENCE_CURRENT_USER_URL, 500);
+      fetchMock.getOnce(JIRA_CURRENT_USER_AND_GROUPS_URL, 500);
       try {
-        await isUserTrusted(TEST_USERNAME);
-      } catch (e) {
-        expect(e).toEqual(
-          new Error('Unable to retrieve information about a user. Status: 404')
-        );
-      }
-    });
-
-    it('will reject with an error if the endpoint returns a 500', async () => {
-      expect.assertions(1);
-      mockEndpointWithFailureStatus(500);
-      try {
-        await isUserTrusted(TEST_USERNAME);
-      } catch (e) {
-        expect(e).toEqual(
-          new Error('Unable to retrieve information about a user. Status: 500')
-        );
+        await isCurrentUserSiteAdmin();
+      } catch (err) {
+        expect(err.message.startsWith('Unable to retrieve information about current user:')).toBe(true);
       }
     });
   });

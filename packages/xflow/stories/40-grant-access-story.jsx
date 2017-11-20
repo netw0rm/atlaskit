@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import { ConfluenceLogo } from '@atlaskit/logo';
 
@@ -40,6 +40,7 @@ const defaultProps = {
   continueButtonDisabled: false,
 
   grantAccessToUsers: async (...args) => {
+    action('grantAccessToUsers')();
     console.log('grantAccessToUsers', ...args);
   },
 
@@ -52,9 +53,7 @@ const defaultProps = {
       { name: 'gburrows', 'display-name': 'George Burrows', email: 'gburrows@example.com', attributes: { attributes: [{ name: 'atlassianid.openid.identity', values: ['https://id.atlassian.com/openid/v2/u/5'] }] } },
     ]),
 
-  onComplete: () => {
-    console.log('GrantAccessToUsers onComplete called');
-  },
+  onComplete: action('GrantAccessToUsers onComplete'),
 };
 
 storiesOf('request-or-start-trial/GrantAccess')
@@ -123,6 +122,7 @@ storiesOf('request-or-start-trial/GrantAccess')
         changeUsers
         defaultSelectedRadio="everyone"
         grantAccessToUsers={() => {
+          action('grantAccessToUsers')();
           console.log('grantAccessToUsers', ...arguments);
           return new Promise((_, reject) => setTimeout(reject(new Error('Error granting access.')), 1500));
         }}

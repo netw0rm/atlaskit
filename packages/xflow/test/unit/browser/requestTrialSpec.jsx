@@ -1,8 +1,11 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import * as sinon from 'sinon';
+import fetchMock from 'fetch-mock';
+
 import waitUntil from '../../util/wait-until';
 import clickOnText from '../../util/click-on-text';
+import { userPreferencesEndpoint } from '../../../src/common/services/alreadyRequestedFlag';
 import MockConfluenceXFlow from '../../../stories/providers/MockConfluenceXFlowProvider';
 import RequestOrStartTrial from '../../../src/common/components/RequestOrStartTrial';
 import ConfirmRequest from '../../../src/request-or-start-trial/components/ConfirmRequest';
@@ -41,11 +44,16 @@ const defaultRequestOrStartTrialProps = {
 };
 
 describe('@atlaskit/xflow', () => {
+  beforeEach(() => fetchMock.catch(417));
+  afterEach(fetchMock.restore);
+
   describe('new to confluence', () => {
     let xflow;
     let sinonTest;
 
     beforeEach(() => {
+      fetchMock.putOnce(userPreferencesEndpoint('confluence.ondemand'), 200);
+
       sinonTest = sinon.spy(defaultProps, 'requestTrialWithNote');
       xflow = mount(
         <XFlowIntlProvider locale="en_US">
@@ -65,7 +73,7 @@ describe('@atlaskit/xflow', () => {
       defaultProps.requestTrialWithNote.restore();
     });
 
-    it('should render Request Trial Access component when user doesn\'t have access', async () => {
+    it('should render Request Trial Access component when user doesn’t have access', async () => {
       // eventually render to request trial screen
       await waitUntil(() => xflow.find(ConfirmRequest).length === 1);
       const requestTrialHeading = getXFlowProviderConfig().requestTrial.accessHeading;

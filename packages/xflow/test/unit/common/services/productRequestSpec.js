@@ -18,16 +18,15 @@ const mockRequestTrialEastEndpointWithResponse = (response) => {
 };
 
 describe('productRequest', () => {
-  beforeEach(() => {
-    tenantContext.getAvatarUrl = jest.fn().mockReturnValue('some-avatar-url');
-    tenantContext.getCloudId = jest.fn().mockReturnValue(Promise.resolve('some-cloud-id'));
-    tenantContext.getCurrentUsername = jest.fn().mockReturnValue('exampleUser');
-    tenantContext.getInstanceName = jest.fn().mockReturnValue('example.atlassian.net');
-    tenantContext.getUserDisplayName = jest.fn().mockReturnValue('example user');
-    tenantContext.queryUsername = jest.fn().mockReturnValue(Promise.resolve({}));
-  });
-
+  beforeEach(() => fetchMock.catch(417));
   afterEach(fetchMock.restore);
+
+  beforeEach(() => {
+    tenantContext.fetchCloudId = jest.fn().mockReturnValue(Promise.resolve('some-cloud-id'));
+    tenantContext.getInstanceName = jest.fn().mockReturnValue('example.atlassian.net');
+    tenantContext.fetchCurrentUserAvatarUrl = jest.fn().mockReturnValue(Promise.resolve('some-avatar-url'));
+    tenantContext.fetchCurrentUserDisplayName = jest.fn().mockReturnValue(Promise.resolve('Example User'));
+  });
 
   it('should return a resolved promise with no value if the endpoint returns a 200 response', async () => {
     const xflowResponse = { message: 'request received' };
@@ -44,7 +43,7 @@ describe('productRequest', () => {
         cloud_instance: 'example.atlassian.net',
         product_key: 'confluence.ondemand',
         requested_access_by_avatar: 'some-avatar-url',
-        requested_access_by_name: 'example user',
+        requested_access_by_name: 'Example User',
         requested_access_comment_text: 'Please let me innovate',
       })
     );

@@ -7,6 +7,7 @@ import optOutRequestTrialFeature, {
 } from '../../../../src/common/services/optOutRequestTrialFeature';
 
 describe('optOutRequestTrialFeature', () => {
+  beforeEach(() => fetchMock.catch(417));
   afterEach(fetchMock.restore);
 
   it('should return a resolved promise with no value if the endpoint returns a 204 response', async () => {

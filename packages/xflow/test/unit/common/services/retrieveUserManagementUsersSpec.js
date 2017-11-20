@@ -24,6 +24,9 @@ const usersEndpoint = (groupName, currentIndex) =>
 describe('retrieveUserManagementUsers', () => {
   let retrieveJiraUsers;
 
+  beforeEach(() => fetchMock.catch(417));
+  afterEach(fetchMock.restore);
+
   beforeEach(() => {
     retrieveJiraUsers = retrieveUserManagementUsers([
       JIRA_SOFTWARE_GROUP,
@@ -32,7 +35,6 @@ describe('retrieveUserManagementUsers', () => {
       SITE_ADMINS_GROUP,
     ]);
   });
-  afterEach(fetchMock.restore);
 
   /**
    * test scenario where there are no JIRA users (i.e. all site-admin instance)`

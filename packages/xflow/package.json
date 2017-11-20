@@ -9,6 +9,7 @@
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
+    "lint": "../../node_modules/.bin/eslint --color --format \"../../node_modules/eslint-friendly-formatter\" . --ext .js --ext .jsx",
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/xflow; } || ../../node_modules/.bin/not-in-publish",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
@@ -26,10 +27,11 @@
     "@atlaskit/lozenge": "^3.4.2",
     "@atlaskit/modal-dialog": "^2.6.0",
     "@atlaskit/multi-select": "^6.9.3",
-    "@atlaskit/polyfills": "^1.1.0",
+    "@atlaskit/polyfills": "^1.2.0",
     "@atlaskit/spinner": "^3.4.2",
     "@atlaskit/theme": "^2.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
+    "@promise-utils/any": "^1.0.0",
     "babel-runtime": "^6.11.6",
     "cubic-bezier": "0.1.2",
     "es6-promise": "^4.1.1",
@@ -57,6 +59,12 @@
     },
     {
       "name": "Andrew Wakeling"
+    },
+    {
+      "name": "Max Puckeridge"
+    },
+    {
+      "name": "Yves-Emmanuel Jutard"
     }
   ],
   "license": "Apache-2.0",

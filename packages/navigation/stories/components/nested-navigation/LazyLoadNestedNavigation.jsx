@@ -79,7 +79,7 @@ export default class LazyLoadNestedNavigation extends PureComponent {
             this.setState({ isHeaderInlineDialogOpen: !this.state.isHeaderInlineDialogOpen });
           }}
         >
-          <Tooltip key="1" position="right" description="Header tooltip text">
+          <Tooltip key="1" position="right" content="Header tooltip text">
             <AkContainerTitle
               href="#foo"
               icon={

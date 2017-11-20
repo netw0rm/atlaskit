@@ -34,7 +34,7 @@ import SettingsIcon from '@atlaskit/icon/glyph/settings';
 import Tooltip from '@atlaskit/tooltip';
 
 const DropdownWrapper = styled.div`padding-bottom: ${akGridSizeUnitless / 2}px`;
-const backIcon = <Tooltip position="right" description="Back"><ArrowLeftIcon label="Back icon" size="medium" /></Tooltip>;
+const backIcon = <Tooltip position="right" content="Back"><ArrowLeftIcon label="Back icon" size="medium" /></Tooltip>;
 const globalPrimaryIcon = <ConfluenceIcon label="Confluence icon" size="large" />;
 
 export default class ConfluenceSpacePage extends PureComponent {
@@ -54,27 +54,27 @@ export default class ConfluenceSpacePage extends PureComponent {
           />,
           <AkNavigationItem
             text="Confluence"
-            icon={<Tooltip position="right" description="Confluence"><ConfluenceIcon label="Confluence icon" size="medium" /></Tooltip>}
+            icon={<Tooltip position="right" content="Confluence"><ConfluenceIcon label="Confluence icon" size="medium" /></Tooltip>}
           />,
           <AkNavigationItem
             text="Pages"
-            icon={<Tooltip position="right" description="Pages"><PageIcon label="Page icon" size="medium" /></Tooltip>}
+            icon={<Tooltip position="right" content="Pages"><PageIcon label="Page icon" size="medium" /></Tooltip>}
           />,
           <AkNavigationItem
             text="Blog"
-            icon={<Tooltip position="right" description="Blog"><QuoteIcon label="Quote icon" size="medium" /></Tooltip>}
+            icon={<Tooltip position="right" content="Blog"><QuoteIcon label="Quote icon" size="medium" /></Tooltip>}
           />,
           <AkNavigationItem
             text="Questions"
-            icon={<Tooltip position="right" description="Questions"><MediaServicesAddCommentIcon label="Questions icon" size="medium" /></Tooltip>}
+            icon={<Tooltip position="right" content="Questions"><MediaServicesAddCommentIcon label="Questions icon" size="medium" /></Tooltip>}
           />,
           <AkNavigationItem
             text="Calendar"
-            icon={<Tooltip position="right" description="Space tools"><CalendarIcon label="Settings icon" size="medium" /></Tooltip>}
+            icon={<Tooltip position="right" content="Space tools"><CalendarIcon label="Settings icon" size="medium" /></Tooltip>}
           />,
           <AkNavigationItem
             text="Questions"
-            icon={<Tooltip position="right" description="Space tools"><SettingsIcon label="Settings icon" size="medium" /></Tooltip>}
+            icon={<Tooltip position="right" content="Space tools"><SettingsIcon label="Settings icon" size="medium" /></Tooltip>}
           />,
         ],
       ],
@@ -216,11 +216,11 @@ export default class ConfluenceSpacePage extends PureComponent {
       </div>
     );
     const globalCreateIcon = (
-      <Tooltip position="right" description="Create">
+      <Tooltip position="right" content="Create">
         <AddIcon label="Create icon" secondaryColor="inherit" size="medium" onClick={() => this.openDrawer('create')} />
       </Tooltip>);
     const globalSearchIcon = (
-      <Tooltip position="right" description="Search">
+      <Tooltip position="right" content="Search">
         <SearchIcon label="Search icon" secondaryColor="inherit" size="medium" onClick={() => this.openDrawer('search')} />
       </Tooltip>);
     const helpMenu = (
@@ -229,7 +229,7 @@ export default class ConfluenceSpacePage extends PureComponent {
         position="right bottom"
         trigger={(
           <AkGlobalItem href="">
-            <Tooltip position="right" description="Help">
+            <Tooltip position="right" content="Help">
               <QuestionCircleIcon
                 label="Help icon"
                 secondaryColor="inherit"
@@ -265,7 +265,7 @@ export default class ConfluenceSpacePage extends PureComponent {
         position="right bottom"
         trigger={(
           <AkGlobalItem href="">
-            <Tooltip position="right" description="Your profile and settings">
+            <Tooltip position="right" content="Your profile and settings">
               <Avatar size="small" src={emmaAvatar} borderColor="transparent" />
             </Tooltip>
           </AkGlobalItem>
@@ -303,7 +303,7 @@ export default class ConfluenceSpacePage extends PureComponent {
         isLoading={this.state.menuLoading}
         trigger={(
           <AkGlobalItem href="">
-            <Tooltip position="right" description="Notifications">
+            <Tooltip position="right" content="Notifications">
               <NotificationIcon
                 label="Notifications icon"
                 size="medium"
@@ -332,7 +332,7 @@ export default class ConfluenceSpacePage extends PureComponent {
           isLoading={this.state.menuLoading}
           trigger={(
             <AkGlobalItem href="">
-              <Tooltip position="right" description="Applications Switcher">
+              <Tooltip position="right" content="Applications Switcher">
                 <MenuIcon
                   label="Applications Switcher"
                   size="medium"

@@ -2,6 +2,7 @@
 /* eslint-disable  mocha/no-skipped-tests */
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import Tooltip from '@atlaskit/tooltip';
 
 import Avatar from '../../src/components/Avatar';
 import AvatarImage from '../../src/components/AvatarImage';
@@ -80,6 +81,23 @@ describe('Avatar', () => {
     it('should apply rounded corners for square avatar', () => {
       const wrapper = mount(<Avatar appearance="square" />);
       expect(wrapper.find(AvatarImage).prop('appearance')).toBe('square');
+    });
+  });
+
+  describe('enableTooltip property', () => {
+    it('should wrap with a tooltip if enableTooltip is true and name set', () => {
+      const wrapper = mount(<Avatar enableTooltip name="Test" />);
+      expect(wrapper.find(Tooltip).prop('content')).toBe('Test');
+    });
+
+    it('should not wrap with a tooltip if enableTooltip is false', () => {
+      const wrapper = mount(<Avatar enableTooltip={false} />);
+      expect(wrapper.find(Tooltip).length).toBe(0);
+    });
+
+    it('should not wrap with a tooltip if enableTooltip is true but no name specified', () => {
+      const wrapper = mount(<Avatar enableTooltip />);
+      expect(wrapper.find(Tooltip).length).toBe(0);
     });
   });
 

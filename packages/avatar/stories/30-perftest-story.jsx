@@ -43,10 +43,10 @@ class PerfTest extends Component {
     for (let i = 1; i <= count; i++) {
       avatars.push(
         <AvatarRow>
-          <DefaultAvatar src={avatarSource} size="large" />
-          <DefaultAvatar src={avatarSource} size="large" presence="busy" />
-          <DefaultAvatar src={avatarSource} size="large" presence="offline" />
-          <DefaultAvatar src={avatarSource} size="large" presence="online" />
+          <DefaultAvatar src={avatarSource} size="large" enableTooltip name="test" />
+          <DefaultAvatar src={avatarSource} size="large" presence="busy" enableTooltip name="test" />
+          <DefaultAvatar src={avatarSource} size="large" presence="offline" enableTooltip name="test" />
+          <DefaultAvatar src={avatarSource} size="large" presence="online" enableTooltip name="test" />
         </AvatarRow>
       );
     }

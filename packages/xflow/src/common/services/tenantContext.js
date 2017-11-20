@@ -23,7 +23,13 @@ const AVATAR_REGEXP = /^https:\/\/avatar-cdn.atlassian.com\/[A-Za-z0-9]+/;
 function fetchSameOrigin(url, prefix = '') {
   return fetch(url, { credentials: 'same-origin' })
     .then(response => {
-      if (response.ok && response.status === 200) return response.text();
+      if (response.ok && response.status === 200) {
+        return response.json()
+          .catch(err => {
+            err.message = `${prefix}JSON parse error!`;
+            throw err;
+          });
+      }
 
       let msg = `${prefix} fetch error`;
       if (response.status !== 200) {
@@ -37,14 +43,6 @@ function fetchSameOrigin(url, prefix = '') {
       err.status = response.status;
 
       throw err;
-    })
-    .then(responseText => {
-      try {
-        return JSON.parse(responseText);
-      } catch (err) {
-        err.message = `${prefix}JSON parse error!`;
-        throw err;
-      }
     });
 }
 
@@ -72,6 +70,9 @@ export function fetchCurrentUser() {
     // Jira allows fetching user + group in one go
     fetchSameOrigin(JIRA_CURRENT_USER_AND_GROUPS_URL, 'Jira endpoint:'),
     // Confluence needs 2 calls:
+    // Note: the endpoint below is paginated, to a default of 200 entries.
+    // We assume that 200 entries is enough to get the most interesting groups
+    // and choose to not walk across pages.
     fetchSameOrigin(CONFLUENCE_CURRENT_USER_URL, 'Confluence endpoint #1:')
       .then(user => fetchSameOrigin(CONFLUENCE_USER_GROUPS_URL(user.accountId), 'Confluence endpoint #2:')
       // fuse user and her/his groups into the Jira format

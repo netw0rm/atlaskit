@@ -27,6 +27,15 @@ export type ItemTheme = {|
   |}
 |}
 
+export type ScrollTheme = {|
+  default: {|
+    background: Background
+  |},
+  hover: {|
+    background: Background
+  |}
+|}
+
 export type Provided = {|
   background: {|
     primary: Background,
@@ -34,6 +43,7 @@ export type Provided = {|
     // currently used for drawer
     tertiary: Background,
   |},
+  scrollbar: ScrollTheme,
   text: Text,
   subText: Text,
   keyline: Line,

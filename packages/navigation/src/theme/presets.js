@@ -1,6 +1,6 @@
 // @flow
 import { colors, themed } from '@atlaskit/theme';
-import type { Provided, ItemTheme, Background } from './types';
+import type { Provided, ItemTheme, Background, ScrollTheme } from './types';
 
 // the following colors have been added at request of Venn. These should either
 // be added to theme.colors or moved to specific AK colors. They are using a new
@@ -44,6 +44,15 @@ export const container: Provided = ((): Provided => {
     },
   };
 
+  const scrollbar: ScrollTheme = {
+    default: {
+      background: colors.N20A,
+    },
+    hover: {
+      background: themed({ light: colors.N20A, dark: darkDrawerItemHoverBackground }),
+    },
+  };
+
   const dropdown: ItemTheme = {
     default: {
       background: item.hover.background,
@@ -63,6 +72,7 @@ export const container: Provided = ((): Provided => {
       secondary: primaryBackground,
       tertiary: themed({ light: colors.N0, dark: colors.DN30 }),
     },
+    scrollbar,
     text: themed({ light: colors.N500, dark: colors.DN600 }),
     subText: colors.subtleText,
     keyline: themed({ light: colors.N30A, dark: colors.DN30A }),
@@ -97,6 +107,15 @@ export const dark: Provided = ((): Provided => {
     },
   };
 
+  const scrollbar: ScrollTheme = {
+    default: {
+      background: darkItemSelectedBackground,
+    },
+    hover: {
+      background: darkItemHoverBackground,
+    },
+  };
+
   const dropdown: ItemTheme = {
     default: {
       background: item.hover.background,
@@ -117,6 +136,7 @@ export const dark: Provided = ((): Provided => {
       secondary: colors.DN20,
       tertiary: colors.DN30,
     },
+    scrollbar,
     text: colors.DN400,
     subText: colors.DN100,
     keyline: colors.DN50,
@@ -166,12 +186,22 @@ export const settings: Provided = ((): Provided => {
     dragging: item.dragging,
   };
 
+  const scrollbar: ScrollTheme = {
+    default: {
+      background: colors.N700A,
+    },
+    hover: {
+      background: colors.N700A,
+    },
+  };
+
   const theme: Provided = {
     background: {
       primary: primaryBackground,
       secondary: colors.N700,
       tertiary: colors.N700,
     },
+    scrollbar,
     text: colors.N0,
     subText: colors.N70,
     keyline: colors.N900,
@@ -215,6 +245,15 @@ export const global: Provided = ((): Provided => {
     },
   };
 
+  const scrollbar: ScrollTheme = {
+    default: {
+      background: themed({ light: colors.N50A, dark: derivedGlobalSelectedBackground }),
+    },
+    hover: {
+      background: themed({ light: colors.N80A, dark: derivedGlobalHoverBackground }),
+    },
+  };
+
   const dropdown: ItemTheme = {
     default: {
       background: item.hover.background,
@@ -235,6 +274,7 @@ export const global: Provided = ((): Provided => {
       secondary: themed({ light: primaryBackground, dark: colors.DN0 }),
       tertiary: themed({ light: primaryBackground, dark: colors.DN0 }),
     },
+    scrollbar,
     hasDarkmode: true,
     text: themed({ light: colors.B50, dark: colors.DN400 }),
     subText: themed({ light: colors.B75, dark: colors.DN100 }),

@@ -24,11 +24,7 @@ const ScrollHintScrollContainer = styled.div`
   height: 100%;
   justify-content: flex-start;
   transition: padding ${drawerContainerHeaderAnimationSpeed};
-  /* Let nested nav define its own padding so its scrollbars align with the edge of the nav */
-  padding: ${({ isNested }) => (isNested
-    ? `0 0 ${bottomPadding}px 0`
-    : `0 ${scrollHintSpacing}px ${bottomPadding}px ${scrollHintSpacing}px`
-  )};
+  padding: 0 ${scrollHintSpacing}px ${bottomPadding}px ${scrollHintSpacing}px;
 
   ${whenCollapsed`
     overflow: hidden;

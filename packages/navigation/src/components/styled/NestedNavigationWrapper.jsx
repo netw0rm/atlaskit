@@ -20,6 +20,8 @@ const NestedNavigationWrapper = styled(
   max-height: 100%;
   /* make sure the wrapper doesn't scroll - each page should be an independent scroll container */
   overflow: hidden;
+  /* pull scrollbar to the edge of the container nav */
+  margin-right: -16px;
 `;
 
 NestedNavigationWrapper.displayName = 'NestedNavigationWrapper';

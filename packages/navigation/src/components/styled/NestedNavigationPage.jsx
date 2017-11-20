@@ -22,6 +22,12 @@ const NestedNavigationPage = styled(ScrollHintScrollContainer)`
   flex-shrink: 0;
   /* we want each page to have internal scrolling */
   overflow-y: auto;
+  /* The parent container nav scroll container already sets padding left/right.
+   * Set extra padding right to account for the negative margin-right that is set
+   * on NestedNavigationWrapper to pull the scrollbar over to the edge of the nav
+   */
+  padding-left: 0;
+  padding-right: 16px;
 `;
 
 NestedNavigationPage.displayName = 'NestedNavigationPage';

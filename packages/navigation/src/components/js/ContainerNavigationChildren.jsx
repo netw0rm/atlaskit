@@ -3,7 +3,6 @@ import React from 'react';
 
 import ScrollHintWrapper from '../styled/ScrollHintWrapper';
 import ScrollHintScrollContainer from '../styled/ScrollHintScrollContainer';
-import ContainerNavigationNested from './nested/ContainerNavigationNested';
 import type { ReactElement } from '../../types';
 
 type Props = {
@@ -20,10 +19,7 @@ const ContainerNavigationChildren = ({
   <ScrollHintWrapper
     hasScrollHintTop={hasScrollHintTop}
   >
-    <ScrollHintScrollContainer
-      innerRef={scrollRef}
-      isNested={children && children.type === ContainerNavigationNested}
-    >
+    <ScrollHintScrollContainer innerRef={scrollRef}>
       {children}
     </ScrollHintScrollContainer>
   </ScrollHintWrapper>

@@ -1,5 +1,8 @@
 # @atlaskit/emoji
 
+## 30.3.2 (2017-11-20)
+
+* bug fix; make emoji react 16 compatible (issues closed: ed-3181) ([9ca27d8](https://bitbucket.org/atlassian/atlaskit/commits/9ca27d8))
 ## 30.3.1 (2017-11-17)
 
 * bug fix; fix more cases of classname useage ([7fd79d4](https://bitbucket.org/atlassian/atlaskit/commits/7fd79d4))

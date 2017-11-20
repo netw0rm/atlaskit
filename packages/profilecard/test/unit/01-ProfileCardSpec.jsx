@@ -62,6 +62,27 @@ describe('Profilecard', () => {
       });
     });
 
+    describe('presenceMessage property', () => {
+      describe('presence properties should render presenceMessage if set', () => {
+        const presenceWithoutNone = Object.keys(presences).filter(p => p !== 'none');
+
+        presenceWithoutNone.forEach((presence) => {
+          it(`should render label with content ${presence}`, () => {
+            const card = mount(<AkProfilecard fullName="name" presence={presence} presenceMessage="Test message" />);
+            const el = card.find('IconLabel').first();
+            expect(el.length).toBeGreaterThan(0);
+            expect(el.text()).toBe('Test message');
+          });
+        });
+      });
+
+      it('should not render a presence label if presenceMessage is set but presence is not', () => {
+        const card = mount(<AkProfilecard fullName="name" presenceMessage="Test message" />);
+        const el = card.find(Presence);
+        expect(el.exists()).toBe(false);
+      });
+    });
+
     describe('isLoading property', () => {
       it('should render the LoadingMessage component', () => {
         const card = mount(

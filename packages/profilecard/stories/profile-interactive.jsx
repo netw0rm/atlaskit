@@ -68,6 +68,7 @@ export default function interActiveCard(dependencies) {
       hasNoActions: false,
       hasLoadingState: false,
       hasErrorState: false,
+      hasLongPresenceMessage: '',
     }
 
     actions = [
@@ -144,6 +145,7 @@ export default function interActiveCard(dependencies) {
               presence={this.state.presence}
               timestring={this.state.hasTime ? getTimeString(this.state.hasWeekday) : ''}
               clientFetchProfile={handleActionClick('Retry')}
+              presenceMessage={this.state.hasLongPresenceMessage ? 'I honestly have a very long and useless presence message' : ''}
             />
 
             <div style={{ marginTop: '16px' }}>
@@ -177,6 +179,7 @@ export default function interActiveCard(dependencies) {
                 <li>{this.createRadioPresenceAttribute('unavailable')}</li>
                 <li>{this.createRadioPresenceAttribute('focus')}</li>
                 <li>{this.createRadioPresenceAttribute('none')}</li>
+                <li>{this.createCheckboxBooleanAttribute('hasLongPresenceMessage')}</li>
               </ul>
             </div>
 

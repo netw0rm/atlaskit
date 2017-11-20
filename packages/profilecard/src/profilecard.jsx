@@ -49,6 +49,7 @@ export default class Profilecard extends PureComponent {
     }),
     clientFetchProfile: PropTypes.func,
     analytics: PropTypes.func,
+    presenceMessage: PropTypes.string,
   }
 
   static defaultProps = {
@@ -62,6 +63,7 @@ export default class Profilecard extends PureComponent {
     isLoading: false,
     hasError: false,
     analytics: () => {},
+    presenceMessage: '',
   }
 
   constructor(options) {
@@ -118,6 +120,9 @@ export default class Profilecard extends PureComponent {
   }
 
   renderCardDetailsDefault() {
+    const validPresence = presences[this.props.presence];
+    const messageTrimmed = this.props.presenceMessage.trim();
+
     return (
       <DetailsGroup>
         <FullNameLabel
@@ -127,7 +132,7 @@ export default class Profilecard extends PureComponent {
           <JobTitleLabel>{this.props.meta}</JobTitleLabel>
         )}
         <IconLabel icon={this.props.presence}>
-          {presences[this.props.presence]}
+          {(!!validPresence && messageTrimmed) || validPresence}
         </IconLabel>
         <IconLabel icon="email">{this.props.email}</IconLabel>
         <IconLabel icon="mention">{this.props.nickname && `@${this.props.nickname}`}</IconLabel>

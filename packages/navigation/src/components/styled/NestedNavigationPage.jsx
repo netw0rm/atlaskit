@@ -1,6 +1,6 @@
 // @flow
 import styled, { keyframes } from 'styled-components';
-import { animationTimeUnitless } from '../../shared-variables';
+import { animationTimeUnitless, scrollHintSpacing } from '../../shared-variables';
 import ScrollHintScrollContainer from '../styled/ScrollHintScrollContainer';
 
 const animationTime = animationTimeUnitless / 1000;
@@ -27,7 +27,7 @@ const NestedNavigationPage = styled(ScrollHintScrollContainer)`
    * on NestedNavigationWrapper to pull the scrollbar over to the edge of the nav
    */
   padding-left: 0;
-  padding-right: 16px;
+  padding-right: ${scrollHintSpacing}px;
 `;
 
 NestedNavigationPage.displayName = 'NestedNavigationPage';

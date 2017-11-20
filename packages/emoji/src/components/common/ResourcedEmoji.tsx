@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { PureComponent } from 'react';
 
 import { defaultEmojiHeight } from '../../constants';
@@ -47,7 +48,7 @@ export default class ResourcedEmoji extends LoadingEmojiCompoent<Props, State> {
 
 class ResourcedEmojiComponent extends PureComponent<ComponentProps, State> {
   static childContextTypes = {
-      emoji: React.PropTypes.object
+      emoji: PropTypes.object
   };
 
   private ready = false;

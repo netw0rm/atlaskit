@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { PureComponent } from 'react';
 import * as classNames from 'classnames';
 
@@ -53,7 +54,7 @@ export interface State {
 
 export default class EmojiPickerComponent extends PureComponent<Props, State> {
   static childContextTypes = {
-    emoji: React.PropTypes.object
+    emoji: PropTypes.object
   };
 
   static defaultProps = {
@@ -353,6 +354,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
         this.setState({
           uploadErrorMessage: 'Upload failed.',
         });
+        // tslint:disable-next-line
         console.error('Unable to upload emoji', err);
       });
     }

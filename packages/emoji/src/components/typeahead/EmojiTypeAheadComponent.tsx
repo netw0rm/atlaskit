@@ -1,5 +1,6 @@
 import * as classNames from 'classnames';
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { PureComponent } from 'react';
 
 import * as styles from './styles';
@@ -59,7 +60,7 @@ const uniqueExactShortNameMatchIndex = (searchResult: EmojiSearchResult, query?:
 
 export default class EmojiTypeAheadComponent extends PureComponent<Props, State> {
   static childContextTypes = {
-    emoji: React.PropTypes.object
+    emoji: PropTypes.object
   };
 
   static defaultProps = {

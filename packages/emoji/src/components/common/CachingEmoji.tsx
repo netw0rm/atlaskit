@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { PureComponent } from 'react';
 
 import { EmojiDescription } from '../../types';
@@ -36,7 +37,7 @@ export const CachingEmoji = (props: CachingEmojiProps) => { // tslint:disable-li
  */
 export class CachingMediaEmoji extends PureComponent<CachingEmojiProps,State> {
   static contextTypes = {
-    emoji: React.PropTypes.object
+    emoji: PropTypes.object
   };
 
   private mounted: boolean;

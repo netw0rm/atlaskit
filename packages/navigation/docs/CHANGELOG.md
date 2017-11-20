@@ -1,5 +1,14 @@
 # @atlaskit/navigation
 
+## 26.7.3 (2017-11-20)
+
+
+
+
+
+
+
+* bug fix; fix nav resize behaviour when moving in or out of iframe/windows (issues closed: ak-3723) ([07a64ac](https://bitbucket.org/atlassian/atlaskit/commits/07a64ac))
 ## 26.7.2 (2017-11-16)
 
 * bug fix; prevent horizontal scrolling in collapsed navigation (issues closed: ak-3588) ([9aa8eb5](https://bitbucket.org/atlassian/atlaskit/commits/9aa8eb5))

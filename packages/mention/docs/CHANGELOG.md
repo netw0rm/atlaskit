@@ -1,5 +1,8 @@
 # @atlaskit/mention
 
+## 8.1.1 (2017-11-20)
+
+* bug fix; presence client now actually requests stateMetadata to get focus mode (issues closed: fs-1487) ([7984774](https://bitbucket.org/atlassian/atlaskit/commits/7984774))
 ## 8.1.0 (2017-11-19)
 
 

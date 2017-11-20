@@ -6,7 +6,8 @@ import {
 } from '@atlaskit/media-core';
 
 export class Stubs {
-  static mediaViewer() {
+
+  static mediaViewer(overrides) {
     const noop = () => { };
     const emitter = new events.EventEmitter();
     const mediaViewer = {
@@ -14,8 +15,8 @@ export class Stubs {
       off: noop,
       trigger: event => emitter.emit(event),
       isOpen: jest.fn(),
-      open: jest.fn(),
-      setFiles: jest.fn(),
+      open: overrides.open || jest.fn(),
+      setFiles: overrides.setFiles || jest.fn(),
       getCurrent: jest.fn(),
       isShowingLastFile: jest.fn()
     };
@@ -26,8 +27,8 @@ export class Stubs {
     return mediaViewer;
   }
 
-  static mediaViewerConstructor() {
-    return jest.fn(() => Stubs.mediaViewer());
+  static mediaViewerConstructor(overrides?: any) {
+    return jest.fn(() => Stubs.mediaViewer(overrides || {}));
   }
 
   static mediaCollectionProvider(subject?: Subject<MediaCollection>) {

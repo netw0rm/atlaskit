@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { shallow, mount} from 'enzyme';
-import { MediaItemType } from '@atlaskit/media-core';
+import { Subject } from 'rxjs/Subject';
+import { MediaItemType, MediaItem } from '@atlaskit/media-core';
 import {
   MediaFileListViewer
 } from '../../../src/components/media-file-list-viewer';
@@ -19,23 +20,23 @@ describe('<MediaFileListViewer />', () => {
   const basePath = 'some-base-path';
   const selectedItem = {
     id: 'some-id',
-    occurrenceKey: 'some-occurrence-key',
+    occurrenceKey: 'some-custom-occurrence-key',
     type: 'file' as MediaItemType
   };
   const list = [
     {
       id: 'some-id',
-      occurrenceKey: 'some-occurrence-key',
+      occurrenceKey: 'some-custom-occurrence-key',
       type: 'file' as MediaItemType
     },
     {
       id: 'some-id-2',
-      occurrenceKey: 'some-occurrence-key-2',
+      occurrenceKey: 'some-custom-occurrence-key-2',
       type: 'file' as MediaItemType
     },
     {
       id: 'some-id-3',
-      occurrenceKey: 'some-occurrence-key-3',
+      occurrenceKey: 'some-custom-occurrence-key-3',
       type: 'file' as MediaItemType
     }
   ];
@@ -122,4 +123,47 @@ describe('<MediaFileListViewer />', () => {
     expect(context.getMediaItemProvider).toHaveBeenCalledWith('some-id-2', 'file', 'some-collection');
     expect(context.getMediaItemProvider).toHaveBeenCalledWith('some-id-3', 'file', 'some-collection');
   });
+
+  it('should call classic MediaViewer with the expected parameters', (done) => {
+    const subject = new Subject<MediaItem>();
+    const context = Stubs.context(contextConfig, undefined, Stubs.mediaItemProvider(subject)) as any;
+
+    const setFiles = (files) => {
+      expect(files.length).toEqual(3);
+      expect(files[0].id).toEqual('stub-some-custom-occurrence-key');
+      expect(files[1].id).toEqual('stub-some-custom-occurrence-key-2');
+      expect(files[2].id).toEqual('stub-some-custom-occurrence-key-3');
+    };
+
+    const open = ({id}) => {
+      expect(id).toEqual('some-id-some-custom-occurrence-key');
+      done();
+    };
+
+    const mediaViewerConstructor = Stubs.mediaViewerConstructor({ setFiles, open });
+    const additionalConfiguration = { enableMiniMode: true };
+    mount(
+      <MediaFileListViewer
+        selectedItem={selectedItem}
+        list={list}
+        context={context}
+        collectionName={collectionName}
+        mediaViewerConfiguration={additionalConfiguration}
+        MediaViewer={mediaViewerConstructor as any}
+        basePath={basePath}
+      />);
+
+    subject.next({
+      type: 'file',
+      details: {
+        id: 'stub'
+      }
+    });
+
+    expect(context.getMediaItemProvider).toHaveBeenCalledTimes(3);
+    expect(context.getMediaItemProvider).toHaveBeenCalledWith('some-id', 'file', 'some-collection');
+    expect(context.getMediaItemProvider).toHaveBeenCalledWith('some-id-2', 'file', 'some-collection');
+    expect(context.getMediaItemProvider).toHaveBeenCalledWith('some-id-3', 'file', 'some-collection');
+  });
+
 });

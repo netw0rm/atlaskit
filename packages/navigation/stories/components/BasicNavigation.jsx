@@ -30,6 +30,7 @@ export default class BasicNavigation extends PureComponent {
     globalSecondaryActions: PropTypes.arrayOf(PropTypes.node),
     drawers: PropTypes.arrayOf(PropTypes.node),
     onResizeCallback: PropTypes.func,
+    onResizeStartCallback: PropTypes.func,
     globalTheme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     containerTheme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     globalPrimaryIcon: PropTypes.node,
@@ -38,6 +39,7 @@ export default class BasicNavigation extends PureComponent {
   static defaultProps = {
     drawers: [],
     onResizeCallback: () => {},
+    onResizeStartCallback: () => {},
     globalPrimaryIcon: <AtlassianIcon label="Atlassian icon" size="large" />,
     children: (<div>
       <AkNavigationItem
@@ -178,6 +180,11 @@ export default class BasicNavigation extends PureComponent {
     });
   }
 
+  resizeStart = () => {
+    action('resizeStart')();
+    this.props.onResizeStartCallback();
+  }
+
   render() {
     const backIcon = <Tooltip position="right" description="Back"><ArrowLeftIcon label="Back icon" size="medium" /></Tooltip>;
     const ContainerHeader = this.props.containerHeaderComponent || (() => null);
@@ -203,7 +210,7 @@ export default class BasicNavigation extends PureComponent {
         isOpen={this.state.isOpen}
         onCreateDrawerOpen={() => { this.openDrawer('create'); }}
         onResize={this.resize}
-        onResizeStart={action('resizeStart')}
+        onResizeStart={this.resizeStart}
         onSearchDrawerOpen={() => { this.openDrawer('search'); }}
         openDrawer={this.state.openDrawer}
         position="right bottom"

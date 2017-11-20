@@ -6,6 +6,7 @@ import ResizerButton from './ResizerButton';
 import {
   globalOpenWidth,
   standardOpenWidth,
+  resizerClickableWidth,
 } from '../../shared-variables';
 import { isElectronMac } from '../../theme/util';
 
@@ -62,15 +63,29 @@ class Resizer extends PureComponent {
     this.props.onResizeStart();
     window.addEventListener('mousemove', this.mouseMoveHandler);
     window.addEventListener('mouseup', this.mouseUpHandler);
+    window.addEventListener('mouseout', this.handleOutofBounds);
   }
 
-  mouseUpHandler = (e) => {
+  mouseUpHandler = (e, outOfBounds = false) => {
     window.removeEventListener('mousemove', this.mouseMoveHandler);
     window.removeEventListener('mouseup', this.mouseUpHandler);
+    window.removeEventListener('mouseout', this.handleOutofBounds);
     this.setState({
       isResizing: false,
     });
-    this.props.onResizeEnd(e.screenX - this.state.startScreenX);
+
+    const screenX = outOfBounds ?
+    // If we have gone out of bounds, reduce the nav width so the resizer is still visible
+      e.screenX - (2 * resizerClickableWidth)
+    :
+      e.screenX;
+
+    const delta = screenX - this.state.startScreenX;
+
+    // Perform one final resize before ending
+    this.props.onResize(delta);
+
+    this.props.onResizeEnd(delta);
   }
 
   mouseMoveHandler = (e) => {
@@ -87,6 +102,21 @@ class Resizer extends PureComponent {
     this.setState({
       isHovering: false,
     });
+  }
+
+  // Handle when mouse moves over an element that won't fire mouse events.
+  // Fires a mouseup immediately to prevent mouseup not being fired at all.
+  handleOutofBounds = (e) => {
+    const toEl = e.relatedTarget;
+    const disableResizeNodes = [
+      'IFRAME',     // Moving into an iframe
+      'HTML',       // Moving out of an iframe or root window - Safari
+      null,         // Moving out of an iframe or root window - Other browsers
+    ];
+
+    if (this.state.isResizing && disableResizeNodes.includes(toEl && toEl.nodeName)) {
+      this.mouseUpHandler(e, true);
+    }
   }
 
   isElectronMac = () => isElectronMac(this.props.theme)

@@ -152,5 +152,5 @@ export const search = {
   },
 };
 
-export const resizerClickableWidth = 16;
+export const resizerClickableWidth = gridSize * 2;
 export const resizerVisibleWidth = 2;

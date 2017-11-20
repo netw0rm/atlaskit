@@ -15,11 +15,20 @@ const ScrollHintScrollContainer = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  flex: 1 1 100%;
+  /* Flex-basis must be set to auto and width set to 100% instead to prevent box-sizing issues
+   * in IE11.
+   * See https://github.com/philipwalton/flexbugs#7-flex-basis-doesnt-account-for-box-sizingborder-box
+   */
+  flex: 1 1 auto;
+  width: 100%;
   height: 100%;
   justify-content: flex-start;
   transition: padding ${drawerContainerHeaderAnimationSpeed};
-  padding: 0 ${scrollHintSpacing}px ${bottomPadding}px ${scrollHintSpacing}px;
+  /* Let nested nav define its own padding so its scrollbars align with the edge of the nav */
+  padding: ${({ isNested }) => (isNested
+    ? `0 0 ${bottomPadding}px 0`
+    : `0 ${scrollHintSpacing}px ${bottomPadding}px ${scrollHintSpacing}px`
+  )};
 
   ${whenCollapsed`
     overflow: hidden;

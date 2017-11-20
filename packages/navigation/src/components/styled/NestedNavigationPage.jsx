@@ -1,6 +1,7 @@
 // @flow
 import styled, { keyframes } from 'styled-components';
 import { animationTimeUnitless } from '../../shared-variables';
+import ScrollHintScrollContainer from '../styled/ScrollHintScrollContainer';
 
 const animationTime = animationTimeUnitless / 1000;
 
@@ -15,14 +16,9 @@ export const getAnimation = ({ isEntering, isLeaving, traversalDirection }: Obje
   )
 );
 
-const NestedNavigationPage = styled.div`
+// Use the same scrollbar styling as the main container navigation
+const NestedNavigationPage = styled(ScrollHintScrollContainer)`
   ${getAnimation}
-  display: flex;
-  /* all pages should take up 100% of the container width */
-  flex-basis: 100%;
-  flex-direction: column;
-  /* take up the full height - desirable when using drag-and-drop in nested nav */
-  flex-grow: 1;
   flex-shrink: 0;
   /* we want each page to have internal scrolling */
   overflow-y: auto;

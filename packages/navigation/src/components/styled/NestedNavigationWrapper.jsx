@@ -15,6 +15,8 @@ const NestedNavigationWrapper = styled(
   /* take up the full height - desirable when using drag-and-drop in nested nav */
   flex-grow: 1;
   flex-wrap: nowrap;
+  /* Set height so NestedNavigationPages height 100% matches this height */
+  height: 100%;
   max-height: 100%;
   /* make sure the wrapper doesn't scroll - each page should be an independent scroll container */
   overflow: hidden;

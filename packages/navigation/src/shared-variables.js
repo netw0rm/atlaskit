@@ -56,8 +56,7 @@ export const standardOpenWidth = (isElectron: boolean = false): number =>
   globalOpenWidth(isElectron) + containerOpenWidth;
 export const resizeClosedBreakpoint = (isElectron: boolean = false): number =>
   globalOpenWidth(isElectron) + (containerOpenWidth / 2);
-export const searchIconOffset = 80;
-export const createIconOffset = 120;
+export const drawerIconOffset = 80;
 export const animationTimeUnitless = 200;
 export const animationTime = `${animationTimeUnitless}ms`;
 export const resizeAnimationTime = animationTime;

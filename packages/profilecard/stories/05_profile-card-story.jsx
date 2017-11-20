@@ -118,7 +118,9 @@ storiesOf(`${name}`, module)
     );
   })
   .add('best case card', () => {
-    const data = fakeData({});
+    const data = fakeData({
+      presenceMessage: 'I love being productive',
+    });
 
     return (
       <div style={canvasStyle}>

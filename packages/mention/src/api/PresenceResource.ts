@@ -115,6 +115,7 @@ class PresenceResource extends AbstractPresenceResource {
                 PresenceBulk(organizationId: $organizationId, product: $productId, userIds: $userIds) {
                   userId
                   state
+                  stateMetadata
                 }
               }`,
       variables: {

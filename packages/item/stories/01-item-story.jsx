@@ -161,10 +161,10 @@ storiesOf(`${name}`, module)
     <GroupsWrapper>
       <p>Hover over each item to reveal tooltips:</p>
       <ItemsNarrowContainer>
-        <Tooltip description="I'm a tooltip" position="right">
+        <Tooltip content="I'm a tooltip" position="right">
           <Item>Tooltip to the right</Item>
         </Tooltip>
-        <Tooltip description="I'm a tooltip">
+        <Tooltip content="I'm a tooltip">
           <Item>Item wrapped in a tooltip</Item>
         </Tooltip>
       </ItemsNarrowContainer>

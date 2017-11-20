@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
-import Button from '@atlaskit/button';
-import ButtonGroup from '@atlaskit/button-group';
+import Button, { ButtonGroup } from '@atlaskit/button';
 import styled from 'styled-components';
 
 import { Grid, GridColumn } from '../src';

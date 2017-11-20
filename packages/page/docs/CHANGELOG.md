@@ -1,5 +1,8 @@
 # @atlaskit/page
 
+## 5.0.4 (2017-11-17)
+
+* bug fix; bumping internal dependencies to the latest major versions ([4da3a3d](https://bitbucket.org/atlassian/atlaskit/commits/4da3a3d))
 ## 5.0.3 (2017-10-26)
 
 * bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))

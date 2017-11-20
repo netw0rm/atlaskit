@@ -1,7 +1,7 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Question from '@atlaskit/icon/glyph/question';
-import Arrow from '@atlaskit/icon/glyph/arrow-right-long';
+import Arrow from '@atlaskit/icon/glyph/arrow-right';
 import Avatar from '@atlaskit/avatar';
 import Lozenge from '@atlaskit/lozenge';
 import Tooltip from '@atlaskit/tooltip';

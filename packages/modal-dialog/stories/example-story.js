@@ -40,7 +40,7 @@ storiesOf(name, module)
   .add('header and footer', () => <HeadFootDemo />)
   .add('z-index test', () => (
     <div>
-      <Page navigation={<Navigation />}>
+      <Page navigation={<Navigation>{}</Navigation>}>
         <Layer content={<span>I am the popup content</span>} position="right middle">
           <span style={{ border: '1px solid yellow' }}>
             There should be a layer of text to the right of this:

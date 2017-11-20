@@ -33,6 +33,14 @@
         "type": null,
         "date": null,
         "message": null
+      },
+      {
+        "userId": "42563",
+        "state": "busy",
+        "stateMetadata": "not valid json",
+        "type": "product",
+        "date": null,
+        "message": null
       }
     ]
   }

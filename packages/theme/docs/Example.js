@@ -10,12 +10,12 @@ class AtlasKitThemeProviderExample extends Component {
     return (
       <div>
         <AtlasKitThemeProvider mode={'light'}>
-          <div style={{ padding: '6px', 'text-align': 'center' }}>
+          <div style={{ padding: '6px', textAlign: 'center' }}>
             This div is wrapped to be in light mode.
           </div>
         </AtlasKitThemeProvider>
         <AtlasKitThemeProvider mode={'dark'}>
-          <div style={{ padding: '6px', 'text-align': 'center' }}>
+          <div style={{ padding: '6px', textAlign: 'center' }}>
             This div is wrapped to be in dark mode.
           </div>
         </AtlasKitThemeProvider>

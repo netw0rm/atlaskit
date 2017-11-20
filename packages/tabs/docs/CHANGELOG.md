@@ -1,5 +1,8 @@
 # @atlaskit/tabs
 
+## 4.0.4 (2017-11-17)
+
+* bug fix; bumping internal dependencies to latest version ([f87bb04](https://bitbucket.org/atlassian/atlaskit/commits/f87bb04))
 ## 4.0.3 (2017-10-26)
 
 * bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))

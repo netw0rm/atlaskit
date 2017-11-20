@@ -22,7 +22,7 @@ export const Span = ({ children, style, isLoading, appearance, ...otherProps }) 
       backgroundSize: 'cover',
       borderRadius: getBorderRadius({ appearance, ...otherProps }),
       display: 'flex',
-      flex: 1,
+      flex: '1 1 100%',
       height: '100%',
       width: '100%',
       ...style,

@@ -1,5 +1,9 @@
 # @atlaskit/navigation
 
+## 26.7.4 (2017-11-20)
+
+* bug fix; fS-3907 Use content attribute instead of description for Tooltip ([25c9604](https://bitbucket.org/atlassian/atlaskit/commits/25c9604))
+* bug fix; fS-3907 Update tooltip version in navigation component ([74619ad](https://bitbucket.org/atlassian/atlaskit/commits/74619ad))
 ## 26.7.3 (2017-11-20)
 
 

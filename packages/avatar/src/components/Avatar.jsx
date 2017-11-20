@@ -1,6 +1,7 @@
 // @flow
 import '@atlaskit/polyfills/array-prototype-includes';
 import React, { Component } from 'react';
+import Tooltip from '@atlaskit/tooltip';
 
 import { validIconSizes, propsOmittedFromClickData } from './constants';
 import Presence from './Presence';
@@ -8,7 +9,6 @@ import Image from './AvatarImage';
 import Status from './Status';
 
 import Outer, { PresenceWrapper, StatusWrapper } from '../styled/Avatar';
-import Tooltip from '../styled/Tooltip';
 
 import { omit } from '../utils';
 import { getProps, getStyledAvatar } from '../helpers';
@@ -110,7 +110,7 @@ class Avatar extends Component {
   /* eslint-enable no-console */
 
   render() {
-    const { appearance, enableTooltip, isHover, onClick, name, size, src, stackIndex } = this.props;
+    const { appearance, enableTooltip, onClick, name, size, src, stackIndex } = this.props;
 
     // Since we augment the onClick handler below we can't use the
     // same type definition that we do for the Avatar's onClick prop
@@ -126,7 +126,7 @@ class Avatar extends Component {
     // augment the onClick handler
     props.onClick = onClick && this.guardedClick;
 
-    return (
+    const AvatarNode = (
       <Outer size={size} stackIndex={stackIndex}>
         <Inner innerRef={r => (this.node = r)} {...props}>
           <Image
@@ -136,11 +136,15 @@ class Avatar extends Component {
             src={src}
           />
         </Inner>
-        {(enableTooltip && isHover && name) ? (
-          <Tooltip>{name}</Tooltip>
-        ) : null}
+
         {this.renderIcon()}
       </Outer>
+    );
+
+    return (
+      (enableTooltip && name) ?
+        <Tooltip content={name}>{AvatarNode}</Tooltip> :
+        AvatarNode
     );
   }
 }

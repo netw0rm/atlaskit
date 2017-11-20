@@ -108,7 +108,7 @@ export default class BasicNestedNavigation extends PureComponent {
             this.setState({ isHeaderInlineDialogOpen: !this.state.isHeaderInlineDialogOpen });
           }}
         >
-          <Tooltip key="1" position="right" description="Header tooltip text">
+          <Tooltip key="1" position="right" content="Header tooltip text">
             <AkContainerTitle
               href="#foo"
               icon={
@@ -188,7 +188,7 @@ export default class BasicNestedNavigation extends PureComponent {
   ));
 
   render() {
-    const backIcon = <Tooltip position="right" description="Back"><ArrowLeftIcon label="Back icon" size="medium" /></Tooltip>;
+    const backIcon = <Tooltip position="right" content="Back"><ArrowLeftIcon label="Back icon" size="medium" /></Tooltip>;
     const globalPrimaryIcon = <AtlassianIcon label="Atlassian icon" size="large" />;
     const ContainerHeader = this.getContainerHeaderComponent;
     return (

@@ -113,7 +113,7 @@ export default class AvatarImage extends PureComponent {
       <DefaultImage
         appearance={props.appearance}
         size={props.size}
-        title={alt}
+        aria-label={alt}
       />
     ) : (
       <Span
@@ -121,7 +121,6 @@ export default class AvatarImage extends PureComponent {
         isLoading={isLoading}
         role="img"
         style={spanStyle}
-        title={alt}
         {...props}
       />
     );

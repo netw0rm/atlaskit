@@ -19,11 +19,11 @@ const NestedNavigationWrapper = styled(
   flex-wrap: nowrap;
   /* Set height so NestedNavigationPages height 100% matches this height */
   height: 100%;
+  /* pull scrollbar to the edge of the container nav */
+  margin-right: -${scrollHintSpacing}px;
   max-height: 100%;
   /* make sure the wrapper doesn't scroll - each page should be an independent scroll container */
   overflow: hidden;
-  /* pull scrollbar to the edge of the container nav */
-  margin-right: -${scrollHintSpacing}px;
 
   ${whenCollapsed`
     margin-right: -${gridSize}px;

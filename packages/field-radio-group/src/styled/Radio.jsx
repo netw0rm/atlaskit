@@ -66,7 +66,7 @@ export const IconWrapper = styled.span`
   & circle:first-of-type {
     transition: stroke 0.2s ease-in-out;
     ${getBorderColor}
-    :focus & {
+    &:focus {
       ${focusBorder}
     }
   }

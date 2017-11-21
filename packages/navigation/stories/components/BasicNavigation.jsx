@@ -211,12 +211,12 @@ export default class BasicNavigation extends PureComponent {
         globalPrimaryActions={(!this.props.globalSearchIcon || !this.props.globalCreateIcon) ? ([
           ...(this.props.globalPrimaryActions ? this.props.globalPrimaryActions : []),
           (<AkGlobalItem size="medium" onClick={() => { this.openDrawer('search'); }}>
-            <Tooltip position="right" description="Search">
+            <Tooltip position="right" content="Search">
               <SearchIcon label="Search icon" secondaryColor="inherit" size="medium" />
             </Tooltip>
           </AkGlobalItem>),
           (<AkGlobalItem size="medium" onClick={() => { this.openDrawer('create'); }}>
-            <Tooltip position="right" description="Create">
+            <Tooltip position="right" content="Create">
               <AddIcon label="Create icon" secondaryColor="inherit" size="medium" />
             </Tooltip>
           </AkGlobalItem>),

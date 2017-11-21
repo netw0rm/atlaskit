@@ -439,14 +439,22 @@ export default class StatelessSelect extends PureComponent {
       );
     }
 
-    return groups.map((group, groupIndex) =>
-      <Group
-        heading={group.heading}
-        key={groupIndex}
-      >
-        {this.renderItems(group.items, groupIndex)}
-      </Group>
-  );
+    const filteredGroups = groups
+      .filter(group => this.filterItems(group.items).length)
+      .map((group, groupIndex) =>
+        <Group
+          heading={group.heading}
+          key={groupIndex}
+        >
+          {this.renderItems(group.items, groupIndex)}
+        </Group>
+      );
+
+    if (filteredGroups.length === 0) {
+      return (<NothingWasFound noMatchesFound={this.props.noMatchesFound} />);
+    }
+
+    return filteredGroups;
   }
 
   renderOptions = items => items.map((item, itemIndex) => (<option

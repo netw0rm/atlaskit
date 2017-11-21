@@ -63,9 +63,9 @@ export default class SubmitDemo extends Component {
                   value="singleButton"
                   onChange={e => console.log('standalone change', e.target.value)}
                 >
-                Radio button
-              </AkRadio>
-            </RadioGroup>
+                  Radio button
+                </AkRadio>
+              </RadioGroup>
             </form>
           </ModalDialog>
 

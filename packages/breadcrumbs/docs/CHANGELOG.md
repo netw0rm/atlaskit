@@ -1,5 +1,8 @@
 # @atlaskit/breadcrumbs
 
+## 3.1.1 (2017-11-21)
+
+* bug fix; bumping internal dependencies to the latest major version ([f996668](https://bitbucket.org/atlassian/atlaskit/commits/f996668))
 ## 3.1.0 (2017-11-03)
 
 

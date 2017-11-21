@@ -1,5 +1,8 @@
 # @atlaskit/field-text-area
 
+## 1.0.3 (2017-11-21)
+
+* bug fix; bumping internal dependencies to latest major versions ([aeebf29](https://bitbucket.org/atlassian/atlaskit/commits/aeebf29))
 ## 1.0.2 (2017-10-27)
 
 * bug fix; rebuild stories ([7aa7337](https://bitbucket.org/atlassian/atlaskit/commits/7aa7337))

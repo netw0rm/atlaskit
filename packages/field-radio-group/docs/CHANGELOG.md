@@ -1,5 +1,8 @@
 # @atlaskit/field-radio-group
 
+## 1.7.4 (2017-11-21)
+
+* bug fix; moving to fuzzy version for field-base dependency ([779b833](https://bitbucket.org/atlassian/atlaskit/commits/779b833))
 ## 1.7.3 (2017-10-26)
 
 * bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))

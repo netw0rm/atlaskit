@@ -1,5 +1,12 @@
 # @atlaskit/navigation
 
+## 26.7.5 (2017-11-21)
+
+
+
+
+
+* bug fix; fix nested navigation scrollbar styling and positioning (issues closed: ak-3756) ([329900b](https://bitbucket.org/atlassian/atlaskit/commits/329900b))
 ## 26.7.4 (2017-11-20)
 
 * bug fix; fS-3907 Use content attribute instead of description for Tooltip ([25c9604](https://bitbucket.org/atlassian/atlaskit/commits/25c9604))

@@ -4,6 +4,7 @@ import {
 } from '@atlaskit/media-core';
 import { ArtifactFormat } from './artifact-format';
 import { MediaFileAttributes } from '../mediaviewer';
+import { stringify } from 'query-string';
 
 export class MediaFileAttributesFactory {
   static create(id = '', details: FileDetails, serviceHost: string): MediaFileAttributes {
@@ -28,9 +29,15 @@ export class MediaFileAttributesFactory {
     const poster1280 = getArtifactUrl('poster_1280.jpg');
     const poster640 = getArtifactUrl('poster_640.jpg');
 
+    const additionalParams = {
+      'max-age': 3600
+    };
+
+    const paramsSeparator = resource.indexOf('?') > -1 ? '&' : '?';
+
     return {
       id,
-      src: `${serviceHost}${resource}`,
+      src: `${serviceHost}${resource}${paramsSeparator}${stringify(additionalParams)}`,
       srcDownload: `${serviceHost}${binary}?dl=1`,
       type: artifactFormat ? artifactFormat.type : details.mediaType,
       title: details.name,

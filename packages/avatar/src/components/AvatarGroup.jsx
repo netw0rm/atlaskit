@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import DropdownMenu from '@atlaskit/dropdown-menu';
+import DropdownMenu, { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
 import Avatar from './Avatar';
 import { Grid, Stack } from '../styled/AvatarGroup';
 import MoreIndicator from '../components/MoreIndicator';
@@ -74,24 +74,37 @@ export default class AvatarGroup extends Component {
     }
 
     // crop and prepare the dropdown items
-    const items = data.slice(max).map(avatar => ({
-      content: avatar.name,
-      elemBefore: (
-        <Avatar
-          {...avatar}
-          borderColor="transparent"
-          enableTooltip={false}
-          size="small"
-        />
-      ),
-      href: avatar.href,
-      rel: avatar.target ? 'noopener noreferrer' : null,
-      target: avatar.target,
-    }));
+    const items = data
+      .slice(max)
+      .map(avatar => (
+        <DropdownItem
+          elemBefore={
+            <Avatar
+              {...avatar}
+              borderColor="transparent"
+              enableTooltip={false}
+              size="small"
+            />
+          }
+          href={avatar.href}
+          onClick={onAvatarClick}
+          rel={avatar.target ? 'noopener noreferrer' : null}
+          target={avatar.target}
+        >
+          {avatar.name}
+        </DropdownItem>
+      ));
 
     return (
-      <DropdownMenu items={[{ items }]} onItemActivated={onAvatarClick} position="bottom right" boundariesElement={boundariesElement} shouldFlip>
-        <MoreButton />
+      <DropdownMenu
+        trigger={<MoreButton />}
+        position="bottom right"
+        boundariesElement={boundariesElement}
+        shouldFlip
+      >
+        <DropdownItemGroup>
+          {items}
+        </DropdownItemGroup>
       </DropdownMenu>
     );
   }

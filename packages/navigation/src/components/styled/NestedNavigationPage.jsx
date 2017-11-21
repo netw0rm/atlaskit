@@ -1,7 +1,8 @@
 // @flow
 import styled, { keyframes } from 'styled-components';
-import { animationTimeUnitless, scrollHintSpacing } from '../../shared-variables';
+import { animationTimeUnitless, scrollHintSpacing, gridSize } from '../../shared-variables';
 import ScrollHintScrollContainer from '../styled/ScrollHintScrollContainer';
+import { whenCollapsed } from '../../theme/util';
 
 const animationTime = animationTimeUnitless / 1000;
 
@@ -28,6 +29,10 @@ const NestedNavigationPage = styled(ScrollHintScrollContainer)`
    */
   padding-left: 0;
   padding-right: ${scrollHintSpacing}px;
+
+  ${whenCollapsed`
+    padding-right: ${gridSize}px;
+  `}
 `;
 
 NestedNavigationPage.displayName = 'NestedNavigationPage';

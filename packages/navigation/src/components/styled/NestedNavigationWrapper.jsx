@@ -2,7 +2,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import { scrollHintSpacing } from '../../shared-variables';
+import { scrollHintSpacing, gridSize } from '../../shared-variables';
+import { whenCollapsed } from '../../theme/util';
 
 const NestedNavigationWrapper = styled(
   // Don't pass the traversalDirection prop to the TransitionGroup
@@ -23,6 +24,10 @@ const NestedNavigationWrapper = styled(
   overflow: hidden;
   /* pull scrollbar to the edge of the container nav */
   margin-right: -${scrollHintSpacing}px;
+
+  ${whenCollapsed`
+    margin-right: -${gridSize}px;
+  `}
 `;
 
 NestedNavigationWrapper.displayName = 'NestedNavigationWrapper';

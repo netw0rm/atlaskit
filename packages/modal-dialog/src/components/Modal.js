@@ -152,9 +152,9 @@ class Modal extends Component {
     this.setState(state => !state.dialogNode && ({ dialogNode }));
   }
 
-  handleOverlayClick = () => {
+  handleOverlayClick = (event) => {
     if (this.props.shouldCloseOnOverlayClick) {
-      this.props.onClose();
+      this.props.onClose(event);
     }
   }
   handleDialogClick = (event) => {

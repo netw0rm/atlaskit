@@ -158,7 +158,7 @@ export default class Content extends Component {
 
     switch (event.key) {
       case 'Escape':
-        if (shouldCloseOnEscapePress) onClose();
+        if (shouldCloseOnEscapePress) onClose(event);
         break;
       default:
     }

@@ -27,6 +27,7 @@ export const Content = styled.div`
   background-color: ${backgroundColor};
   color: ${textColor};
   display: flex;
+  fill: ${backgroundColor};
   font-weight: 500;
   justify-content: center;
   padding: ${math.multiply(gridSize, 2)}px;

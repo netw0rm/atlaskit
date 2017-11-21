@@ -114,7 +114,6 @@ storiesOf(name, module)
   .add('inline delete comment', () => (
     <Modal
       heading="List of comments in a modal"
-      isOpen
       onClose={() => {}}
     >
       <InlineDeleteCommentList>

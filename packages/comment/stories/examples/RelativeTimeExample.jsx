@@ -10,7 +10,7 @@ export default ({ timestamp, ...props }) => {
 
   const time = relativeTime ? (
     <CommentTime>
-      <Tooltip description={absoluteTime} position="top">
+      <Tooltip content={absoluteTime} position="top">
         <span>{relativeTime}</span>
       </Tooltip>
     </CommentTime>

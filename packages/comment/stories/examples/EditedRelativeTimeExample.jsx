@@ -8,7 +8,7 @@ export default ({ createdTimestamp, editedTimestamp, ...props }) => {
   const editedTime = getRelativeTime(editedTimestamp) || getAbsoluteTime(editedTimestamp);
   const edited = createdTimestamp ? (
     <CommentTime>
-      <Tooltip description={`Created ${getAbsoluteTime(createdTimestamp)}`} position="top">
+      <Tooltip content={`Created ${getAbsoluteTime(createdTimestamp)}`} position="top">
         <span>{`Edited ${editedTime}`}</span>
       </Tooltip>
     </CommentTime>

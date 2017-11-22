@@ -33,7 +33,7 @@ describe('<GlobalSecondaryActions />', () => {
     expect(wrapper.find(Child).length).toBe(2);
   });
 
-  it('should call console.error if attempting to mount with more than five secondary actions', () => {
+  it('should call console.warn if attempting to mount with more than five secondary actions', () => {
     shallow(
       <GlobalSecondaryActions
         actions={[<Child />, <Child />, <Child />, <Child />, <Child />, <Child />]}
@@ -42,7 +42,7 @@ describe('<GlobalSecondaryActions />', () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  it('should call console.error if attempting to update with more than five secondary actions', () => {
+  it('should call console.warn if attempting to update with more than five secondary actions', () => {
     const wrapper = shallow(
       <GlobalSecondaryActions actions={[]} />
     );

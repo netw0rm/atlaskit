@@ -34,6 +34,7 @@ export default class BasicNavigation extends PureComponent {
     globalTheme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     containerTheme: PropTypes.object, // eslint-disable-line react/forbid-prop-types
     globalPrimaryIcon: PropTypes.node,
+    globalPrimaryActions: PropTypes.arrayOf(PropTypes.node),
   }
 
   static defaultProps = {
@@ -193,30 +194,33 @@ export default class BasicNavigation extends PureComponent {
       <Navigation
         containerTheme={this.props.containerTheme}
         globalTheme={this.props.globalTheme}
-        backIconOffset={this.state.backIconOffset}
         containerHeaderComponent={ContainerHeader}
-        globalCreateIcon={
-          <Tooltip position="right" content="Create">
-            <AddIcon label="Create icon" secondaryColor="inherit" size="medium" />
-          </Tooltip>
-        }
         globalPrimaryIcon={this.props.globalPrimaryIcon}
         globalPrimaryItemHref="//www.atlassian.com"
-        globalSearchIcon={
-          <Tooltip position="right" content="Search">
-            <SearchIcon label="Search icon" secondaryColor="inherit" size="medium" />
-          </Tooltip>}
         globalSecondaryActions={this.props.globalSecondaryActions}
         isOpen={this.state.isOpen}
-        onCreateDrawerOpen={() => { this.openDrawer('create'); }}
         onResize={this.resize}
         onResizeStart={this.resizeStart}
-        onSearchDrawerOpen={() => { this.openDrawer('search'); }}
         openDrawer={this.state.openDrawer}
         position="right bottom"
         resizeHandler={action('resize')}
         width={this.state.width}
         {...this.props}
+        /** Reverse which global primary actions props nav uses by defult. i.e. use new
+        `globalPrimaryActions` prop unless old API is explicitly used */
+        globalPrimaryActions={(!this.props.globalSearchIcon || !this.props.globalCreateIcon) ? ([
+          ...(this.props.globalPrimaryActions ? this.props.globalPrimaryActions : []),
+          (<AkGlobalItem size="medium" onClick={() => { this.openDrawer('search'); }}>
+            <Tooltip position="right" content="Search">
+              <SearchIcon label="Search icon" secondaryColor="inherit" size="medium" />
+            </Tooltip>
+          </AkGlobalItem>),
+          (<AkGlobalItem size="medium" onClick={() => { this.openDrawer('create'); }}>
+            <Tooltip position="right" content="Create">
+              <AddIcon label="Create icon" secondaryColor="inherit" size="medium" />
+            </Tooltip>
+          </AkGlobalItem>),
+        ]) : null}
         drawers={[
           ...this.props.drawers,
           (<AkSearchDrawer

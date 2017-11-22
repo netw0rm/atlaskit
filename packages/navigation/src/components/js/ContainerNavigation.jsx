@@ -10,7 +10,7 @@ import Reveal from './Reveal';
 import ContainerNavigationInner from '../styled/ContainerNavigationInner';
 import GlobalNavigationSecondaryContainer from '../styled/GlobalNavigationSecondaryContainer';
 import {
-  globalPrimaryActions,
+  globalPrimaryActions as globalPrimaryActionsSizes,
   globalSecondaryActions as globalSecondaryActionsSizes,
 } from '../../shared-variables';
 import { container } from '../../theme/presets';
@@ -23,6 +23,9 @@ type Props = {|
   isCollapsed is true. When clicked, onGlobalCreateActivate is called. It is
   recommended that you use an atlaskit icon. */
   globalCreateIcon?: ReactElement,
+  /** A list of nodes to be rendered as the global primary actions.  They appear
+  directly underneath the global primary icon. This must not exceed three nodes */
+  globalPrimaryActions?: Array<ReactElement>,
   /** Icon to be rendered at the top of the globalPrimaryActions internal component
   when isCollapsed is true. It is renered as a linkComponent, using the
   globalPrimaryItemHref. It is recommended that you use an atlaskit icon. */
@@ -101,6 +104,7 @@ export default class ContainerNavigation extends Component {
     const {
       scrollRef,
       showGlobalActions,
+      globalPrimaryActions,
       globalSecondaryActions,
       children,
       globalCreateIcon,
@@ -131,9 +135,14 @@ export default class ContainerNavigation extends Component {
           <Reveal
             shouldAnimate={isInitiallyRendered}
             isOpen={showGlobalActions}
-            openHeight={globalPrimaryActions.height.outer}
+            openHeight={
+              globalPrimaryActionsSizes.height(
+                  globalPrimaryActions ? React.Children.count(globalPrimaryActions) : 2
+              ).outer
+            }
           >
             <GlobalPrimaryActions
+              actions={globalPrimaryActions}
               createIcon={globalCreateIcon}
               linkComponent={linkComponent}
               onCreateActivate={onGlobalCreateActivate}

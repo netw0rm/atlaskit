@@ -1,5 +1,8 @@
 # @atlaskit/flag
 
+## 6.1.8 (2017-11-22)
+
+* bug fix; long messages in Flags start to wrap, not overflow content. ([b69c45f](https://bitbucket.org/atlassian/atlaskit/commits/b69c45f))
 ## 6.1.7 (2017-11-15)
 
 * bug fix; fix flags within page components appearing behind navigation (issues closed: ak-1823) ([08e397e](https://bitbucket.org/atlassian/atlaskit/commits/08e397e))

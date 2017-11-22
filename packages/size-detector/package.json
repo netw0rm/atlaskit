@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@atlaskit/size-detector": "*",
-    "@atlaskit/util-readme": "^3.6.2",
+    "@atlaskit/util-readme": "^3.6.5",
     "styled-components": "^1.4.6"
   },
   "peerDependencies": {

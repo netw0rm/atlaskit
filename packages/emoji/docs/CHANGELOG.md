@@ -1,5 +1,8 @@
 # @atlaskit/emoji
 
+## 30.3.3 (2017-11-22)
+
+* bug fix; big emoji scrolling issue fixed (issues closed: fs-1512) ([b715731](https://bitbucket.org/atlassian/atlaskit/commits/b715731))
 ## 30.3.2 (2017-11-20)
 
 * bug fix; make emoji react 16 compatible (issues closed: ed-3181) ([9ca27d8](https://bitbucket.org/atlassian/atlaskit/commits/9ca27d8))

@@ -7,7 +7,7 @@ import { akZIndexLayer } from '@atlaskit/util-shared-styles';
 import Popper from '../popper.js';
 
 import { POSITION_ATTRIBUTE_ENUM, getFlipBehavior, positionPropToPopperPosition } from './internal/helpers';
-
+import ContentContainer from './styledContentContainer';
 /* eslint-disable react/no-unused-prop-types */
 
 export default class Layer extends PureComponent {
@@ -55,7 +55,10 @@ export default class Layer extends PureComponent {
       originalPosition: null,
       // fix Safari parent width: https://product-fabric.atlassian.net/browse/ED-1784
       cssPosition: 'absolute',
+      originalHeight: null,
+      maxHeight: null,
     };
+    this.extractStyles = this.extractStyles.bind(this);
   }
 
   componentDidMount() {
@@ -82,11 +85,32 @@ export default class Layer extends PureComponent {
     }
   }
 
+  /* Calculate the max height of the popper if it's height is greater than the viewport to prevent
+   * the bottom of the popper not being viewable.
+   * Only works if the popper uses viewport as the boundary and is located at the top of the page.
+   */
+  calculateMaxHeight(originalHeight, currentHeight, positionTop) {
+    let maxHeight = null;
+    if (this.props.boundariesElement === 'viewport') {
+      const viewportHeight = Math.max(document.documentElement.clientHeight,
+        window.innerHeight || 0);
+      if (viewportHeight < originalHeight && currentHeight + positionTop >= viewportHeight - 50) {
+        maxHeight = viewportHeight - 12;
+      }
+    }
+    return maxHeight;
+  }
+
   extractStyles = (state) => {
     if (state) {
-      const left = Math.round(state.offsets.popper.left);
-      const top = Math.round(state.offsets.popper.top);
+      const popperTop = state.offsets.popper.top;
+      const popperHeight = state.offsets.popper.height;
 
+      const left = Math.round(state.offsets.popper.left);
+      // Clamp top at 0 so popper does not overflow off top of page
+      const top = popperTop >= 0 ? Math.round(popperTop) : 0;
+      const originalHeight = this.state.originalHeight || popperHeight;
+      const maxHeight = this.calculateMaxHeight(originalHeight, popperHeight, top);
       this.setState({
         hasExtractedStyles: true,
         // position: fixed or absolute
@@ -96,6 +120,8 @@ export default class Layer extends PureComponent {
         flipped: !!state.flipped,
         actualPosition: state.position,
         originalPosition: state.originalPosition,
+        originalHeight,
+        maxHeight,
       });
     }
   };
@@ -158,7 +184,7 @@ export default class Layer extends PureComponent {
 
   render() {
     const { zIndex } = this.props;
-    const { cssPosition, transform, hasExtractedStyles } = this.state;
+    const { cssPosition, transform, hasExtractedStyles, maxHeight } = this.state;
     const opacity = hasExtractedStyles ? {} : { opacity: 0 };
 
     return (
@@ -166,12 +192,14 @@ export default class Layer extends PureComponent {
         <div ref={ref => (this.targetRef = ref)}>
           {this.props.children}
         </div>
-        <div
-          ref={ref => (this.contentRef = ref)}
-          style={{ top: 0, left: 0, position: cssPosition, transform, zIndex, ...opacity }}
-        >
-          {this.props.content}
-        </div>
+        <ContentContainer maxHeight={maxHeight}>
+          <div
+            ref={ref => (this.contentRef = ref)}
+            style={{ top: 0, left: 0, position: cssPosition, transform, zIndex, ...opacity }}
+          >
+            {this.props.content}
+          </div>
+        </ContentContainer>
       </div>
     );
   }

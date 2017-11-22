@@ -105,4 +105,11 @@ storiesOf(name, module)
     <NavWithOverflow containerTheme={presetThemes.global}>
       {manyNavigationItemGroups(15, 3)}
     </NavWithOverflow>
+  ))
+  .add('with container overflow to dropdown going off page', () => (
+    <NavWithOverflow containerHeaderComponent={null}>
+      <AkCollapseOverflowItemGroup itemCount={40} overflowGroupIndex={0}>
+        <AkNavigationItemGroup>{manyNavigationItems(40)}</AkNavigationItemGroup>
+      </AkCollapseOverflowItemGroup>
+    </NavWithOverflow>
   ));

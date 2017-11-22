@@ -31,7 +31,6 @@
     "@atlaskit/spinner": "^4.0.2",
     "@atlaskit/theme": "^2.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
-    "@promise-utils/any": "^1.0.0",
     "babel-runtime": "^6.11.6",
     "cubic-bezier": "0.1.2",
     "es6-promise": "^4.1.1",

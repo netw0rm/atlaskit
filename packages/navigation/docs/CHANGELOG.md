@@ -1,5 +1,14 @@
 # @atlaskit/navigation
 
+## 26.8.0 (2017-11-22)
+
+
+
+* feature; set all drawer's icons to be at the top-most icon position ([403ce26](https://bitbucket.org/atlassian/atlaskit/commits/403ce26))
+
+
+
+* feature; allow global primary actions to be passed as an array of complete nodes ([866d4ea](https://bitbucket.org/atlassian/atlaskit/commits/866d4ea))
 ## 26.7.5 (2017-11-21)
 
 

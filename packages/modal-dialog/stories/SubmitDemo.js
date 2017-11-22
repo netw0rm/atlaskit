@@ -53,7 +53,7 @@ export default class SubmitDemo extends Component {
               <p>Enter some text and then submit the form to see the response.</p>
               <Field label="Name" name="my-name" placeholder="Your name" value="" />
               <Field label="Email" name="my-email" placeholder="gbelson@hooli.com" value="" />
-              <Checkbox name="checkbox" value="example" label="Checkbox" />
+              <Checkbox name="checkbox" value="example" label="Example checkbox" />
               <RadioGroup
                 label="Basic Radio Group Example"
                 items={radioItems}

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { gridSize, math } from '../../../theme';
+import { gridSize, math } from '@atlaskit/theme';
 
 export default styled.div`
   margin-left: auto;

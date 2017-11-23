@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { colors, gridSize } from '../../../theme';
+import { colors, gridSize } from '@atlaskit/theme';
 
 // eslint-disable-next-line
 export const CodeBlock = styled.pre`

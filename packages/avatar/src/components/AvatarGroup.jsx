@@ -1,10 +1,12 @@
 // @flow
 import React, { Component } from 'react';
+import { ThemeProvider } from 'styled-components';
 import DropdownMenu, { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
 import Avatar from './Avatar';
 import { Grid, Stack } from '../styled/AvatarGroup';
 import MoreIndicator from '../components/MoreIndicator';
 import type { AvatarClickType, AvatarPropTypes, ComponentType, FunctionType, SizeType } from '../types';
+import itemTheme from '../theme/item-theme';
 
 const GROUP_COMPONENT = {
   grid: Grid,
@@ -102,9 +104,11 @@ export default class AvatarGroup extends Component {
         boundariesElement={boundariesElement}
         shouldFlip
       >
-        <DropdownItemGroup>
-          {items}
-        </DropdownItemGroup>
+        <ThemeProvider theme={itemTheme}>
+          <DropdownItemGroup>
+            {items}
+          </DropdownItemGroup>
+        </ThemeProvider>
       </DropdownMenu>
     );
   }

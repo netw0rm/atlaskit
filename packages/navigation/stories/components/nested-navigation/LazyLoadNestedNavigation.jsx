@@ -85,7 +85,7 @@ export default class LazyLoadNestedNavigation extends PureComponent {
               icon={
                 <img alt="nucleus" src={nucleusLogo} />
               }
-              text="AtlasKit"
+              text="Atlaskit"
               subText="Is the king"
             />
           </Tooltip>

@@ -13,7 +13,7 @@ const onClick = e => console.log(`${e.target.textContent} was clicked.`);
 const CommentExample = () => (
   <div>
     <Comment
-      avatar={<Avatar src={avatarImg} label="AtlasKit avatar" size="medium" />}
+      avatar={<Avatar src={avatarImg} label="Atlaskit avatar" size="medium" />}
       author={<CommentAuthor href="/author">John Smith</CommentAuthor>}
       type="author"
       edited={<CommentEdited>Edited</CommentEdited>}

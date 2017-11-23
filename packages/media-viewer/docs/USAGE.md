@@ -1,6 +1,6 @@
 # AkMediaViewer
 
-This is a template for AtlasKit components. Update this file with usage instructions and examples.
+This is a template for Atlaskit components. Update this file with usage instructions and examples.
 
 ![Example @NAME@](https://bytebucket.org/atlassian/atlaskit/raw/@BITBUCKET_COMMIT@/packages/@NAME@/docs/screencast.gif)
 

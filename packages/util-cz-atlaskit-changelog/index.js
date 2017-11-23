@@ -39,7 +39,7 @@ const makeCustomQuestions = () => [
       { value: 'merge',     name: 'merge:       🔀 Commits related to a merge conflict resolution' },
       { value: 'refactor',  name: 'refactor:    🏡 Refactor a component' },
       { value: 'stories',   name: 'stories:     📙 Additions, removals or changes to a story' },
-      { value: 'build',     name: 'build:       👷 Changes that affect the build – component or AtlasKit' },
+      { value: 'build',     name: 'build:       👷 Changes that affect the build – component or Atlaskit' },
       { value: 'docs',      name: 'docs:        📖 Changes related to component documentation' },
       { value: 'dummy',     name: 'dummy:       🔧 A placeholder commit with no real changes - usually to re-release a package' },
       { value: 'typings',   name: 'typings:     ✅ TypeScript definition changes' },

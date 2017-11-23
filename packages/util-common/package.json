@@ -4,7 +4,7 @@
   "config": {
     "access": "public"
   },
-  "description": "Utilities shared by AtlasKit components",
+  "description": "Utilities shared by Atlaskit components",
   "main": "dist/bundle.js",
   "jsnext:experimental:main": "dist/es/index.js",
   "webpack": "dist/bundle-cjs.js",

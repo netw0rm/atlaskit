@@ -136,7 +136,7 @@ module.exports = (config) => {
         retryLimit: 5,
         startTunnel: !process.env.BITBUCKET_COMMIT,
         tunnelIdentifier: process.env.BITBUCKET_COMMIT || 'ak_tunnel',
-        project: 'AtlasKit',
+        project: 'Atlaskit',
         build: `${process.env.CURRENT_BRANCH} ${new Date().getTime()} ${process.env.GITHEAD_SHORT}`,
       },
       captureTimeout: 120000,

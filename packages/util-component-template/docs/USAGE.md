@@ -1,6 +1,6 @@
 # AkUtilComponentTemplate
 
-This is a template for AtlasKit components. Update this file with usage instructions and examples.
+This is a template for Atlaskit components. Update this file with usage instructions and examples.
 
 ## Try it out
 

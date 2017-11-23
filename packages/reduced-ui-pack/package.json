@@ -4,7 +4,7 @@
   "config": {
     "access": "public"
   },
-  "description": "CSS classes which provide styling for a reduced number of AtlasKit components.",
+  "description": "CSS classes which provide styling for a reduced number of Atlaskit components.",
   "main": "dist/bundle.css",
   "scripts": {
     "eslint": "../../build/bin/lint.eslint.sh",

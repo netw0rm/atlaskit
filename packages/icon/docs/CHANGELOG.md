@@ -1,5 +1,8 @@
 # @atlaskit/icon
 
+## 10.3.2 (2017-11-23)
+
+* bug fix; remove theme package direct references ([0f99302](https://bitbucket.org/atlassian/atlaskit/commits/0f99302))
 ## 10.3.1 (2017-11-20)
 
 * bug fix; fS-3907 Use content attribute instead of description for Tooltip ([25c9604](https://bitbucket.org/atlassian/atlaskit/commits/25c9604))

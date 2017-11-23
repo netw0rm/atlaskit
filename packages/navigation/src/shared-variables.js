@@ -56,8 +56,7 @@ export const standardOpenWidth = (isElectron: boolean = false): number =>
   globalOpenWidth(isElectron) + containerOpenWidth;
 export const resizeClosedBreakpoint = (isElectron: boolean = false): number =>
   globalOpenWidth(isElectron) + (containerOpenWidth / 2);
-export const searchIconOffset = 80;
-export const createIconOffset = 120;
+export const drawerIconOffset = 80;
 export const animationTimeUnitless = 200;
 export const animationTime = `${animationTimeUnitless}ms`;
 export const resizeAnimationTime = animationTime;
@@ -94,11 +93,12 @@ export const globalPrimaryActions = (() => {
     bottom: gridSize * 2,
   };
 
-  const innerHeight = (itemSizes.medium * 3) + (gridSize * 2);
-
-  const height = {
-    inner: innerHeight,
-    outer: gridSize + margin.bottom + innerHeight,
+  const height = (actionCount: number) => {
+    const innerHeight = (itemSizes.medium * (actionCount + 1)) + (gridSize * 2);
+    return {
+      inner: innerHeight,
+      outer: gridSize + margin.bottom + innerHeight,
+    };
   };
 
   return {
@@ -152,4 +152,5 @@ export const search = {
   },
 };
 
+export const resizerClickableWidth = gridSize * 2;
 export const resizerVisibleWidth = 2;

@@ -1,8 +1,13 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import * as sinon from 'sinon';
+import fetchMock from 'fetch-mock';
+import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
+import ErrorIcon from '@atlaskit/icon/glyph/error';
+
 import waitUntil from '../../util/wait-until';
 import clickOnText from '../../util/click-on-text';
+import { userPreferencesEndpoint } from '../../../src/common/services/alreadyRequestedFlag';
 import MockConfluenceXFlow from '../../../stories/providers/MockConfluenceXFlowProvider';
 import RequestOrStartTrial from '../../../src/common/components/RequestOrStartTrial';
 import ConfirmRequest from '../../../src/request-or-start-trial/components/ConfirmRequest';
@@ -41,11 +46,16 @@ const defaultRequestOrStartTrialProps = {
 };
 
 describe('@atlaskit/xflow', () => {
+  beforeEach(() => fetchMock.catch(417));
+  afterEach(fetchMock.restore);
+
   describe('new to confluence', () => {
     let xflow;
     let sinonTest;
 
     beforeEach(() => {
+      fetchMock.putOnce(userPreferencesEndpoint('confluence.ondemand'), 200);
+
       sinonTest = sinon.spy(defaultProps, 'requestTrialWithNote');
       xflow = mount(
         <XFlowIntlProvider locale="en_US">
@@ -65,7 +75,7 @@ describe('@atlaskit/xflow', () => {
       defaultProps.requestTrialWithNote.restore();
     });
 
-    it('should render Request Trial Access component when user doesn\'t have access', async () => {
+    it('should render Request Trial Access component when user doesn’t have access', async () => {
       // eventually render to request trial screen
       await waitUntil(() => xflow.find(ConfirmRequest).length === 1);
       const requestTrialHeading = getXFlowProviderConfig().requestTrial.accessHeading;
@@ -91,7 +101,7 @@ describe('@atlaskit/xflow', () => {
       await waitUntil(() => xflow.find(RequestTrialNote).length === 1);
       clickOnText(xflow.find(RequestTrialNote), 'Send note');
       await waitUntil(() => xflow.find(SuccessFlag).length === 1);
-      expect(xflow.find(SuccessFlag).text()).toMatch('Success icon');
+      expect(xflow.find(CheckCircleIcon).props().label).toMatch('Success icon');
       expect(xflow.find(SuccessFlag).text()).toMatch('That\'s sent!');
       expect(xflow.find(SuccessFlag).text()).toMatch('We\'ll let your admin know right away.');
       sinon.assert.calledWith(sinonTest, 'Hi! I\'d like to try Confluence. It helps give the team more context on anything happening in Jira - and there\'s a free 30 day trial.');
@@ -106,7 +116,7 @@ describe('@atlaskit/xflow', () => {
       xflow.find('textarea').node.value = 'Hey, look a custom note';
       clickOnText(xflow.find(RequestTrialNote), 'Send note');
       await waitUntil(() => xflow.find(SuccessFlag).length === 1);
-      expect(xflow.find(SuccessFlag).text()).toMatch('Success icon');
+      expect(xflow.find(CheckCircleIcon).props().label).toMatch('Success icon');
       expect(xflow.find(SuccessFlag).text()).toMatch('That\'s sent!');
       expect(xflow.find(SuccessFlag).text()).toMatch('We\'ll let your admin know right away.');
       sinon.assert.calledWith(sinonTest, 'Hey, look a custom note');
@@ -120,7 +130,7 @@ describe('@atlaskit/xflow', () => {
       await waitUntil(() => xflow.find(RequestTrialNote).length === 1);
       clickOnText(xflow.find(RequestTrialNote), 'Skip');
       await waitUntil(() => xflow.find(SuccessFlag).length === 1);
-      expect(xflow.find(SuccessFlag).text()).toMatch('Success icon');
+      expect(xflow.find(CheckCircleIcon).props().label).toMatch('Success icon');
       expect(xflow.find(SuccessFlag).text()).toMatch('That\'s sent!');
       expect(xflow.find(SuccessFlag).text()).toMatch('We\'ll let your admin know right away.');
       sinon.assert.calledWith(sinonTest, 'Hi! I\'d like to try Confluence.');
@@ -159,7 +169,7 @@ describe('@atlaskit/xflow', () => {
       await waitUntil(() => xflow.find(RequestTrialNote).length === 1);
       clickOnText(xflow.find(RequestTrialNote), 'Send note');
       await waitUntil(() => xflow.find(ErrorFlag).length === 1);
-      expect(xflow.find(ErrorFlag).text()).toMatch('Error icon');
+      expect(xflow.find(ErrorIcon).props().label).toMatch('Error icon');
       expect(xflow.find(ErrorFlag).text()).toMatch('Uh oh. That didn\'t work');
       expect(xflow.find(ErrorFlag).text()).toMatch('Your trial request wasn\'t sent.');
     });

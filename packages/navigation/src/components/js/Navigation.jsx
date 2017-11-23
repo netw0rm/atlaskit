@@ -67,6 +67,9 @@ type Props = {|
   /** Icon to be used as the 'create' icon. onSearchDrawerOpen is called when it
   is clicked. */
   globalSearchIcon?: ReactElement,
+  /** A list of nodes to be rendered as the global primary actions. They appear
+  directly underneath the global primary icon. This must not exceed three nodes */
+  globalPrimaryActions?: ReactElement[],
   /** An array of elements to be displayed at the bottom of the global component.
   These should be icons or other small elements. There must be no more than five.
   Secondary Actions will not be visible when nav is collapsed. */
@@ -306,6 +309,7 @@ export default class Navigation extends PureComponent {
       containerScrollRef,
       drawers,
       globalCreateIcon,
+      globalPrimaryActions,
       globalPrimaryIcon,
       globalPrimaryIconAppearance,
       globalPrimaryItemHref,
@@ -365,6 +369,7 @@ export default class Navigation extends PureComponent {
       <NavigationGlobalNavigationWrapper>
         <GlobalNavigation
           theme={globalTheme}
+          primaryActions={globalPrimaryActions}
           createIcon={globalCreateIcon}
           linkComponent={linkComponent}
           onCreateActivate={onCreateDrawerOpen}
@@ -409,6 +414,7 @@ export default class Navigation extends PureComponent {
                   theme={containerTheme}
                   showGlobalActions={!showGlobalNavigation}
                   globalCreateIcon={globalCreateIcon}
+                  globalPrimaryActions={globalPrimaryActions}
                   globalPrimaryIcon={globalPrimaryIcon}
                   globalPrimaryItemHref={globalPrimaryItemHref}
                   globalSearchIcon={globalSearchIcon}

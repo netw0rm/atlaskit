@@ -1,5 +1,8 @@
 # @atlaskit/button
 
+## 5.4.9 (2017-11-21)
+
+* bug fix; bumping internal dependencies to latest version ([5e81848](https://bitbucket.org/atlassian/atlaskit/commits/5e81848))
 ## 5.4.8 (2017-10-27)
 
 * bug fix; correct formatting for user-select style ([fe9419c](https://bitbucket.org/atlassian/atlaskit/commits/fe9419c))

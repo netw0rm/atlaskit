@@ -1,6 +1,7 @@
 import 'es6-promise/auto';
 import 'whatwg-fetch';
 import '@atlaskit/polyfills/array-prototype-includes';
+import '@atlaskit/polyfills/string-prototype-includes';
 
 // This aligns with User Management's pagination value
 const PAGINATION = 30;

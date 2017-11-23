@@ -1,7 +1,5 @@
 import styled from 'styled-components';
-import { unthemedColors, resizerVisibleWidth } from '../../shared-variables';
-
-const resizerClickableWidth = 16;
+import { unthemedColors, resizerClickableWidth, resizerVisibleWidth } from '../../shared-variables';
 
 const ResizerInner = styled.div`
   cursor: ew-resize;

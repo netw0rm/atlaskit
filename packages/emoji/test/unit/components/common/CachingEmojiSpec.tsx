@@ -1,5 +1,6 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
@@ -33,7 +34,7 @@ describe('<CachingEmoji />', () => {
           }
         },
         childContextTypes: {
-          emoji: React.PropTypes.object
+          emoji: PropTypes.object
         }
       };
     });

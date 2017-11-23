@@ -7,10 +7,12 @@ import startProductTrial, { startTrialEndpoint } from '../../../../src/common/se
 describe('startProductTrial', () => {
   let confluenceStartTrial;
 
+  beforeEach(() => fetchMock.catch(417));
+  afterEach(fetchMock.restore);
+
   beforeEach(() => {
     confluenceStartTrial = startProductTrial('confluence.ondemand');
   });
-  afterEach(fetchMock.restore);
 
   it('should return a resolved promise with no value if the endpoint returns a 202 response', async () => {
     fetchMock.mock(startTrialEndpoint('confluence.ondemand'), 202);

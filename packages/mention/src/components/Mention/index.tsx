@@ -78,7 +78,7 @@ export default class Mention extends PureComponent<Props, {}> {
       >
         { mentionType === MentionType.RESTRICTED ?
           <Tooltip
-              description={`${props.text} won't be notified as they have no access`}
+              content={`${props.text} won't be notified as they have no access`}
               position="right"
           >
           {mentionComponent}

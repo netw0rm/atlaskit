@@ -34,7 +34,11 @@ const calculatePresence = (presenceResponse) => {
  */
 export const modifyResponse = (response) => {
   const presence = calculatePresence(response.Presence);
-  const data = { ...response.User, presence };
+  const data = {
+    ...response.User,
+    presence,
+    presenceMessage: response.Presence && response.Presence.message,
+  };
 
   const localWeekdayIndex = new Date().getDay().toString();
 
@@ -90,7 +94,8 @@ const buildUserQuery = (cloudId, userId) => ({
       state,
       type,
       date,
-      stateMetadata
+      stateMetadata,
+      message
     }
   }`,
   variables: {

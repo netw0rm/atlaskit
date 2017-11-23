@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/navigation",
-  "version": "26.7.2",
+  "version": "26.8.1",
   "config": {
     "access": "public"
   },
@@ -35,7 +35,7 @@
     "@atlaskit/polyfills": "^1.0.0",
     "@atlaskit/size-detector": "^2.0.0",
     "@atlaskit/theme": "^2.1.0",
-    "@atlaskit/tooltip": "^7.0.0",
+    "@atlaskit/tooltip": "^8.0.2",
     "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "babel-runtime": "^6.25.0",

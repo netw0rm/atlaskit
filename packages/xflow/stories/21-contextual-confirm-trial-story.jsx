@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 
 import { ConfirmTrialBase } from '../src/request-or-start-trial/components/ContextualConfirmTrial';
@@ -12,9 +12,7 @@ const defaultProps = {
   spinnerActive: false,
   getStartedButtonDisabled: false,
   onComplete: () => {},
-  goToProduct: () => {
-    console.log('Go to Confluence!');
-  },
+  goToProduct: action('ConfirmTrialBase goToProduct'),
   contextInfo: {
     contextualHeading: 'Project pages are powered by Confluence',
     contextualMessage: 'Create, share, and collaborate on all your project docs in one place, with Confluence pages.',

@@ -1,5 +1,37 @@
 # @atlaskit/navigation
 
+## 26.8.1 (2017-11-23)
+
+* bug fix; allow vertical scrolling in collapsed container navigation ([99e5544](https://bitbucket.org/atlassian/atlaskit/commits/99e5544))
+## 26.8.0 (2017-11-22)
+
+
+
+* feature; set all drawer's icons to be at the top-most icon position ([403ce26](https://bitbucket.org/atlassian/atlaskit/commits/403ce26))
+
+
+
+* feature; allow global primary actions to be passed as an array of complete nodes ([866d4ea](https://bitbucket.org/atlassian/atlaskit/commits/866d4ea))
+## 26.7.5 (2017-11-21)
+
+
+
+
+
+* bug fix; fix nested navigation scrollbar styling and positioning (issues closed: ak-3756) ([329900b](https://bitbucket.org/atlassian/atlaskit/commits/329900b))
+## 26.7.4 (2017-11-20)
+
+* bug fix; fS-3907 Use content attribute instead of description for Tooltip ([25c9604](https://bitbucket.org/atlassian/atlaskit/commits/25c9604))
+* bug fix; fS-3907 Update tooltip version in navigation component ([74619ad](https://bitbucket.org/atlassian/atlaskit/commits/74619ad))
+## 26.7.3 (2017-11-20)
+
+
+
+
+
+
+
+* bug fix; fix nav resize behaviour when moving in or out of iframe/windows (issues closed: ak-3723) ([07a64ac](https://bitbucket.org/atlassian/atlaskit/commits/07a64ac))
 ## 26.7.2 (2017-11-16)
 
 * bug fix; prevent horizontal scrolling in collapsed navigation (issues closed: ak-3588) ([9aa8eb5](https://bitbucket.org/atlassian/atlaskit/commits/9aa8eb5))

@@ -1,5 +1,12 @@
 # @atlaskit/icon
 
+## 10.3.2 (2017-11-23)
+
+* bug fix; remove theme package direct references ([0f99302](https://bitbucket.org/atlassian/atlaskit/commits/0f99302))
+## 10.3.1 (2017-11-20)
+
+* bug fix; fS-3907 Use content attribute instead of description for Tooltip ([25c9604](https://bitbucket.org/atlassian/atlaskit/commits/25c9604))
+* bug fix; fS-3907 Bump tooltip version in icon, item and util-shared-styles ([6d20540](https://bitbucket.org/atlassian/atlaskit/commits/6d20540))
 ## 10.3.0 (2017-11-16)
 
 * feature; new and updated icons for the editor (issues closed: ak-3720) ([2c709e2](https://bitbucket.org/atlassian/atlaskit/commits/2c709e2))

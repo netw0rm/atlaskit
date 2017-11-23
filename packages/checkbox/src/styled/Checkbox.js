@@ -67,10 +67,6 @@ export const IconWrapper = styled.span`
   & rect {
     transition: stroke 0.2s ease-in-out;
     ${getBorderColor}
-
-    :focus & {
-      ${focusBorder}
-    }
   }
 `;
 

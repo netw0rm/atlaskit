@@ -16,6 +16,7 @@ import NucleusIcon from './components/NucleusIcon';
 import ContainerRefScrollExample from './examples/ContainerRefScrollExample';
 import ToggleCallbackNavigation from './examples/ToggleCallbackNavigation';
 import Avatar from '@atlaskit/avatar';
+import IframeExample from './components/IframeExample';
 
 const dropdownItemsSample = (
   <DropdownItemGroup title="Cities">
@@ -389,4 +390,7 @@ storiesOf(name, module)
         </div>
       </div>
     </div>
+  ))
+  .add('with iframe', () => (
+    <IframeExample />
   ));

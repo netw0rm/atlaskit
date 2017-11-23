@@ -11,14 +11,14 @@ import {
 describe('alreadyRequestedFlag', () => {
   const TEST_PRODUCT_KEY = 'Foo';
 
+  beforeEach(() => fetchMock.catch(417));
   afterEach(fetchMock.restore);
 
   describe('getAlreadyRequestedFlag()', () => {
     function mockUserPreferencesGetEndpointWithResponse(response, productKey) {
       const matcher = userPreferencesEndpoint(productKey);
       fetchMock
-        .getOnce(matcher, response)
-        .catch(400);
+        .getOnce(matcher, response);
       return matcher; // for assertions
     }
 
@@ -57,8 +57,7 @@ describe('alreadyRequestedFlag', () => {
     function mockUserPreferencesPutEndpointWithResponse(response, productKey) {
       const matcher = userPreferencesEndpoint(productKey);
       fetchMock
-        .putOnce(matcher, response)
-        .catch(400);
+        .putOnce(matcher, response);
       return matcher; // for assertions
     }
 

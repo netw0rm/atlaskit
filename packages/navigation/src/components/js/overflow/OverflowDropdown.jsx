@@ -51,7 +51,7 @@ export default class OverflowDropdown extends Component {
           trigger={
             this.state.isOpen ? dropdownTrigger : (
               <Tooltip
-                description="Show more"
+                content="Show more"
                 position="right"
               >
                 {dropdownTrigger}

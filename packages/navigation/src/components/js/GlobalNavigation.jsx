@@ -17,6 +17,9 @@ type Props = {|
   /** A component that will be used to render links. A default link component is
   used if none is provided. */
   linkComponent?: ReactClass,
+  /** A list of nodes to be rendered as the global primary actions.  They appear
+  directly underneath the global primary icon. This must not exceed three nodes */
+  primaryActions?: Array<ReactElement>,
   /** The topmost icon to be placed in the global navigation - usually the product
   logo, or the product home icon */
   primaryIcon?: ReactElement,
@@ -24,7 +27,7 @@ type Props = {|
   primaryIconAppearance: IconAppearance,
   /** A link to place around the primary icon. */
   primaryItemHref?: string,
-  /**  list of nodes to be placed in the secondary actions slot at the bottom of
+  /** A list of nodes to be placed in the secondary actions slot at the bottom of
   the global sidebar. This must not exceed five nodes. */
   secondaryActions: Array<ReactElement>,
   /** The icon to use in the global navigation for the global search button */
@@ -56,6 +59,7 @@ export default class GlobalNavigation extends PureComponent {
       linkComponent,
       onCreateActivate,
       onSearchActivate,
+      primaryActions,
       primaryIcon,
       primaryIconAppearance,
       primaryItemHref,
@@ -69,6 +73,7 @@ export default class GlobalNavigation extends PureComponent {
         <GlobalNavigationInner>
           <GlobalNavigationPrimaryContainer>
             <GlobalPrimaryActions
+              actions={primaryActions}
               createIcon={createIcon}
               linkComponent={linkComponent}
               onCreateActivate={onCreateActivate}

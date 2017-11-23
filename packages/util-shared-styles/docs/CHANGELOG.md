@@ -1,5 +1,9 @@
 # @atlaskit/util-shared-styles
 
+## 2.10.6 (2017-11-20)
+
+* bug fix; fS-3907 Use content attribute instead of description for Tooltip ([25c9604](https://bitbucket.org/atlassian/atlaskit/commits/25c9604))
+* bug fix; fS-3907 Bump tooltip version in icon, item and util-shared-styles ([6d20540](https://bitbucket.org/atlassian/atlaskit/commits/6d20540))
 ## 2.10.5 (2017-11-14)
 
 * bug fix; remove es6 bundles from util-shared-styles (issues closed: ak-3746) ([30b8c28](https://bitbucket.org/atlassian/atlaskit/commits/30b8c28))

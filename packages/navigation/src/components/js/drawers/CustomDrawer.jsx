@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import Drawer from '../Drawer';
-import { searchIconOffset } from '../../../shared-variables';
+import { drawerIconOffset } from '../../../shared-variables';
 import type { DrawerProps } from '../../../types';
 
 /*
@@ -18,8 +18,7 @@ export default class CustomDrawer extends PureComponent {
   render() {
     return (
       <Drawer
-        iconOffset={searchIconOffset}
-        backIconOffset={searchIconOffset}
+        iconOffset={drawerIconOffset}
         {...this.props}
       />
     );

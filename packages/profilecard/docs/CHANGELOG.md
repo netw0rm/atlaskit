@@ -1,5 +1,8 @@
 # @atlaskit/profilecard
 
+## 3.12.0 (2017-11-20)
+
+* feature; add presence message to profilecard (issues closed: dir-459) ([a927c12](https://bitbucket.org/atlassian/atlaskit/commits/a927c12))
 ## 3.11.0 (2017-11-17)
 
 * feature; add support for focus state to profilecard (issues closed: dir-453) ([51185f4](https://bitbucket.org/atlassian/atlaskit/commits/51185f4))

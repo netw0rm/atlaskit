@@ -3,6 +3,7 @@ import GlobalPrimaryActions from '../../src/components/js/GlobalPrimaryActions';
 import { mountWithRootTheme, shallowWithTheme } from './_theme-util';
 import GlobalItem from '../../src/components/js/GlobalItem';
 import DrawerTrigger from '../../src/components/js/DrawerTrigger';
+import GlobalPrimaryActionsList from '../../src/components/js/GlobalPrimaryActionsList';
 
 describe('<GlobalPrimaryActions />', () => {
   describe('renders', () => {
@@ -24,6 +25,11 @@ describe('<GlobalPrimaryActions />', () => {
         searchIcon={<img alt="foo" />}
         createIcon={<img alt="foo" />}
       />).find(GlobalItem).length).toBe(3);
+    });
+    it('renders a GlobalPrimaryActionsList instead of create and search items if `actions` prop is supplied', () => {
+      const wrapper = shallowWithTheme(<GlobalPrimaryActions actions={[<div>hello</div>]} />);
+      expect(wrapper.find(DrawerTrigger).length).toBe(0);
+      expect(wrapper.find(GlobalPrimaryActionsList).length).toBe(1);
     });
   });
   describe('props', () => {

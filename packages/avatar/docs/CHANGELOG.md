@@ -1,5 +1,12 @@
 # @atlaskit/avatar
 
+## 8.3.3 (2017-11-23)
+
+
+* bug fix; fix avatar group's more items dropdown not being tabbable (issues closed: ak-3707) ([a0ee45d](https://bitbucket.org/atlassian/atlaskit/commits/a0ee45d))
+## 8.3.2 (2017-11-20)
+
+* bug fix; fS-3907 Use Tooltip component in Avatar ([2126336](https://bitbucket.org/atlassian/atlaskit/commits/2126336))
 ## 8.3.1 (2017-11-16)
 
 * bug fix; avatar flex styles are now explicit to fix Firefox issue (issues closed: ak-3898) ([73ac57d](https://bitbucket.org/atlassian/atlaskit/commits/73ac57d))

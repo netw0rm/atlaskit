@@ -46,7 +46,7 @@ import WorldIcon from '@atlaskit/icon/glyph/world';
 import SelectableDropdownMenu from '../components/SelectableDropdownMenu';
 
 const DropdownWrapper = styled.div`padding-bottom: ${akGridSizeUnitless / 2}px`;
-const backIcon = <Tooltip position="right" description="Back"><ArrowLeftIcon label="Back icon" size="medium" /></Tooltip>;
+const backIcon = <Tooltip position="right" content="Back"><ArrowLeftIcon label="Back icon" size="medium" /></Tooltip>;
 const globalPrimaryIcon = <ConfluenceIcon label="Confluence icon" size="large" />;
 
 export default class ConfluenceHome extends PureComponent {
@@ -250,11 +250,11 @@ export default class ConfluenceHome extends PureComponent {
       </div>
     );
     const globalCreateIcon = (
-      <Tooltip position="right" description="Create">
+      <Tooltip position="right" content="Create">
         <AddIcon label="Create icon" secondaryColor="inherit" size="medium" onClick={() => this.openDrawer('create')} />
       </Tooltip>);
     const globalSearchIcon = (
-      <Tooltip position="right" description="Search">
+      <Tooltip position="right" content="Search">
         <SearchIcon label="Search icon" secondaryColor="inherit" size="medium" onClick={() => this.openDrawer('search')} />
       </Tooltip>);
     const helpMenu = (
@@ -263,7 +263,7 @@ export default class ConfluenceHome extends PureComponent {
         position="right bottom"
         trigger={isOpen => (
           <AkGlobalItem href="" isSelected={isOpen}>
-            <Tooltip position="right" description="Help">
+            <Tooltip position="right" content="Help">
               <QuestionCircleIcon
                 label="Help icon"
                 secondaryColor="inherit"
@@ -299,7 +299,7 @@ export default class ConfluenceHome extends PureComponent {
         position="right bottom"
         trigger={isOpen => (
           <AkGlobalItem href="" isSelected={isOpen}>
-            <Tooltip position="right" description="Your profile and settings">
+            <Tooltip position="right" content="Your profile and settings">
               <Avatar size="small" src={emmaAvatar} borderColor="transparent" />
             </Tooltip>
           </AkGlobalItem>
@@ -337,7 +337,7 @@ export default class ConfluenceHome extends PureComponent {
         isLoading={this.state.menuLoading}
         trigger={isOpen => (
           <AkGlobalItem href="" isSelected={isOpen}>
-            <Tooltip position="right" description="Notifications">
+            <Tooltip position="right" content="Notifications">
               <NotificationIcon
                 label="Notifications icon"
                 size="medium"
@@ -366,7 +366,7 @@ export default class ConfluenceHome extends PureComponent {
           isLoading={this.state.menuLoading}
           trigger={isOpen => (
             <AkGlobalItem href="" isSelected={isOpen}>
-              <Tooltip position="right" description="Applications Switcher">
+              <Tooltip position="right" content="Applications Switcher">
                 <MenuIcon
                   label="Applications Switcher"
                   size="medium"

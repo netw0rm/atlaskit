@@ -175,6 +175,7 @@ describe('Profilecard', () => {
           const result = modifyResponse(data);
 
           expect(result.presence).toEqual(null);
+          expect(result.presenceMessage).toEqual(undefined);
         });
 
         it('should set presence to state', () => {
@@ -215,6 +216,19 @@ describe('Profilecard', () => {
           const result = modifyResponse(data);
 
           expect(result.presence).toEqual('focus');
+        });
+
+        it('should set presenceMessage correctly', () => {
+          const data = {
+            User: {},
+            Presence: {
+              message: 'test message',
+            },
+          };
+
+          const result = modifyResponse(data);
+
+          expect(result.presenceMessage).toEqual('test message');
         });
       });
     });

@@ -2,8 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import uuid from 'uuid';
-
-import { colors } from '../../../theme/src';
+import { colors } from '@atlaskit/theme';
 
 const sizes = {
   small: '16px',

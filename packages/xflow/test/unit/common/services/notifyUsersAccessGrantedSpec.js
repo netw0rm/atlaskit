@@ -7,13 +7,10 @@ import * as tenantContext from '../../../../src/common/services/tenantContext';
 import { notifyAccessEndpoint } from '../../../../src/common/services/xflowService';
 import notifyUsersAccessGranted from '../../../../src/common/services/notifyUsersAccessGranted';
 
-import userAdminResponse from '../mock-data/isUserTrustedSiteAdmin.json';
+import userAdminResponse from '../mock-data/fetchUserAndGroupsSiteAdmin.json';
 import accessgrantedJiraUsersResponse from '../mock-data/accessgrantedJiraUsers.json';
 import accessgrantedNoUsersResponse from '../mock-data/accessgrantedNoUsers.json';
 import jiraUsersResponse from '../mock-data/jiraUsers.json';
-// import jiraSoftwareUsersResponse from '../mock-data/jiraSoftwareUsers.json';
-// import jiraCoreUsersResponse from '../mock-data/jiraCoreUsers.json';
-// import jiraServiceDeskUsersResponse from '../mock-data/jiraServiceDeskUsers.json';
 
 const mockNotifyEastEndpointWithResponse = (response) => {
   fetchMock.mock(
@@ -27,6 +24,7 @@ const mockNotifyEastEndpointWithResponse = (response) => {
 };
 
 describe('notifyUsersAccessGranted', () => {
+  beforeEach(() => fetchMock.catch(417));
   afterEach(fetchMock.restore);
 
   it('should return no users and it should never contact the endpoint', async () => {
@@ -38,8 +36,7 @@ describe('notifyUsersAccessGranted', () => {
   });
 
   it('should return a resolved promise with no value if the endpoint returns a 200 response', async () => {
-    tenantContext.getCurrentUsername = jest.fn().mockReturnValue('admin');
-    tenantContext.queryUsername = jest.fn().mockReturnValue(Promise.resolve(userAdminResponse));
+    tenantContext.fetchCurrentUser = jest.fn().mockReturnValue(Promise.resolve(userAdminResponse));
     tenantContext.getInstanceName = jest.fn().mockReturnValue('example.atlassian.net');
 
     mockNotifyEastEndpointWithResponse(accessgrantedJiraUsersResponse);

@@ -14,6 +14,7 @@ export default class MockPresenceProvider extends AbstractPresenceResource {
       'online',
       'offline',
       'busy',
+      'focus',
       'none',
       undefined,
     ];

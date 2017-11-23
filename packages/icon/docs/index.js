@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { borderRadius, colors, gridSize, math, themed } from /* '@atlaskit/theme' */ '../../theme/src';
+import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 
 import IconSizeExample from './examples/IconSizeExample';
 import IconSizeExampleSrc from '!raw-loader!./examples/IconSizeExample';

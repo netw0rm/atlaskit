@@ -45,6 +45,14 @@
       },
       {
         "userId": "6",
+        "state": "busy",
+        "stateMetadata": "{\"focus\": {\"previousState\": \"available\",\"previousMessage\": null}}",
+        "type": "principal",
+        "date": "2017-11-16T06:33:39.617Z",
+        "message": "I have things to do!"
+      },
+      {
+        "userId": "7",
         "state": null,
         "type": null,
         "date": null,

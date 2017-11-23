@@ -1,5 +1,12 @@
 # @atlaskit/field-radio-group
 
+## 1.7.5 (2017-11-22)
+
+* bug fix; removed focus styling from radio and checkbox svg as they will never be focused (issues closed: ak-3710) ([ec68128](https://bitbucket.org/atlassian/atlaskit/commits/ec68128))
+* bug fix; checkbox and radio should not highlight when parent element is focused (issues closed: ak-3710) ([5c900ff](https://bitbucket.org/atlassian/atlaskit/commits/5c900ff))
+## 1.7.4 (2017-11-21)
+
+* bug fix; moving to fuzzy version for field-base dependency ([779b833](https://bitbucket.org/atlassian/atlaskit/commits/779b833))
 ## 1.7.3 (2017-10-26)
 
 * bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))

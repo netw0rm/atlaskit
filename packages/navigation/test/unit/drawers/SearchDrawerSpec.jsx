@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import React from 'react';
 import { AkSearchDrawer } from '../../../src/index';
-import { searchIconOffset } from '../../../src/shared-variables';
+import { drawerIconOffset } from '../../../src/shared-variables';
 import Drawer from '../../../src/components/js/Drawer';
 import requiredProps from '../_drawer-util';
 
@@ -20,7 +20,7 @@ describe('<SearchDrawer />', () => {
     it('should render the backIcon in the correct position default to false', () => {
       expect(mount(
         <AkSearchDrawer {...requiredProps} />
-      ).find(Drawer).props().backIconOffset).toBe(searchIconOffset);
+      ).find(Drawer).props().iconOffset).toBe(drawerIconOffset);
     });
   });
 });

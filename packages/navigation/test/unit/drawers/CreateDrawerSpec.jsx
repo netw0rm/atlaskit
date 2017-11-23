@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import React from 'react';
 import { AkCreateDrawer } from '../../../src/index';
-import { createIconOffset } from '../../../src/shared-variables';
+import { drawerIconOffset } from '../../../src/shared-variables';
 import Drawer from '../../../src/components/js/Drawer';
 import requiredProps from '../_drawer-util';
 
@@ -20,7 +20,7 @@ describe('<CreateDrawer />', () => {
     it('should render the backIcon in the correct position default to false', () => {
       expect(mount(
         <AkCreateDrawer {...requiredProps} />
-      ).find(Drawer).props().backIconOffset).toBe(createIconOffset);
+      ).find(Drawer).props().iconOffset).toBe(drawerIconOffset);
     });
   });
 });

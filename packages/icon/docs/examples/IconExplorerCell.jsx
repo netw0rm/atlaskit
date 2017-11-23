@@ -62,7 +62,7 @@ class IconExplorerCell extends PureComponent {
 
     return (
       <div>
-        <Tooltip description={props.componentName}>
+        <Tooltip content={props.componentName}>
           <IconExplorerLink onClick={this.openModal}>
             <Icon label={props.componentName} size={size.medium} />
           </IconExplorerLink>

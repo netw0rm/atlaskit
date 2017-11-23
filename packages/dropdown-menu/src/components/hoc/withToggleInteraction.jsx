@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { akColorB400, akColorN40 } from '@atlaskit/util-shared-styles';
 
-import SelectionIconSpacer from '../../styled/SelectionIconSpacer';
 import getDisplayName from '../../util/getDisplayName';
 import safeContextCall from '../../util/safeContextCall';
 import { selectionManagerContext } from '../../util/contextNamespace';
@@ -108,14 +107,12 @@ const withToggleInteraction = (
           onClick={this.handleItemActivated}
           onKeyDown={this.handleKeyboard}
           elemBefore={
-            <SelectionIconSpacer>
-              <SelectionIcon
-                primaryColor={iconColors.primary}
-                secondaryColor={iconColors.secondary}
-                size="medium"
-                label=""
-              />
-            </SelectionIconSpacer>
+            <SelectionIcon
+              primaryColor={iconColors.primary}
+              secondaryColor={iconColors.secondary}
+              size="medium"
+              label=""
+            />
           }
         >
           {children}

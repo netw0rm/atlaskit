@@ -34,7 +34,7 @@ describe('banner', () => {
       expect(wrapper.find(Text).text()).toBe('Testing!');
     });
     it('should render icon prop', () => {
-      const wrapper = shallow(<Banner icon={<WarningIcon label="Warning" />} />);
+      const wrapper = shallow(<Banner icon={<WarningIcon label="Warning" secondaryColor="inherit" />} />);
       expect(wrapper.find(WarningIcon).exists()).toBe(true);
     });
     describe('isOpen prop', () => {

@@ -1,5 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
+import fetchMock from 'fetch-mock';
+import ErrorIcon from '@atlaskit/icon/glyph/error';
+
 import waitUntil from '../../util/wait-until';
 import clickOnText from '../../util/click-on-text';
 import {
@@ -126,6 +129,9 @@ const defaultRequestOrStartTrialProps = {
 };
 
 describe('@atlaskit/xflow', () => {
+  beforeEach(() => fetchMock.catch(417));
+  afterEach(fetchMock.restore);
+
   describe('new to confluence', () => {
     let xflow;
 
@@ -433,7 +439,7 @@ describe('@atlaskit/xflow', () => {
       // eventually render to error flag
       await waitUntil(() => xflow.find(ErrorFlag).length === 1);
       // should render error messages
-      expect(xflow.find(ErrorFlag).text()).toMatch('Error icon');
+      expect(xflow.find(ErrorIcon).props().label).toMatch('Error icon');
       expect(xflow.find(ErrorFlag).text()).toMatch('Oops... Something went wrong');
       expect(xflow.find(ErrorFlag).text()).toMatch('Dismiss flag');
       expect(xflow.find(ErrorFlag).text()).toMatch("Let's try again.");

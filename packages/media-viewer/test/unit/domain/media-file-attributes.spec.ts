@@ -1,6 +1,4 @@
-import { FileItem } from '@atlaskit/media-core';
-
-import { MediaFileAttributesFactory } from '../../../src/domain/media-file-attributes';
+import { MediaFileAttributesFactory, FileItemWithOccurrenceKey } from '../../../src/domain/media-file-attributes';
 
 describe('MediaFileAttributes', () => {
   describe('fromFileItem', () => {
@@ -8,7 +6,7 @@ describe('MediaFileAttributes', () => {
 
     it('should return binary url given no artifacts', () => {
       const attributes = MediaFileAttributesFactory.fromFileItem(Mocks.basicFile, serviceHost);
-      expect(attributes.id).toBe('basic-file');
+      expect(attributes.id).toBe('basic-file-some-occurrenceKey');
       expect(attributes.src).toBe('https://filestore.io/file/basic-file/binary');
       expect(attributes.srcDownload).toBe('https://filestore.io/file/basic-file/binary?dl=1');
       expect(attributes.type).toBe(undefined);
@@ -19,7 +17,7 @@ describe('MediaFileAttributes', () => {
 
     it('should return binary url given gif file', () => {
       const attributes = MediaFileAttributesFactory.fromFileItem(Mocks.gifFile, serviceHost);
-      expect(attributes.id).toBe('gif-file');
+      expect(attributes.id).toBe('gif-file-some-occurrenceKey');
       expect(attributes.src).toBe('https://filestore.io/file/gif-file/binary');
       expect(attributes.srcDownload).toBe('https://filestore.io/file/gif-file/binary?dl=1');
       expect(attributes.type).toBe('image/gif');
@@ -28,7 +26,7 @@ describe('MediaFileAttributes', () => {
 
     it('should return image url given jpg file', () => {
       const attributes = MediaFileAttributesFactory.fromFileItem(Mocks.jpgFile, serviceHost);
-      expect(attributes.id).toBe('jpg-file');
+      expect(attributes.id).toBe('jpg-file-some-occurrenceKey');
       expect(attributes.src).toBe('https://filestore.io/file/jpg-file/image');
       expect(attributes.srcDownload).toBe('https://filestore.io/file/jpg-file/binary?dl=1');
       expect(attributes.type).toBe(undefined);
@@ -37,7 +35,7 @@ describe('MediaFileAttributes', () => {
 
     it('should return type video/mp4 given SD video', () => {
       const attributes = MediaFileAttributesFactory.fromFileItem(Mocks.sdVideoFile, serviceHost);
-      expect(attributes.id).toBe('sd-file');
+      expect(attributes.id).toBe('sd-file-some-occurrenceKey');
       expect(attributes.src).toBe('https://filestore.io/file/hd-file/artifact/video_640.mp4/binary');
       expect(attributes.srcDownload).toBe('https://filestore.io/file/sd-file/binary?dl=1');
       expect(attributes.type).toBe('video/mp4');
@@ -48,7 +46,7 @@ describe('MediaFileAttributes', () => {
 
     it('should return HD url and HD poster given HD artifacts exists', () => {
       const attributes = MediaFileAttributesFactory.fromFileItem(Mocks.hdVideoFile, serviceHost);
-      expect(attributes.id).toBe('hd-file');
+      expect(attributes.id).toBe('hd-file-some-occurrenceKey');
       expect(attributes.src).toBe('https://filestore.io/file/hd-file/artifact/video_640.mp4/binary');
       expect(attributes.srcDownload).toBe('https://filestore.io/file/hd-file/binary?dl=1');
       expect(attributes.type).toBe('video/mp4');
@@ -61,31 +59,46 @@ describe('MediaFileAttributes', () => {
       const attributes = MediaFileAttributesFactory.fromFileItem(Mocks.basicFile, serviceHost);
       expect(attributes.srcDownload).toBe('https://filestore.io/file/basic-file/binary?dl=1');
     });
+
+    it('should handle files with no occurrenceKey', () => {
+      const attributes = MediaFileAttributesFactory.fromFileItem(Mocks.basicFileWithoutOcurrenceKey, serviceHost);
+      expect(attributes.id).toBe('basic-file-no-occurrenceKey');
+    });
+
   });
 });
 
 class Mocks {
-  static basicFile = {
+  static basicFileWithoutOcurrenceKey = {
     details: {
       id: 'basic-file'
     }
-  } as FileItem;
+  } as FileItemWithOccurrenceKey;
+
+  static basicFile = {
+    details: {
+      id: 'basic-file'
+    },
+    occurrenceKey: 'some-occurrenceKey'
+  } as FileItemWithOccurrenceKey;
 
   static gifFile = {
     details: {
       id: 'gif-file',
       name: 'Some GIF',
       mimeType: 'image/gif'
-    }
-  } as FileItem;
+    },
+    occurrenceKey: 'some-occurrenceKey'
+  } as FileItemWithOccurrenceKey;
 
   static jpgFile = {
     details: {
       id: 'jpg-file',
       name: 'Some JPG',
       mimeType: 'image/jpeg'
-    }
-  } as FileItem;
+    },
+    occurrenceKey: 'some-occurrenceKey'
+  } as FileItemWithOccurrenceKey;
 
   static sdVideoFile = {
     type: 'file',
@@ -101,8 +114,9 @@ class Mocks {
           url: '/file/hd-file/artifact/poster_640.mp4/binary'
         }
       }
-    }
-  } as FileItem;
+    },
+    occurrenceKey: 'some-occurrenceKey'
+  } as FileItemWithOccurrenceKey;
 
   static hdVideoFile = {
     type: 'file',
@@ -124,6 +138,7 @@ class Mocks {
           url: '/file/hd-file/artifact/poster_1280.mp4/binary'
         }
       }
-    }
-  } as FileItem;
+    },
+    occurrenceKey: 'some-occurrenceKey'
+  } as FileItemWithOccurrenceKey;
 }

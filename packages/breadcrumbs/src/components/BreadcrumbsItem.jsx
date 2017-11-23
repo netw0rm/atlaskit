@@ -96,7 +96,7 @@ export default class BreadcrumbsItem extends PureComponent {
 
   renderButtonWithTooltip = () => (
     <AKTooltip
-      description={this.props.text}
+      content={this.props.text}
       position="bottom"
     >
       {this.renderButton()}

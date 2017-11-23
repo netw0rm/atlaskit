@@ -21,7 +21,7 @@
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/blanket": "^3.0.0",
+    "@atlaskit/blanket": "^4.0.1",
     "@atlaskit/button": "^5.1.2",
     "@atlaskit/layer": "^2.5.4",
     "@atlaskit/layer-manager": "^2.0.1",
@@ -34,9 +34,9 @@
   "devDependencies": {
     "@atlaskit/avatar": "^8.0.2",
     "@atlaskit/dropdown-menu": "^3.10.1",
-    "@atlaskit/icon": "^8.1.0",
-    "@atlaskit/navigation": "^24.0.2",
-    "@atlaskit/tooltip": "^6.0.0",
+    "@atlaskit/icon": "^10.3.1",
+    "@atlaskit/navigation": "^26.7.4",
+    "@atlaskit/tooltip": "^8.0.3",
     "@atlaskit/util-readme": "^3.0.0"
   },
   "peerDependencies": {

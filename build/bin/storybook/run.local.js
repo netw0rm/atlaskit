@@ -20,8 +20,10 @@ if (process.argv[2]) {
   process.exit(1);
 }
 
+const port = process.env.STORYBOOK_PORT || '9001';
+
 childProcess.spawn('../../node_modules/.bin/start-storybook',
   ['-c', '../../build/storybook',
-    '-p', '9001'],
+    '-p', port],
   { stdio: 'inherit' }
 ).on('error', process.exit);

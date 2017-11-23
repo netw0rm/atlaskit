@@ -1,5 +1,9 @@
 # @atlaskit/item
 
+## 4.2.4 (2017-11-23)
+
+
+* bug fix; fix default item theme before & after elem spacing not working ([9b025b5](https://bitbucket.org/atlassian/atlaskit/commits/9b025b5))
 ## 4.2.3 (2017-11-20)
 
 * bug fix; fS-3907 Use content attribute instead of description for Tooltip ([25c9604](https://bitbucket.org/atlassian/atlaskit/commits/25c9604))

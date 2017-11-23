@@ -12,12 +12,19 @@ const selectItems = [
       { content: 'Two & Three', value: '2-3', filterValues: ['2', '3'], description: '(matches \'2\' and \'3\')' },
     ],
   },
+  {
+    heading: 'Booleans',
+    items: [
+      { content: 'True', value: 'True', filterValues: ['True'], description: '(matches \'True\')' },
+      { content: 'False', value: 'False', filterValues: ['False'], description: '(matches \'False\')' },
+    ],
+  },
 ];
 
 export default (
   <Select
     hasAutocomplete
     items={selectItems}
-    placeholder="Search for numbers"
+    placeholder="Search for values"
   />
 );

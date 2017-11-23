@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/navigation",
-  "version": "26.8.0",
+  "version": "26.8.1",
   "config": {
     "access": "public"
   },
@@ -65,7 +65,7 @@
     "@atlaskit/badge": "^6.1.2",
     "@atlaskit/banner": "^4.0.3",
     "@atlaskit/button": "^5.1.1",
-    "@atlaskit/field-radio-group": "1.6.2",
+    "@atlaskit/field-radio-group": "^1.7.3",
     "@atlaskit/field-text": "^4.0.1",
     "@atlaskit/inline-dialog": "^5.0.4",
     "@atlaskit/logo": "^6.0.0",

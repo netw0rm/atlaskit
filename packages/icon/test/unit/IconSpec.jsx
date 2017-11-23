@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { mount } from 'enzyme';
 
-import { colors } from '../../../theme/src';
+import { colors } from '@atlaskit/theme';
 import { name } from '../../package.json';
 import Icon, { size } from '../../src';
 import { spanStyles } from '../../src/components/Icon';

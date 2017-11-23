@@ -70,6 +70,50 @@ describe(name, () => {
       expect(select.find(Item).length).toBe(2);
       expect(select.find(Group).find(Item).length).toBe(2);
     });
+
+    it('should only render groups with at least one match when filtering', () => {
+      const selectItems = [
+        {
+          heading: 'group 1',
+          items: [
+            { value: 1, content: '1' },
+            { value: 2, content: '2' },
+          ],
+        },
+        {
+          heading: 'group 2',
+          items: [
+            { value: 3, content: '3' },
+            { value: 4, content: '4' },
+          ],
+        },
+      ];
+      const select = mount(<StatelessSelect items={selectItems} isOpen filterValue={'1'} />);
+      expect(select.find(Group).length).toBe(1);
+      expect(select.find(Group).find(Item).length).toBe(1);
+    });
+
+    it('should not render any groups when there is not a single match when filtering', () => {
+      const selectItems = [
+        {
+          heading: 'group 1',
+          items: [
+            { value: 1, content: '1' },
+            { value: 2, content: '2' },
+          ],
+        },
+        {
+          heading: 'group 2',
+          items: [
+            { value: 3, content: '3' },
+            { value: 4, content: '4' },
+          ],
+        },
+      ];
+      const select = mount(<StatelessSelect items={selectItems} isOpen filterValue={'5'} />);
+      expect(select.find(Group).length).toBe(0);
+      expect(select.find(Group).find(Item).length).toBe(0);
+    });
   });
 
   describe('props managements', () => {

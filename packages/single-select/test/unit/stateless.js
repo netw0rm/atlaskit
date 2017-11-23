@@ -8,6 +8,7 @@ import Spinner from '@atlaskit/spinner';
 import { StatelessSelect } from '../../src';
 import InitialLoadingElement from '../../src/styled/InitialLoading';
 import Content from '../../src/styled/Content';
+import Trigger from '../../src/styled/Trigger';
 
 import { name } from '../../package.json';
 
@@ -725,6 +726,23 @@ describe(name, () => {
         expect(instance.getItemTrueIndex(2, 0)).toBe(2);
         expect(instance.getItemTrueIndex(0, 1)).toBe(3);
         expect(instance.getItemTrueIndex(3, 1)).toBe(6);
+      });
+    });
+
+    describe('handleOnBlur', () => {
+      it('should close select when handleOnBlur is called', () => {
+        wrapper.setProps({ isOpen: true });
+        const args = { event: {}, isOpen: false };
+        instance.handleOnBlur({});
+        expect(onOpenChangeSpy).toHaveBeenCalled();
+        expect(onOpenChangeSpy).toHaveBeenCalledWith(args);
+      });
+      it('should close select when select is blurred', () => {
+        wrapper.setProps({ isOpen: true });
+        wrapper.find(Trigger).simulate('blur');
+        expect(onOpenChangeSpy).toHaveBeenCalled();
+        expect(onOpenChangeSpy.mock.calls[0][0])
+          .toEqual(expect.objectContaining({ isOpen: false }));
       });
     });
   });

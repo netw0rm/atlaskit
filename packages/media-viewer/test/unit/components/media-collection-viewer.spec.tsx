@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { mount, shallow } from 'enzyme';
 import { Subject } from 'rxjs/Subject';
-import { MediaCollection, MediaCollectionFileItem } from '@atlaskit/media-core';
+import { MediaCollection, MediaCollectionFileItem, MediaItemType } from '@atlaskit/media-core';
 import {
   MediaCollectionViewer, MediaCollectionViewerProps, MediaCollectionViewerState
 } from '../../../src/components/media-collection-viewer';
@@ -18,6 +18,7 @@ describe('<MediaCollectionViewer />', () => {
     authProvider
   };
   const occurrenceKey = 'some-occurence-key';
+  const id = 'some-media-id';
   const collectionName = 'some-collection';
   const basePath = 'some-base-path';
   const file = {
@@ -27,17 +28,29 @@ describe('<MediaCollectionViewer />', () => {
       occurrenceKey: 'occurence-1'
     }
   } as MediaCollectionFileItem;
+
   const collection = {
     id: collectionName,
     items: [file]
   } as MediaCollection;
+
+  const emptyCollection = {
+    id: collectionName,
+    items: []
+  } as MediaCollection;
+
+  const selectedItem = {
+    id,
+    occurrenceKey,
+    type: 'file' as MediaItemType
+  };
 
   it('should get the correct collection provider', () => {
     const context = Stubs.context(contextConfig);
     shallow(
       <MediaCollectionViewer
         context={context as any}
-        occurrenceKey={occurrenceKey}
+        selectedItem={selectedItem}
         collectionName={collectionName}
         MediaViewer={Stubs.mediaViewerConstructor() as any}
         basePath={basePath}
@@ -54,7 +67,7 @@ describe('<MediaCollectionViewer />', () => {
     shallow(
       <MediaCollectionViewer
         context={context as any}
-        occurrenceKey={occurrenceKey}
+        selectedItem={selectedItem}
         collectionName={collectionName}
         pageSize={pageSize}
         MediaViewer={Stubs.mediaViewerConstructor() as any}
@@ -71,7 +84,7 @@ describe('<MediaCollectionViewer />', () => {
     shallow(
       <MediaCollectionViewer
         context={Stubs.context(contextConfig) as any}
-        occurrenceKey={occurrenceKey}
+        selectedItem={selectedItem}
         collectionName={collectionName}
         MediaViewer={mediaViewerConstructor as any}
         basePath={basePath}
@@ -94,7 +107,7 @@ describe('<MediaCollectionViewer />', () => {
     shallow(
       <MediaCollectionViewer
         context={Stubs.context(contextConfig) as any}
-        occurrenceKey={occurrenceKey}
+        selectedItem={selectedItem}
         collectionName={collectionName}
         mediaViewerConfiguration={additionalConfiguration}
         MediaViewer={mediaViewerConstructor as any}
@@ -115,7 +128,7 @@ describe('<MediaCollectionViewer />', () => {
     const wrapper = mount<MediaCollectionViewerProps, MediaCollectionViewerState>(
       <MediaCollectionViewer
         context={Stubs.context(contextConfig) as any}
-        occurrenceKey={occurrenceKey}
+        selectedItem={selectedItem}
         collectionName={collectionName}
         MediaViewer={Stubs.mediaViewerConstructor() as any}
         basePath={basePath}
@@ -134,7 +147,7 @@ describe('<MediaCollectionViewer />', () => {
     const wrapper = mount<MediaCollectionViewerProps, MediaCollectionViewerState>(
       <MediaCollectionViewer
         context={Stubs.context(contextConfig) as any}
-        occurrenceKey={occurrenceKey}
+        selectedItem={selectedItem}
         collectionName={collectionName}
         MediaViewer={Stubs.mediaViewerConstructor() as any}
         basePath={basePath}
@@ -147,7 +160,7 @@ describe('<MediaCollectionViewer />', () => {
     const wrapper = mount<MediaCollectionViewerProps, MediaCollectionViewerState>(
       <MediaCollectionViewer
         context={Stubs.context(contextConfig) as any}
-        occurrenceKey={occurrenceKey}
+        selectedItem={selectedItem}
         collectionName={collectionName}
         MediaViewer={Stubs.mediaViewerConstructor() as any}
         basePath={basePath}
@@ -169,7 +182,7 @@ describe('<MediaCollectionViewer />', () => {
     const wrapper = mount<MediaCollectionViewerProps, MediaCollectionViewerState>(
       <MediaCollectionViewer
         context={Stubs.context(contextConfig, Stubs.mediaCollectionProvider(subject)) as any}
-        occurrenceKey={occurrenceKey}
+        selectedItem={selectedItem}
         collectionName={collectionName}
         MediaViewer={Stubs.mediaViewerConstructor() as any}
         basePath={basePath}
@@ -181,8 +194,67 @@ describe('<MediaCollectionViewer />', () => {
 
     subject.next(collection);
 
-    expect(mediaViewer.open).toHaveBeenCalledWith({ id: occurrenceKey });
+    expect(mediaViewer.open).toHaveBeenCalledWith({ id: 'some-media-id-some-occurence-key' });
     expect(mediaViewer.setFiles).toHaveBeenCalledWith(files);
+  });
+
+  it('should open media viewer with first item from the collection, if no selectedItem passed', () => {
+    const subject = new Subject<MediaCollection>();
+    const wrapper = mount<MediaCollectionViewerProps, MediaCollectionViewerState>(
+      <MediaCollectionViewer
+        context={Stubs.context(contextConfig, Stubs.mediaCollectionProvider(subject)) as any}
+        collectionName={collectionName}
+        MediaViewer={Stubs.mediaViewerConstructor() as any}
+        basePath={basePath}
+      />);
+
+    const files = MediaFileAttributesFactory.fromMediaCollection(collection, serviceHost);
+    const { mediaViewer } = wrapper.state();
+    (mediaViewer.isOpen as any).mockImplementation(() => false);
+
+    subject.next(collection);
+
+    expect(mediaViewer.open).toHaveBeenCalledWith({ 'id': 'file-1-occurence-1' });
+    expect(mediaViewer.setFiles).toHaveBeenCalledWith(files);
+  });
+
+  it('should not open media viewer, if selectedItem was passed but not items were found in the collection', () => {
+    const subject = new Subject<MediaCollection>();
+    const wrapper = mount<MediaCollectionViewerProps, MediaCollectionViewerState>(
+      <MediaCollectionViewer
+        context={Stubs.context(contextConfig, Stubs.mediaCollectionProvider(subject)) as any}
+        selectedItem={selectedItem}
+        collectionName={collectionName}
+        MediaViewer={Stubs.mediaViewerConstructor() as any}
+        basePath={basePath}
+      />);
+
+    const { mediaViewer } = wrapper.state();
+    (mediaViewer.isOpen as any).mockImplementation(() => false);
+
+    subject.next(emptyCollection);
+
+    expect(mediaViewer.open).not.toHaveBeenCalled();
+    expect(mediaViewer.setFiles).not.toHaveBeenCalled();
+  });
+
+  it('should not open media viewer, if no selectedItem was passed and not items were found in the collection', () => {
+    const subject = new Subject<MediaCollection>();
+    const wrapper = mount<MediaCollectionViewerProps, MediaCollectionViewerState>(
+      <MediaCollectionViewer
+        context={Stubs.context(contextConfig, Stubs.mediaCollectionProvider(subject)) as any}
+        collectionName={collectionName}
+        MediaViewer={Stubs.mediaViewerConstructor() as any}
+        basePath={basePath}
+      />);
+
+    const { mediaViewer } = wrapper.state();
+    (mediaViewer.isOpen as any).mockImplementation(() => false);
+
+    subject.next(emptyCollection);
+
+    expect(mediaViewer.open).not.toHaveBeenCalled();
+    expect(mediaViewer.setFiles).not.toHaveBeenCalled();
   });
 
   it('should set files with query and not open media viewer, given media viewer is already open', () => {
@@ -190,7 +262,7 @@ describe('<MediaCollectionViewer />', () => {
     const wrapper = mount<MediaCollectionViewerProps, MediaCollectionViewerState>(
       <MediaCollectionViewer
         context={Stubs.context(contextConfig, Stubs.mediaCollectionProvider(subject)) as any}
-        occurrenceKey={occurrenceKey}
+        selectedItem={selectedItem}
         collectionName={collectionName}
         MediaViewer={Stubs.mediaViewerConstructor() as any}
         basePath={basePath}
@@ -214,7 +286,7 @@ describe('<MediaCollectionViewer />', () => {
     const wrapper = mount<MediaCollectionViewerProps, MediaCollectionViewerState>(
       <MediaCollectionViewer
         context={Stubs.context(contextConfig, provider) as any}
-        occurrenceKey={occurrenceKey}
+        selectedItem={selectedItem}
         collectionName={collectionName}
         MediaViewer={Stubs.mediaViewerConstructor() as any}
         basePath={basePath}
@@ -233,7 +305,7 @@ describe('<MediaCollectionViewer />', () => {
     const wrapper = mount<MediaCollectionViewerProps, MediaCollectionViewerState>(
       <MediaCollectionViewer
         context={Stubs.context(contextConfig, provider) as any}
-        occurrenceKey={occurrenceKey}
+        selectedItem={selectedItem}
         collectionName={collectionName}
         MediaViewer={Stubs.mediaViewerConstructor() as any}
         basePath={basePath}

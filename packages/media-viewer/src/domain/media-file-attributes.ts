@@ -4,6 +4,11 @@ import {
 } from '@atlaskit/media-core';
 import { ArtifactFormat } from './artifact-format';
 import { MediaFileAttributes } from '../mediaviewer';
+import { MediaViewerItem } from '../components/media-viewer';
+
+export interface FileItemWithOccurrenceKey extends FileItem {
+  readonly occurrenceKey: string;
+}
 
 export class MediaFileAttributesFactory {
   static create(id = '', details: FileDetails, serviceHost: string): MediaFileAttributes {
@@ -39,15 +44,29 @@ export class MediaFileAttributesFactory {
     };
   }
 
-  static fromFileItem(item: FileItem, serviceHost: string): MediaFileAttributes {
-    return MediaFileAttributesFactory.create(item.details.id, item.details, serviceHost);
+  static getUniqueMediaViewerId(selectedItem: MediaViewerItem) {
+    return `${selectedItem.id}-${selectedItem.occurrenceKey || 'no-occurrenceKey'}`;
+  }
+
+  static fromFileItem(item: FileItemWithOccurrenceKey, serviceHost: string): MediaFileAttributes {
+    const id = MediaFileAttributesFactory.getUniqueMediaViewerId({
+      id: item.details.id as string,
+      occurrenceKey: item.occurrenceKey,
+      type: 'file'
+    });
+    return MediaFileAttributesFactory.create(id, item.details, serviceHost);
   }
 
   static fromMediaCollectionFileItem(item: MediaCollectionFileItem, serviceHost: string): MediaFileAttributes {
-    return MediaFileAttributesFactory.create(item.details.occurrenceKey, item.details, serviceHost);
+    const id = MediaFileAttributesFactory.getUniqueMediaViewerId({
+      id: item.details.id as string,
+      occurrenceKey: item.details.occurrenceKey,
+      type: 'file'
+    });
+    return MediaFileAttributesFactory.create(id, item.details, serviceHost);
   }
 
-  static fromFileItemList(items: Array<FileItem>, serviceHost: string): Array<MediaFileAttributes> {
+  static fromFileItemList(items: Array<FileItemWithOccurrenceKey>, serviceHost: string): Array<MediaFileAttributes> {
     return items.map(item => MediaFileAttributesFactory.fromFileItem(item, serviceHost));
   }
 

@@ -9,7 +9,10 @@ storiesOf(name, module)
   .add('Parent position: fixed', () => (
     <div style={{ height: '100%' }}>
       <div className={styles.fixedParent}>
-        <ExampleAlignment position="bottom center" content="Parent is position: fixed" longContent />
+        <ExampleAlignment position="bottom center" content="When resizing window, flipped popper should not overflow off the top" longContent />
+      </div>
+      <div className={styles.fixedParent}>
+        <ExampleAlignment position="bottom center" content="When resizing the window and scrolled down, flipped popper can overflow the viewport." longContent />
       </div>
     </div>
   ))

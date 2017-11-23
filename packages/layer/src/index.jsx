@@ -87,30 +87,50 @@ export default class Layer extends PureComponent {
 
   /* Calculate the max height of the popper if it's height is greater than the viewport to prevent
    * the bottom of the popper not being viewable.
-   * Only works if the popper uses viewport as the boundary and is located at the top of the page.
+   * Only works if the popper uses viewport as the boundary and has a fixed position ancestor.
+   *
    */
-  calculateMaxHeight(originalHeight, currentHeight, positionTop) {
+  calculateMaxHeight(originalHeight, currentHeight, positionTop, cssPosition) {
     let maxHeight = null;
+    if (cssPosition !== 'fixed') {
+      return null;
+    }
     if (this.props.boundariesElement === 'viewport') {
       const viewportHeight = Math.max(document.documentElement.clientHeight,
         window.innerHeight || 0);
+
       if (viewportHeight < originalHeight && currentHeight + positionTop >= viewportHeight - 50) {
+        // allow some spacing either side of viewport height
         maxHeight = viewportHeight - 12;
       }
     }
     return maxHeight;
   }
 
+  /* Clamp fixed position to the window for fixed position poppers that flow off the top of the
+   * window.
+   * A fixed position popper is a popper who has an ancestor with position: fixed.
+   *
+   * It is too difficult to fix this for non-fixed position poppers without re-implementing popper's
+   * offset functionality or fixing the issue upstream.
+   */
+  // eslint-disable-next-line class-methods-use-this
+  fixPositionTopUnderflow(popperTop, cssPosition) {
+    return popperTop >= 0 || cssPosition !== 'fixed' ? popperTop : 0;
+  }
+
   extractStyles = (state) => {
     if (state) {
-      const popperTop = state.offsets.popper.top;
       const popperHeight = state.offsets.popper.height;
-
       const left = Math.round(state.offsets.popper.left);
-      // Clamp top at 0 so popper does not overflow off top of page
-      const top = popperTop >= 0 ? Math.round(popperTop) : 0;
+      // The offset position is sometimes an object and sometimes just a string...
+      const cssPosition = typeof state.offsets.popper.position === 'object'
+        ? state.offsets.popper.position.position
+        : state.offsets.popper.position;
+      const top = this.fixPositionTopUnderflow(state.offsets.popper.top, cssPosition);
+
       const originalHeight = this.state.originalHeight || popperHeight;
-      const maxHeight = this.calculateMaxHeight(originalHeight, popperHeight, top);
+      const maxHeight = this.calculateMaxHeight(originalHeight, popperHeight, top, cssPosition);
       this.setState({
         hasExtractedStyles: true,
         // position: fixed or absolute

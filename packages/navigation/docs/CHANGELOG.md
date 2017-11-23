@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 26.8.1 (2017-11-23)
+
+* bug fix; allow vertical scrolling in collapsed container navigation ([99e5544](https://bitbucket.org/atlassian/atlaskit/commits/99e5544))
 ## 26.8.0 (2017-11-22)
 
 

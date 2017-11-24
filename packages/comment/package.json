@@ -35,11 +35,11 @@
   "devDependencies": {
     "@atlaskit/avatar": "^8.0.6",
     "@atlaskit/comment": "*",
-    "@atlaskit/editor-bitbucket": "^1.0.0",
+    "@atlaskit/editor-bitbucket": "^4.8.6",
     "@atlaskit/flag": "^2.2.0",
     "@atlaskit/modal-dialog": "^3.0.2",
-    "@atlaskit/tooltip": "^6.0.0",
     "@atlaskit/theme": "^2.0.0",
+    "@atlaskit/tooltip": "^6.0.0",
     "@atlaskit/util-readme": "^3.1.0"
   },
   "author": "Atlassian Pty Ltd",

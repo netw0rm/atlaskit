@@ -276,7 +276,7 @@ storiesOf(name, module)
           <AkContainerTitle
             href="#foo"
             icon={<NucleusIcon />}
-            text="AtlasKit"
+            text="Atlaskit"
           />
         )}
       />

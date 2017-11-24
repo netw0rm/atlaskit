@@ -11,7 +11,7 @@ import {
 
 export default class Layout extends PureComponent {
   static propTypes = {
-    /** The element to display as the Comment avatar - generally an AtlasKit Avatar */
+    /** The element to display as the Comment avatar - generally an Atlaskit Avatar */
     avatar: PropTypes.node,
     /** Nested comments to render */
     children: PropTypes.node,

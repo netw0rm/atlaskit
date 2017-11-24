@@ -1,5 +1,5 @@
 # Icon
-This package contains the AtlasKit icons. All icons should be consumed separately unless your build tool supports tree shaking.
+This package contains the Atlaskit icons. All icons should be consumed separately unless your build tool supports tree shaking.
 
 > This packages is licensed under the Atlassian Design Guidelines - please check the LICENSE file for more information.
 
@@ -63,7 +63,7 @@ ReactDOM.render(<BitbucketLogo />, container);
 
 ### Adding new icons
 
-Adding new icons is as simple as checking out the AtlasKit repo, adding your SVG file to `/packages/icon/src/icons` and running
+Adding new icons is as simple as checking out the Atlaskit repo, adding your SVG file to `/packages/icon/src/icons` and running
 
 ```sh
 npm run prepublish

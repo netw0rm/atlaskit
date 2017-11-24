@@ -114,7 +114,7 @@ export default class BasicNestedNavigation extends PureComponent {
               icon={
                 <img alt="nucleus" src={nucleusLogo} />
               }
-              text="AtlasKit"
+              text="Atlaskit"
               subText="Is the king"
             />
           </Tooltip>

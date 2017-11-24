@@ -60,7 +60,7 @@ export default class BasicNavigation extends PureComponent {
         icon={
           <img alt="nucleus" src={nucleusLogo} />
         }
-        text="AtlasKit"
+        text="Atlaskit"
         subText="Is the king"
       />),
     createDrawerContent: (

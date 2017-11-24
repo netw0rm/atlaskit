@@ -24,7 +24,7 @@ export default class Examples extends PureComponent {
             compliant, reusable, well-maintained and accessible.
           </p>
           <ul>
-            <li>The <a href="http://go.atlassian.com/ak-starter/" target="_blank" rel="noopener noreferrer">atlaskit-starter</a> project will help you get a React app setup and running with some demo AtlasKit components. </li>
+            <li>The <a href="http://go.atlassian.com/ak-starter/" target="_blank" rel="noopener noreferrer">atlaskit-starter</a> project will help you get a React app setup and running with some demo Atlaskit components. </li>
             <li>Use this <a href="http://go.atlassian.com/ak-codepen/" target="_blank" rel="noopener noreferrer">codepen</a> sample as a sandbox to quickly try out our components. </li>
             <li>The <Link to="/components">components</Link> section of this site has docs, code samples and links to React storybooks.</li>
           </ul>

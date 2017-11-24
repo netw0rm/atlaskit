@@ -126,7 +126,7 @@ storiesOf(`${name}/QuickSearch`, module)
         <JiraProjectResult
           {...noOpInteractionProps}
           avatarUrl={getContainerAvatarUrl(5)}
-          name="AtlasKit"
+          name="Atlaskit"
           projectType="Software project"
         />
       </AkNavigationItemGroup>
@@ -150,7 +150,7 @@ storiesOf(`${name}/QuickSearch`, module)
           avatarUrl={sampleAvatars.jiraIssueBug}
           name="Too much awesomeness in one repo"
           objectKey="AK-9001"
-          containerName="AtlasKit"
+          containerName="Atlaskit"
         />
         <ObjectResult
           {...noOpInteractionProps}

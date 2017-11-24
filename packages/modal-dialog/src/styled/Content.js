@@ -14,7 +14,8 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
-  max-height: 100%;
+  /* Calc needed for IE11 fix */
+  max-height: calc(100% - 1px);
 `;
 
 // Header

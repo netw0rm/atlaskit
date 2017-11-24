@@ -59,6 +59,8 @@ export const PositionerAbsolute = styled.div`
   left: 0;
   margin-left: auto;
   margin-right: auto;
+  /* Performing a calc fixes max-height not working properly in IE11.
+   * Needs to be performed on all children with max-height: 100% as well. */
   max-height: calc(100% - 1px);
   max-width: ${maxDimensions};
   position: absolute;
@@ -82,7 +84,7 @@ export const Dialog = styled.div`
   display: flex;
   flex-direction: column;
   height: ${dialogHeight};
-  max-height: 100%;
+  max-height: calc(100% - 1px);
   outline: 0;
 `;
 

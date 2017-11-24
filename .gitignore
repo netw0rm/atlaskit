@@ -27,4 +27,3 @@ packages/*/CHANGELOG.md
 packages/**/yarn.lock
 packages/**/storybook-static
 changed-packages
-**/packages/website/package.json

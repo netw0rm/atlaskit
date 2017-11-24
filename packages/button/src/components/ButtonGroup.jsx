@@ -9,7 +9,7 @@ function ValidateChildren(props, propName) {
   let error = null;
 
   Children.forEach(prop, (child) => {
-    if (child != null || child === false) {
+    if (child === null || child === false) {
       return;
     }
     if (child.type !== Button) {

@@ -77,16 +77,9 @@ storiesOf(`${name}/Mention`, module)
     />
   ))
   .add('No access', () => (
-    <Mention
-      {...mentionData}
-      accessLevel={'NONE'}
-      onClick={action('onClick')}
-      onMouseEnter={action('onMouseEnter')}
-      onMouseLeave={action('onMouseLeave')}
-    />
-  ))
-  .add('No access on N20 background', () => {
-    return withN20Container(
+    // push it down so that the tooltip doesn't get clipped at the top which would result in the tooltip
+    // position being flipped from right to left
+    <div style={{ marginTop: '10px' }}>
       <Mention
         {...mentionData}
         accessLevel={'NONE'}
@@ -94,5 +87,18 @@ storiesOf(`${name}/Mention`, module)
         onMouseEnter={action('onMouseEnter')}
         onMouseLeave={action('onMouseLeave')}
       />
+    </div>
+  ))
+  .add('No access on N20 background', () => {
+    return withN20Container(
+      <div style={{ marginTop: '10px' }}>
+        <Mention
+          {...mentionData}
+          accessLevel={'NONE'}
+          onClick={action('onClick')}
+          onMouseEnter={action('onMouseEnter')}
+          onMouseLeave={action('onMouseLeave')}
+        />
+      </div>
     );
   });

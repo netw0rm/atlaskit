@@ -1,5 +1,19 @@
 # @atlaskit/flag
 
+## 6.1.8 (2017-11-22)
+
+* bug fix; long messages in Flags start to wrap, not overflow content. ([b69c45f](https://bitbucket.org/atlassian/atlaskit/commits/b69c45f))
+## 6.1.7 (2017-11-15)
+
+* bug fix; fix flags within page components appearing behind navigation (issues closed: ak-1823) ([08e397e](https://bitbucket.org/atlassian/atlaskit/commits/08e397e))
+## 6.1.6 (2017-11-13)
+
+* bug fix; update flag's react-transition-group dependency from v1 to v2 (issues closed: ak-3755) ([32f3af3](https://bitbucket.org/atlassian/atlaskit/commits/32f3af3))
+
+
+## 6.1.5 (2017-11-02)
+
+* bug fix; added missing dependencies (issues closed: ak-3782) ([4dbc3ef](https://bitbucket.org/atlassian/atlaskit/commits/4dbc3ef))
 ## 6.1.4 (2017-10-26)
 
 * bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))

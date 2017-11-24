@@ -211,7 +211,7 @@ storiesOf(name, module)
       <ChangingColor>
         {
           flagshipIcons.map(([Icon, label], key) => (
-            <Tooltip description={label} key={key}>
+            <Tooltip content={label} key={key}>
               <Icon size="xlarge" label={label} />
             </Tooltip>
           ))

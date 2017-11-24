@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { MouseEvent, PureComponent } from 'react';
 import * as classNames from 'classnames';
 import * as uid from 'uid';
@@ -114,11 +115,11 @@ const categoryComparator = (eg1: EmojiGroup, eg2: EmojiGroup): number => {
 
 export default class EmojiPickerVirtualList extends PureComponent<Props, State> {
   static contextTypes = {
-    emoji: React.PropTypes.object
+    emoji: PropTypes.object
   };
 
   static childContextTypes = {
-    emoji: React.PropTypes.object
+    emoji: PropTypes.object
   };
 
   static defaultProps = {

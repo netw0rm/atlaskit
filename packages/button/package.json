@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/button",
-  "version": "5.4.5",
+  "version": "5.4.10",
   "config": {
     "access": "public"
   },
@@ -45,7 +45,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@atlaskit/button": "*",
-    "@atlaskit/icon": "^1.0.0",
+    "@atlaskit/icon": "^10.3.1",
     "@atlaskit/util-readme": "^1.0.0",
     "react-router-dom": "^4.0.0",
     "uid": "^0.0.2"

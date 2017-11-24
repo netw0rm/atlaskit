@@ -89,6 +89,7 @@ export const Expander = styled.div`
 export const Description = styled.div`
   color: ${flagTextColor};
   margin-top: ${gridSize}px;
+  word-wrap: break-word;
 `;
 
 export const Icon = styled.div`

@@ -265,4 +265,91 @@ describe('EmojiUtils', () => {
       expect(convertedEmoji, 'Converted emoji').to.deep.equal(mediaEmoji);
     });
   });
+
+  describe('#denormaliseServiceAltRepresentation', () => {
+    it('handles missing altRepresentations field', () => {
+      const emoji: EmojiServiceDescription = {
+        id: '13d29267-ff9e-4892-a484-1a1eef3b5ca3',
+        name: 'standup.png',
+        shortName: 'standup.png',
+        type: 'SITE',
+        category: customCategory,
+        order: -1,
+        representation: {
+          imagePath: 'https://something/something.png',
+          height: 64,
+          width: 64,
+        },
+        searchable: true
+      };
+      const emojiResponse = denormaliseEmojiServiceResponse({
+        emojis: [emoji],
+        meta: {},
+      });
+
+      const convertedEmoji = emojiResponse.emojis[0];
+      expect(convertedEmoji.altRepresentation).to.equal(undefined);
+    });
+
+    it('handles an empty altRepresentations map', () => {
+      const emoji: EmojiServiceDescription = {
+        id: '13d29267-ff9e-4892-a484-1a1eef3b5ca3',
+        name: 'standup.png',
+        shortName: 'standup.png',
+        type: 'SITE',
+        category: customCategory,
+        order: -1,
+        representation: {
+          imagePath: 'https://something/something.png',
+          height: 64,
+          width: 64,
+        },
+        altRepresentations: {},
+        searchable: true
+      };
+      const emojiResponse = denormaliseEmojiServiceResponse({
+        emojis: [emoji],
+        meta: {},
+      });
+
+      const convertedEmoji = emojiResponse.emojis[0];
+      expect(convertedEmoji.altRepresentation).to.equal(undefined);
+    });
+
+    it('uses the DPI returned by the altRepresentations map', () => {
+      const emoji: EmojiServiceDescription = {
+        id: '13d29267-ff9e-4892-a484-1a1eef3b5ca3',
+        name: 'standup.png',
+        shortName: 'standup.png',
+        type: 'SITE',
+        category: customCategory,
+        order: -1,
+        representation: {
+          imagePath: 'https://something/something.png',
+          height: 64,
+          width: 64,
+        },
+        altRepresentations: {
+          XHDPI: {
+            imagePath: 'https://something/something3.png',
+            height: 128,
+            width: 128,
+          },
+        },
+        searchable: true
+      };
+      const emojiResponse = denormaliseEmojiServiceResponse({
+        emojis: [emoji],
+        meta: {},
+      });
+
+      const convertedEmoji = emojiResponse.emojis[0];
+      expect(convertedEmoji.altRepresentation).to.deep.equal({
+        imagePath: 'https://something/something3.png',
+        height: 128,
+        width: 128,
+      });
+    });
+
+  });
 });

@@ -2,11 +2,17 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { PaginationStateless } from '@atlaskit/pagination';
 
-import { ASC, DESC } from '../internal/constants';
+import { ASC, DESC, SMALL, LARGE } from '../internal/constants';
+import { getPageRows } from '../internal/helpers';
 import props from '../internal/props';
 import TableHead from './TableHead';
 import Body from './Body';
-import EmptyBody from '../styled/EmptyBody';
+import LoadingContainer from './LoadingContainer';
+import LoadingContainerAdvanced from './LoadingContainerAdvanced';
+import {
+  EmptyViewContainer,
+  EmptyViewWithFixedHeight,
+} from '../styled/EmptyBody';
 
 import { Table, Caption } from '../styled/DynamicTable';
 
@@ -27,6 +33,8 @@ export default class DynamicTable extends Component {
     head: props.head,
     rows: props.rows,
     emptyView: PropTypes.node,
+    loadingSpinnerSize: PropTypes.oneOf([SMALL, LARGE]),
+    isLoading: PropTypes.bool,
     isFixedSize: PropTypes.bool,
     rowsPerPage: props.isInteger,
     onSetPage: PropTypes.func,
@@ -41,10 +49,12 @@ export default class DynamicTable extends Component {
     head: null,
     rows: null,
     emptyView: null,
+    loadingSpinnerSize: null,
+    isLoading: false,
     isFixedSize: false,
     rowsPerPage: Infinity,
-    onSetPage() {},
-    onSort() {},
+    onSetPage() { },
+    onSort() { },
     page: 1,
     sortKey: null,
     sortOrder: null,
@@ -61,29 +71,79 @@ export default class DynamicTable extends Component {
 
   onSetPage = page => this.props.onSetPage(page);
 
+  getSpinnerSize = () => {
+    const {
+      page,
+      rows,
+      rowsPerPage,
+      loadingSpinnerSize,
+    } = this.props;
+
+    if (loadingSpinnerSize) {
+      return loadingSpinnerSize;
+    }
+
+    return getPageRows(page, rows || [], rowsPerPage).length > 2 ? LARGE : SMALL;
+  }
+
+  renderEmptyBody = () => {
+    const {
+      emptyView,
+      isLoading,
+    } = this.props;
+
+    if (isLoading) {
+      return (
+        <EmptyViewWithFixedHeight />
+      );
+    }
+
+    return emptyView && (
+      <EmptyViewContainer>
+        {emptyView}
+      </EmptyViewContainer>
+    );
+  }
+
   render() {
     const {
-      caption, emptyView, head, isFixedSize, page, rows, rowsPerPage, sortKey, sortOrder,
+      caption,
+      head,
+      isFixedSize,
+      page,
+      rows,
+      rowsPerPage,
+      sortKey,
+      sortOrder,
+      isLoading,
     } = this.props;
-    const totalPages = rows ? Math.ceil(rows.length / rowsPerPage) : 0;
+
+    const rowsLength = rows && rows.length;
     const bodyProps = { rows, head, sortKey, sortOrder, rowsPerPage, page, isFixedSize };
-    const rowsExist = (rows && rows.length > 0);
-    const emptyBody = (emptyView && <EmptyBody>
-      {emptyView}
-    </EmptyBody>);
+    const totalPages = rowsLength ? Math.ceil(rowsLength / rowsPerPage) : 0;
+    const rowsExist = !!rowsLength;
+
+    const spinnerSize = this.getSpinnerSize();
+    const emptyBody = this.renderEmptyBody();
 
     return (
       <div>
-        <Table isFixedSize={isFixedSize}>
-          {!!caption && <Caption>{caption}</Caption>}
-          {head && <TableHead
-            head={head}
-            onSort={this.onSort}
-            sortKey={sortKey}
-            sortOrder={sortOrder}
-          />}
-          {rowsExist && <Body {...bodyProps} />}
-        </Table>
+        <LoadingContainerAdvanced
+          isLoading={isLoading && rowsExist}
+          spinnerSize={spinnerSize}
+          targetRef={() => this.tableBody}
+        >
+          <Table isFixedSize={isFixedSize}>
+            {!!caption && <Caption>{caption}</Caption>}
+            {head && <TableHead
+              head={head}
+              onSort={this.onSort}
+              sortKey={sortKey}
+              sortOrder={sortOrder}
+            />}
+            {rowsExist && <Body {...bodyProps} ref={el => (this.tableBody = el)} />}
+          </Table>
+        </LoadingContainerAdvanced>
         {!totalPages ? null : (
           <PaginationStateless
             current={page}
@@ -91,7 +151,14 @@ export default class DynamicTable extends Component {
             total={totalPages}
           />
         )}
-        {!rowsExist && emptyBody}
+        {!rowsExist && emptyBody && (
+          <LoadingContainer
+            isLoading={isLoading}
+            spinnerSize={LARGE}
+          >
+            {emptyBody}
+          </LoadingContainer>
+        )}
       </div>
     );
   }

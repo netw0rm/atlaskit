@@ -162,7 +162,8 @@ export default class StatelessSelect extends PureComponent {
   }
 
   componentDidUpdate = (prevProps) => {
-    if (!prevProps.shouldFocus && this.props.shouldFocus) {
+    if ((!prevProps.shouldFocus && this.props.shouldFocus) ||
+        (!prevProps.isOpen && this.props.isOpen)) {
       this.focus();
     }
 
@@ -400,6 +401,10 @@ export default class StatelessSelect extends PureComponent {
     }
   }
 
+  handleOnBlur = (event) => {
+    this.onOpenChange({ event, isOpen: false });
+  }
+
   handleItemSelect = (item, attrs) => {
     if (item && !item.isDisabled) {
       this.props.onOpenChange({ isOpen: false, event: attrs.event });
@@ -438,14 +443,22 @@ export default class StatelessSelect extends PureComponent {
       );
     }
 
-    return groups.map((group, groupIndex) =>
-      <Group
-        heading={group.heading}
-        key={groupIndex}
-      >
-        {this.renderItems(group.items, groupIndex)}
-      </Group>
-  );
+    const filteredGroups = groups
+      .filter(group => this.filterItems(group.items).length)
+      .map((group, groupIndex) =>
+        <Group
+          heading={group.heading}
+          key={groupIndex}
+        >
+          {this.renderItems(group.items, groupIndex)}
+        </Group>
+      );
+
+    if (filteredGroups.length === 0) {
+      return (<NothingWasFound noMatchesFound={this.props.noMatchesFound} />);
+    }
+
+    return filteredGroups;
   }
 
   renderOptions = items => items.map((item, itemIndex) => (<option
@@ -534,6 +547,7 @@ export default class StatelessSelect extends PureComponent {
               isInvalid={isInvalid}
               invalidMessage={invalidMessage}
               isPaddingDisabled
+              onBlur={this.handleOnBlur}
             >
               <Trigger
                 onClick={this.handleTriggerClick}

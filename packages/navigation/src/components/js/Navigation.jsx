@@ -9,7 +9,7 @@ import NavigationGlobalNavigationWrapper from '../styled/NavigationGlobalNavigat
 import NavigationContainerNavigationWrapper from '../styled/NavigationContainerNavigationWrapper';
 import DefaultLinkComponent from './DefaultLinkComponent';
 import Resizer from './Resizer';
-import type { ReactElement, ReactClass } from '../../types';
+import type { ReactElement, ReactClass, IconAppearance } from '../../types';
 import type { Provided } from '../../theme/types';
 import Spacer from './Spacer';
 import {
@@ -60,13 +60,18 @@ type Props = {|
   /** Icon to be displayed at the top of the GlobalNavigation. This is wrapped in
   the linkComponent. */
   globalPrimaryIcon?: ReactElement,
+  /** Appearance of globalPrimaryIcon for shape styling of drop shadows */
+  globalPrimaryIconAppearance?: IconAppearance,
   /** Link to be passed to the linkComponent that wraps the globalCreateIcon. */
   globalPrimaryItemHref?: string,
   /** Icon to be used as the 'create' icon. onSearchDrawerOpen is called when it
   is clicked. */
   globalSearchIcon?: ReactElement,
+  /** A list of nodes to be rendered as the global primary actions. They appear
+  directly underneath the global primary icon. This must not exceed three nodes */
+  globalPrimaryActions?: ReactElement[],
   /** An array of elements to be displayed at the bottom of the global component.
-  These should be icons or other small elements. There should be no more than four.
+  These should be icons or other small elements. There must be no more than five.
   Secondary Actions will not be visible when nav is collapsed. */
   globalSecondaryActions?: ReactElement[],
   /** Whether to display a scroll hint shadow at the top of the ContainerNavigation
@@ -148,6 +153,7 @@ export default class Navigation extends PureComponent {
 
   static defaultProps = {
     drawers: [],
+    globalPrimaryIconAppearance: 'round',
     globalSecondaryActions: [],
     isCollapsible: true,
     isOpen: true,
@@ -303,7 +309,9 @@ export default class Navigation extends PureComponent {
       containerScrollRef,
       drawers,
       globalCreateIcon,
+      globalPrimaryActions,
       globalPrimaryIcon,
+      globalPrimaryIconAppearance,
       globalPrimaryItemHref,
       globalSearchIcon,
       globalSecondaryActions,
@@ -361,11 +369,13 @@ export default class Navigation extends PureComponent {
       <NavigationGlobalNavigationWrapper>
         <GlobalNavigation
           theme={globalTheme}
+          primaryActions={globalPrimaryActions}
           createIcon={globalCreateIcon}
           linkComponent={linkComponent}
           onCreateActivate={onCreateDrawerOpen}
           onSearchActivate={onSearchDrawerOpen}
           primaryIcon={globalPrimaryIcon}
+          primaryIconAppearance={globalPrimaryIconAppearance}
           primaryItemHref={globalPrimaryItemHref}
           searchIcon={globalSearchIcon}
           secondaryActions={globalSecondaryActions}
@@ -404,6 +414,7 @@ export default class Navigation extends PureComponent {
                   theme={containerTheme}
                   showGlobalActions={!showGlobalNavigation}
                   globalCreateIcon={globalCreateIcon}
+                  globalPrimaryActions={globalPrimaryActions}
                   globalPrimaryIcon={globalPrimaryIcon}
                   globalPrimaryItemHref={globalPrimaryItemHref}
                   globalSearchIcon={globalSearchIcon}

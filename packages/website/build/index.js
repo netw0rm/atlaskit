@@ -1,6 +1,6 @@
 /*
   eslint-disable no-empty, global-require, import/no-dynamic-require,
-  no-console, no-confusing-arrow
+  no-console, no-confusing-arrow, prefer-object-spread/prefer-object-spread
 */
 
 const fs = require('fs');
@@ -8,6 +8,7 @@ const path = require('path');
 const reactDocs = require('react-docgen');
 const babel = require('babel-core');
 const createBabylonOptions = require('babylon-options');
+const { packageList } = require('./packages');
 
 const getExternalMetadata = require('./getExternalMetadata');
 const template = require('./data.template');
@@ -79,7 +80,6 @@ const packages = fs.readdirSync('..').map((key) => {
   // to the directory name if it isn't present
   const pkgName = pkg['ak:component'].name || key;
   const supportsDarkMode = pkg['ak:component'].dark;
-  const isPattern = pkg['ak:component'].pattern;
 
   // Some packages have docs, so we test for the presence of a directory and
   // pass `true` if it exists. This writes a literal require() into the template
@@ -121,7 +121,6 @@ const packages = fs.readdirSync('..').map((key) => {
   return {
     changelog,
     docs,
-    isPattern,
     key,
     name: pkgName,
     supportsDarkMode,
@@ -129,17 +128,30 @@ const packages = fs.readdirSync('..').map((key) => {
     pkg,
     props,
   };
-}).filter(i => i).sort((a, b) => a.name > b.name ? 1 : -1);
+}).filter(i => i);
 
-/* eslint-disable prefer-object-spread/prefer-object-spread */
+const populateMovedPkgs = () => {
+  const stillHerePkgs = packages.reduce((obj, pkg) => {
+    obj[pkg.pkg.name] = true;
+    return obj;
+  }, {});
+  packageList.forEach((pkg) => {
+    if (!stillHerePkgs[pkg.pkg.name]) {
+      packages.push(Object.assign({}, pkg, { packageHasBeenMoved: true }));
+    }
+  });
+};
+
+populateMovedPkgs();
+const sortedPackages = packages.sort((a, b) => a.name > b.name ? 1 : -1);
+
 const mergeMetadata = component => getExternalMetadata(component.pkg.name)
   .then(metadata => Object.assign({}, component, metadata));
-/* eslint-enable prefer-object-spread/prefer-object-spread */
 
-Promise.all(packages.map(mergeMetadata))
+Promise.all(sortedPackages.map(mergeMetadata))
   .then(data => template({ components: data }).replace(/\n\s+\n/g, '\n'))
   .then(data => fs.writeFileSync(path.resolve('src', 'data.js'), data, 'utf8'))
-  .then(() => console.info(`📦  => Wrote data.json for ${packages.length} AtlasKit components`))
+  .then(() => console.info(`📦  => Wrote data.js for ${packages.length} AtlasKit components`))
   .catch(console.error);
 
 // We're done!

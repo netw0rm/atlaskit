@@ -3,6 +3,28 @@ import 'whatwg-fetch';
 import { LRUCache } from 'lru-fast';
 
 /**
+ * Transform presence response to atlaskit/avatar compatible presence value
+ * @param presenceResponse
+ * @returns {string}
+ */
+const calculatePresence = (presenceResponse) => {
+  if (!presenceResponse) {
+    return null;
+  }
+
+  let state = presenceResponse.state;
+  const stateMetadata = presenceResponse.stateMetadata ?
+    JSON.parse(presenceResponse.stateMetadata) : null;
+
+  if (state === 'busy') {
+    if (stateMetadata && stateMetadata.focus) {
+      state = 'focus';
+    }
+  }
+  return state;
+};
+
+/**
  * Transform response from GraphQL
  * - Prefix `timestring` with `remoteWeekdayString` depending on `remoteWeekdayIndex`
  * - Remove properties which will be not used later
@@ -11,14 +33,20 @@ import { LRUCache } from 'lru-fast';
  * @return {object}
  */
 export const modifyResponse = (response) => {
-  const presence = response.Presence && response.Presence.state;
-  const data = { ...response.User, presence };
+  const presence = calculatePresence(response.Presence);
+  const data = {
+    ...response.User,
+    presence,
+    presenceMessage: response.Presence && response.Presence.message,
+  };
 
   const localWeekdayIndex = new Date().getDay().toString();
 
   if (data.remoteWeekdayIndex && data.remoteWeekdayIndex !== localWeekdayIndex) {
     data.remoteTimeString = `${data.remoteWeekdayString} ${data.remoteTimeString}`;
   }
+
+  data.isCensored = data.isCensored !== 'visible';
 
   data.timestring = data.remoteTimeString;
 
@@ -46,6 +74,11 @@ const buildUserQuery = (cloudId, userId) => ({
   query: `query User($userId: String!, $cloudId: String!) {
     User: CloudUser(userId: $userId, cloudId: $cloudId) {
       id,
+      isCurrentUser,
+      isCensored: censoredStatus,
+      isActive: active,
+      isBot,
+      isNotMentionable,
       fullName,
       nickname,
       email,
@@ -60,7 +93,9 @@ const buildUserQuery = (cloudId, userId) => ({
     Presence: Presence(organizationId: $cloudId, userId: $userId) {
       state,
       type,
-      date
+      date,
+      stateMetadata,
+      message
     }
   }`,
   variables: {
@@ -72,7 +107,7 @@ const buildUserQuery = (cloudId, userId) => ({
 /**
 * @param {string} serviceUrl - GraphQL service endpoint
 * @param {string} userId
-* @param {string} cloudI
+* @param {string} cloudId
 */
 const requestService = (serviceUrl, cloudId, userId) => {
   const headers = buildHeaders();

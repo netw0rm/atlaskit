@@ -90,7 +90,7 @@ storiesOf(name, module)
             <QuestionCircleIcon label="Help icon" secondaryColor="inherit" />
           </AkGlobalItem>,
           <AkGlobalItem>
-            <AkAvatar size="small" src={emmaAvatar} />
+            <AkAvatar size="small" src={emmaAvatar} borderColor="transparent" />
           </AkGlobalItem>,
         ]}
       />
@@ -101,7 +101,7 @@ storiesOf(name, module)
       <BasicNavigation
         containerTheme={presetThemes.global}
         globalSecondaryActions={[
-          <Tooltip position="right" description="Sign in">
+          <Tooltip position="right" content="Sign in">
             <AkGlobalItem>
               <SignInIcon label="Sign in" size="medium" />
             </AkGlobalItem>
@@ -125,7 +125,7 @@ storiesOf(name, module)
             <QuestionCircleIcon label="Help icon" secondaryColor="inherit" />
           </AkGlobalItem>,
           <AkGlobalItem>
-            <AkAvatar size="small" src={emmaAvatar} />
+            <AkAvatar size="small" src={emmaAvatar} borderColor="transparent" />
           </AkGlobalItem>,
         ]}
       />

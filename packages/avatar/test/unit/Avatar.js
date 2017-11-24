@@ -2,6 +2,7 @@
 /* eslint-disable  mocha/no-skipped-tests */
 import React from 'react';
 import { shallow, mount } from 'enzyme';
+import Tooltip from '@atlaskit/tooltip';
 
 import Avatar from '../../src/components/Avatar';
 import AvatarImage from '../../src/components/AvatarImage';
@@ -12,6 +13,7 @@ import { AVATAR_SIZES } from '../../src/styled/constants';
 
 const busy = 'busy';
 const offline = 'offline';
+const focus = 'focus';
 const online = 'online';
 const SIZES = ['xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge'];
 
@@ -35,10 +37,10 @@ describe('Avatar', () => {
   });
 
   describe('name property', () => {
-    it('should set the title of the internal span', () => {
+    it('should set the alt of the internal span', () => {
       const name = 'John Smith';
       const wrapper = mount(<Avatar name={name} src={src} />);
-      expect(wrapper.find(AvatarImage).getDOMNode().title).toBe(name);
+      expect(wrapper.find(AvatarImage).props().alt).toBe(name);
     });
   });
 
@@ -48,7 +50,7 @@ describe('Avatar', () => {
       expect(wrapper.find(Presence).find('svg').length).toBe(0);
     });
 
-    [online, busy, offline].forEach((presence) => {
+    [online, busy, offline, focus].forEach((presence) => {
       describe(`when presence is set to '${presence}'`, () => {
         let wrapper;
         beforeEach(() => (wrapper = mount(<Avatar presence={presence} />)));
@@ -79,6 +81,23 @@ describe('Avatar', () => {
     it('should apply rounded corners for square avatar', () => {
       const wrapper = mount(<Avatar appearance="square" />);
       expect(wrapper.find(AvatarImage).prop('appearance')).toBe('square');
+    });
+  });
+
+  describe('enableTooltip property', () => {
+    it('should wrap with a tooltip if enableTooltip is true and name set', () => {
+      const wrapper = mount(<Avatar enableTooltip name="Test" />);
+      expect(wrapper.find(Tooltip).prop('content')).toBe('Test');
+    });
+
+    it('should not wrap with a tooltip if enableTooltip is false', () => {
+      const wrapper = mount(<Avatar enableTooltip={false} />);
+      expect(wrapper.find(Tooltip).length).toBe(0);
+    });
+
+    it('should not wrap with a tooltip if enableTooltip is true but no name specified', () => {
+      const wrapper = mount(<Avatar enableTooltip />);
+      expect(wrapper.find(Tooltip).length).toBe(0);
     });
   });
 

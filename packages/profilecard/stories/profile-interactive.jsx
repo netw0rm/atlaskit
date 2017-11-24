@@ -52,6 +52,10 @@ export default function interActiveCard(dependencies) {
       location: 'Sydney, Australia',
       timeString: getTimeString(),
 
+      isBot: false,
+      isActive: true,
+      isCensored: false,
+
       hasDarkTheme: false,
       hasWeekday: false,
       hasAvatar: true,
@@ -64,6 +68,7 @@ export default function interActiveCard(dependencies) {
       hasNoActions: false,
       hasLoadingState: false,
       hasErrorState: false,
+      hasLongPresenceMessage: '',
     }
 
     actions = [
@@ -127,6 +132,9 @@ export default function interActiveCard(dependencies) {
               isLoading={this.state.hasLoadingState}
               hasError={this.state.hasErrorState}
               actions={this.state.hasNoActions ? [] : actions}
+              isBot={this.state.isBot}
+              isActive={this.state.isActive}
+              isCensored={this.state.isCensored}
               avatarUrl={this.state.hasAvatar ? this.state.avatarUrl : ''}
               companyName={this.state.company}
               email={this.state.email}
@@ -137,6 +145,7 @@ export default function interActiveCard(dependencies) {
               presence={this.state.presence}
               timestring={this.state.hasTime ? getTimeString(this.state.hasWeekday) : ''}
               clientFetchProfile={handleActionClick('Retry')}
+              presenceMessage={this.state.hasLongPresenceMessage ? 'I honestly have a very long and useless presence message' : ''}
             />
 
             <div style={{ marginTop: '16px' }}>
@@ -158,6 +167,9 @@ export default function interActiveCard(dependencies) {
               <ul>
                 <li>{this.createCheckboxBooleanAttribute('hasLoadingState')}</li>
                 <li>{this.createCheckboxBooleanAttribute('hasErrorState')}</li>
+                <li>{this.createCheckboxBooleanAttribute('isBot')}</li>
+                <li>{this.createCheckboxBooleanAttribute('isActive')}</li>
+                <li>{this.createCheckboxBooleanAttribute('isCensored')}</li>
                 <li>{this.createCheckboxBooleanAttribute('hasDarkTheme')}</li>
               </ul>
 
@@ -165,7 +177,9 @@ export default function interActiveCard(dependencies) {
                 <li>{this.createRadioPresenceAttribute('available')}</li>
                 <li>{this.createRadioPresenceAttribute('busy')}</li>
                 <li>{this.createRadioPresenceAttribute('unavailable')}</li>
+                <li>{this.createRadioPresenceAttribute('focus')}</li>
                 <li>{this.createRadioPresenceAttribute('none')}</li>
+                <li>{this.createCheckboxBooleanAttribute('hasLongPresenceMessage')}</li>
               </ul>
             </div>
 

@@ -598,5 +598,5 @@ export function normalizeLanguage(language?: string): string {
   const match = SUPPORTED_LANGUAGES.filter(val => {
     return val.name === language || val.alias.indexOf(language!) !== -1;
   }).shift();
-  return match ? match.value : 'md'; // default to markdown because highlightjs nas no option for plain text
+  return match ? match.value : 'md'; // default to markdown because lowlight.js nas no option for plain text
 }

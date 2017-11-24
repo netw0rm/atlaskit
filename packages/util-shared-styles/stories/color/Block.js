@@ -19,7 +19,7 @@ class Block extends React.PureComponent {
   render() {
     return (
       <Tooltip
-        description={this.props.backgroundColor}
+        content={this.props.backgroundColor}
         className={styles.Trigger}
       >
         <div

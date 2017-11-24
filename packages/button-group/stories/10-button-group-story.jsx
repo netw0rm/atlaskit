@@ -3,7 +3,6 @@ import Button from '@atlaskit/button';
 import Dropdown from '@atlaskit/dropdown-menu';
 import CharlieIcon from '@atlaskit/icon/glyph/atlassian';
 import React from 'react';
-
 import ButtonGroup from '../src';
 import { name } from '../package.json';
 
@@ -94,10 +93,10 @@ storiesOf(name, module)
   .addCodeExampleStory('with dropdown > button (split button)', () => (
     <div style={{ display: 'block' }}>
       <ButtonGroup>
-        <Button appearance="subtle" iconBefore={<CharlieIcon />} />
-        <Button appearance="subtle" iconBefore={<CharlieIcon />} />
+        <Button appearance="subtle" iconBefore={<CharlieIcon label="button with icon" />} />
+        <Button appearance="subtle" iconBefore={<CharlieIcon label="button with icon" />} />
         <Dropdown items={items}>
-          <Button appearance="subtle" iconBefore={<CharlieIcon />} />
+          <Button appearance="subtle" iconBefore={<CharlieIcon label="button with icon" />} />
         </Dropdown>
       </ButtonGroup>
     </div>

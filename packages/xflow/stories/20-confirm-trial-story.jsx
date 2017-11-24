@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import { ConfluenceLogo } from '@atlaskit/logo';
 
@@ -14,7 +14,7 @@ const defaultProps = {
   trialMessage: (
     <p>
       Once your trial finishes, billing will start.<br />
-      Easily cancel at anytime in <strong>Manage Application</strong>.<br />
+      Easily cancel at anytime in <strong>Manage subscriptions</strong>.<br />
       We will email your billing contact 3 days in advance.
     </p>
   ),
@@ -29,12 +29,10 @@ const defaultProps = {
   spinnerActive: false,
   getStartedButtonDisabled: false,
   onComplete: () => {},
-  goToProduct: () => {
-    console.log('Go to Confluence!');
-  },
+  goToProduct: action('ConfirmTrialBase goToProduct'),
 };
 
-storiesOf('ConfirmTrial')
+storiesOf('request-or-start-trial/ConfirmTrial')
   .add('Confirm Trial dialog (INACTIVE)', () =>
     setupStorybookAnalytics(
       <ConfirmTrialBase

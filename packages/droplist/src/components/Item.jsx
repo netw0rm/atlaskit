@@ -36,6 +36,7 @@ export default class Item extends PureComponent {
     onActivate: PropTypes.func,
     target: PropTypes.string,
     title: PropTypes.string,
+    // Could be renamed to 'tooltipContent' to match tooltip api
     tooltipDescription: PropTypes.string,
     tooltipPosition: PropTypes.oneOf(['top', 'bottom', 'left', 'right']),
     type: PropTypes.oneOf(['link', 'radio', 'checkbox', 'option']),
@@ -147,7 +148,7 @@ export default class Item extends PureComponent {
     return (
       <span role="presentation">
         {props.tooltipDescription ? (
-          <Tooltip description={props.tooltipDescription} position={props.tooltipPosition}>
+          <Tooltip content={props.tooltipDescription} position={props.tooltipPosition}>
             {element}
           </Tooltip>
         ) : element}

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
 import Button from '@atlaskit/button';
-import { FieldText } from '@atlaskit/field-text';
+import { FieldTextStateless } from '@atlaskit/field-text';
 
 import allIcons from '@atlaskit/icon/docs/icons';
 import IconExplorerCell from './IconExplorerCell';
@@ -59,7 +59,7 @@ class IconAllExample extends PureComponent {
   render() {
     return (
       <div>
-        <FieldText
+        <FieldTextStateless
           isLabelHidden
           key="Icon search"
           label=""

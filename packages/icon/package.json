@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/icon",
-  "version": "10.1.2",
+  "version": "10.3.2",
   "config": {
     "access": "public"
   },
@@ -42,17 +42,17 @@
   "dependencies": {
     "babel-runtime": "^6.11.6",
     "prop-types": "^15.5.10",
-    "styled-components": "^1.4.6"
+    "styled-components": "^1.4.6",
+    "@atlaskit/theme": "^2.0.0"
   },
   "devDependencies": {
     "@atlaskit/button": "^5.1.2",
-    "@atlaskit/dynamic-table": "^3.0.0",
-    "@atlaskit/field-text": "^2.7.0",
-    "@atlaskit/icon": "* || > 8.0.0-beta",
-    "@atlaskit/modal-dialog": "^2.1.1",
-    "@atlaskit/tooltip": "^6.0.0",
+    "@atlaskit/field-text": "^4.1.2",
+    "@atlaskit/icon": "*",
+    "@atlaskit/modal-dialog": "^3.2.2",
+    "@atlaskit/tooltip": "^8.0.2",
     "@atlaskit/util-readme": "^3.1.0",
-    "@atlaskit/util-shared-styles": "^1.0.0",
+    "@atlaskit/util-shared-styles": "^2.10.6",
     "babel-core": "^6.24.1",
     "classnames": "^2.2.5",
     "fs-extra": "^3.0.1",

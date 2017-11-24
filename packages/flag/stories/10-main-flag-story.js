@@ -17,6 +17,7 @@ import Flag, { FlagGroup } from '../src';
 import GreenSuccessIcon from './components/GreenSuccessIcon';
 import ProgrammaticFlagDismissExample from './examples/ProgrammaticFlagDismissExample';
 import AutoDismissExample from './examples/AutoDismissExample';
+import FlagWithinPage from './examples/FlagWithinPage';
 
 const StoryPadding = styled.div`
   padding: ${akGridSizeUnitless * 3}px;
@@ -123,7 +124,7 @@ storiesOf(name, module)
   ))
   .add('Flag on top of Modal', () => (
     <StoryPadding>
-      <Modal header="Modal" isOpen>
+      <Modal heading="Modal" isOpen onClose={() => {}}>
         <div style={{ minHeight: 240 }}>
           I am a modal, flag should be visible above me
         </div>
@@ -159,4 +160,7 @@ storiesOf(name, module)
   ))
   .add('AutoDismissFlag example', () => (
     <AutoDismissExample />
+  ))
+  .add('Flag within page', () => (
+    <FlagWithinPage />
   ));

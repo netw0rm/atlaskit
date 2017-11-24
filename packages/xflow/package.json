@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/xflow",
-  "version": "6.3.1",
+  "version": "6.10.6",
   "config": {
     "access": "public"
   },
@@ -9,6 +9,7 @@
   "webpack": "dist/bundle-cjs.js",
   "ak:webpack:raw": "src/index.jsx",
   "scripts": {
+    "lint": "../../node_modules/.bin/eslint --color --format \"../../node_modules/eslint-friendly-formatter\" . --ext .js --ext .jsx",
     "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/xflow; } || ../../node_modules/.bin/not-in-publish",
     "jest": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
   },
@@ -17,16 +18,17 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/analytics": "^1.1.1",
+    "@atlaskit/analytics": "^2.3.0",
     "@atlaskit/button": "^5.0.1",
-    "@atlaskit/field-radio-group": "1.6.3",
+    "@atlaskit/field-radio-group": "^1.7.3",
     "@atlaskit/flag": "^6.1.0",
-    "@atlaskit/icon": "^8.0.1",
+    "@atlaskit/icon": "^10.3.1",
     "@atlaskit/logo": "^4.0.1",
     "@atlaskit/lozenge": "^3.4.2",
     "@atlaskit/modal-dialog": "^2.6.0",
-    "@atlaskit/multi-select": "^6.9.3",
-    "@atlaskit/spinner": "^3.4.2",
+    "@atlaskit/multi-select": "7.1.6",
+    "@atlaskit/polyfills": "^1.2.0",
+    "@atlaskit/spinner": "^4.0.2",
     "@atlaskit/theme": "^2.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "babel-runtime": "^6.11.6",
@@ -56,6 +58,12 @@
     },
     {
       "name": "Andrew Wakeling"
+    },
+    {
+      "name": "Max Puckeridge"
+    },
+    {
+      "name": "Yves-Emmanuel Jutard"
     }
   ],
   "license": "Apache-2.0",

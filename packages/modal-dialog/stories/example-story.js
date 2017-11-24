@@ -40,7 +40,7 @@ storiesOf(name, module)
   .add('header and footer', () => <HeadFootDemo />)
   .add('z-index test', () => (
     <div>
-      <Page navigation={<Navigation />}>
+      <Page navigation={<Navigation>{}</Navigation>}>
         <Layer content={<span>I am the popup content</span>} position="right middle">
           <span style={{ border: '1px solid yellow' }}>
             There should be a layer of text to the right of this:
@@ -78,12 +78,7 @@ storiesOf(name, module)
   ))
   .add('chromeless', () => (
     <ModalDemo isChromeless width="20em">
-      <div
-        style={{
-          backgroundColor: 'white',
-          padding: '1em',
-        }}
-      >
+      <div style={{ color: 'white' }}>
         <h4>Look ma, no chrome!</h4>
         <p>Ecosystem vendors use this option with some of their
           apps so they can provide their own dialog style.</p>

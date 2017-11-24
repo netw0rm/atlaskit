@@ -1,10 +1,12 @@
 // @flow
 import React, { Component } from 'react';
-import DropdownMenu from '@atlaskit/dropdown-menu';
+import { ThemeProvider } from 'styled-components';
+import DropdownMenu, { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
 import Avatar from './Avatar';
 import { Grid, Stack } from '../styled/AvatarGroup';
 import MoreIndicator from '../components/MoreIndicator';
 import type { AvatarClickType, AvatarPropTypes, ComponentType, FunctionType, SizeType } from '../types';
+import itemTheme from '../theme/item-theme';
 
 const GROUP_COMPONENT = {
   grid: Grid,
@@ -35,6 +37,7 @@ type Props = {
   onMoreClick?: FunctionType,
   /** Defines the size of the avatar */
   size?: SizeType,
+  boundariesElement?: 'viewport'|'window'|'scrollParent',
 };
 
 export default class AvatarGroup extends Component {
@@ -48,7 +51,9 @@ export default class AvatarGroup extends Component {
   }
 
   renderMoreDropdown(max: number, total: number) {
-    const { appearance, data, borderColor, onMoreClick, onAvatarClick, size } = this.props;
+    const {
+      appearance, data, borderColor, onMoreClick, onAvatarClick, size, boundariesElement,
+    } = this.props;
 
     // bail if there's not enough items
     if (total <= max) return null;
@@ -71,17 +76,40 @@ export default class AvatarGroup extends Component {
     }
 
     // crop and prepare the dropdown items
-    const items = data.slice(max).map(avatar => ({
-      content: avatar.name,
-      elemBefore: <Avatar {...avatar} size="small" borderColor="transparent" />,
-      href: avatar.href,
-      rel: avatar.target ? 'noopener noreferrer' : null,
-      target: avatar.target,
-    }));
+    const items = data
+      .slice(max)
+      .map((avatar, i) => (
+        <DropdownItem
+          elemBefore={
+            <Avatar
+              {...avatar}
+              borderColor="transparent"
+              enableTooltip={false}
+              size="small"
+            />
+          }
+          href={avatar.href}
+          key={i}
+          onClick={onAvatarClick}
+          rel={avatar.target ? 'noopener noreferrer' : null}
+          target={avatar.target}
+        >
+          {avatar.name}
+        </DropdownItem>
+      ));
 
     return (
-      <DropdownMenu items={[{ items }]} onItemActivated={onAvatarClick} position="bottom right">
-        <MoreButton />
+      <DropdownMenu
+        trigger={<MoreButton />}
+        position="bottom right"
+        boundariesElement={boundariesElement}
+        shouldFlip
+      >
+        <ThemeProvider theme={itemTheme}>
+          <DropdownItemGroup>
+            {items}
+          </DropdownItemGroup>
+        </ThemeProvider>
       </DropdownMenu>
     );
   }

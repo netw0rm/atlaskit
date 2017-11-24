@@ -94,14 +94,14 @@ export default class JIRAExample extends PureComponent {
   ))
 
   render() {
-    const backIcon = <Tooltip position="right" description="Back"><ArrowLeftIcon label="Back icon" size="medium" /></Tooltip>;
+    const backIcon = <Tooltip position="right" content="Back"><ArrowLeftIcon label="Back icon" size="medium" /></Tooltip>;
     const globalPrimaryIcon = <AtlassianIcon label="Atlassian icon" size="large" />;
     const globalCreateIcon = (
-      <Tooltip position="right" description="Create">
+      <Tooltip position="right" content="Create">
         <AddIcon label="Create icon" secondaryColor="inherit" size="medium" />
       </Tooltip>);
     const globalSearchIcon = (
-      <Tooltip position="right" description="Search">
+      <Tooltip position="right" content="Search">
         <SearchIcon label="Search icon" secondaryColor="inherit" size="medium" />
       </Tooltip>);
 
@@ -138,7 +138,7 @@ export default class JIRAExample extends PureComponent {
               this.setState({ isHeaderInlineDialogOpen: !this.state.isHeaderInlineDialogOpen });
             }}
           >
-            <Tooltip key="1" position="right" description="Header tooltip text">
+            <Tooltip key="1" position="right" content="Header tooltip text">
               {headerComponent}
             </Tooltip>
           </div>
@@ -211,7 +211,7 @@ export default class JIRAExample extends PureComponent {
         ]}
       >
         <AkGlobalItem href="">
-          <Avatar size="medium" src={emmaAvatar} />
+          <Avatar size="small" src={emmaAvatar} borderColor="transparent" />
         </AkGlobalItem>
       </AkDropdownMenu>
       );

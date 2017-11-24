@@ -4,7 +4,7 @@ import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import SettingsIcon from '@atlaskit/icon/glyph/settings';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
-import { AtlassianLogo } from '@atlaskit/logo';
+import { AtlassianWordmark } from '@atlaskit/logo';
 import DropdownMenu, { DropdownItemGroup, DropdownItem } from '@atlaskit/dropdown-menu';
 import { AkNavigationItem, AkNavigationItemGroup, AkContainerLogo, AkContainerTitle, presetThemes } from '../src/index';
 import NavigationWithDropdown from './components/NavigationWithDropdown';
@@ -15,6 +15,8 @@ import randomBadge from './components/RandomBadge';
 import NucleusIcon from './components/NucleusIcon';
 import ContainerRefScrollExample from './examples/ContainerRefScrollExample';
 import ToggleCallbackNavigation from './examples/ToggleCallbackNavigation';
+import Avatar from '@atlaskit/avatar';
+import IframeExample from './components/IframeExample';
 
 const dropdownItemsSample = (
   <DropdownItemGroup title="Cities">
@@ -172,7 +174,7 @@ storiesOf(name, module)
     <HtmlPage>
       <BasicNavigation
         containerTheme={presetThemes.global}
-        containerHeaderComponent={() => (<AkContainerLogo><AtlassianLogo size="small" /></AkContainerLogo>)}
+        containerHeaderComponent={() => (<AkContainerLogo><AtlassianWordmark /></AkContainerLogo>)}
         hasScrollHintTop
       >
         <AkNavigationItemGroup>
@@ -279,7 +281,7 @@ storiesOf(name, module)
         )}
       />
     </HtmlPage>
-    ))
+  ))
   .add('with horizontal scrollable container', () => (
     <HtmlPage>
       <BasicNavigation
@@ -308,4 +310,87 @@ storiesOf(name, module)
         {manyNavigationItems()}
       </ContainerRefScrollExample>
     </HtmlPage>
+  ))
+  .add('with a square primary nav icon', () => (
+    <HtmlPage>
+      <BasicNavigation
+        containerTheme={presetThemes.container}
+        hasScrollHintTop
+        globalPrimaryIcon={
+          <Avatar
+            appearance="square"
+            name="Primary Icon"
+            enableTooltip={false}
+          />
+        }
+        globalPrimaryIconAppearance="square"
+      >
+        <AkNavigationItem
+          text="Test page"
+          href="#1"
+        />
+        <AkNavigationItem
+          icon={<NucleusIcon />}
+          text="Item with an icon"
+          href="#2"
+        />
+        <AkNavigationItem
+          icon={<NucleusIcon />}
+          text="Item with two lines"
+          subText="Another line of text, which could possibly be long"
+          href="#3"
+        />
+        <AkNavigationItem
+          icon={<NucleusIcon />}
+          text="A really, really, quite long, actually super long container name"
+          href="#4"
+        />
+        <AkNavigationItem
+          icon={<NucleusIcon />}
+          text="A really, really, quite long, actually super long container name with action"
+          subText="Another line of text, which could possibly be long"
+          action={<span>text</span>}
+          href="#5"
+        />
+      </BasicNavigation>
+    </HtmlPage>
+  ))
+  .add('with position: relative on elements beneath blanket', () => (
+    <div>
+      <BasicNavigation containerTheme={presetThemes.container} hasScrollHintTop>
+        <AkNavigationItem
+          text="Test page"
+          href="#1"
+        />
+        <AkNavigationItem
+          icon={<NucleusIcon />}
+          text="Item with an icon"
+          href="#2"
+        />
+      </BasicNavigation>
+      <div>
+        <div
+          style={{
+            backgroundColor: '#ff4c4c',
+            height: 200,
+            textAlign: 'center',
+          }}
+        >
+          Without position: relative
+        </div>
+        <div
+          style={{
+            backgroundColor: '#7694ff',
+            position: 'relative',
+            height: 200,
+            textAlign: 'center',
+          }}
+        >
+          With position: relative
+        </div>
+      </div>
+    </div>
+  ))
+  .add('with iframe', () => (
+    <IframeExample />
   ));

@@ -1,5 +1,8 @@
 # @atlaskit/toggle
 
+## 2.6.4 (2017-11-17)
+
+* bug fix; bumping internal dependencies to latest version ([a19b26d](https://bitbucket.org/atlassian/atlaskit/commits/a19b26d))
 ## 2.6.3 (2017-10-26)
 
 * bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))

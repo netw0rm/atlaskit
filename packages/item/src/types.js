@@ -1,6 +1,7 @@
 // @flow
 
 type Color = string;
+export type ItemId = string;
 
 type ItemState = {|
   background: Color,
@@ -16,8 +17,14 @@ type Padding = {|
 |}
 
 export type ItemTheme = {|
-  afterItemSpacing: number,
-  beforeItemSpacing: number,
+  afterItemSpacing: {|
+    compact: number,
+    default: number,
+  |},
+  beforeItemSpacing: {|
+    compact: number,
+    default: number,
+  |},
   borderRadius: number,
   height?: {|
     compact: number,

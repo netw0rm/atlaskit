@@ -1,5 +1,23 @@
 # @atlaskit/icon
 
+## 10.3.2 (2017-11-23)
+
+* bug fix; remove theme package direct references ([0f99302](https://bitbucket.org/atlassian/atlaskit/commits/0f99302))
+## 10.3.1 (2017-11-20)
+
+* bug fix; fS-3907 Use content attribute instead of description for Tooltip ([25c9604](https://bitbucket.org/atlassian/atlaskit/commits/25c9604))
+* bug fix; fS-3907 Bump tooltip version in icon, item and util-shared-styles ([6d20540](https://bitbucket.org/atlassian/atlaskit/commits/6d20540))
+## 10.3.0 (2017-11-16)
+
+* feature; new and updated icons for the editor (issues closed: ak-3720) ([2c709e2](https://bitbucket.org/atlassian/atlaskit/commits/2c709e2))
+## 10.2.0 (2017-11-15)
+
+* feature; added a new prop for icons to make them more performant. ([7dc38f7](https://bitbucket.org/atlassian/atlaskit/commits/7dc38f7))
+
+* feature; icon component performance improved and the glyph can now be passed as a string. ([317274c](https://bitbucket.org/atlassian/atlaskit/commits/317274c))
+## 10.1.3 (2017-11-09)
+
+* bug fix; add missing color props ([f186c02](https://bitbucket.org/atlassian/atlaskit/commits/f186c02))
 ## 10.1.2 (2017-10-26)
 
 * bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))

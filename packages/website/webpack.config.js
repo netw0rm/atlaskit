@@ -24,6 +24,7 @@ module.exports = {
   devServer: {
     contentBase: resolve(__dirname, 'dist'),
     historyApiFallback: {
+      index: '/',
       disableDotRule: true,
     },
     overlay: true,

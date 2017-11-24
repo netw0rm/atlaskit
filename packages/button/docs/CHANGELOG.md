@@ -1,5 +1,21 @@
 # @atlaskit/button
 
+## 5.4.10 (2017-11-24)
+
+* bug fix; fix button-group prop validation to ignore null children ([3f7f0c3](https://bitbucket.org/atlassian/atlaskit/commits/3f7f0c3))
+## 5.4.9 (2017-11-21)
+
+* bug fix; bumping internal dependencies to latest version ([5e81848](https://bitbucket.org/atlassian/atlaskit/commits/5e81848))
+## 5.4.8 (2017-10-27)
+
+* bug fix; correct formatting for user-select style ([fe9419c](https://bitbucket.org/atlassian/atlaskit/commits/fe9419c))
+## 5.4.7 (2017-10-27)
+
+* bug fix; change icon to be unselectable so button content can be copied ([e8c876a](https://bitbucket.org/atlassian/atlaskit/commits/e8c876a))
+## 5.4.6 (2017-10-27)
+
+* bug fix; updated button props typings ([c7a9c09](https://bitbucket.org/atlassian/atlaskit/commits/c7a9c09))
+
 ## 5.4.5 (2017-10-23)
 
 * bug fix; support false/null/undefined children in ButtonGroup ([4667228](https://bitbucket.org/atlassian/atlaskit/commits/4667228))

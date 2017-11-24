@@ -8,6 +8,7 @@ import Spinner from '@atlaskit/spinner';
 import { StatelessSelect } from '../../src';
 import InitialLoadingElement from '../../src/styled/InitialLoading';
 import Content from '../../src/styled/Content';
+import Trigger from '../../src/styled/Trigger';
 
 import { name } from '../../package.json';
 
@@ -69,6 +70,50 @@ describe(name, () => {
       expect(select.find(Group).length).toBe(1);
       expect(select.find(Item).length).toBe(2);
       expect(select.find(Group).find(Item).length).toBe(2);
+    });
+
+    it('should only render groups with at least one match when filtering', () => {
+      const selectItems = [
+        {
+          heading: 'group 1',
+          items: [
+            { value: 1, content: '1' },
+            { value: 2, content: '2' },
+          ],
+        },
+        {
+          heading: 'group 2',
+          items: [
+            { value: 3, content: '3' },
+            { value: 4, content: '4' },
+          ],
+        },
+      ];
+      const select = mount(<StatelessSelect items={selectItems} isOpen filterValue={'1'} />);
+      expect(select.find(Group).length).toBe(1);
+      expect(select.find(Group).find(Item).length).toBe(1);
+    });
+
+    it('should not render any groups when there is not a single match when filtering', () => {
+      const selectItems = [
+        {
+          heading: 'group 1',
+          items: [
+            { value: 1, content: '1' },
+            { value: 2, content: '2' },
+          ],
+        },
+        {
+          heading: 'group 2',
+          items: [
+            { value: 3, content: '3' },
+            { value: 4, content: '4' },
+          ],
+        },
+      ];
+      const select = mount(<StatelessSelect items={selectItems} isOpen filterValue={'5'} />);
+      expect(select.find(Group).length).toBe(0);
+      expect(select.find(Group).find(Item).length).toBe(0);
     });
   });
 
@@ -309,6 +354,11 @@ describe(name, () => {
         wrapper.setProps({ isOpen: false, hasAutocomplete: true });
         instance.handleTriggerClick({});
         expect(document.activeElement).toBe(instance.inputNode);
+      });
+      it('should focus the select after opening', () => {
+        wrapper.setProps({ isOpen: false });
+        instance.handleTriggerClick({});
+        expect(document.activeElement).toBe(instance.triggerNode);
       });
     });
 
@@ -676,6 +726,23 @@ describe(name, () => {
         expect(instance.getItemTrueIndex(2, 0)).toBe(2);
         expect(instance.getItemTrueIndex(0, 1)).toBe(3);
         expect(instance.getItemTrueIndex(3, 1)).toBe(6);
+      });
+    });
+
+    describe('handleOnBlur', () => {
+      it('should close select when handleOnBlur is called', () => {
+        wrapper.setProps({ isOpen: true });
+        const args = { event: {}, isOpen: false };
+        instance.handleOnBlur({});
+        expect(onOpenChangeSpy).toHaveBeenCalled();
+        expect(onOpenChangeSpy).toHaveBeenCalledWith(args);
+      });
+      it('should close select when select is blurred', () => {
+        wrapper.setProps({ isOpen: true });
+        wrapper.find(Trigger).simulate('blur');
+        expect(onOpenChangeSpy).toHaveBeenCalled();
+        expect(onOpenChangeSpy.mock.calls[0][0])
+          .toEqual(expect.objectContaining({ isOpen: false }));
       });
     });
   });

@@ -120,7 +120,7 @@ export default class BasicNavigation extends PureComponent {
         position="right bottom"
         trigger={
           <AkGlobalItem>
-            <AkAvatar size="small" name="User profile" src={emmaAvatar} />
+            <AkAvatar size="small" name="User profile" src={emmaAvatar} borderColor="transparent" />
           </AkGlobalItem>
         }
       >

@@ -18,12 +18,17 @@ import {
   DetailsGroup,
   FullNameLabel,
   JobTitleLabel,
+  AppTitleLabel,
   ActionsFlexSpacer,
   ActionButtonGroup,
+  DeactivatedInfo,
 } from './styled/Card';
 
 export default class Profilecard extends PureComponent {
   static propTypes = {
+    isCensored: PropTypes.bool,
+    isActive: PropTypes.bool,
+    isBot: PropTypes.bool,
     avatarUrl: PropTypes.string,
     fullName: PropTypes.string,
     meta: PropTypes.string,
@@ -44,14 +49,21 @@ export default class Profilecard extends PureComponent {
     }),
     clientFetchProfile: PropTypes.func,
     analytics: PropTypes.func,
+    presenceMessage: PropTypes.string,
   }
 
   static defaultProps = {
+    isCurrentUser: false,
+    isCensored: false,
+    isActive: true,
+    isBot: false,
+    isNotMentionable: false,
     presence: 'none',
     actions: [],
     isLoading: false,
     hasError: false,
     analytics: () => {},
+    presenceMessage: '',
   }
 
   constructor(options) {
@@ -107,6 +119,74 @@ export default class Profilecard extends PureComponent {
     />);
   }
 
+  renderCardDetailsDefault() {
+    const validPresence = presences[this.props.presence];
+    const messageTrimmed = this.props.presenceMessage.trim();
+
+    return (
+      <DetailsGroup>
+        <FullNameLabel
+          noMeta={!this.props.meta}
+        >{this.props.fullName}</FullNameLabel>
+        {this.props.meta && (
+          <JobTitleLabel>{this.props.meta}</JobTitleLabel>
+        )}
+        <IconLabel icon={this.props.presence}>
+          {(!!validPresence && messageTrimmed) || validPresence}
+        </IconLabel>
+        <IconLabel icon="email">{this.props.email}</IconLabel>
+        <IconLabel icon="mention">{this.props.nickname && `@${this.props.nickname}`}</IconLabel>
+        <IconLabel icon="time">{this.props.timestring}</IconLabel>
+        <IconLabel icon="location">{this.props.location}</IconLabel>
+      </DetailsGroup>
+    );
+  }
+
+  renderCardDetailsDeactivated() {
+    const userName = this.props.isCensored ?
+      this.props.nickname :
+      this.props.fullName;
+
+    return (
+      <DetailsGroup>
+        <FullNameLabel noMeta>{userName}</FullNameLabel>
+        <DeactivatedInfo>
+          This user is no longer available
+        </DeactivatedInfo>
+      </DetailsGroup>
+    );
+  }
+
+  renderCardDetailsCensored() {
+    return (
+      <DetailsGroup>
+        <FullNameLabel noMeta>{this.props.nickname}</FullNameLabel>
+      </DetailsGroup>
+    );
+  }
+
+  renderCardDetailsApp() {
+    return (
+      <DetailsGroup>
+        <FullNameLabel>{this.props.fullName}</FullNameLabel>
+        <AppTitleLabel>App</AppTitleLabel>
+        <IconLabel icon="mention">{this.props.nickname && `@${this.props.nickname}`}</IconLabel>
+      </DetailsGroup>
+    );
+  }
+
+  renderCardDetails() {
+    if (this.props.isBot) {
+      return this.renderCardDetailsApp();
+    } else if (!this.props.isActive) {
+      return this.renderCardDetailsDeactivated();
+    } else if (this.props.isCensored) {
+      return this.renderCardDetailsCensored();
+    }
+
+    return this.renderCardDetailsDefault();
+  }
+
   renderProfilecard() {
     this.props.analytics('profile-card.loaded', {
       duration: this._durationSince(this._timeOpen),
@@ -117,24 +197,12 @@ export default class Profilecard extends PureComponent {
         <ProfileImage>
           <AkAvatar
             size="xlarge"
-            src={this.props.avatarUrl}
+            src={this.props.isActive ? this.props.avatarUrl : null}
             borderColor={colors.N0}
           />
         </ProfileImage>
         <CardContent>
-          <DetailsGroup>
-            <FullNameLabel noMeta={!this.props.meta}>{this.props.fullName}</FullNameLabel>
-            {this.props.meta && (
-              <JobTitleLabel>{this.props.meta}</JobTitleLabel>
-            )}
-            <IconLabel icon={this.props.presence}>
-              {presences[this.props.presence]}
-            </IconLabel>
-            <IconLabel icon="email">{this.props.email}</IconLabel>
-            <IconLabel icon="mention">{this.props.nickname && `@${this.props.nickname}`}</IconLabel>
-            <IconLabel icon="time">{this.props.timestring}</IconLabel>
-            <IconLabel icon="location">{this.props.location}</IconLabel>
-          </DetailsGroup>
+          {this.renderCardDetails()}
           <ActionsFlexSpacer />
           {this.renderActionsButtons()}
         </CardContent>

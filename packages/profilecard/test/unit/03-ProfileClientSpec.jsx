@@ -1,4 +1,5 @@
 import fetchMock from 'fetch-mock';
+import sinon from 'sinon';
 
 import AkProfileClient, { modifyResponse } from '../../src/api/profile-client';
 
@@ -13,8 +14,8 @@ describe('Profilecard', () => {
         url: clientUrl,
       });
 
-      expect(client.config.url).toBe(clientUrl);
-      expect(client.cache).toBe(null);
+      expect(client.config.url).toEqual(clientUrl);
+      expect(client.cache).toEqual(null);
     });
 
     it('cache is available when cacheMaxAge is set on instantiation', () => {
@@ -24,10 +25,10 @@ describe('Profilecard', () => {
         cacheMaxAge: clientCacheMaxAge,
       });
 
-      expect(client.config.url).toBe(clientUrl);
-      expect(client.cache).not.toBe(null);
-      expect(client.cache.limit).toBe(clientCacheSize);
-      expect(client.cacheMaxAge).toBe(clientCacheMaxAge);
+      expect(client.config.url).toEqual(clientUrl);
+      expect(client.cache).not.toEqual(null);
+      expect(client.cache.limit).toEqual(clientCacheSize);
+      expect(client.cacheMaxAge).toEqual(clientCacheMaxAge);
     });
 
     describe('LRU Cache', () => {
@@ -38,85 +39,70 @@ describe('Profilecard', () => {
       });
 
       let cache;
+      let clock;
 
       beforeEach(() => {
-        jest.useFakeTimers();
-        fetchMock
-          .post('*', { data: 'foo' })
-          .get('*', { status: 200 });
+        clock = sinon.useFakeTimers();
+
+        fetchMock.mock({
+          matcher: '*',
+          response: { data: 'foo' },
+          name: 'recent',
+        });
       });
 
       afterEach(() => {
-        jest.useRealTimers();
+        clock.restore();
         fetchMock.restore();
       });
 
       describe('#getCachedProfile', () => {
-        it('should return cached data within n milliseconds', (done) => {
-          client.getProfile('DUMMY-CLOUD-ID', '1')
-          .then((data) => {
-            jest.runTimersToTime(clientCacheMaxAge);
-            cache = client.getCachedProfile('DUMMY-CLOUD-ID', '1');
+        it('should return cached data within n milliseconds', async () => {
+          expect.assertions(1);
+          const data = await client.getProfile('DUMMY-CLOUD-ID', '1');
+          clock.tick(clientCacheMaxAge);
+          cache = await client.getCachedProfile('DUMMY-CLOUD-ID', '1');
 
-            expect(cache).toBe(data);
-            done();
-          })
-          .catch((err) => {
-            done(err);
-          });
+          expect(cache).toEqual(data);
         });
 
-        it('should return `null` after n+1 milliseconds ', (done) => {
-          client.getProfile('DUMMY-CLOUD-ID', '1')
-          .then(() => {
-            jest.runTimersToTime(clientCacheMaxAge + 1);
-            cache = client.getCachedProfile('DUMMY-CLOUD-ID', '1');
+        it('should return `null` after n+1 milliseconds ', async () => {
+          expect.assertions(1);
+          await client.getProfile('DUMMY-CLOUD-ID', '1');
 
-            expect(cache).toBe(null);
-            done();
-          })
-          .catch((err) => {
-            done(err);
-          });
+          clock.tick(clientCacheMaxAge + 1);
+          cache = await client.getCachedProfile('DUMMY-CLOUD-ID', '1');
+
+          expect(cache).toEqual(null);
         });
 
-        it('should reset expiry to n ms when cache item is used', (done) => {
-          client.getProfile('DUMMY-CLOUD-ID', '1')
-          .then((data) => {
-            jest.runTimersToTime(clientCacheMaxAge);
-            cache = client.getCachedProfile('DUMMY-CLOUD-ID', '1');
+        it('should reset expiry to n ms when cache item is used', async () => {
+          expect.assertions(2);
+          const data = await client.getProfile('DUMMY-CLOUD-ID', '1');
+          clock.tick(clientCacheMaxAge);
+          cache = client.getCachedProfile('DUMMY-CLOUD-ID', '1');
 
-            expect(cache).toBe(data);
+          expect(cache).toEqual(data);
 
-            jest.runTimersToTime(clientCacheMaxAge);
-            cache = client.getCachedProfile('DUMMY-CLOUD-ID', '1');
+          clock.tick(clientCacheMaxAge);
+          cache = client.getCachedProfile('DUMMY-CLOUD-ID', '1');
 
-            expect(cache).toBe(data);
-            done();
-          })
-          .catch((err) => {
-            done(err);
-          });
+          expect(cache).toEqual(data);
         });
       });
 
       describe('#flushCache', () => {
-        it('should purge all cached items', (done) => {
-          client.getProfile('DUMMY-CLOUD-ID', '1')
-          .then((data) => {
-            cache = client.getCachedProfile('DUMMY-CLOUD-ID', '1');
+        it('should purge all cached items', async () => {
+          expect.assertions(2);
+          const data = await client.getProfile('DUMMY-CLOUD-ID', '1');
+          cache = await client.getCachedProfile('DUMMY-CLOUD-ID', '1');
 
-            expect(cache).toBe(data);
+          expect(cache).toEqual(data);
 
-            client.flushCache();
-            cache = client.getCachedProfile('DUMMY-CLOUD-ID', '1');
+          client.flushCache();
+          cache = await client.getCachedProfile('DUMMY-CLOUD-ID', '1');
 
-            expect(cache).toBe(null);
-            done();
-          })
-          .catch((err) => {
-            done(err);
-          });
+          expect(cache).toEqual(null);
         });
       });
     });
@@ -134,10 +120,10 @@ describe('Profilecard', () => {
 
         const result = modifyResponse(data);
 
-        expect(result.remoteWeekdayIndex).toBe(undefined);
-        expect(result.remoteWeekdayString).toBe(undefined);
-        expect(result.remoteTimeString).toBe(undefined);
-        expect(result.id).toBe(undefined);
+        expect(result.remoteWeekdayIndex).toEqual(undefined);
+        expect(result.remoteWeekdayString).toEqual(undefined);
+        expect(result.remoteTimeString).toEqual(undefined);
+        expect(result.id).toEqual(undefined);
       });
 
       it('should rename "remoteTimeString" property to "timestring"', () => {
@@ -149,7 +135,7 @@ describe('Profilecard', () => {
 
         const result = modifyResponse(data);
 
-        expect(result.timestring).toBe('10:23am');
+        expect(result.timestring).toEqual('10:23am');
       });
 
       it('should not modify "timestring" property if remote and local date share the same weekday index', () => {
@@ -163,7 +149,7 @@ describe('Profilecard', () => {
 
         const result = modifyResponse(data);
 
-        expect(result.timestring).toBe('0:00pm');
+        expect(result.timestring).toEqual('0:00pm');
       });
 
       it('should prefix "timestring" property with weekday if local dates weekday index is different', () => {
@@ -177,7 +163,73 @@ describe('Profilecard', () => {
 
         const result = modifyResponse(data);
 
-        expect(result.timestring).toBe('Mon 0:00pm');
+        expect(result.timestring).toEqual('Mon 0:00pm');
+      });
+
+      describe('presence', () => {
+        it('should set null presence if not present in data', () => {
+          const data = {
+            User: {},
+          };
+
+          const result = modifyResponse(data);
+
+          expect(result.presence).toEqual(null);
+          expect(result.presenceMessage).toEqual(undefined);
+        });
+
+        it('should set presence to state', () => {
+          const data = {
+            User: {},
+            Presence: {
+              state: 'available',
+            },
+          };
+
+          const result = modifyResponse(data);
+
+          expect(result.presence).toEqual('available');
+        });
+
+        it('should set presence to busy correctly', () => {
+          const data = {
+            User: {},
+            Presence: {
+              state: 'busy',
+            },
+          };
+
+          const result = modifyResponse(data);
+
+          expect(result.presence).toEqual('busy');
+        });
+
+        it('should set presence to focus correctly', () => {
+          const data = {
+            User: {},
+            Presence: {
+              state: 'busy',
+              stateMetadata: '{"focus":{}}',
+            },
+          };
+
+          const result = modifyResponse(data);
+
+          expect(result.presence).toEqual('focus');
+        });
+
+        it('should set presenceMessage correctly', () => {
+          const data = {
+            User: {},
+            Presence: {
+              message: 'test message',
+            },
+          };
+
+          const result = modifyResponse(data);
+
+          expect(result.presenceMessage).toEqual('test message');
+        });
       });
     });
   });

@@ -30,6 +30,14 @@ export const description = (
     <CodeBlock>
       {'import Flag, { AutoDismissFlag, FlagGroup } from @atlaskit/flag'}
     </CodeBlock>
+    <p>
+      It is recommended to wrap your application with the
+      <a href="https://atlaskit.atlassian.com/components/layer-manager">Layer Manager</a> component to
+      control where the flag is rendered and to ensure layered components like flag and modal stack
+      in the correct order.
+      <br />
+      Flags will fallback to being appended to the {'<body>'} if an ancestor Layer Manager does not exist.
+    </p>
   </div>
 );
 

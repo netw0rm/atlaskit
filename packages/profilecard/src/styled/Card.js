@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { akBorderRadius } from '@atlaskit/util-shared-styles';
 import {
   gridSize,
   math,
@@ -7,6 +8,8 @@ import {
 import {
   headerBgColor,
   headerTextColor,
+  appLabelBgColor,
+  appLabelTextColor,
   labelTextColor,
   labelIconColor,
 } from '../styled/constants';
@@ -57,6 +60,13 @@ export const DetailsGroup = styled.div`
   width: ${math.multiply(gridSize, 24.5)}px;
 `;
 
+export const DeactivatedInfo = styled.div`
+  font-size: ${math.multiply(gridSize, 1.5)}px;
+  color: ${labelTextColor};
+  margin: ${math.multiply(gridSize, 1.5)}px 0 0 0;
+  line-height: ${math.divide(() => 24, 12)}em;
+`;
+
 export const FullNameLabel = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
@@ -76,6 +86,20 @@ export const JobTitleLabel = styled.span`
   font-size: 14px;
   color: ${headerTextColor};
   margin: 0 0 ${math.multiply(gridSize, 1.5)}px 0;
+  line-height: ${math.divide(() => 24, 14)}em;
+`;
+
+export const AppTitleLabel = styled.span`
+  background: ${appLabelBgColor};
+  color: ${appLabelTextColor};
+  border-radius: ${akBorderRadius};
+  padding: 0 6px;
+  width: fit-content;
+  font-weight: bold;
+  text-transform: uppercase;
+
+  font-size: 12px;
+  margin: 4px 0 ${math.multiply(gridSize, 1.5)}px 0;
   line-height: ${math.divide(() => 24, 14)}em;
 `;
 

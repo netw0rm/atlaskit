@@ -1,5 +1,16 @@
 # @atlaskit/media-card
 
+## 22.2.0 (2017-11-17)
+
+* feature; updated media-core version across products ([1a9541a](https://bitbucket.org/atlassian/atlaskit/commits/1a9541a))
+* feature; upgrade version of mediapicker to 11.1.6 and media-core to 11.0.0 across packages ([aaa7aa0](https://bitbucket.org/atlassian/atlaskit/commits/aaa7aa0))
+## 22.1.0 (2017-11-14)
+
+* feature; application card actions: add a loading state during the execution of the action ([872b7b2](https://bitbucket.org/atlassian/atlaskit/commits/872b7b2))
+## 22.0.0 (2017-11-09)
+
+* breaking; rename applicationCard.actions.target.app to receiver in Atlaskit scheme ([760070c](https://bitbucket.org/atlassian/atlaskit/commits/760070c))
+* breaking; rename applicationCard.actions.target.app to receiver in Atlaskit scheme ([760070c](https://bitbucket.org/atlassian/atlaskit/commits/760070c))
 ## 21.5.0 (2017-10-26)
 
 

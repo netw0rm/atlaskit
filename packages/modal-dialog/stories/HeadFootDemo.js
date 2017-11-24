@@ -75,7 +75,7 @@ export default class ModalDemo extends PureComponent {
 
   render() {
     const { isOpen } = this.state;
-    const btn = name => <Button onClick={() => this.open(name)}>{name}</Button>;
+    const btn = name => <Button key={name} onClick={() => this.open(name)}>{name}</Button>;
     const actions = [
       { text: 'Close', onClick: this.close },
       { text: 'Secondary Action', onClick: this.secondaryAction },
@@ -88,6 +88,7 @@ export default class ModalDemo extends PureComponent {
 
         {variants.filter(w => w === isOpen).map(name => (
           <ModalDialog
+            key={name}
             actions={['footer', 'both'].includes(name) ? actions : null}
             footer={name === 'custom footer' ? Footer : null}
             header={name === 'custom header' ? Header : null}

@@ -1,4 +1,4 @@
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 
 import { ConfluenceLogo } from '@atlaskit/logo';
@@ -22,12 +22,10 @@ const defaultProps = {
   status: ACTIVATING,
   progress: 0,
   onComplete: () => {},
-  goToProduct: () => {
-    console.log('Go to Confluence!');
-  },
+  goToProduct: action('ConfirmTrialBase goToProduct'),
 };
 
-storiesOf('AlreadyStarted')
+storiesOf('request-or-start-trial/AlreadyStarted')
   .add('Already Started (ACTIVATING) progress bar (0%)', () =>
     setupStorybookAnalytics(
       <AlreadyStartedBase {...defaultProps} onComplete={() => Promise.resolve(true)} />

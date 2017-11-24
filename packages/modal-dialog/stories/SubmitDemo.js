@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import Button from '@atlaskit/button';
 import Field from '@atlaskit/field-text';
+import Checkbox from '@atlaskit/checkbox';
+import RadioGroup, { AkRadio } from '@atlaskit/field-radio-group';
 
 import ModalDialog, { ModalFooter } from '../src';
 
@@ -37,6 +39,11 @@ export default class SubmitDemo extends Component {
         </Button>
       </ModalFooter>
     );
+    const radioItems = [
+      { name: 'color', value: 'red', label: 'Red' },
+      { name: 'color', value: 'blue', label: 'Blue' },
+      { name: 'color', value: 'yellow', label: 'Yellow' },
+    ];
 
     return (
       <ThemeProvider theme={{}}>
@@ -46,6 +53,19 @@ export default class SubmitDemo extends Component {
               <p>Enter some text and then submit the form to see the response.</p>
               <Field label="Name" name="my-name" placeholder="Your name" value="" />
               <Field label="Email" name="my-email" placeholder="gbelson@hooli.com" value="" />
+              <Checkbox name="checkbox" value="example" label="Checkbox" />
+              <RadioGroup
+                label="Basic Radio Group Example"
+                items={radioItems}
+              >
+                <AkRadio
+                  name="standalone"
+                  value="singleButton"
+                  onChange={e => console.log('standalone change', e.target.value)}
+                >
+                  Radio button
+                </AkRadio>
+              </RadioGroup>
             </form>
           </ModalDialog>
 

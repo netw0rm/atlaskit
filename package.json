@@ -8,10 +8,10 @@
     }
   },
   "dependencies": {
-    "@atlaskit/atlaskit-registry": "^1.0.0",
     "@atlaskit/eslint-config-base": "*",
     "@atlaskit/eslint-config-stories": "*",
     "@atlaskit/eslint-config-tests": "*",
+    "@atlaskit/media-core": "^11.0.0",
     "@atlaskit/media-test-helpers": "^8.4.0",
     "@kadira/react-split-pane": "^1.4.7",
     "@kadira/storybook": "^2.24.0",
@@ -196,7 +196,6 @@
     "release/announce": "./build/bin/release.announce.js",
     "release/check/can-ff": "git pull --ff-only --no-edit origin || (chalk --no-stdin -t \"{blue We are not the leading build - nothing to do here!}\"; exit 1)",
     "release/check/is-workspace-clean": "git diff --exit-code || (chalk --no-stdin -t \"{red \n^ Workspace is not clean!}\"; exit 1)",
-    "release/registry": "./build/bin/release.registry.sh || (chalk --no-stdin -t \"{red Registry generation failed!}\"; exit 1)",
     "release/storybooks": "./build/bin/release.storybooks.sh || (chalk --no-stdin -t \"{red Storybook generation failed!}\"; exit 1)",
     "storybook": "./build/bin/storybook/run.local.js",
     "storybook/single": "chalk -t '{yellow `yarn run storybook/single` is deprecated, use `yarn run storybook` instead}' && ./build/bin/storybook.single.sh",
@@ -229,5 +228,8 @@
     "validate/tslint/changed/fix": "./build/bin/lint.tslint.changed.sh --fix",
     "validate/tslint/fix": "lerna run -- lint -- --fix",
     "validate/typescript": "lerna run validate/typescript"
+  },
+  "resolutions": {
+    "**/react": "15.4.2"
   }
 }

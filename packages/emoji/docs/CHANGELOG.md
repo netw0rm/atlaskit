@@ -1,5 +1,27 @@
 # @atlaskit/emoji
 
+## 30.3.3 (2017-11-22)
+
+* bug fix; big emoji scrolling issue fixed (issues closed: fs-1512) ([b715731](https://bitbucket.org/atlassian/atlaskit/commits/b715731))
+## 30.3.2 (2017-11-20)
+
+* bug fix; make emoji react 16 compatible (issues closed: ed-3181) ([9ca27d8](https://bitbucket.org/atlassian/atlaskit/commits/9ca27d8))
+## 30.3.1 (2017-11-17)
+
+* bug fix; fix more cases of classname useage ([7fd79d4](https://bitbucket.org/atlassian/atlaskit/commits/7fd79d4))
+* bug fix; prefix global classnames to prevent product conflicts (issues closed: fs-1474) ([b5cccae](https://bitbucket.org/atlassian/atlaskit/commits/b5cccae))
+## 30.3.0 (2017-11-17)
+
+* feature; upgrade version of mediapicker to 11.1.6 and media-core to 11.0.0 across packages ([aaa7aa0](https://bitbucket.org/atlassian/atlaskit/commits/aaa7aa0))
+## 30.2.0 (2017-11-09)
+
+
+
+
+* feature; added optional alternateRepresentation field to EmojiDescription for using higher r ([624210a](https://bitbucket.org/atlassian/atlaskit/commits/624210a))
+## 30.1.6 (2017-10-31)
+
+* bug fix; fixed mpConfig in SiteEmojiResource ([bd01a52](https://bitbucket.org/atlassian/atlaskit/commits/bd01a52))
 ## 30.1.5 (2017-10-25)
 
 * bug fix; fixed sizing of emoji in upload preview (issues closed: fs-1441) ([d69a2b2](https://bitbucket.org/atlassian/atlaskit/commits/d69a2b2))

@@ -5,7 +5,7 @@ import XFlowAnalyticsListener from '../components/XFlowAnalyticsListener';
 
 import { withXFlowProvider } from './XFlowProvider';
 import InitializingScreen from './InitializingScreen';
-import { StartTrial, RequestTrial, AlreadyStarted } from '../../request-or-start-trial/';
+import { ContextualStartTrial, StartTrial, RequestTrial, AlreadyStarted } from '../../request-or-start-trial';
 import ErrorFlag from '../../common/components/ErrorFlag';
 import RequestOrStartTrialDialog from '../styled/RequestOrStartTrialDialog';
 
@@ -35,12 +35,21 @@ class RequestOrStartTrial extends Component {
     // ESLint doesn't detect prop types only used in async functions
     // eslint-disable-next-line react/no-unused-prop-types
     checkProductRequestFlag: PropTypes.func,
+    contextInfo: PropTypes.shape({
+      contextualImage: PropTypes.string,
+      contextualHeading: PropTypes.string,
+      contextualMessage: PropTypes.string,
+      reactivateCTA: PropTypes.string,
+      trialCTA: PropTypes.string,
+    }),
+    grantAccessEnabled: PropTypes.bool,
   };
 
   static defaultProps = {
     onComplete: () => {},
     onTrialRequested: () => {},
     onTrialActivating: () => {},
+    grantAccessEnabled: true,
   };
 
   state = {
@@ -143,6 +152,8 @@ class RequestOrStartTrial extends Component {
       onTrialActivating,
       sourceComponent,
       sourceContext,
+      contextInfo,
+      grantAccessEnabled,
     } = this.props;
     const {
       activationState,
@@ -184,11 +195,22 @@ class RequestOrStartTrial extends Component {
               }
               case Screens.START_TRIAL: {
                 return (
-                  <StartTrial
-                    onComplete={onComplete}
-                    onTrialActivating={onTrialActivating}
-                    showGrantAccess={activationState === INACTIVE}
-                  />
+                  contextInfo
+                    ? (
+                      <ContextualStartTrial
+                        onComplete={onComplete}
+                        onTrialActivating={onTrialActivating}
+                        showGrantAccess={activationState === INACTIVE && grantAccessEnabled}
+                        contextInfo={contextInfo}
+                      />
+                    )
+                    : (
+                      <StartTrial
+                        onComplete={onComplete}
+                        onTrialActivating={onTrialActivating}
+                        showGrantAccess={activationState === INACTIVE && grantAccessEnabled}
+                      />
+                    )
                 );
               }
               case Screens.ALREADY_STARTED: {
@@ -199,6 +221,7 @@ class RequestOrStartTrial extends Component {
                   alreadyRequested={alreadyRequested}
                   onComplete={onComplete}
                   onTrialRequested={onTrialRequested}
+                  contextInfo={contextInfo}
                 />);
               }
               default: {
@@ -221,10 +244,12 @@ export default withXFlowProvider(
       checkProductRequestFlag,
       getProductActivationState,
       waitForActivation,
+      grantAccessEnabled,
   } }) => ({
     canCurrentUserAddProduct,
     checkProductRequestFlag,
     getProductActivationState,
     waitForActivation,
+    grantAccessEnabled,
   })
 );

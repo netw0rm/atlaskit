@@ -348,7 +348,7 @@ describe('SiteEmojiResource', () => {
       };
 
       fetchMock.post({
-        matcher: fetchSiteEmojiUrl(missingMediaEmojiId),
+        matcher: `begin:${fetchSiteEmojiUrl(missingMediaEmojiId)}`,
         response: {
           body: serviceResponse,
         },
@@ -376,7 +376,7 @@ describe('SiteEmojiResource', () => {
       };
 
       fetchMock.post({
-        matcher: fetchSiteEmojiUrl(missingMediaEmojiId),
+        matcher: `begin:${fetchSiteEmojiUrl(missingMediaEmojiId)}`,
         response: {
           body: serviceResponse,
         },
@@ -405,7 +405,7 @@ describe('SiteEmojiResource', () => {
       };
 
       fetchMock.post({
-        matcher: fetchSiteEmojiUrl(atlassianId),
+        matcher: `begin:${fetchSiteEmojiUrl(atlassianId)}`,
         response: {
           body: serviceResponse,
         },
@@ -425,7 +425,7 @@ describe('SiteEmojiResource', () => {
       const siteEmojiResource = new TestSiteEmojiResource(tokenManagerStub, mockMediaPicker);
 
       fetchMock.post({
-        matcher: fetchSiteEmojiUrl(missingMediaEmojiId),
+        matcher: `begin:${fetchSiteEmojiUrl(missingMediaEmojiId)}`,
         response: 403,
         name: 'fetch-site-emoji'
       });

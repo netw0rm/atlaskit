@@ -27,6 +27,7 @@ export default class Partipants extends PureComponent<Props,{}> {
         maxCount={4}
         size="small"
         data={this.getAvatarData()}
+        boundariesElement="scrollParent"
       />
     );
   }

@@ -3,6 +3,7 @@ const presences = {
   available: 'Available',
   busy: 'Busy',
   unavailable: 'Away',
+  focus: 'Focused',
 };
 
 export default presences;

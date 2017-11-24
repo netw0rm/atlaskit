@@ -1,14 +1,14 @@
 import React, { PureComponent } from 'react';
-import Breadcrumbs, { AkBreadcrumbsItem } from '@atlaskit/breadcrumbs';
+import Breadcrumbs, { BreadcrumbsItem } from '@atlaskit/breadcrumbs';
 
 export default class DummyCode extends PureComponent {
   render() {
     return (
       <Breadcrumbs>
-        <AkBreadcrumbsItem href="#" text="Atlassian" />
-        <AkBreadcrumbsItem href="#" text="Atlaskit" />
-        <AkBreadcrumbsItem href="#" text="AK-1252-grid-component" />
-        <AkBreadcrumbsItem href="#" text="Commits" />
+        <BreadcrumbsItem href="#" text="Atlassian" />
+        <BreadcrumbsItem href="#" text="Atlaskit" />
+        <BreadcrumbsItem href="#" text="AK-1252-grid-component" />
+        <BreadcrumbsItem href="#" text="Commits" />
       </Breadcrumbs>
     );
   }

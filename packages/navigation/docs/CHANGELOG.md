@@ -1,28 +1,107 @@
 # @atlaskit/navigation
 
+## 26.8.1 (2017-11-23)
+
+* bug fix; allow vertical scrolling in collapsed container navigation ([99e5544](https://bitbucket.org/atlassian/atlaskit/commits/99e5544))
+## 26.8.0 (2017-11-22)
+
+
+
+* feature; set all drawer's icons to be at the top-most icon position ([403ce26](https://bitbucket.org/atlassian/atlaskit/commits/403ce26))
+
+
+
+* feature; allow global primary actions to be passed as an array of complete nodes ([866d4ea](https://bitbucket.org/atlassian/atlaskit/commits/866d4ea))
+## 26.7.5 (2017-11-21)
+
+
+
+
+
+* bug fix; fix nested navigation scrollbar styling and positioning (issues closed: ak-3756) ([329900b](https://bitbucket.org/atlassian/atlaskit/commits/329900b))
+## 26.7.4 (2017-11-20)
+
+* bug fix; fS-3907 Use content attribute instead of description for Tooltip ([25c9604](https://bitbucket.org/atlassian/atlaskit/commits/25c9604))
+* bug fix; fS-3907 Update tooltip version in navigation component ([74619ad](https://bitbucket.org/atlassian/atlaskit/commits/74619ad))
+## 26.7.3 (2017-11-20)
+
+
+
+
+
+
+
+* bug fix; fix nav resize behaviour when moving in or out of iframe/windows (issues closed: ak-3723) ([07a64ac](https://bitbucket.org/atlassian/atlaskit/commits/07a64ac))
+## 26.7.2 (2017-11-16)
+
+* bug fix; prevent horizontal scrolling in collapsed navigation (issues closed: ak-3588) ([9aa8eb5](https://bitbucket.org/atlassian/atlaskit/commits/9aa8eb5))
+## 26.7.1 (2017-11-16)
+
+
+
+* bug fix; shift nav resizer to the right to prevent overlap with scrollbar (issues closed: ak-3362) ([1d63ebf](https://bitbucket.org/atlassian/atlaskit/commits/1d63ebf))
+## 26.7.0 (2017-11-16)
+
+* feature; update navigation's dependecy to blanket v4 (issues closed: ak-3851) ([72a2e06](https://bitbucket.org/atlassian/atlaskit/commits/72a2e06))
+
+## 26.6.4 (2017-11-14)
+
+
+* bug fix; implemented code review comments: using theme package to get layer value and removed ([b1a84f5](https://bitbucket.org/atlassian/atlaskit/commits/b1a84f5))
+* bug fix; added story to where the page components have position: relative style (issues closed: ak-3792, ak3851) ([e162415](https://bitbucket.org/atlassian/atlaskit/commits/e162415))
+## 26.6.3 (2017-11-14)
+
+* bug fix; fix cyclic imports in navigation component causing es6 build errors (issues closed: ak-3746) ([9499b26](https://bitbucket.org/atlassian/atlaskit/commits/9499b26))
+## 26.6.2 (2017-11-13)
+
+* bug fix; bumping internal dependencies to latest major version ([39a01ca](https://bitbucket.org/atlassian/atlaskit/commits/39a01ca))
+## 26.6.1 (2017-11-13)
+
+
+
+* bug fix; fixes - secondary icons being cut off in collapsed navigation state (issues closed: ak-3834, ak-3867) ([d0d16f8](https://bitbucket.org/atlassian/atlaskit/commits/d0d16f8))
+
+## 26.6.0 (2017-11-13)
+
+* feature; nav now works correctly with the latest Logo package, and includes stories showing (issues closed: ak-3487) ([47f2a40](https://bitbucket.org/atlassian/atlaskit/commits/47f2a40))
+* bug fix; AK-3745-fix for color of primary icon on drawer to be N500 (issues closed: ak-3745) ([ba4bf5b](https://bitbucket.org/atlassian/atlaskit/commits/ba4bf5b))
+* feature; removing Stride product example storybook (issues closed: ak-3637, hnw-3542) ([8b7f614](https://bitbucket.org/atlassian/atlaskit/commits/8b7f614))
+* feature; removing optional type (issues closed: ak-3637, hnw-3542) ([2cd6b7c](https://bitbucket.org/atlassian/atlaskit/commits/2cd6b7c))
+* feature; adding IconAppearance type to types and utilizing for prop types (issues closed: ak-3637, hnw-3542) ([f2ad644](https://bitbucket.org/atlassian/atlaskit/commits/f2ad644))
+* feature; improving story book for Stride nav example (issues closed: ak-3637, hnw-3542) ([bf6750c](https://bitbucket.org/atlassian/atlaskit/commits/bf6750c))
+* feature; adding stories and documentation (issues closed: ak-3637, hnw-3542) ([412f003](https://bitbucket.org/atlassian/atlaskit/commits/412f003))
+* feature; add support to global nav for square icons (issues closed: ak-3637, hnw-3542) ([794f8c6](https://bitbucket.org/atlassian/atlaskit/commits/794f8c6))
+
+## 26.5.1 (2017-10-31)
+
+* bug fix; Increasing allowed secondary nav items to 5 and warning rather than throwing when more exist ([d7eab92](https://bitbucket.org/atlassian/atlaskit/commits/d7eab92))
+
+## 26.5.0 (2017-10-27)
+
+* bug fix; drawer no longer has translateX when not animating (issues closed: ak-3716) ([c65d2eb](https://bitbucket.org/atlassian/atlaskit/commits/c65d2eb))
+* feature; use shared HOC from item ([f966d9c](https://bitbucket.org/atlassian/atlaskit/commits/f966d9c))
+
 ## 26.4.1 (2017-10-26)
 
 * bug fix; drawers now close as expected on IE 11 (issues closed: ak-3718) ([069a82b](https://bitbucket.org/atlassian/atlaskit/commits/069a82b))
+
 ## 26.4.0 (2017-10-25)
 
 * feature; add isSelected prop to GlobalItem (issues closed: ak-3681) ([4ff347f](https://bitbucket.org/atlassian/atlaskit/commits/4ff347f))
+
 ## 26.3.0 (2017-10-24)
 
 * bug fix; countChildren returns total on non element groups ([06e226e](https://bitbucket.org/atlassian/atlaskit/commits/06e226e))
-
-
-
-
 * feature; quickSearch: passing children that do not conform to the "Group > Result" structure (issues closed: dir-428) ([bb94ae8](https://bitbucket.org/atlassian/atlaskit/commits/bb94ae8))
-
 
 ## 26.2.1 (2017-10-22)
 
-
 * bug fix; update styled-components dep and react peerDep ([6a67bf8](https://bitbucket.org/atlassian/atlaskit/commits/6a67bf8))
+
 ## 26.2.0 (2017-10-19)
 
 * feature; quickSearch result components: allow React elements to be passed to the text prop (issues closed: dir-429) ([f9d495d](https://bitbucket.org/atlassian/atlaskit/commits/f9d495d))
+
 ## 26.1.1 (2017-10-19)
 
 * bug fix; partially fix for console errors for navigation component ([b8a1568](https://bitbucket.org/atlassian/atlaskit/commits/b8a1568))
@@ -30,18 +109,17 @@
 ## 26.1.0 (2017-10-18)
 
 * feature; add callbacks around nav's collapse/expand animation (issues closed: ak-3030) ([dbdf710](https://bitbucket.org/atlassian/atlaskit/commits/dbdf710))
+
 ## 26.0.8 (2017-10-17)
 
 * bug fix; fixing selected item text colour for settings and siteSettings nav themes (issues closed: ak-3653) ([cd1daed](https://bitbucket.org/atlassian/atlaskit/commits/cd1daed))
 ## 26.0.7 (2017-10-16)
 
 * bug fix; padding in nav items fixed (issues closed: #ak-3636) ([ceb43e8](https://bitbucket.org/atlassian/atlaskit/commits/ceb43e8))
+
 ## 26.0.6 (2017-10-15)
 
 * bug fix; swap selected and active text color for settings and siteSettings nav themes (issues closed: ak-3653) ([ab9303d](https://bitbucket.org/atlassian/atlaskit/commits/ab9303d))
-
-
-
 
 ## 26.0.5 (2017-10-13)
 

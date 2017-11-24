@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-card",
-  "version": "21.5.0",
+  "version": "22.2.0",
   "config": {
     "access": "public"
   },
@@ -61,7 +61,7 @@
   ],
   "license": "Apache-2.0",
   "peerDependencies": {
-    "@atlaskit/media-core": "^9.0.0 || ^10.1.0",
+    "@atlaskit/media-core": "^9.0.0 || ^10.1.0 || ^11.0.0",
     "react": "^15.3.2",
     "rxjs": "^5.1.0"
   },
@@ -72,8 +72,8 @@
   "devDependencies": {
     "@atlaskit/field-radio-group": "^1.2.1",
     "@atlaskit/field-range": "^2.0.0",
-    "@atlaskit/media-core": "^10.1.0",
-    "@atlaskit/media-test-helpers": "^8.2.1",
+    "@atlaskit/media-core": "^11.0.0",
+    "@atlaskit/media-test-helpers": "^8.4.0",
     "@atlaskit/toggle": "^2.0.4",
     "akutil-common-test": "*",
     "deepcopy": "0.6.3"

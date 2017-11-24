@@ -1,5 +1,9 @@
 # @atlaskit/media-core
 
+## 11.0.0 (2017-11-14)
+
+* breaking; updated the interface of MediaState to reflect the changes on mediapicker ([cbee946](https://bitbucket.org/atlassian/atlaskit/commits/cbee946))
+* breaking; updated the interface of MediaState to reflect the changes on mediapicker ([cbee946](https://bitbucket.org/atlassian/atlaskit/commits/cbee946))
 ## 10.2.0 (2017-10-10)
 
 * feature; updated contextConfig to include userAuthProvider. ([3cfb5d0](https://bitbucket.org/atlassian/atlaskit/commits/3cfb5d0))

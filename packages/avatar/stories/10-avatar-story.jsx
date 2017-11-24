@@ -38,6 +38,7 @@ function getPresence() {
   switch (true) {
     case chance < 0.25: return 'busy';
     case chance < 0.5: return 'online';
+    case chance < 0.75: return 'focus';
     default: return 'offline';
   }
 }
@@ -102,10 +103,14 @@ storiesOf(name, module)
       <h2>Presence</h2>
 
       <h5>Presence Types</h5>
-      <Note>Supports &quot;busy&quot;, &quot;offline&quot;, and &quot;online&quot;</Note>
+      <Note>
+        Supports &quot;busy&quot;, &quot;focus&quot;,
+        &quot;offline&quot;, and &quot;online&quot;
+      </Note>
       <AvatarRow>
         <DefaultAvatar src={avatarSource} size="large" />
         <DefaultAvatar src={avatarSource} size="large" presence="busy" />
+        <DefaultAvatar src={avatarSource} size="large" presence="focus" />
         <DefaultAvatar src={avatarSource} size="large" presence="offline" />
         <DefaultAvatar src={avatarSource} size="large" presence="online" />
       </AvatarRow>
@@ -143,10 +148,14 @@ storiesOf(name, module)
       <h2>Presence</h2>
 
       <h5>Presence Types</h5>
-      <Note>Supports &quot;busy&quot;, &quot;offline&quot;, and &quot;online&quot;</Note>
+      <Note>
+        Supports &quot;busy&quot;, &quot;focus&quot;,
+        &quot;offline&quot;, and &quot;online&quot;
+      </Note>
       <AvatarRow>
         <SquareAvatar src={nucleusImage} size="large" />
         <SquareAvatar src={nucleusImage} size="large" presence="busy" />
+        <SquareAvatar src={nucleusImage} size="large" presence="focus" />
         <SquareAvatar src={nucleusImage} size="large" presence="offline" />
         <SquareAvatar src={nucleusImage} size="large" presence="online" />
       </AvatarRow>
@@ -175,7 +184,7 @@ storiesOf(name, module)
         src={nucleusImage}
       />
     </Wrapper>
-    ))
+  ))
   .add('Coloured Backgrounds', () => {
     const colors = [akColorPrimary1, akColorPrimary2, akColorN20, akColorPrimary3];
     const presences = [null, 'online', 'offline', 'busy'];
@@ -366,6 +375,7 @@ storiesOf(name, module)
                 src: avatarSource,
                 size: avatarSize,
               }))}
+              size={avatarSize}
             />
 
             <HR />
@@ -382,12 +392,36 @@ storiesOf(name, module)
                   src: avatarSource,
                   size: avatarSize,
                 }))}
+                size={avatarSize}
               />
               {mode === 'grid' ? (
                 <button onClick={() => this.setState({ mode: 'stack' })}>
                   reset
                 </button>
               ) : null}
+            </div>
+
+            <HR />
+            <h5>Constrained by the scrollparent</h5>
+            <div>
+              <p>Expand and scroll up to reposition the avatar group menu</p>
+              <div
+                style={{ border: '1px solid black', height: '200px', width: '300px', overflow: 'scroll' }}
+                ref={ref => { this.scroll = ref; }}
+              >
+                <div style={{ width: '300px', height: '600px', paddingTop: '200px' }} >
+                  <AvatarGroup
+                    boundariesElement="scrollParent"
+                    onAvatarClick={console.log}
+                    data={stackSourceURLs.slice(0, 6).map(i => ({
+                      key: i,
+                      name: `Stack Avatar ${i + 1}`,
+                      src: avatarSource,
+                      size: avatarSize,
+                    }))}
+                  />
+                </div>
+              </div>
             </div>
           </Wrapper>
         );
@@ -399,7 +433,9 @@ storiesOf(name, module)
     <Wrapper>
       <h2>Avatar Item <New /></h2>
       <Note>
-        <p>Preformatted item to fulfil a common pattern. Accepts an <code>{'<Avatar/>'}</code>, <code>primaryText</code> and <code>secondaryText</code>.</p>
+        <p>Preformatted item to fulfil a common pattern. Accepts an
+          <code>{'<Avatar/>'}</code>, <code>primaryText</code>, <code>secondaryText</code> and <code>backgroundColor</code>.
+        </p>
         <p>Handles mouse and keyboard events when passed <code>href</code> or <code>onClick</code> props to maintain pseudo-state.{''}</p>
       </Note>
       {devs.map((d, i) => (
@@ -413,6 +449,20 @@ storiesOf(name, module)
       ))}
     </Wrapper>
   ))
+  .add('Avatar Item with custom background color', () => {
+    const customBackgrounds = ['rgba(0, 20, 255, 0.5)', '#ededed', 'transparent'];
+    return (
+      <Wrapper>
+        {customBackgrounds.map((color, index) => (
+          <AvatarItem
+            avatar={<Avatar src={avatarSource} presence="busy" />}
+            key={index}
+            backgroundColor={color}
+          />
+        ))}
+      </Wrapper>
+    );
+  })
   .add('Loading an Image', () => {
     function getInitialState() {
       return {

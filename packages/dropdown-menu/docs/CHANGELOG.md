@@ -1,5 +1,17 @@
 # @atlaskit/dropdown-menu
 
+## 3.11.3 (2017-11-23)
+
+* bug fix; update checkbox/radio dropdown items to work with default item spacing bug fix ([7ac0582](https://bitbucket.org/atlassian/atlaskit/commits/7ac0582))
+## 3.11.2 (2017-11-16)
+
+* bug fix; bumping internal dependencies to latest major version ([7b22368](https://bitbucket.org/atlassian/atlaskit/commits/7b22368))
+## 3.11.1 (2017-11-02)
+
+* bug fix; added missing dependencies (issues closed: ak-3782) ([4dbc3ef](https://bitbucket.org/atlassian/atlaskit/commits/4dbc3ef))
+## 3.11.0 (2017-10-27)
+
+* feature; use shared HOC from item ([f966d9c](https://bitbucket.org/atlassian/atlaskit/commits/f966d9c))
 ## 3.10.5 (2017-10-26)
 
 * bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))

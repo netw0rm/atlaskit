@@ -45,6 +45,11 @@ export const imageEmoji: EmojiDescription = {
     width: 24,
     height: 24,
   },
+  altRepresentation: {
+    imagePath: 'https://alt-path-to-image.png',
+    width: 48,
+    height: 48,
+  },
   searchable: true,
 };
 

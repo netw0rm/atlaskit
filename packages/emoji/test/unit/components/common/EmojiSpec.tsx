@@ -77,6 +77,16 @@ describe('<Emoji />', () => {
       expect((image.prop('src') || {})).to.equal('https://path-to-image.png');
     });
 
+    it('should use altRepresentation image if fitToHeight is larger than representation height', () => {
+      const wrapper = shallow(<Emoji
+        emoji={imageEmoji}
+        fitToHeight={26}
+      />);
+
+      const image = wrapper.find(`.${styles.emoji} img`);
+      expect((image.prop('src') || {})).to.equal('https://alt-path-to-image.png');
+    });
+
     it('should be selected', () => {
       const wrapper = shallow(<Emoji
         emoji={imageEmoji}

@@ -78,7 +78,7 @@ export default class AvatarGroup extends Component {
     // crop and prepare the dropdown items
     const items = data
       .slice(max)
-      .map(avatar => (
+      .map((avatar, i) => (
         <DropdownItem
           elemBefore={
             <Avatar
@@ -89,6 +89,7 @@ export default class AvatarGroup extends Component {
             />
           }
           href={avatar.href}
+          key={i}
           onClick={onAvatarClick}
           rel={avatar.target ? 'noopener noreferrer' : null}
           target={avatar.target}

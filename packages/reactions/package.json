@@ -26,7 +26,7 @@
   ],
   "dependencies": {
     "@atlaskit/button": "^1.1.2",
-    "@atlaskit/emoji": "^15.0.0",
+    "@atlaskit/emoji": "^30.3.3",
     "@atlaskit/icon": "^2.3.0",
     "@atlaskit/layer": "^2.1.4",
     "@atlaskit/tooltip": "^1.2.0",
@@ -51,7 +51,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@atlaskit/util-common-test": "1.0.2",
-    "@atlaskit/util-data-test": "^4.1.0",
+    "@atlaskit/util-data-test": "^7.1.1",
     "@atlaskit/util-readme": "^1.0.0",
     "@types/sinon": "^2.2.1",
     "fetch-mock": "^5.8.0",

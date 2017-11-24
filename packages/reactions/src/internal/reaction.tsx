@@ -52,28 +52,7 @@ const shakeAnimation = keyframes({
 
 const emojiStyle = style({
   transformOrigin: 'center center 0',
-  $nest: {
-    '&&> span': {
-      display: 'inline-block',
-      flex: 'auto',
-      width: 'auto',
-      minWidth: '24px',
-      backgroundSize: '16px 16px',
-      verticalAlign: 'middle',
-      $nest: {
-        '> span': {
-          margin: '2px 4px',
-          maxWidth: '16px',
-          maxHeight: '16px'
-        },
-        '> img': {
-          margin: '2px 4px',
-          maxWidth: '16px',
-          maxHeight: '16px'
-        }
-      }
-    }
-  }
+  margin: '0 4px',
 });
 
 const countStyle = style({
@@ -262,7 +241,7 @@ export default class Reaction extends PureComponent<Props, State> {
         onMouseOut={this.handleMouseOut}
       >
         {tooltip}
-        <div className={emojiStyle}><ResourcedEmoji emojiProvider={emojiProvider} emojiId={emojiId} /></div>
+        <div className={emojiStyle}><ResourcedEmoji emojiProvider={emojiProvider} emojiId={emojiId} fitToHeight={16}/></div>
         <div className={countStyle}>
           {reaction.count < 100 ? reaction.count : '99+'}
         </div>

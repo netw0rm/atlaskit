@@ -9,12 +9,10 @@ import Trigger from '../src/internal/trigger';
 import { reactionsProvider, reactionsProviderPromise } from '../src/mock-reactions-provider';
 import { analyticsService } from '../src/analytics';
 
-import { emoji as emojiTestData } from '@atlaskit/util-data-test';
-
-const { getEmojiResource } = emojiTestData.emojiStoryData;
-
+import { storyData } from '@atlaskit/emoji/src/support';
 import { name } from '../package.json';
 
+const { getEmojiResource } = storyData;
 const demoAri = 'ari:cloud:owner:demo-cloud-id:item/1';
 const demoAri2 = 'ari:cloud:owner:demo-cloud-id:item/2';
 const containerAri = 'ari:cloud:owner:demo-cloud-id:container/1';

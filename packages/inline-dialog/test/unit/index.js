@@ -130,6 +130,19 @@ describe('inline-dialog', () => {
   });
 
   describe('handleClickOutside', () => {
+    it('should not trigger the onClose prop if event is defaultPrevented', () => {
+      const spy = jest.fn();
+      const wrapper = mount(<InlineDialog onClose={spy} isOpen />);
+      const event = {
+        target: document.createElement('div'),
+        defaultPrevented: true,
+      };
+
+      wrapper.instance().handleClickOutside(event);
+
+      expect(spy).not.toHaveBeenCalled();
+    });
+
     it('should trigger the onClose prop', () => {
       const spy = jest.fn();
       const wrapper = mount(<InlineDialog onClose={spy} isOpen />);

@@ -5,7 +5,7 @@ import { MouseEvent, SyntheticEvent } from 'react';
 import { getPixelRatio } from '../../api/EmojiUtils';
 import * as styles from './styles';
 import { isImageRepresentation, isMediaRepresentation, isSpriteRepresentation, toEmojiId } from '../../type-helpers';
-import { EmojiDescription, EmojiImageRepresentation, OnEmojiEvent, SpriteRepresentation } from '../../types';
+import { EmojiDescription, OnEmojiEvent, SpriteRepresentation } from '../../types';
 import { leftClick } from '../../util/mouse';
 
 export interface Props {

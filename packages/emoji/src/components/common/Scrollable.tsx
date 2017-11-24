@@ -19,7 +19,7 @@ export interface Props {
   onMouseLeave?: MouseEventHandler<any>;
 }
 
-export default class Scrollable extends PureComponent<Props, undefined> {
+export default class Scrollable extends PureComponent<Props, {}> {
   private scrollableDiv: HTMLElement;
 
   // API

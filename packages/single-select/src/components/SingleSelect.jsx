@@ -108,6 +108,11 @@ export default class AkSingleSelect extends PureComponent {
   }
 
   handleOpenChange = (attrs) => {
+    // allows consuming components to look for `defaultPrevented` on the event
+    // where they can handle internal state e.g. prevent InlineDialog from closing when
+    // the target DOM node no-longer exists
+    if (!attrs.isOpen) attrs.event.preventDefault();
+
     this.setState({ isOpen: attrs.isOpen });
     this.props.onOpenChange(attrs);
   }

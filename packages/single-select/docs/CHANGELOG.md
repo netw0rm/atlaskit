@@ -1,5 +1,9 @@
 # @atlaskit/single-select
 
+## 3.1.1 (2017-11-24)
+
+
+* bug fix; fix single select dropdown not closing on blur (issues closed: ak-3916) ([ae1d589](https://bitbucket.org/atlassian/atlaskit/commits/ae1d589))
 ## 3.1.0 (2017-11-23)
 
 

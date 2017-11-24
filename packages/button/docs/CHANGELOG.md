@@ -1,5 +1,8 @@
 # @atlaskit/button
 
+## 5.4.10 (2017-11-24)
+
+* bug fix; fix button-group prop validation to ignore null children ([3f7f0c3](https://bitbucket.org/atlassian/atlaskit/commits/3f7f0c3))
 ## 5.4.9 (2017-11-21)
 
 * bug fix; bumping internal dependencies to latest version ([5e81848](https://bitbucket.org/atlassian/atlaskit/commits/5e81848))

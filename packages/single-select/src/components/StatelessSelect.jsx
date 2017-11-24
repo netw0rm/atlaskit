@@ -401,6 +401,10 @@ export default class StatelessSelect extends PureComponent {
     }
   }
 
+  handleOnBlur = (event) => {
+    this.onOpenChange({ event, isOpen: false });
+  }
+
   handleItemSelect = (item, attrs) => {
     if (item && !item.isDisabled) {
       this.props.onOpenChange({ isOpen: false, event: attrs.event });
@@ -543,6 +547,7 @@ export default class StatelessSelect extends PureComponent {
               isInvalid={isInvalid}
               invalidMessage={invalidMessage}
               isPaddingDisabled
+              onBlur={this.handleOnBlur}
             >
               <Trigger
                 onClick={this.handleTriggerClick}

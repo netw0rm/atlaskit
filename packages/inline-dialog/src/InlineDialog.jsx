@@ -62,6 +62,8 @@ export default class InlineDialog extends PureComponent {
   }
 
   handleClickOutside = (event) => {
+    if (event.defaultPrevented) return;
+
     if (this.props.isOpen) {
       const domNode = ReactDOM.findDOMNode(this); // eslint-disable-line react/no-find-dom-node
       if (!domNode || (event.target instanceof Node && !domNode.contains(event.target))) {

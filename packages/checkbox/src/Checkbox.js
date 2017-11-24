@@ -28,7 +28,7 @@ type Props = {|
 export default class Checkbox extends PureComponent {
   props: Props // eslint-disable-line react/sort-comp
 
-  static defaulProps = {
+  static defaultProps = {
     initiallyChecked: false,
     onChange: () => {},
   }

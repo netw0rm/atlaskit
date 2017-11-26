@@ -77,14 +77,17 @@ const handleImageError = (props: Props, event: SyntheticEvent<HTMLImageElement>)
   const { emoji, onLoadError, fitToHeight } = props;
 
   // Determine whether to request higher resolution image from service
-  emoji.representation = shouldUseAltRepresentation(emoji, fitToHeight) ? emoji.altRepresentation : emoji.representation;
+  const fittedEmoji = {
+    ...emoji,
+    representation: shouldUseAltRepresentation(emoji, fitToHeight) ? emoji.altRepresentation : emoji.representation,
+  };
 
   // Hide error state (but keep space for it)
   const target = event.target as HTMLElement;
   target.style.visibility = 'hidden';
 
   if (onLoadError) {
-    onLoadError(toEmojiId(emoji), emoji, event);
+    onLoadError(toEmojiId(fittedEmoji), fittedEmoji, event);
   }
 };
 

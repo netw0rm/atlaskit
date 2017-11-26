@@ -131,7 +131,7 @@ export default class ReactRouterNestedNavigation extends Component {
               icon={
                 <img alt="nucleus" src={nucleusLogo} />
               }
-              text="AtlasKit"
+              text="Atlaskit"
               subText="Is the king"
             />
           </Tooltip>

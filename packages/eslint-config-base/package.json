@@ -10,7 +10,7 @@
       "name": "Alex R"
     }
   ],
-  "description": "The eslint configuration for AtlasKit components",
+  "description": "The eslint configuration for Atlaskit components",
   "license": "Apache-2.0",
   "main": ".eslintrc",
   "dependencies": {

@@ -76,7 +76,7 @@ module.exports = {
 
     // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-stateless-function.md
     // Opt out of preferring stateless functions
-    // Rationale: https://extranet.atlassian.com/display/AtlasKit/React+component+conventions
+    // Rationale: https://extranet.atlassian.com/display/Atlaskit/React+component+conventions
     'react/prefer-stateless-function': 'off',
 
     // https://github.com/bryanrsmith/eslint-plugin-prefer-object-spread
@@ -88,7 +88,7 @@ module.exports = {
       'error',
       {
         // Disabling the use of React.Component
-        // Rationale: https://extranet.atlassian.com/display/AtlasKit/React+component+conventions
+        // Rationale: https://extranet.atlassian.com/display/Atlaskit/React+component+conventions
         object: 'React',
         property: 'Component',
         message: 'Please use PureComponent instead.',

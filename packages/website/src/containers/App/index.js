@@ -141,8 +141,8 @@ export default class App extends PureComponent {
         <AtlasKitThemeProvider mode={themeMode}>
           <ScrollToTop>
             <Helmet
-              defaultTitle="AtlasKit - the official implementation of the Atlassian Design Guidelines"
-              titleTemplate="%s | AtlasKit"
+              defaultTitle="Atlaskit - the official implementation of the Atlassian Design Guidelines"
+              titleTemplate="%s | Atlaskit"
             />
             <Media query={MOBILE_QUERY}>
               {matches => (matches ? <MobileView /> : <DesktopView />)}

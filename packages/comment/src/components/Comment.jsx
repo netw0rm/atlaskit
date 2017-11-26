@@ -12,7 +12,7 @@ export default class Comment extends PureComponent {
     actions: PropTypes.arrayOf(PropTypes.node),
     /** A CommentAuthor element containing the name of the comment author. */
     author: PropTypes.node,
-    /** The element to display as the Comment avatar - generally an AtlasKit Avatar */
+    /** The element to display as the Comment avatar - generally an Atlaskit Avatar */
     avatar: PropTypes.node.isRequired,
     /** Nested comments should be provided as children of the Comment */
     children: PropTypes.node,

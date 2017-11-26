@@ -42,7 +42,7 @@ describe(name, () => {
       expect(stub).toHaveBeenCalledTimes(1);
     });
 
-    // [Current patterns for testing dynamic styles](https://extranet.atlassian.com/display/AtlasKit/Moving+from+Less+to+Styled+Components)
+    // [Current patterns for testing dynamic styles](https://extranet.atlassian.com/display/Atlaskit/Moving+from+Less+to+Styled+Components)
     it('should have a green background when active', () => {
       expect(getContainerBackgroundColor({ isActive: true })).toBe(akColorG75);
     });

@@ -1,4 +1,4 @@
-# Common test utilities for AtlasKit
+# Common test utilities for Atlaskit
 
 
 

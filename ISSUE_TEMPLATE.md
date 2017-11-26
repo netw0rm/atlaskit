@@ -29,9 +29,9 @@ Create a gif using [this](http://gifbrewery.com/)
 [What percentage of the time does it reproduce?]
 
 ### Information
-| Components  | Version | Did this work in previous versions of the AtlasKit component? | Browser and OS information  |
+| Components  | Version | Did this work in previous versions of the Atlaskit component? | Browser and OS information  |
 |-------------|:--------|:--------------------------------------------------------------|:----------------------------|
-|   		  |         | Yes/ No/ I don't know                                         |                             | 
+|   		      |         | Yes/ No/ I don't know                                         |                             | 
 
 
 * To get the component version:

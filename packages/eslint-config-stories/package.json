@@ -10,7 +10,7 @@
       "name": "Alex R"
     }
   ],
-  "description": "The react-storybook story eslint configuration for AtlasKit components",
+  "description": "The react-storybook story eslint configuration for Atlaskit components",
   "license": "Apache-2.0",
   "main": ".eslintrc",
   "dependencies": {

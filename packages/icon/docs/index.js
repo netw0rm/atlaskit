@@ -28,7 +28,7 @@ export const description = (
       Generally, you won't need this unless you're using your own custom icon.`}
     </p>
     <Pre>{"import Icon from '@atlaskit/icon';"}</Pre>
-    <p>{"To use one of AtlasKit's built-in icons you should import it directly."}</p>
+    <p>{"To use one of Atlaskit's built-in icons you should import it directly."}</p>
     <Pre>{"import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';"}</Pre>
     <p>{'You can explore all of our icons in the example below.'}</p>
   </div>

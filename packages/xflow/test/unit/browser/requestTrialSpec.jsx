@@ -45,7 +45,7 @@ const defaultRequestOrStartTrialProps = {
   targetProduct: 'storybook-example-product',
 };
 
-describe('@atlaskit/xflow', () => {
+describe('RequestOrStartTrial', () => {
   beforeEach(() => fetchMock.catch(417));
   afterEach(fetchMock.restore);
 

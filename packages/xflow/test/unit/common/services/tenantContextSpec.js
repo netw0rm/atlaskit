@@ -193,7 +193,7 @@ describe('tenantContext', () => {
       try {
         await isCurrentUserSiteAdmin();
       } catch (err) {
-        expect(err.message.startsWith('Unable to retrieve information about current user:')).toBe(true);
+        expect(err.message.startsWith('Unable to check current user site admin rights:')).toBe(true);
       }
     });
   });

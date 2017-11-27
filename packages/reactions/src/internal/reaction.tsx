@@ -103,9 +103,6 @@ const reactionStyle = style({
     '&.bounce': {
       animation: `${bouncingAnimation} 200ms ease-in-out`,
     },
-    '&.reaction-enter-active': {
-      animation: `${bouncingAnimation} 200ms ease-in-out`,
-    },
     '&.shake': {
       animation: `${shakeAnimation} 200ms infinite ease-in-out`
     }

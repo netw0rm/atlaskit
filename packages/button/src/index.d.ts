@@ -27,5 +27,5 @@ export interface ButtonGroupProps {
   children?: ReactNode;
 }
 
-export class ButtonGroup extends Component<ButtonGroupProps, {}> { }
+export class ButtonGroup extends Component<ButtonGroupProps, {}> {}
 export default class extends Component<Props, {}> {}

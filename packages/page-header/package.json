@@ -44,7 +44,11 @@
     "react": "^15.3.2"
   },
   "author": "Atlassian Pty Ltd",
-  "maintainers": [],
+  "maintainers": [
+    {
+      "name": "Sean C"
+    }
+  ],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",

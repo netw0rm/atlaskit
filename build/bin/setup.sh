@@ -13,8 +13,8 @@ npm uninstall -g yarn
 # TODO: We should upgrade Yarn in the Docker image or remove it from there, and install through build script every time.
 
 # Install through the bash script (which is the second recommended method after using APK)
-# EDIT: We pin the version because yarn 1.0.0's bin command seems to return the global bin, not the local one.
-curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 0.28.4
+# EDIT: We pin the version because following yarn version are causing problems (to be investigated)
+curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.2.1
 
 # Link so that subsequent scripts can just call "yarn" from path
 ln -s "$HOME/.yarn/bin/yarn" /usr/bin/yarn

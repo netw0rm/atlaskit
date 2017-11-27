@@ -1,5 +1,9 @@
 # @atlaskit/button
 
+## 5.4.11 (2017-11-27)
+
+* bug fix; fix disabled buttons not swallowing click events (issues closed: ak-3646) ([80e976b](https://bitbucket.org/atlassian/atlaskit/commits/80e976b))
+
 ## 5.4.10 (2017-11-24)
 
 * bug fix; fix button-group prop validation to ignore null children ([3f7f0c3](https://bitbucket.org/atlassian/atlaskit/commits/3f7f0c3))

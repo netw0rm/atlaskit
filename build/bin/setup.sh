@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -e
 
+# report
+echo "* node version = $(node --version)"
+echo "* npm version = $(npm --version)"
+
 # We don't wan the old version of yarn from Docker image
 npm uninstall -g yarn
 

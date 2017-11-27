@@ -48,6 +48,7 @@ export default class OverflowDropdown extends Component {
       <ThemeProvider theme={{ [isDropdownOverflowKey]: true }}>
         <DropdownMenu
           onOpenChange={this.handleDropdownToggle}
+          shouldFlip={false}
           trigger={
             this.state.isOpen ? dropdownTrigger : (
               <Tooltip

@@ -10,6 +10,7 @@ export default class ExampleAlignment extends PureComponent {
     position: PropTypes.string,
     targetContent: PropTypes.string,
     longContent: PropTypes.bool,
+    content: PropTypes.string,
   }
 
   static defaultProps = {
@@ -23,6 +24,7 @@ export default class ExampleAlignment extends PureComponent {
           <p>This is the layer content</p>
           <p>It should be positioned with position: {this.props.position}</p>
         </div>) : this.props.position}
+        <p>{this.props.content}</p>
       </div>
     );
 

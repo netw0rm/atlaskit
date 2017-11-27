@@ -1,10 +1,8 @@
 import styled from 'styled-components';
 import {
-  akGridSize,
-  akColorN0,
-  akColorN30,
-  akColorN50,
-} from '@atlaskit/util-shared-styles';
+  gridSize,
+  colors,
+} from '@atlaskit/theme';
 
 // tslint:disable-next-line:variable-name
 export const CheckBoxWrapper = styled.span`
@@ -13,7 +11,7 @@ export const CheckBoxWrapper = styled.span`
   height: 16px;
   position: relative;
   align-self: start;
-  margin: 2px ${akGridSize} 0 0;
+  margin: 2px ${gridSize()}px 0 0;
 
   & > input[type="checkbox"] {
     position: absolute;
@@ -32,13 +30,13 @@ export const CheckBoxWrapper = styled.span`
       cursor: pointer;
 
       &::after {
-        background: ${akColorN0};
+        background: ${colors.N0};
         background-size: 16px;
         border-color: transparent;
         border-radius: 3px;
         border-style: solid;
         border-width: 1px;
-        border-color: ${akColorN50};
+        border-color: ${colors.N50};
         box-sizing: border-box;
         content: '';
         height: 16px;
@@ -52,7 +50,7 @@ export const CheckBoxWrapper = styled.span`
 
     }
     &:not([disabled]) + label:hover::after {
-      background: ${akColorN30};
+      background: ${colors.N30};
       transition: border 0.2s ease-in-out;
     }
     &[disabled] + label {

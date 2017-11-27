@@ -1,7 +1,5 @@
 import styled from 'styled-components';
-import {
-  akGridSize,
-} from '@atlaskit/util-shared-styles';
+import { gridSize } from '@atlaskit/theme';
 
 // tslint:disable-next-line:variable-name
 export const EditorIconWrapper = styled.span`
@@ -9,7 +7,7 @@ export const EditorIconWrapper = styled.span`
   height: 16px;
   width: 16px;
   color: ${props => props.color || 'inherit'}
-  margin: 2px ${akGridSize} 0 0;
+  margin: 2px ${gridSize}px 0 0;
 
   > span {
     margin: -8px;

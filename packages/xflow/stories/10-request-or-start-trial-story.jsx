@@ -109,20 +109,14 @@ const defaultXFlowProviderProps = {
         },
       },
     ]),
-  cancelStartProductTrial: async () => {
-  },
-  grantAccessToUsers: () => delay(1000),
-  goToProduct: async () => {
-  },
-  closeLoadingDialog: async () => {
-  },
-  requestTrialWithNote: async () => delay(1000),
-  cancelRequestTrial: async () => {
-  },
-  checkProductRequestFlag: async () => {
-  },
-  setProductRequestFlag: async () => {
-  },
+  cancelStartProductTrial: async (...args) => action('mock cancelStartProductTrial')(...args),
+  grantAccessToUsers: async (...args) => { action('mock grantAccessToUsers')(...args); return delay(1000); },
+  goToProduct: async (...args) => action('mock goToProduct')(...args),
+  closeLoadingDialog: async (...args) => action('mock closeLoadingDialog')(...args),
+  requestTrialWithNote: async (...args) => { action('mock requestTrialWithNote')(...args); return delay(1000); },
+  cancelRequestTrial: async (...args) => action('mock cancelRequestTrial')(...args),
+  checkProductRequestFlag: async (...args) => action('mock checkProductRequestFlag')(...args),
+  setProductRequestFlag: async (...args) => action('mock setProductRequestFlag')(...args),
 };
 
 const defaultRequestOrStartTrialProps = {

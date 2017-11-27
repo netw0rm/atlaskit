@@ -88,23 +88,18 @@ export default class Layer extends PureComponent {
   /* Calculate the max height of the popper if it's height is greater than the viewport to prevent
    * the bottom of the popper not being viewable.
    * Only works if the popper uses viewport as the boundary and has a fixed position ancestor.
-   *
    */
   calculateMaxHeight(originalHeight, currentHeight, positionTop, cssPosition) {
-    let maxHeight = null;
-    if (cssPosition !== 'fixed') {
+    if (cssPosition !== 'fixed' || this.props.boundariesElement !== 'viewport') {
       return null;
     }
-    if (this.props.boundariesElement === 'viewport') {
-      const viewportHeight = Math.max(document.documentElement.clientHeight,
-        window.innerHeight || 0);
 
-      if (viewportHeight < originalHeight && currentHeight + positionTop >= viewportHeight - 50) {
-        // allow some spacing either side of viewport height
-        maxHeight = viewportHeight - 12;
-      }
-    }
-    return maxHeight;
+    const viewportHeight = Math.max(document.documentElement.clientHeight,
+      window.innerHeight || 0);
+    return (viewportHeight < originalHeight && currentHeight + positionTop >= viewportHeight - 50)
+      // allow some spacing either side of viewport height
+      ? viewportHeight - 12
+      : null;
   }
 
   /* Clamp fixed position to the window for fixed position poppers that flow off the top of the

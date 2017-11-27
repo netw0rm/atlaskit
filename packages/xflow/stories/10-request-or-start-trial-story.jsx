@@ -4,14 +4,14 @@ import React from 'react';
 import { RequestOrStartTrial } from '@atlaskit/xflow';
 
 import setupStorybookAnalytics from './util/setupStorybookAnalytics';
-import mockXFlowProviderFactory from './providers/mockXFlowProviderFactory';
+import mockXFlowProviderFactory from './helpers/mockXFlowProviderFactory';
 
 import JiraToConfluenceXFlowProvider from '../src/product-xflow-providers/JiraToConfluenceXFlowProvider';
 import JiraToJSDXFlowProvider from '../src/product-xflow-providers/JiraToJSDXFlowProvider';
 import JiraToJSWXFlowProvider from '../src/product-xflow-providers/JiraToJSWXFlowProvider';
 import JiraToJCXFlowProvider from '../src/product-xflow-providers/JiraToJCXFlowProvider';
 
-import mockProductStatusChecker from './providers/mockProductStatusChecker';
+import mockProductStatusChecker from './helpers/mockProductStatusChecker';
 import { ACTIVE, ACTIVATING, DEACTIVATED, UNKNOWN } from '../src/common/productProvisioningStates';
 
 const delay = time => new Promise(resolve => setTimeout(resolve, time));

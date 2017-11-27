@@ -9,7 +9,6 @@ const notImplemented = () => {
 
 const overrideImplementations = {
   canCurrentUserAddProduct: notImplemented,
-  isProductInstalledOrActivating: notImplemented,
   canCurrentUserGrantAccessToProducts: notImplemented,
 
   requestTrialWithNote: notImplemented,

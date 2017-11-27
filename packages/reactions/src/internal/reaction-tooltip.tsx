@@ -9,7 +9,7 @@ import { PureComponent } from 'react';
 import { style, keyframes } from 'typestyle';
 import { User } from '../reactions-resource';
 
-const akBorderRadius = borderRadius;
+const akBorderRadius = borderRadius();
 const akColorN900 = colors.N900;
 
 const animateDown = keyframes({

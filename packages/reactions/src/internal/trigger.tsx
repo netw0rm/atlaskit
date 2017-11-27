@@ -9,7 +9,7 @@ import { PureComponent } from 'react';
 import { style } from 'typestyle';
 import { isLeftClick } from './helpers';
 
-const akBorderRadius = borderRadius;
+const akBorderRadius = borderRadius();
 const akColorN30A = colors.N30A;
 const akColorN500 = colors.N500;
 

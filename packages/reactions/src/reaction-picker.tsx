@@ -16,7 +16,7 @@ import Selector from './internal/selector';
 import Trigger from './internal/trigger';
 import { analyticsService } from './analytics';
 
-const akBorderRadius = borderRadius;
+const akBorderRadius = borderRadius();
 const akColorN0 = colors.N0;
 const akColorN30A = colors.N30A;
 const akColorN50A = colors.N50A;

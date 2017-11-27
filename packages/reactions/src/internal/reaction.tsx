@@ -13,7 +13,7 @@ import { analyticsService } from '../analytics';
 import ReactionTooltip from './reaction-tooltip';
 import { isPromise } from './helpers';
 
-const akBorderRadius = borderRadius;
+const akBorderRadius = borderRadius();
 const akColorN30A = colors.N30A;
 const akColorN400 = colors.N400;
 const akColorB50 = colors.B50;

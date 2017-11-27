@@ -12,6 +12,7 @@ import { colors } from '@atlaskit/theme';
 
 import { name } from '../package.json';
 import Button, { ButtonGroup } from '../src';
+import DisabledButtonEvents from './examples/DisabledButtonEvents';
 
 const css = `
   .container {
@@ -460,5 +461,8 @@ storiesOf(name, module)
       <div><Button appearance="primary" iconBefore={<Question label="Icon before" />}>I am wider than my parent</Button></div>
       <div><Button appearance="primary" iconAfter={<Expand label="Icon after" />}>I am wider than my parent</Button></div>
     </NarrowWrapper>
+  ))
+  .add('disabled onClick events', () => (
+    <DisabledButtonEvents />
   )
 );

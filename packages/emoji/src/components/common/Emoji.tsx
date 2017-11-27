@@ -82,10 +82,11 @@ const handleImageError = (props: Props, event: SyntheticEvent<HTMLImageElement>)
     representation: shouldUseAltRepresentation(emoji, fitToHeight) ? emoji.altRepresentation : emoji.representation,
   };
 
-  // Hide error state (but keep space for it)
-  const target = event.target as HTMLElement;
-  target.style.visibility = 'hidden';
-
+  // Hide error state (but keep space for it)\
+  if (event.target) {
+    const target = event.target as HTMLElement;
+    target.style.visibility = 'hidden';
+  }
   if (onLoadError) {
     onLoadError(toEmojiId(fittedEmoji), fittedEmoji, event);
   }

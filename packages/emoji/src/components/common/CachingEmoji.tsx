@@ -2,13 +2,12 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { PureComponent } from 'react';
 
-import { EmojiDescription } from '../../types';
+import { EmojiDescription, EmojiId } from '../../types';
 import { isMediaEmoji, isPromise } from '../../type-helpers';
 import debug from '../../util/logger';
 import { EmojiContext } from './internal-types';
 import Emoji, { Props as EmojiProps } from './Emoji';
 import EmojiPlaceholder from './EmojiPlaceholder';
-import { EmojiId } from '../../../index';
 
 export interface State {
   cachedEmoji?: EmojiDescription;

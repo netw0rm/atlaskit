@@ -4,7 +4,8 @@ import { customCategory, customType } from '../constants';
 import EmojiRepository from '../api/EmojiRepository';
 import TokenManager from '../api/media/TokenManager';
 import { denormaliseEmojiServiceResponse } from '../api/EmojiUtils';
-import { EmojiDescription, EmojiDescriptionWithVariations, EmojiId, EmojiServiceDescription, EmojiServiceResponse, EmojiVariationDescription, MediaApiToken } from '../types';
+import { EmojiDescription, EmojiDescriptionWithVariations, EmojiId, EmojiServiceDescription, EmojiServiceResponse, EmojiVariationDescription, MediaApiRepresentation, MediaApiToken } from '../types';
+import { convertMediaToImageRepresentation } from '../type-helpers';
 import { MockEmojiResourceConfig } from './support-types';
 import { mockEmojiResourceFactory, mockNonUploadingEmojiResourceFactory, MockEmojiResource, MockNonUploadingEmojiResource } from './MockEmojiResource';
 
@@ -57,6 +58,7 @@ export const siteUrl = 'https://emoji.example.com/emoji/site/blah';
 
 export const mediaBaseUrl = 'https://media.example.com/';
 export const mediaEmojiImagePath = `${mediaBaseUrl}path-to-image.png`;
+export const mediaEmojiAlternateImagePath = `${mediaBaseUrl}alt-path-to-image.png`;
 
 export const mediaServiceEmoji: EmojiServiceDescription = {
   id: 'media',
@@ -70,6 +72,13 @@ export const mediaServiceEmoji: EmojiServiceDescription = {
     imagePath: mediaEmojiImagePath,
     width: 24,
     height: 24,
+  },
+  altRepresentations: {
+    XHDPI: {
+      imagePath: mediaEmojiAlternateImagePath,
+      width: 48,
+      height: 48,
+    },
   },
   searchable: true,
 };
@@ -91,6 +100,11 @@ export const mediaEmoji: EmojiDescriptionWithVariations = {
     width: 24,
     height: 24,
   },
+  altRepresentation: {
+    mediaPath: mediaEmojiAlternateImagePath,
+    width: 48,
+    height: 48,
+  },
   skinVariations: [],
   searchable: true,
 };
@@ -101,7 +115,8 @@ export const loadedMediaEmoji: EmojiDescriptionWithVariations = {
     imagePath: 'data:;base64,', // assumes an empty result is returned (e.g. via fetchMock for the mediaPath)
     width: 24,
     height: 24,
-  }
+  },
+  altRepresentation: convertMediaToImageRepresentation(mediaEmoji.altRepresentation as MediaApiRepresentation),
 };
 
 const missingMediaId = 'some-new-emoji';

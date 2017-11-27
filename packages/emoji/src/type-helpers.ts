@@ -55,18 +55,20 @@ export const containsEmojiId = (emojis: EmojiDescription[], emojiId: EmojiId | u
   return false;
 };
 
+export const convertMediaToImageRepresentation = (rep: MediaApiRepresentation, newImagePath?: string): ImageRepresentation =>
+  ({ imagePath: newImagePath || rep.mediaPath, height: rep.height, width: rep.width });
+
+
 export const convertMediaToImageEmoji = (emoji: EmojiDescription, newImagePath?: string): EmojiDescription => {
   const mediaRepresentation = emoji.representation;
   if (!isMediaRepresentation(mediaRepresentation)) {
     return emoji;
   }
-  const { mediaPath, ...otherRep } = mediaRepresentation;
-  const representation = {
-    ...otherRep,
-    imagePath: newImagePath || mediaRepresentation.mediaPath,
-  };
+  const representation = convertMediaToImageRepresentation(mediaRepresentation, newImagePath);
+  const altRepresentation = isMediaRepresentation(emoji.altRepresentation) ? convertMediaToImageRepresentation(emoji.altRepresentation) : undefined;
   return {
     ...emoji,
-    representation
+    representation,
+    altRepresentation,
   };
 };

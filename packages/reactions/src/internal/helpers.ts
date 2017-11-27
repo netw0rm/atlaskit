@@ -52,3 +52,5 @@ export const sortReactions = (a: ReactionSummary, b: ReactionSummary) => {
     return compareEmojiId(a.emojiId, b.emojiId);
   }
 };
+
+export const isPromise = (p): p is Promise<any> => !!(p && (<Promise<any>> p).then);

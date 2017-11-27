@@ -7,9 +7,10 @@ import { mount, shallow } from 'enzyme';
 
 import { emojiVisible } from './_test-utils';
 import Reaction, { ReactionOnClick } from '../../src/internal/reaction';
-import { emoji as emojiTestData } from '@atlaskit/util-data-test';
+import { testData } from '@atlaskit/emoji/src/support';
 
-const { getEmojiResourcePromise, emojiRepository } = emojiTestData.emojiTestData;
+const { getEmojiResourcePromise, newEmojiRepository } = testData;
+const emojiRepository = newEmojiRepository();
 
 const { expect } = chai;
 

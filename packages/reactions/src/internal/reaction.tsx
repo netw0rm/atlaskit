@@ -5,13 +5,13 @@ import {
 } from '@atlaskit/theme';
 import * as cx from 'classnames';
 import * as React from 'react';
-import { PureComponent } from 'react';
+import { PureComponent, SyntheticEvent } from 'react';
 import { style, keyframes } from 'typestyle';
 import { ReactionSummary } from '../reactions-resource';
 import { isLeftClick } from './helpers';
 import { analyticsService } from '../analytics';
 import ReactionTooltip from './reaction-tooltip';
-import { SyntheticEvent } from 'react';
+import { isPromise } from './helpers';
 
 const akBorderRadius = borderRadius;
 const akColorN30A = colors.N30A;
@@ -147,18 +147,22 @@ export default class Reaction extends PureComponent<Props, State> {
 
   componentWillMount() {
     this.props.emojiProvider.then((emojiResource) => {
-      const emojiPromise = emojiResource.findByEmojiId({
+      const foundEmoji = emojiResource.findByEmojiId({
         shortName: '',
         id: this.props.reaction.emojiId
       });
 
-      if (emojiPromise) {
-        emojiPromise.then(emoji => {
+      if (isPromise(foundEmoji)) {
+        foundEmoji.then(emoji => {
           if (emoji) {
             this.setState({
               emojiName: emoji.name
             });
           }
+        });
+      } else if (foundEmoji) {
+        this.setState({
+          emojiName: foundEmoji.name
         });
       }
     });

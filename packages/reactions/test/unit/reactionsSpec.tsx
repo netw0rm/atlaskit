@@ -7,11 +7,11 @@ import { Reactions, OnEmoji } from '../../src';
 import { sortReactions } from '../../src/internal/helpers';
 import Reaction from '../../src/internal/reaction';
 import { reactionsProvider } from '../../src/mock-reactions-provider';
-import { emoji as emojiTestData } from '@atlaskit/util-data-test';
 import { smileyId } from './_test-data';
 import {ObjectReactionKey} from '../../src/reactions-resource';
+import { testData } from '@atlaskit/emoji/src/support';
 
-const { getEmojiResourcePromise } = emojiTestData.emojiTestData;
+const { getEmojiResourcePromise } = testData;
 
 const { expect } = chai;
 

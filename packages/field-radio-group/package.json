@@ -27,7 +27,7 @@
   "dependencies": {
     "@atlaskit/field-base": "^8.1.5",
     "@atlaskit/theme": "^2.0.1",
-    "@atlaskit/icon": "^9.0.1",
+    "@atlaskit/icon": "^10.3.2",
     "babel-runtime": "^6.11.6",
     "classnames": "^2.2.5",
     "prop-types": "^15.5.10",

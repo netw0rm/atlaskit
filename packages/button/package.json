@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/button",
-  "version": "5.4.11",
+  "version": "5.4.12",
   "config": {
     "access": "public"
   },

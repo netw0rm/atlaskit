@@ -1,5 +1,9 @@
 # @atlaskit/button
 
+## 5.4.12 (2017-11-27)
+
+* bug fix; export interface for ts ([15c291c](https://bitbucket.org/atlassian/atlaskit/commits/15c291c))
+
 ## 5.4.11 (2017-11-27)
 
 * bug fix; fix disabled buttons not swallowing click events (issues closed: ak-3646) ([80e976b](https://bitbucket.org/atlassian/atlaskit/commits/80e976b))

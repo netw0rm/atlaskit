@@ -1,5 +1,11 @@
 # @atlaskit/layer
 
+## 2.5.8 (2017-11-27)
+
+
+
+
+* bug fix; fix layer overflowing viewport bounded contents off the top or bottom (issues closed: ak-3887) ([5978bfb](https://bitbucket.org/atlassian/atlaskit/commits/5978bfb))
 ## 2.5.7 (2017-11-13)
 
 * bug fix; Replaces popper.js with an inlined version directly in the layer package ([54fe9c2](https://bitbucket.org/atlassian/atlaskit/commits/54fe9c2))

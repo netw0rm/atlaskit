@@ -1,12 +1,8 @@
 import { EmojiProvider, ResourcedEmoji } from '@atlaskit/emoji';
 import {
-  akBorderRadius,
-  akColorN30A,
-  akColorN400,
-  akColorB50,
-  akColorB75,
-  akColorN500,
-} from '@atlaskit/util-shared-styles';
+  borderRadius,
+  colors
+} from '@atlaskit/theme';
 import * as cx from 'classnames';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -16,6 +12,13 @@ import { isLeftClick } from './helpers';
 import { analyticsService } from '../analytics';
 import ReactionTooltip from './reaction-tooltip';
 import { SyntheticEvent } from 'react';
+
+const akBorderRadius = borderRadius;
+const akColorN30A = colors.N30A;
+const akColorN400 = colors.N400;
+const akColorB50 = colors.B50;
+const akColorB75 = colors.B75;
+const akColorN500 = colors.N500;
 
 export const bouncingAnimation = keyframes({
   $debugName: 'bouncing',

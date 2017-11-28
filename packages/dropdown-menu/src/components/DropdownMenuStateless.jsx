@@ -228,7 +228,7 @@ export default class DropdownMenuStateless extends Component {
     const { triggerContainer } = this;
     // Casting target to Element. See comment in `handleKeyboardInteractionsDeprecated`.
     const target: Element = (event.target: Object);
-    if (triggerContainer && triggerContainer.contains(target)) {
+    if (triggerContainer && triggerContainer.contains(target) && target.disabled !== true) {
       const { isOpen } = this.props;
       this.sourceOfIsOpen = 'mouse';
       this.props.onOpenChange({ isOpen: !isOpen, event });

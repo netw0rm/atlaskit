@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 4.4.1 (2017-11-28)
+
+* bug fix; fix export of sample-elements support data ([0a5fc11](https://bitbucket.org/atlassian/atlaskit/commits/0a5fc11))
 ## 4.4.0 (2017-11-28)
 
 * feature; update react peer dep to support ^16.0.0 ([5b041bb](https://bitbucket.org/atlassian/atlaskit/commits/5b041bb))

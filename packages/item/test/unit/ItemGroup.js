@@ -73,36 +73,5 @@ describe(`${name} - ItemGroup`, () => {
       const wrapper = shallow(<ItemGroup title="Hello" />);
       expect(wrapper.find(GroupTitle).prop('aria-hidden')).toBe('true');
     });
-
-    describe('root element aria-label', () => {
-      let wrapper;
-      let currentLabel;
-
-      beforeEach(() => {
-        wrapper = mount(<ItemGroup title="Hello" />);
-        currentLabel = () => (wrapper.find('[aria-label]').prop('aria-label'));
-      });
-
-      it('should match title prop if no elemAfter provided', () => {
-        expect(currentLabel()).toBe('Hello');
-      });
-      it('should contain title and elemAfter if elemAfter is a string', () => {
-        wrapper.setProps({ elemAfter: 'AK-1234' });
-        expect(currentLabel()).toBe('Hello AK-1234');
-      });
-      it('should contain title and elemAfter text content if elemAfter is JSX', () => {
-        wrapper.setProps({
-          elemAfter: (
-            <div>
-              <span>there </span>
-              <span>friend</span>
-            </div>
-          ),
-        });
-        expect(currentLabel()).toBe('Hello there friend');
-      });
-    });
   });
-
-  // aria-hidden="true" always (need title prop)
 });

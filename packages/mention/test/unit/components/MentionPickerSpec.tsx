@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 import { MentionDescription } from '../../../src/types';
-import mentionData, { mentionDataSize } from '../../../src/support/mention-data';
+import mentionData from '../../../src/support/mention-data';
 import { HttpError } from '../../../src/api/MentionResource';
 import MentionResource from '../../../src/support/MockMentionResource';
 import MentionPicker, { OnClose, OnOpen, Props, State } from '../../../src/components/MentionPicker';
@@ -15,6 +15,7 @@ import MentionItem from '../../../src/components/MentionItem';
 import { isMentionItemSelected, getMentionItemById } from '../_ak-selectors';
 
 const mentions = mentionData.mentions;
+const MAX_NOTIFIED_ITEMS = 20;
 
 function setupPicker(props?: Props): ReactWrapper<Props, State> {
   const resourceProvider = new MentionResource({
@@ -31,7 +32,7 @@ const leftClick = {
 };
 
 function createDefaultMentionItemsShowTest(mentionsComponent: ReactWrapper<Props, State>) {
-  return () => mentionsComponent.find(MentionItem).length === mentionDataSize;
+  return () => mentionsComponent.find(MentionItem).length === MAX_NOTIFIED_ITEMS;
 }
 
 function createNoMentionItemsShownTest(mentionsComponent: ReactWrapper<Props, State>) {
@@ -45,7 +46,7 @@ function createMentionErrorShownTest(mentionsComponent: ReactWrapper<Props, Stat
 describe('MentionPicker', () => {
   it('should accept all mention names by default', () => {
     const component = setupPicker();
-    const hasExpectedItems = () => component.find(MentionItem).length === mentionDataSize;
+    const hasExpectedItems = () => component.find(MentionItem).length === MAX_NOTIFIED_ITEMS;
     return waitUntil(hasExpectedItems);
   });
 
@@ -172,7 +173,7 @@ describe('MentionPicker', () => {
   it('should change selection when navigating previous', () => {
     const component = setupPicker();
     const lastItemSelected = () =>
-      isMentionItemSelected(component, mentions[mentions.length - 1].id);
+      isMentionItemSelected(component, mentions[MAX_NOTIFIED_ITEMS - 1].id);
 
     return waitUntil(createDefaultMentionItemsShowTest(component))
       .then(() => {
@@ -284,7 +285,7 @@ describe('MentionPicker', () => {
     return waitUntil(createDefaultMentionItemsShowTest(component))
       .then(() => {
         const mentionPicker = component.instance() as MentionPicker;
-        expect(mentionPicker.mentionsCount()).to.equal(mentionDataSize);
+        expect(mentionPicker.mentionsCount()).to.equal(MAX_NOTIFIED_ITEMS);
       });
   });
 });

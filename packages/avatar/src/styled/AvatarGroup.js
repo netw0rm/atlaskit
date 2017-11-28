@@ -23,6 +23,8 @@ export const Grid = styled.div`
 export const Stack = styled.div`
   display: flex;
   line-height: 1;
+  /* Balance the negative margin of the children */
+  margin-right: ${props => (BORDER_WIDTH[props.size] * 2) + gutterUnitless}px;
 
   > * {
     margin-right: -${props => (BORDER_WIDTH[props.size] * 2) + gutterUnitless}px;

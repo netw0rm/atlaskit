@@ -120,6 +120,18 @@ export default class Button extends Component {
 
   onBlur = () => this.setState({ isFocus: false })
 
+  /* Swallow click events when the button is disabled to mimic native disabled button
+   * behaviour.
+   */
+  onInnerClick = (e) => {
+    // If children is an object, there is an element within the button which would cause click
+    // events to propagate with native buttons, so allow it here as well.
+    if (this.props.isDisabled && typeof this.props.children !== 'object') {
+      e.stopPropagation();
+    }
+    return true;
+  }
+
   getStyledComponent() {
     if (this.props.component) {
       if (!this.customComponent) {
@@ -152,7 +164,7 @@ export default class Button extends Component {
 
     return (
       <StyledComponent innerRef={innerRef} {...buttonProps}>
-        <ButtonWrapper fit={shouldFitContainer}>
+        <ButtonWrapper onClick={this.onInnerClick} fit={shouldFitContainer}>
           {iconBefore ? (
             <IconWrapper spacing={buttonProps.spacing} isOnlyChild={iconIsOnlyChild}>
               {iconBefore}

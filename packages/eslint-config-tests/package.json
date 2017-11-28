@@ -10,7 +10,7 @@
       "name": "Alex R"
     }
   ],
-  "description": "The test file eslint configuration for AtlasKit components",
+  "description": "The test file eslint configuration for Atlaskit components",
   "license": "Apache-2.0",
   "main": ".eslintrc",
   "dependencies": {

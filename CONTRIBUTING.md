@@ -1,12 +1,12 @@
 
-# Contributing to AtlasKit
+# Contributing to Atlaskit
 
 ## Code of Conduct
 This project is bound by a [Code of Conduct][CODEOFCONDUCT].
 
 ## Reporting Issues
 
-This section guides you through submitting a bug report for AtlasKit. Following these guidelines helps us and the community understand your issue, reproduce the behavior, and find related issues.
+This section guides you through submitting a bug report for Atlaskit. Following these guidelines helps us and the community understand your issue, reproduce the behavior, and find related issues.
 
 When you are creating an issue, please include as many details as possible. Fill out [the required template](ISSUE_TEMPLATE.md), the information it asks helps us resolve issues faster.
 
@@ -32,7 +32,7 @@ Include details about your configuration and environment:
 
 1. While we strive to look at new issues as soon as we can, because of the many priorities we juggle and limited resources, issues raised often don't get looked into soon enough.
 2. We want your contributions. We are always trying to improve our docs, processes and tools to make it easier to submit your own changes.
-3. With the build system and auto-deployment to npm, using AtlasKit components in your projects simplifies your development stack. Treat AtlasKit as part of your codebase and make changes in it.
+3. With the build system and auto-deployment to npm, using Atlaskit components in your projects simplifies your development stack. Treat Atlaskit as part of your codebase and make changes in it.
 4. At Atlassian, "Play, As A Team" is one of our values. We encourage cross team contributions and collaborations.
 
 Please raise a new issue [here][IssueTracker]. (Atlassians, please use this [internal link][AtlassianBug].)
@@ -75,7 +75,7 @@ the user to the registry for more detailed information. See other components (an
 ## Test a component
 
 ### Storybook
-AtlasKit uses [React Storybook](https://github.com/kadirahq/react-storybook) to provide interactive examples of each component.
+Atlaskit uses [React Storybook](https://github.com/kadirahq/react-storybook) to provide interactive examples of each component.
 
 #### Viewing the storybook
 
@@ -113,7 +113,7 @@ Eslint will automatically run when attempting to commit, but can also run at any
 
 In order to modify the ESLint rules, you can add the rules to the `.eslintrc` file in the `eslint-config-ak-base` package.
 
-The packages are linked to the main AtlasKit directory so that the new eslint configuration will be effective immediately.
+The packages are linked to the main Atlaskit directory so that the new eslint configuration will be effective immediately.
 
 Changes to the ESLint rules should be treated like any other package:
 
@@ -123,11 +123,11 @@ Changes to the ESLint rules should be treated like any other package:
 
 ## Using TypeScript for a component
 
-AtlasKit supports using TypeScript to write components. TypeScript brings static type checking to the JavaScript ecosystem and lets you concisely describe the interfaces between components (which is incredibly powerful for a set reusable shared components like Atlaskit).
+Atlaskit supports using TypeScript to write components. TypeScript brings static type checking to the JavaScript ecosystem and lets you concisely describe the interfaces between components (which is incredibly powerful for a set reusable shared components like Atlaskit).
 
 Using TypeScript is optional, leaving the decision to be made on a per-component basis.
 
-In case of "no module X" errors when importing other AtlasKit packages, they might be missing types. Make sure that `package.json` of imported packages contains "types" section pointing to a TS file (i.e. "src/index.d.ts"). In most cases it's enough to describe the main React component with its Props, which is the public API for most Atlaskit packages.
+In case of "no module X" errors when importing other Atlaskit packages, they might be missing types. Make sure that `package.json` of imported packages contains "types" section pointing to a TS file (i.e. "src/index.d.ts"). In most cases it's enough to describe the main React component with its Props, which is the public API for most Atlaskit packages.
 
 * To get started, use the `yarn run create-ts my-component-name` command.
 * A single version of TypeScript is used in the repo, however each component has its own `tsconfig.json` for configuration.
@@ -218,7 +218,7 @@ import { exportName } from '@atlaskit/editor-core/dist/es5/test-helper';
 
 ### Using `@types/` declarations
 
-AtlasKit supports consumers using the `"strictNullChecks": true` compiler option, by itself using that option. A side effect of this is that global untyped packages are not implicitly `any`, and must instead have types provided.
+Atlaskit supports consumers using the `"strictNullChecks": true` compiler option, by itself using that option. A side effect of this is that global untyped packages are not implicitly `any`, and must instead have types provided.
 
 This means that if you're using a package that doesn't ship with types, there are two options:
 
@@ -249,9 +249,9 @@ Note: it automatically runs [linting](#markdown-header-follow-code-style-guideli
 
 
 ## Merge into master
-All new feature code must be completed in a feature branch and have a corresponding Feature or Bug issue in the AtlasKit project. Create your branch off `master` and include both the issue key and brief summary in the branch name like this: `issue/AK-9001-dropdown-click-events-now-propagate-correctly`.
+All new feature code must be completed in a feature branch and have a corresponding Feature or Bug issue in the Atlaskit project. Create your branch off `master` and include both the issue key and brief summary in the branch name like this: `issue/AK-9001-dropdown-click-events-now-propagate-correctly`.
 
-Once you are happy with your changes, you must push your branch to Bitbucket and create a pull request. All pull requests must have at least 2 reviewers from the AtlasKit team. Once the pull request has been approved it may be merged into master.
+Once you are happy with your changes, you must push your branch to Bitbucket and create a pull request. All pull requests must have at least 2 reviewers from the Atlaskit team. Once the pull request has been approved it may be merged into master.
 
 **Attention! Achtung! Bнимaние! Atención! ध्यान! 注意!**: *Merging into master will automatically release a component. See below for more details*
 
@@ -265,8 +265,8 @@ Releasing components is completely automated. The process of releasing will begi
 * Change log is generated automatically from commit messages
 * Component will be published to npm
 
-## Update a root dependency of AtlasKit
-All root dependencies in AtlasKit are controlled through `yarn`, hence use the `package.json` and `yarn.lock` files to manage this.
+## Update a root dependency of Atlaskit
+All root dependencies in Atlaskit are controlled through `yarn`, hence use the `package.json` and `yarn.lock` files to manage this.
 
 You will **never** need to update these two files manually (for deps, scripts are fine). **ALL** changes to do with deps should be done through yarn itself.
 
@@ -335,13 +335,13 @@ Our package dependencies are not pinned in any way.
 If you're using TypeScript and encounter TS errors "no module X", one of the packages might be missing TS types. See [Using TypeScript for a component](#markdown-header-using-typescript-for-a-component) section for more details.
 
 ## Make changes to the Pipelines build
-AtlasKit uses Bitbucket Pipelines for it's continuous integration. The build scripts are defined in `bitbucket-pipelines.yml`.
+Atlaskit uses Bitbucket Pipelines for it's continuous integration. The build scripts are defined in `bitbucket-pipelines.yml`.
 
 ### CloudFront caching
 
-If you ever need to purge the CF cache for AtlasKit (Storybooks, Registry, PR artifacts) you can use the `invalidate-atlaskit-cache` branch. Just rerun the last build or merge `master` into it.
+If you ever need to purge the CF cache for Atlaskit (Storybooks, Registry, PR artifacts) you can use the `invalidate-atlaskit-cache` branch. Just rerun the last build or merge `master` into it.
 
-### AtlasKit Docker image
+### Atlaskit Docker image
 Bitbucket pipelines works using a Docker image. This contains the initial setup required to run the build. If you need to make changes to `Dockerfile`, you will need to push them to Dockerhub:
 
 Build the new Docker image:

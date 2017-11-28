@@ -110,6 +110,10 @@ export const isCurrentUserSiteAdmin = () =>
       isSiteAdmin = false;
     }
     return isSiteAdmin;
+  })
+  .catch(err => {
+    err.message = `Unable to check current user site admin rights: ${err.message}`;
+    throw err;
   });
 
 export const getInstanceName = () => window.location.hostname;

@@ -48,8 +48,8 @@ export default class MobileNavigation extends PureComponent {
       <Wrapper>
         <Navbar>
           <NavbarLink to="/">
-            <NavbarBrand alt="AtlasKit Logo" src={atlasKitLogo} />
-            <NavbarTitle>AtlasKit</NavbarTitle>
+            <NavbarBrand alt="Atlaskit Logo" src={atlasKitLogo} />
+            <NavbarTitle>Atlaskit</NavbarTitle>
           </NavbarLink>
           <Button
             onClick={this.toggleNav}

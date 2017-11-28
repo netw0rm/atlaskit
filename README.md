@@ -1,11 +1,11 @@
-AtlasKit
+Atlaskit
 ==============
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![node](https://img.shields.io/badge/node-6.10%2B-brightgreen.svg)]()
 [![npm](https://img.shields.io/badge/npm-3.8%2B-brightgreen.svg)]()
 [![yarn](https://img.shields.io/badge/yarn-0.18.1-brightgreen.svg)]()
 
-AtlasKit is the technical implementation of the [Atlassian Design Guidelines][ADG]. It is a collection of reusable components that can be downloaded independently into your projects. Each component is also independently versioned and published to npm. The full list of components can be found in the [AtlasKit Registry][AtlasKitRegistry].
+Atlaskit is the technical implementation of the [Atlassian Design Guidelines][ADG]. It is a collection of reusable components that can be downloaded independently into your projects. Each component is also independently versioned and published to npm. The full list of components can be found in the [Atlaskit Registry][AtlaskitRegistry].
 
 **This project is bound by a [Code of Conduct][codeofconduct].**
 
@@ -13,7 +13,7 @@ Usage
 ======
 
 #### Pre-requisites
-It's strongly advised to use the AtlasKit CSS reset in your whole project, or some AtlasKit components
+It's strongly advised to use the Atlaskit CSS reset in your whole project, or some Atlaskit components
 may diverge in appearance:
 
 ```javascript
@@ -24,7 +24,7 @@ In general, you should avoid directly styling base elements (ex. p, h1, h2…) a
 
 #### Example for React projects
 
-AtlasKit components are built for React. Here's an example of using the Avatar component:
+Atlaskit components are built for React. Here's an example of using the Avatar component:
 
 1. First, you specify a component into your project as a dependency using npm: `npm install @atlaskit/avatar`
 2. Then you can use it in your React projects like this:
@@ -41,7 +41,7 @@ export default (
   />
 );
 ```
-Check out the [AtlasKit Registry][AtlasKitRegistry] to learn more.
+Check out the [Atlaskit Registry][AtlaskitRegistry] to learn more.
 
 #### Example for non-React projects
 
@@ -77,7 +77,7 @@ Installation
 git clone git@bitbucket.org:atlassian/atlaskit.git
 yarn
 ```
-You're now ready to start developing in AtlasKit!
+You're now ready to start developing in Atlaskit!
 
 Each component/util lives in it's own package under the `packages` directory. You can build those all at once or individually using
 
@@ -101,7 +101,7 @@ Once you made some changes, stage them and then commit them using `yarn run comm
 
 Documentation
 =============
-A comprehensive list of components and detailed usage of each can be found in the [AtlasKit Registry][AtlasKitRegistry].
+A comprehensive list of components and detailed usage of each can be found in the [Atlaskit Registry][AtlaskitRegistry].
 
 You can also find how each component is meant to be used from a design perspective on the [Atlassian Design Guidelines][ADG] website.
 
@@ -133,7 +133,7 @@ For the packages that require karma to run tests in the browser (at preset, the 
 Reporting issues
 ============
 
-We believe in open contributions and the power of a strong development community. Please read our [Contributing guidelines][CONTRIBUTING] on how to contribute back and report issues to AtlasKit.
+We believe in open contributions and the power of a strong development community. Please read our [Contributing guidelines][CONTRIBUTING] on how to contribute back and report issues to Atlaskit.
 
 
 Contributors
@@ -181,5 +181,5 @@ Copyright (c) 2016 Atlassian and others.
 [ADG_License]: http://atlassian.design/license
 [CONTRIBUTING]: ./CONTRIBUTING.md
 [LICENSE]: ./LICENSE
-[AtlasKitRegistry]: http://go.atlassian.com/atlaskit  "AtlasKit Registry"
+[AtlaskitRegistry]: http://go.atlassian.com/atlaskit  "Atlaskit Registry"
 [CODEOFCONDUCT]: ./CODE_OF_CONDUCT.md

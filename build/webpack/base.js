@@ -110,7 +110,7 @@ const standardConfig = {
         {
           test: /\.jsx?$/,
           loader: 'babel-loader',
-          exclude: /node_modules/,
+          exclude: [/node_modules/, /atlaskit-mk-2/],
         },
       ],
       {

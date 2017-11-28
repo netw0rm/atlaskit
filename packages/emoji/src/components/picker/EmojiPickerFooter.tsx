@@ -19,7 +19,7 @@ export interface Props {
   onUploadEmoji: OnUploadEmoji;
 }
 
-export default class EmojiPickerFooter extends PureComponent<Props, undefined> {
+export default class EmojiPickerFooter extends PureComponent<Props, {}> {
   render() {
     const {
       initialUploadName,

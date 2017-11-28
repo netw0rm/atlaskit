@@ -66,7 +66,7 @@ RUN echo "Installing node & npm" \
 #### </node>
 
 #### <atlaskit-tools>
-RUN echo "Installing AtlasKit tools" \
+RUN echo "Installing Atlaskit tools" \
 && npm install -g \
   cloudfront-invalidate-cli@1.2.0 \
   marky-markdown@8.1.0 \

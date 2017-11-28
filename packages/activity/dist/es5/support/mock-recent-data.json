@@ -283,8 +283,8 @@
     {
       "accountId": null,
       "objectId": "ari:cloud:confluence:DUMMY-158c8204-ff3b-47c2-adbb-a0906ccc722b:page/32669769",
-      "url": "https://product-fabric.atlassian.net/wiki/display/H/AtlasKit+in+home",
-      "name": "AtlasKit in home",
+      "url": "https://product-fabric.atlassian.net/wiki/display/H/Atlaskit+in+home",
+      "name": "Atlaskit in home",
       "container": "Home",
       "iconUrl": "https://activity-provider.useast.atlassian.io/images/page-icon-v2.svg",
       "provider": "confluence",

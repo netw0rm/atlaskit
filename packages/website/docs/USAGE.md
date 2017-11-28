@@ -1,14 +1,14 @@
 # Website
 
-This is the source for the [AtlasKit website][new-registry], which provides docs and live examples of AtlasKit components.
+This is the source for the [Atlaskit website][new-registry], which provides docs and live examples of Atlaskit components.
 
-The [old registry][old-registry] (which contains addition "non-core" components also living in the AtlasKit repo) is still available.
+The [old registry][old-registry] (which contains addition "non-core" components also living in the Atlaskit repo) is still available.
 
 ## Running locally
 
 This package contains it's own build scripts which pulls the live React components examples from `packages/*/docs` in this repo.
 
-To get started, bootstrap all AtlasKit components. We need to bootstrap everything, rather than just bootstrapping a single component.
+To get started, bootstrap all Atlaskit components. We need to bootstrap everything, rather than just bootstrapping a single component.
 
 ```sh
 yarn run bootstrap

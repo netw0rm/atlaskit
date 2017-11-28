@@ -1,5 +1,16 @@
 # @atlaskit/button
 
+## 5.4.12 (2017-11-27)
+
+* bug fix; export interface for ts ([15c291c](https://bitbucket.org/atlassian/atlaskit/commits/15c291c))
+
+## 5.4.11 (2017-11-27)
+
+* bug fix; fix disabled buttons not swallowing click events (issues closed: ak-3646) ([80e976b](https://bitbucket.org/atlassian/atlaskit/commits/80e976b))
+
+## 5.4.10 (2017-11-24)
+
+* bug fix; fix button-group prop validation to ignore null children ([3f7f0c3](https://bitbucket.org/atlassian/atlaskit/commits/3f7f0c3))
 ## 5.4.9 (2017-11-21)
 
 * bug fix; bumping internal dependencies to latest version ([5e81848](https://bitbucket.org/atlassian/atlaskit/commits/5e81848))

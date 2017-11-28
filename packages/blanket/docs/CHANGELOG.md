@@ -1,5 +1,9 @@
 # @atlaskit/blanket
 
+## 4.0.2 (2017-11-27)
+
+* bug fix; bump theme dependency to 2.2.0 (issues closed: nav-27) ([2b71345](https://bitbucket.org/atlassian/atlaskit/commits/2b71345))
+
 ## 4.0.1 (2017-11-15)
 
 * bug fix; bumping internal dependencies to latest major versions ([288935a](https://bitbucket.org/atlassian/atlaskit/commits/288935a))

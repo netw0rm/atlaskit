@@ -1,5 +1,12 @@
 # @atlaskit/emoji
 
+## 30.3.4 (2017-11-28)
+
+
+
+* bug fix; fixed typescript errors in emoji ([8619a6e](https://bitbucket.org/atlassian/atlaskit/commits/8619a6e))
+
+* bug fix; fS-1518 requests higher res image on error (issues closed: fs-1518) ([63ef0bd](https://bitbucket.org/atlassian/atlaskit/commits/63ef0bd))
 ## 30.3.3 (2017-11-22)
 
 * bug fix; big emoji scrolling issue fixed (issues closed: fs-1512) ([b715731](https://bitbucket.org/atlassian/atlaskit/commits/b715731))

@@ -1,5 +1,15 @@
 # @atlaskit/task-decision
 
+## 4.4.1 (2017-11-28)
+
+* bug fix; fix export of sample-elements support data ([0a5fc11](https://bitbucket.org/atlassian/atlaskit/commits/0a5fc11))
+## 4.4.0 (2017-11-28)
+
+* feature; update react peer dep to support ^16.0.0 ([5b041bb](https://bitbucket.org/atlassian/atlaskit/commits/5b041bb))
+* feature; moved from util-shared-styles to using theme package (issues closed: fs-1527) ([213377d](https://bitbucket.org/atlassian/atlaskit/commits/213377d))
+* feature; update dev dependencies to latest (issues closed: fs-1527) ([dcf7ef7](https://bitbucket.org/atlassian/atlaskit/commits/dcf7ef7))
+* feature; updated internal dependencies for repo migration (issues closed: fs-1527) ([0a8fde7](https://bitbucket.org/atlassian/atlaskit/commits/0a8fde7))
+
 ## 4.3.0 (2017-11-16)
 
 * feature; fS-1387 Bump avatar version and set Participants boundaries to scrollParent ([c7e44e9](https://bitbucket.org/atlassian/atlaskit/commits/c7e44e9))

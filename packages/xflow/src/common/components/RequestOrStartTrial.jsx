@@ -60,13 +60,22 @@ class RequestOrStartTrial extends Component {
     alreadyRequested: false,
   };
 
-  async componentWillMount() {
-    const { checkProductRequestFlag } = this.props;
-    const alreadyRequested = await checkProductRequestFlag();
-    this.setState({
-      alreadyRequested,
-    });
-    return this.resetRequestOrStartTrial();
+  componentWillMount() {
+    const { checkProductRequestFlag, firePrivateAnalyticsEvent } = this.props;
+
+    Promise.resolve(checkProductRequestFlag())
+      .catch(e => {
+        firePrivateAnalyticsEvent('xflow.request-or-start-trial.product-request-flag-check.failed');
+        this.setState({
+          initializingCheckFailed: true,
+          showInitializationError: true,
+        });
+        throw e;
+      })
+      .then(alreadyRequested => {
+        this.setState({ alreadyRequested });
+        return this.resetRequestOrStartTrial();
+      });
   }
 
   resetRequestOrStartTrial = async () => {
@@ -95,28 +104,57 @@ class RequestOrStartTrial extends Component {
         // We assume that the product is inactive if they don't have permission.
         activationState: INACTIVE,
       });
-    } else {
-      const activationState = await getProductActivationState();
-      if (activationState === ACTIVE || activationState === ACTIVATING) {
+      return;
+    }
+
+    let activationState;
+    try {
+      activationState = await getProductActivationState();
+    } catch (e) {
+      firePrivateAnalyticsEvent('xflow.request-or-start-trial.product-activation-state-check.failed');
+      this.setState({
+        initializingCheckFailed: true,
+        showInitializationError: true,
+      });
+      return;
+    }
+
+    switch (activationState) {
+      case ACTIVE:
+      case ACTIVATING:
         this.setState({
           screen: Screens.ALREADY_STARTED,
           activationState,
         });
+
         if (activationState === ACTIVATING) {
-          waitForActivation();
+          try {
+            await waitForActivation();
+          } catch (e) {
+            firePrivateAnalyticsEvent('xflow.request-or-start-trial.wait-for-activation.failed');
+            this.setState({
+              initializingCheckFailed: true,
+              showInitializationError: true,
+            });
+          }
         }
-      } else if (activationState === INACTIVE || activationState === DEACTIVATED) {
+        break;
+
+      case INACTIVE:
+      case DEACTIVATED:
         this.setState({
           screen: Screens.START_TRIAL,
           activationState,
         });
-      } else {
-        firePrivateAnalyticsEvent('xflow.request-or-start-trial.initializing-check.failed');
+        break;
+
+      default:
+        firePrivateAnalyticsEvent('xflow.request-or-start-trial.product-activation-state-check.failed');
         this.setState({
           initializingCheckFailed: true,
           showInitializationError: true,
         });
-      }
+        break;
     }
   };
 

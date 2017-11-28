@@ -7,7 +7,7 @@ import { akZIndexLayer } from '@atlaskit/util-shared-styles';
 import Popper from '../popper.js';
 
 import { POSITION_ATTRIBUTE_ENUM, getFlipBehavior, positionPropToPopperPosition } from './internal/helpers';
-
+import ContentContainer from './styledContentContainer';
 /* eslint-disable react/no-unused-prop-types */
 
 export default class Layer extends PureComponent {
@@ -55,7 +55,10 @@ export default class Layer extends PureComponent {
       originalPosition: null,
       // fix Safari parent width: https://product-fabric.atlassian.net/browse/ED-1784
       cssPosition: 'absolute',
+      originalHeight: null,
+      maxHeight: null,
     };
+    this.extractStyles = this.extractStyles.bind(this);
   }
 
   componentDidMount() {
@@ -82,11 +85,47 @@ export default class Layer extends PureComponent {
     }
   }
 
+  /* Calculate the max height of the popper if it's height is greater than the viewport to prevent
+   * the bottom of the popper not being viewable.
+   * Only works if the popper uses viewport as the boundary and has a fixed position ancestor.
+   */
+  calculateMaxHeight(originalHeight, currentHeight, positionTop, cssPosition) {
+    if (cssPosition !== 'fixed' || this.props.boundariesElement !== 'viewport') {
+      return null;
+    }
+
+    const viewportHeight = Math.max(document.documentElement.clientHeight,
+      window.innerHeight || 0);
+    return (viewportHeight < originalHeight && currentHeight + positionTop >= viewportHeight - 50)
+      // allow some spacing either side of viewport height
+      ? viewportHeight - 12
+      : null;
+  }
+
+  /* Clamp fixed position to the window for fixed position poppers that flow off the top of the
+   * window.
+   * A fixed position popper is a popper who has an ancestor with position: fixed.
+   *
+   * It is too difficult to fix this for non-fixed position poppers without re-implementing popper's
+   * offset functionality or fixing the issue upstream.
+   */
+  // eslint-disable-next-line class-methods-use-this
+  fixPositionTopUnderflow(popperTop, cssPosition) {
+    return popperTop >= 0 || cssPosition !== 'fixed' ? popperTop : 0;
+  }
+
   extractStyles = (state) => {
     if (state) {
+      const popperHeight = state.offsets.popper.height;
       const left = Math.round(state.offsets.popper.left);
-      const top = Math.round(state.offsets.popper.top);
+      // The offset position is sometimes an object and sometimes just a string...
+      const cssPosition = typeof state.offsets.popper.position === 'object'
+        ? state.offsets.popper.position.position
+        : state.offsets.popper.position;
+      const top = this.fixPositionTopUnderflow(state.offsets.popper.top, cssPosition);
 
+      const originalHeight = this.state.originalHeight || popperHeight;
+      const maxHeight = this.calculateMaxHeight(originalHeight, popperHeight, top, cssPosition);
       this.setState({
         hasExtractedStyles: true,
         // position: fixed or absolute
@@ -96,6 +135,8 @@ export default class Layer extends PureComponent {
         flipped: !!state.flipped,
         actualPosition: state.position,
         originalPosition: state.originalPosition,
+        originalHeight,
+        maxHeight,
       });
     }
   };
@@ -158,7 +199,7 @@ export default class Layer extends PureComponent {
 
   render() {
     const { zIndex } = this.props;
-    const { cssPosition, transform, hasExtractedStyles } = this.state;
+    const { cssPosition, transform, hasExtractedStyles, maxHeight } = this.state;
     const opacity = hasExtractedStyles ? {} : { opacity: 0 };
 
     return (
@@ -166,12 +207,14 @@ export default class Layer extends PureComponent {
         <div ref={ref => (this.targetRef = ref)}>
           {this.props.children}
         </div>
-        <div
-          ref={ref => (this.contentRef = ref)}
-          style={{ top: 0, left: 0, position: cssPosition, transform, zIndex, ...opacity }}
-        >
-          {this.props.content}
-        </div>
+        <ContentContainer maxHeight={maxHeight}>
+          <div
+            ref={ref => (this.contentRef = ref)}
+            style={{ top: 0, left: 0, position: cssPosition, transform, zIndex, ...opacity }}
+          >
+            {this.props.content}
+          </div>
+        </ContentContainer>
       </div>
     );
   }

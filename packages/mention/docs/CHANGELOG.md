@@ -1,5 +1,10 @@
 # @atlaskit/mention
 
+## 8.2.0 (2017-11-26)
+
+
+* feature; add more mock data to support integration tests ([9520323](https://bitbucket.org/atlassian/atlaskit/commits/9520323))
+
 ## 8.1.1 (2017-11-20)
 
 * bug fix; presence client now actually requests stateMetadata to get focus mode (issues closed: fs-1487) ([7984774](https://bitbucket.org/atlassian/atlaskit/commits/7984774))

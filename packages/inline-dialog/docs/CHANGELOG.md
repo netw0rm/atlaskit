@@ -1,5 +1,11 @@
 # @atlaskit/inline-dialog
 
+## 5.0.5 (2017-11-24)
+
+
+
+
+* bug fix; prevent inline-dialog from closing when event is prevented and prevent default for c (issues closed: ak-3870) ([8ae0c3b](https://bitbucket.org/atlassian/atlaskit/commits/8ae0c3b))
 ## 5.0.4 (2017-10-26)
 
 * bug fix; fix to rebuild stories ([793b2a7](https://bitbucket.org/atlassian/atlaskit/commits/793b2a7))

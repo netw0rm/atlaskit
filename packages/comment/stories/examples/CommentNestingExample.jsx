@@ -5,7 +5,7 @@ import Avatar from '@atlaskit/avatar';
 const clickHandler = e => console.log(`${e.target.textContent} was clicked.`);
 const avatar = (<Avatar
   src="https://design.atlassian.com/images/avatars/project-128.png"
-  label="AtlasKit avatar"
+  label="Atlaskit avatar"
   size="medium"
 />);
 

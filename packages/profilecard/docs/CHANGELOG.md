@@ -1,5 +1,9 @@
 # @atlaskit/profilecard
 
+## 3.12.1 (2017-11-27)
+
+* bug fix; fix profilecard error when user has null presenceMessage ([b250e2b](https://bitbucket.org/atlassian/atlaskit/commits/b250e2b))
+
 ## 3.12.0 (2017-11-20)
 
 * feature; add presence message to profilecard (issues closed: dir-459) ([a927c12](https://bitbucket.org/atlassian/atlaskit/commits/a927c12))

@@ -18,7 +18,7 @@ Alex Reardon <areardon@atlassian.com> is the feature lead of Navigation.
 
 ## Issues
 
-All pull requests should have an associated issue in the [AtlasKit project](https://ecosystem.atlassian.net/browse/AK). Please ensure that you give the correct *issue type* and *priority*.
+All pull requests should have an associated issue in the [Atlaskit project](https://ecosystem.atlassian.net/browse/AK). Please ensure that you give the correct *issue type* and *priority*.
 
 *Simple guide for issue types*
 

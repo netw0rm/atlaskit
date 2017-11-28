@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
-import Button from '@atlaskit/button';
-import { FieldText } from '@atlaskit/field-text';
+import { FieldTextStateless } from '@atlaskit/field-text';
 import Modal from '@atlaskit/modal-dialog';
 import Tooltip from '@atlaskit/tooltip';
 import { akColorN30A, akGridSizeUnitless } from '@atlaskit/util-shared-styles';
@@ -31,10 +30,7 @@ const IconModalHeader = styled.h3`
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-
-  > * {
-    margin-right: 5px;
-  }
+  padding: 20px;
 `;
 
 class IconExplorerCell extends PureComponent {
@@ -42,23 +38,83 @@ class IconExplorerCell extends PureComponent {
     isModalOpen: false,
   }
 
-  openModal = () => {
-    this.setState({ isModalOpen: true });
+  setInputRef = (ref) => {
+    const isSet = Boolean(this.ref);
 
-    // Need to wait 1 tick for the modal to mount before this.input exists
-    window.requestAnimationFrame(() => this.input.select());
+    this.input = ref ? ref.input : null;
+
+    if (this.input && !isSet) {
+      this.input.select();
+    }
+  }
+
+  copyToClipboard = () => {
+    if (!this.state.isModalOpen || !this.input) {
+      return;
+    }
+
+    try {
+      this.input.select();
+      const wasCopied = document.execCommand('copy');
+
+      if (!wasCopied) {
+        throw new Error();
+      }
+    } catch (err) {
+      console.error('Unable to copy text');
+    }
   }
 
   closeModal = () => {
     this.setState({ isModalOpen: false });
   }
 
-  copyAndCloseModal = () => {
-    this.setState({ isModalOpen: false });
+  openModal = () => {
+    this.setState({ isModalOpen: true });
   }
 
   render() {
     const { component: Icon, ...props } = this.props;
+
+    const modal = this.state.isModalOpen ? (
+      <Modal
+        onClose={this.closeModal}
+        header={() => (
+          <IconModalHeader>
+            <Icon label={props.componentName} size={size.medium} />
+            {props.componentName}
+          </IconModalHeader>
+        )}
+        actions={[
+          {
+            text: 'Copy',
+            onClick: this.copyToClipboard,
+          },
+          {
+            text: 'Close',
+            onClick: this.closeModal,
+          },
+        ]}
+      >
+        {/* eslint-disable jsx-a11y/no-static-element-interactions */}
+        <div
+          onClick={() => this.input.select()}
+          ref={(ref) => { this.importCodeField = ref; }}
+          role="presentation"
+        >
+          <FieldTextStateless
+            isLabelHidden
+            isReadOnly
+            label=""
+            onChange={() => {}}
+            shouldFitContainer
+            value={`import ${props.componentName} from '${props.package}';`}
+            ref={this.setInputRef}
+          />
+        </div>
+        {/* eslint-enable jsx-a11y/no-static-element-interactions */}
+      </Modal>
+    ) : null;
 
     return (
       <div>
@@ -67,37 +123,7 @@ class IconExplorerCell extends PureComponent {
             <Icon label={props.componentName} size={size.medium} />
           </IconExplorerLink>
         </Tooltip>
-        <Modal
-          footer={
-            <Button onClick={this.closeModal}>Close</Button>
-          }
-          header={
-            <IconModalHeader>
-              <Icon label={props.componentName} size={size.medium} />
-              {props.componentName}
-            </IconModalHeader>
-          }
-          isOpen={this.state.isModalOpen === true}
-          onDialogDismissed={this.closeModal}
-        >
-          {/* eslint-disable jsx-a11y/no-static-element-interactions */}
-          <div
-            onClick={() => this.input.select()}
-            ref={(ref) => { this.importCodeField = ref; }}
-            role="presentation"
-          >
-            <FieldText
-              isLabelHidden
-              isReadOnly
-              label=""
-              onChange={() => {}}
-              shouldFitContainer
-              value={`import ${props.componentName} from '${props.package}';`}
-              ref={(ref) => { this.input = ref ? ref.input : null; }}
-            />
-          </div>
-          {/* eslint-enable jsx-a11y/no-static-element-interactions */}
-        </Modal>
+        {modal}
       </div>
     );
   }

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/blanket",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "config": {
     "access": "public"
   },
@@ -25,7 +25,7 @@
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/theme": "^2.0.0",
+    "@atlaskit/theme": "^2.2.0",
     "babel-runtime": "^6.11.6",
     "styled-components": "^1.4.6"
   },

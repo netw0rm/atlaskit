@@ -1,7 +1,7 @@
 import { action, storiesOf } from '@kadira/storybook';
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { ReactRenderer as Renderer } from '@atlaskit/editor-core/dist/es5/renderer';
+import { ReactRenderer as Renderer } from '@atlaskit/renderer';
 
 import TaskList from '../src/components/TaskList';
 import TaskItem from '../src/components/TaskItem';

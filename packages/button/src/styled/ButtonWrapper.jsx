@@ -13,7 +13,11 @@ const ButtonWrapper = props => {
     style.width = '100%';
     style.justifyContent = 'center';
   }
-  return <span style={style}>{props.children}</span>;
+  const optionalProps = {};
+  if (props.onClick) {
+    optionalProps.onClick = props.onClick;
+  }
+  return <span style={style} {...optionalProps} >{props.children}</span>;
 };
 
 export default ButtonWrapper;

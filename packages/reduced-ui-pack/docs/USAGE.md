@@ -1,6 +1,6 @@
 # Reduced UI Pack
 
-This package exports a CSS file which includes some CSS classes that provide styling for a reduced number of AtlasKit components.
+This package exports a CSS file which includes some CSS classes that provide styling for a reduced number of Atlaskit components.
 
 There is also an icon SVG sprite sheet included. See the "Try it out" section below for usage instructions.
 

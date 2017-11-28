@@ -2,6 +2,7 @@ import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Button from '@atlaskit/button';
 import { akColorG300, akColorY300 } from '@atlaskit/util-shared-styles';
+import SingleSelectDialog from './examples/SingleSelectDialog';
 
 import InlineDialog from '../src';
 import { name } from '../package.json';
@@ -118,4 +119,7 @@ storiesOf(name, module)
           <div style={targetStyles}>I am the target</div>
         </InlineDialog>
       </div>);
-  }, { overrides: codeExampleOverrrides });
+  }, { overrides: codeExampleOverrrides })
+  .add('Dialog with single select', () => (
+    <SingleSelectDialog />
+  ));

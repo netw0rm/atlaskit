@@ -1,5 +1,11 @@
 # @atlaskit/item
 
+## 4.2.5 (2017-11-28)
+
+
+
+* bug fix; fix AK-3666 ([278a34c](https://bitbucket.org/atlassian/atlaskit/commits/278a34c))
+
 ## 4.2.4 (2017-11-23)
 
 

@@ -10,8 +10,6 @@ import {
   GroupTitleAfter,
 } from '../../src/styled/ItemGroup';
 
-import { FormattedMessage } from 'react-intl';
-
 describe(`${name} - ItemGroup`, () => {
   describe('props', () => {
     describe('children', () => {
@@ -99,16 +97,8 @@ describe(`${name} - ItemGroup`, () => {
 
       it('aria-label should still be correct if passing a Formatted message in a component', () => {
         const projectName = 'Atlaskit';
-        const wrapper = shallow(<ItemGroup
-          title={<p>
-            <FormattedMessage
-              id="welcome"
-              defaultMessage={'Hello {name}'}
-              values={{ name: <b>{projectName}</b> }}
-            />
-          </p>}
-        />);
-        expect(wrapper.find(GroupTitle).prop('aria-hidden')).toBe('true');
+        const wrapper = shallow(<ItemGroup title={<div>Hello <b>{projectName}</b></div>} />);
+        expect(wrapper.find('[aria-label]').prop('aria-label')).toBe('Hello Atlaskit');
       });
     });
   });

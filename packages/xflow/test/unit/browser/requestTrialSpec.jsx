@@ -32,15 +32,15 @@ const getXFlowProviderConfig = () =>
 
 const defaultProps = {
   status: INACTIVE,
-  requestTrialWithNote: async () => Promise.resolve(),
+  requestTrialWithNote: async () => {},
   cancelRequestTrial: async () => {},
   onTrialActivating: () => true,
-  checkProductRequestFlag: async () => Promise.resolve(),
+  checkProductRequestFlag: async () => {},
 };
 
 const defaultRequestOrStartTrialProps = {
   onAnalyticsEvent: noop,
-  sourceComponent: 'storybook-example-compontent',
+  sourceComponent: 'storybook-example-component',
   sourceContext: 'storybook-example-context',
   targetProduct: 'storybook-example-product',
 };

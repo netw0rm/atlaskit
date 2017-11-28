@@ -116,7 +116,7 @@ export default class GlobalNavExample extends PureComponent {
         icon={
           <img alt="nucleus" src={nucleusLogo} />
         }
-        text="AtlasKit"
+        text="Atlaskit"
         subText="Is the king"
       />
     );

@@ -15,7 +15,7 @@ export interface Props {
   emoji: EmojiDescription;
 }
 
-export default class EmojiTypeAheadItem extends PureComponent<Props, undefined> {
+export default class EmojiTypeAheadItem extends PureComponent<Props, {}> {
 
   // internal, used for callbacks
   onEmojiSelected = (event) => {

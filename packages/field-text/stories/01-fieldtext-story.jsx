@@ -27,7 +27,7 @@ function generateFormWithInput(opts) {
         width: '500px',
       }}
     >
-      <h2>AtlasKit form</h2>
+      <h2>Atlaskit form</h2>
       {generateInput({ name: 'value', ...opts })}
       <p>
         <Button type="submit" appearance="primary">Submit</Button>
@@ -160,7 +160,7 @@ storiesOf(name, module)
         width: '500px',
       }}
     >
-      <h2>AtlasKit form</h2>
+      <h2>Atlaskit form</h2>
       {generateInput({
         isSpellCheckEnabled: true,
         autoFocus: true,

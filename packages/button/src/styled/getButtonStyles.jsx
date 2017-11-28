@@ -48,7 +48,6 @@ export default function getButtonStyles(props: Object) {
   let lineHeight = buttonHeight;
   let outline = 'none';
   let padding = `0 ${gridSize(props)}px`;
-  let pointerEvents = 'auto';
   let transitionDuration = '0.1s, 0.15s';
   let transition = 'background 0.1s ease-out, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38)';
   let verticalAlign = 'middle';
@@ -96,7 +95,6 @@ export default function getButtonStyles(props: Object) {
 
   // Disabled
   if (props.disabled) {
-    pointerEvents = 'none';
     cursor = 'not-allowed';
   }
 
@@ -124,7 +122,7 @@ export default function getButtonStyles(props: Object) {
     max-width: 100%;
     outline: ${outline} !important;
     padding: ${padding};
-    pointer-events: ${pointerEvents};
+    pointer-events: 'auto';
     text-align: center;
     text-decoration: ${textDecoration};
     transition: ${transition};

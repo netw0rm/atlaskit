@@ -39,6 +39,7 @@ import {
 } from '../../../src/support/test-data';
 
 import { alwaysPromise } from '../_test-util';
+import { convertMediaToImageRepresentation } from '../../../src/type-helpers';
 
 // patch URLSearchParams API for jsdom tests
 declare var global: any;
@@ -842,14 +843,12 @@ describe('EmojiResource', () => {
           const fetchSiteEmojiCalls = fetchMock.calls('fetch-site-emoji');
           expect (fetchSiteEmojiCalls.length, 'No call fetch site emoji on server').to.equal(0);
           // media url not loaded - url pass through
-          const { width, height, mediaPath } = mediaEmoji.representation as MediaApiRepresentation;
+          const representation = convertMediaToImageRepresentation(mediaEmoji.representation as MediaApiRepresentation);
+          const altRepresentation = convertMediaToImageRepresentation(mediaEmoji.altRepresentation as MediaApiRepresentation);
           expect(emoji).to.deep.equal({
             ...mediaEmoji,
-            representation: {
-              imagePath: mediaPath,
-              width,
-              height,
-            }
+            representation,
+            altRepresentation,
           });
         });
     });

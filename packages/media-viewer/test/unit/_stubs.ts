@@ -2,11 +2,12 @@ import * as events from 'events';
 import { Subject } from 'rxjs/Subject';
 import {
   ContextConfig,
-  MediaCollection, MediaCollectionProvider
+  MediaCollection, MediaCollectionProvider, MediaItemProvider, MediaItem
 } from '@atlaskit/media-core';
 
 export class Stubs {
-  static mediaViewer() {
+
+  static mediaViewer(overrides) {
     const noop = () => { };
     const emitter = new events.EventEmitter();
     const mediaViewer = {
@@ -14,8 +15,8 @@ export class Stubs {
       off: noop,
       trigger: event => emitter.emit(event),
       isOpen: jest.fn(),
-      open: jest.fn(),
-      setFiles: jest.fn(),
+      open: overrides.open || jest.fn(),
+      setFiles: overrides.setFiles || jest.fn(),
       getCurrent: jest.fn(),
       isShowingLastFile: jest.fn()
     };
@@ -26,8 +27,8 @@ export class Stubs {
     return mediaViewer;
   }
 
-  static mediaViewerConstructor() {
-    return jest.fn(() => Stubs.mediaViewer());
+  static mediaViewerConstructor(overrides?: any) {
+    return jest.fn(() => Stubs.mediaViewer(overrides || {}));
   }
 
   static mediaCollectionProvider(subject?: Subject<MediaCollection>) {
@@ -39,10 +40,17 @@ export class Stubs {
     };
   }
 
-  static context(config: ContextConfig, collectionProvider?: MediaCollectionProvider) {
+  static mediaItemProvider(subject?: Subject<MediaItem>) {
+    return {
+      observable: jest.fn(() => subject || new Subject<MediaItem>())
+    };
+  }
+
+  static context(config: ContextConfig, collectionProvider?: MediaCollectionProvider, mediaItemProvider?: MediaItemProvider) {
     return {
       config,
-      getMediaCollectionProvider: jest.fn(() => collectionProvider || Stubs.mediaCollectionProvider())
+      getMediaCollectionProvider: jest.fn(() => collectionProvider || Stubs.mediaCollectionProvider()),
+      getMediaItemProvider: jest.fn(() => mediaItemProvider || Stubs.mediaItemProvider())
     };
   }
 }

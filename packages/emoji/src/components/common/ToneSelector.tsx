@@ -16,7 +16,7 @@ const extractAllTones = (emoji: EmojiDescriptionWithVariations): EmojiDescriptio
   return [ emoji ];
 };
 
-export default class ToneSelector extends PureComponent<Props, undefined> {
+export default class ToneSelector extends PureComponent<Props, {}> {
   render() {
     const { emoji, onToneSelected } = this.props;
     const toneEmojis: EmojiDescription[] = extractAllTones(emoji);

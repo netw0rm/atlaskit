@@ -8,7 +8,7 @@ import landingHero from '../images/landing-hero.svg';
 export default class Examples extends PureComponent {
   render() {
     const title = 'Examples';
-    const description = 'A guide on how to compose sophisticated interfaces with AtlasKit, Atlassian\'s UI Library';
+    const description = 'A guide on how to compose sophisticated interfaces with Atlaskit, Atlassian\'s UI Library';
 
     return (
       <div>

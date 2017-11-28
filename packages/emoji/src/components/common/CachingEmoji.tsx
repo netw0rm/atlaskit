@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { PureComponent } from 'react';
 
-import { EmojiDescription } from '../../types';
+import { EmojiDescription, EmojiId } from '../../types';
 import { isMediaEmoji, isPromise } from '../../type-helpers';
 import debug from '../../util/logger';
 import { EmojiContext } from './internal-types';
@@ -110,9 +110,8 @@ export class CachingMediaEmoji extends PureComponent<CachingEmojiProps,State> {
     return loadedEmoji;
   }
 
-  private handleLoadError = () => {
+  private handleLoadError = (emojiId: EmojiId, emoji: EmojiDescription) => {
     const { invalidImage } = this.state;
-    const { emoji } = this.props;
 
     if (invalidImage) {
       // do nothing, bad image

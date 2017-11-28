@@ -1,6 +1,6 @@
 import { Component, ReactChild, ReactNode } from 'react';
 
-interface Props {
+export interface Props {
   appearance?: 'primary' | 'default' | 'subtle' | 'link' | 'subtle-link' | 'warning' | 'danger' | 'help';
   shouldFitContainer?: boolean;
   type?: 'button' | 'submit';
@@ -22,10 +22,10 @@ interface Props {
   id?: string;
 }
 
-interface ButtonGroupProps {
+export interface ButtonGroupProps {
   appearance?: 'primary' | 'default' | 'subtle' | 'link' | 'subtle-link' | 'warning' | 'danger' | 'help';
   children?: ReactNode;
 }
 
-export class ButtonGroup extends Component<ButtonGroupProps, {}> { }
+export class ButtonGroup extends Component<ButtonGroupProps, {}> {}
 export default class extends Component<Props, {}> {}

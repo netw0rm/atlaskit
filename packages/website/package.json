@@ -1,8 +1,8 @@
 {
   "private": true,
   "name": "@atlaskit/website",
-  "version": "740.0.0",
-  "description": "The AtlasKit Website",
+  "version": "762.0.0",
+  "description": "The Atlaskit Website",
   "scripts": {
     "build": "yarn run build-data && NODE_ENV=production ATLASKIT_SITE_ENV=production webpack -p --progress && cp dist/index.html dist/404.html",
     "build-data": "node ./build && prettier --single-quote --trailing-comma es5 --write src/data.js",

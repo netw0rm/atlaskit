@@ -74,18 +74,29 @@ const handleMouseMove = (props: Props, event: MouseEvent<any>) => {
 };
 
 const handleImageError = (props: Props, event: SyntheticEvent<HTMLImageElement>) => {
-  const { emoji, onLoadError } = props;
+  const { emoji, onLoadError, fitToHeight } = props;
 
-  // Hide error state (but keep space for it)
-  const target = event.target as HTMLElement;
-  target.style.visibility = 'hidden';
+  // Determine whether to request higher resolution image from service
+  const fittedEmoji = {
+    ...emoji,
+    representation: shouldUseAltRepresentation(emoji, fitToHeight) ? emoji.altRepresentation : emoji.representation,
+  };
 
+  // Hide error state (but keep space for it)\
+  if (event.target) {
+    const target = event.target as HTMLElement;
+    target.style.visibility = 'hidden';
+  }
   if (onLoadError) {
-    onLoadError(toEmojiId(emoji), emoji, event);
+    onLoadError(toEmojiId(fittedEmoji), fittedEmoji, event);
   }
 };
 
 const getHeight = (fitToHeight: number): number => getPixelRatio() > 1 ? fitToHeight * 2 : fitToHeight;
+
+const shouldUseAltRepresentation = (emoji: EmojiDescription, fitToHeight?: number): boolean => {
+  return (!!emoji.representation && !!fitToHeight && !!emoji.altRepresentation && getHeight(fitToHeight) > emoji.representation.height);
+};
 
 // Pure functional components are used in favour of class based components, due to the performance!
 // When rendering 1500+ emoji using class based components had a significant impact.
@@ -160,10 +171,7 @@ const renderAsImage = (props: Props) => {
   let height;
   let src;
 
-  let representation = emoji.representation;
-  if (representation && fitToHeight && emoji.altRepresentation && getHeight(fitToHeight) > representation.height) {
-    representation = emoji.altRepresentation;
-  }
+  const representation = shouldUseAltRepresentation(emoji, fitToHeight) ? emoji.altRepresentation : emoji.representation;
 
   if (isImageRepresentation(representation)) {
     src = representation.imagePath;

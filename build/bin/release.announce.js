@@ -88,7 +88,7 @@ if (fs.existsSync(RELEASED_PACKAGES_FILE)) {
 }
 
 if (releasesFileContents.trim() === '') {
-  log.info('No release happened, no need to bug the AtlasKit guys :)');
+  log.info('No release happened, no need to bug the Atlaskit guys :)');
   process.exit(0);
 }
 

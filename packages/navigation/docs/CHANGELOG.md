@@ -1,5 +1,12 @@
 # @atlaskit/navigation
 
+## 26.8.2 (2017-11-27)
+
+
+
+
+
+* bug fix; fix layer overflowing viewport bounded contents off the top or bottom (issues closed: ak-3887) ([5978bfb](https://bitbucket.org/atlassian/atlaskit/commits/5978bfb))
 ## 26.8.1 (2017-11-23)
 
 * bug fix; allow vertical scrolling in collapsed container navigation ([99e5544](https://bitbucket.org/atlassian/atlaskit/commits/99e5544))

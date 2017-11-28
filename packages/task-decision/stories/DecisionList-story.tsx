@@ -1,6 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import * as React from 'react';
-import { ReactRenderer as Renderer } from '@atlaskit/editor-core/dist/es5/renderer';
+import { ReactRenderer as Renderer } from '@atlaskit/renderer';
 
 import DecisionList from '../src/components/DecisionList';
 import DecisionItem from '../src/components/DecisionItem';

@@ -12,8 +12,14 @@ export const compactLineHeight = 1.2;
 export const gridSize: number = akGridSize();
 
 export const defaultTheme: ItemTheme = {
-  afterItemSpacing: akGridSize(),
-  beforeItemSpacing: akGridSize(),
+  afterItemSpacing: {
+    compact: akGridSize(),
+    default: akGridSize(),
+  },
+  beforeItemSpacing: {
+    compact: akGridSize(),
+    default: akGridSize(),
+  },
   borderRadius: borderRadius(),
   focus: {
     outline: colors.B100,

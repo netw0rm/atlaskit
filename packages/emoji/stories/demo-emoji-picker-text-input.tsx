@@ -10,7 +10,7 @@ export interface Props {
   emojiProvider: Promise<EmojiProvider>;
 }
 
-export default class EmojiPickerTextInput extends PureComponent<Props, undefined> {
+export default class EmojiPickerTextInput extends PureComponent<Props, {}> {
   static defaultProps = {
     onSelection: () => {},
   };

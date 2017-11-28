@@ -8,7 +8,7 @@ export default class Banner extends PureComponent {
     appearance: PropTypes.oneOf(['warning', 'error']),
     /** Content to be shown next to the icon. Typically text content but can contain links. */
     children: PropTypes.node,
-    /** Icon to be shown left of the main content. Typically an AtlasKit icon (@atlaskit/icon) */
+    /** Icon to be shown left of the main content. Typically an Atlaskit icon (@atlaskit/icon) */
     icon: PropTypes.element,
     /** Defines whether the banner is shown. An animation is used when the value is changed. */
     isOpen: PropTypes.bool,

@@ -4,7 +4,7 @@
   "config": {
     "access": "public"
   },
-  "description": "A template for creating AtlasKit components",
+  "description": "A template for creating Atlaskit components",
   "main": "dist/bundle.js",
   "jsnext:experimental:main": "dist/es/index.js",
   "webpack": "dist/bundle-cjs.js",

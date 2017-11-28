@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { ProviderFactory } from '@atlaskit/editor-core';
-import { ReactRenderer as Renderer } from '@atlaskit/editor-core/dist/es5/renderer';
+import { ProviderFactory } from '@atlaskit/editor-common';
+import { ReactRenderer as Renderer } from '@atlaskit/renderer';
 
 import { TaskDecisionProvider } from '../src/types';
 import { getMockTaskDecisionResource } from '../src/support/story-data';

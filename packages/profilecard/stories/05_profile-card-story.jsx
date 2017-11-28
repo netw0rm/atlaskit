@@ -109,6 +109,7 @@ storiesOf(`${name}`, module)
       meta: null,
       timestring: null,
       location: null,
+      presenceMessage: null,
     });
 
     return (

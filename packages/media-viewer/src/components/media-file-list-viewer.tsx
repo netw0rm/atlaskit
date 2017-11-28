@@ -5,14 +5,16 @@ import { Subscription } from 'rxjs/Subscription';
 import { fetchToken } from '../domain/fetch-token';
 import { MediaFileAttributesFactory } from '../domain/media-file-attributes';
 import { MediaViewerConstructor, MediaViewerInterface, MediaViewerConfig } from '../mediaviewer';
+import { MediaViewerItem } from './media-viewer';
 import { Observable } from 'rxjs';
 
 export interface MediaFileListViewerProps {
   readonly context: Context;
 
-  readonly fileId: string;
-  readonly fileIds: Array<string>;
-  readonly collectionName: string;
+  readonly selectedItem: MediaViewerItem;
+  readonly list: Array<MediaViewerItem>;
+
+  readonly collectionName?: string;
 
   readonly MediaViewer: MediaViewerConstructor;
   readonly mediaViewerConfiguration?: MediaViewerConfig;
@@ -45,7 +47,7 @@ export class MediaFileListViewer extends Component<MediaFileListViewerProps, Med
   }
 
   componentDidMount(): void {
-    const { context, fileId, fileIds, collectionName, onClose } = this.props;
+    const { context, selectedItem, list, collectionName, onClose } = this.props;
     const { config } = context;
     const { serviceHost } = config;
     const { mediaViewer } = this.state;
@@ -54,18 +56,28 @@ export class MediaFileListViewer extends Component<MediaFileListViewerProps, Med
       mediaViewer.on('fv.close', onClose);
     }
 
-    const observableFileItems = fileIds
-      .map(file => context.getMediaItemProvider(file, 'file', collectionName))
+    const filesToProcess = list
+      .filter(item => item.type === 'file'); // for now we only support files
+
+    const observableFileItems = filesToProcess
+      .map(file => context.getMediaItemProvider(file.id, file.type, collectionName))
       .map(provider => provider.observable().map(item => item as FileItem));
 
     this.state = {
       subscription: Observable
         .zip(...observableFileItems)
         .subscribe({
-          next: items => {
-            const files = MediaFileAttributesFactory.fromFileItemList(items, serviceHost);
+          next: fileItems => {
+            const filesWithKeys = fileItems.map((file, index) => ({
+              ...file,
+              occurrenceKey: filesToProcess[index].occurrenceKey
+            }));
+
+            const files = MediaFileAttributesFactory.fromFileItemList(filesWithKeys, serviceHost);
             mediaViewer.setFiles(files);
-            mediaViewer.open({ id: fileId });
+
+            const id = MediaFileAttributesFactory.getUniqueMediaViewerId(selectedItem);
+            mediaViewer.open({ id });
           }
         }),
       mediaViewer

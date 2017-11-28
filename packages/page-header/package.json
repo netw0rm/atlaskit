@@ -34,8 +34,8 @@
   },
   "devDependencies": {
     "@atlaskit/util-readme": "^3.0.0",
-    "@atlaskit/button": "^3.0.0",
-    "@atlaskit/breadcrumbs": "^2.0.0",
+    "@atlaskit/button": "^5.4.8",
+    "@atlaskit/breadcrumbs": "^3.1.0",
     "@atlaskit/theme": "^2.0.0",
     "@atlaskit/page-header": "*",
     "babel-plugin-react-flow-props-to-prop-types": "0.14.0"
@@ -44,7 +44,11 @@
     "react": "^15.3.2"
   },
   "author": "Atlassian Pty Ltd",
-  "maintainers": [],
+  "maintainers": [
+    {
+      "name": "Sean C"
+    }
+  ],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",

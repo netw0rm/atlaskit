@@ -8,30 +8,77 @@
 
 Add a link to a codepen example using [this codepen](http://go.atlassian.com/ak-codepen) as starting point.
 
-### Steps to Reproduce
+### Steps to reproduce
+*Either*
 
 1. [First Step]
 2. [Second Step]
 3. [and so on...]
 
-**Expected behavior:** [What you expect to happen]
+*Or*
 
-**Actual behavior:** [What actually happens]
+Create a gif using [this](http://gifbrewery.com/)
 
-**Reproduces how often:** [What percentage of the time does it reproduce?]
+### Expected behavior
+[What do you expect to happen?]
 
-### Name and version of Component(s)
+### Actual behavior
+[What does actually happen?]
 
-You can get this information by running `yarn ls | grep '@atlaskit'` or `npm list | grep '@atlaskit'` from the command line. 
+### Level of consistency
+[What percentage of the time does it reproduce?]
 
-### Did this work in previous versions of the AtlasKit component?
+### Information
+| Components  | Version | Did this work in previous versions of the Atlaskit component? | Browser and OS information  |
+|-------------|:--------|:--------------------------------------------------------------|:----------------------------|
+|   		      |         | Yes/ No/ I don't know                                         |                             | 
 
-Yes / No / Don't know
 
-### Browser and OS information
+* To get the component version:
+[You can get this information by running `yarn ls | grep '@atlaskit'` or `npm list | grep '@atlaskit'` from the command line.] 
 
-Please include the browser version, OS and OS version you're running. You could go to http://www.whatsmybrowser.org/ and copy the link.
+* To get the browser version, got to http://www.whatsmybrowser.org/ and copy the link
+* Any additional information, configuration or data that might be necessary to reproduce the issue.
 
-### Additional Information
 
+### Jira markdown template
+
+```
+h2.Description
+
+Description of the issue
+Add a link to a codepen example using [this codepen](http://go.atlassian.com/ak-codepen) as starting point.
+
+h2.Steps to Reproduce
+
+Either
+# First step
+# Second step
+...
+
+Or
+Create a gif using -> http://gifbrewery.com/
+
+h2.Expected behavior
+What do you expect to happen?
+
+h2.Actual behavior
+What does actually happens?
+
+h2.Level of Consistency
+What percentage of the time does it reproduce?
+
+h2.Information
+|| Component(s)|| Version || Did this work in previous versions of the AtlasKit component? || Browser and OS information
+ |            |            |Yes /  No/  I don't know | |
+
+* To get the component version:
+{code}yarn ls | grep '@atlaskit' or npm list | grep '@atlaskit'{code}
+
+from the command line.
+
+
+* To get the browser version, got to http://www.whatsmybrowser.org/ and copy the link
 Any additional information, configuration or data that might be necessary to reproduce the issue.
+
+```

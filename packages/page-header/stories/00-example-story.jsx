@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import { BreadcrumbsStateless, BreadcrumbsItem } from '@atlaskit/breadcrumbs';
 import Button from '@atlaskit/button';
-import { StatelessSelect } from '@atlaskit/single-select';
+import SingleSelect from '@atlaskit/single-select';
 import TextField from '@atlaskit/field-text';
 import { storiesOf } from '@kadira/storybook';
 import PageHeader from '@atlaskit/page-header';
@@ -33,10 +33,24 @@ const actionsContent = (
     <Button>...</Button>
   </SpacingContainer>
 );
+
+const selectItems = [
+  {
+    heading: 'Cities',
+    items: [
+      { content: 'Sydney', value: 'sydney' },
+      { content: 'Canberra', value: 'canberra' },
+    ],
+  },
+];
+
 const barContent = (
   <SpacingContainer>
     <TextField isLabelHidden placeholder="Filter" label="hidden" />
-    <StatelessSelect placeholder="Choose an option" />
+    <SingleSelect
+      placeholder="Choose an option"
+      items={selectItems}
+    />
   </SpacingContainer>
 );
 

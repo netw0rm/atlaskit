@@ -1,5 +1,17 @@
 # @atlaskit/single-select
 
+## 3.1.2 (2017-11-24)
+
+* bug fix; prevent inline-dialog from closing when event is prevented and prevent default for c (issues closed: ak-3870) ([8ae0c3b](https://bitbucket.org/atlassian/atlaskit/commits/8ae0c3b))
+## 3.1.1 (2017-11-24)
+
+
+* bug fix; fix single select dropdown not closing on blur (issues closed: ak-3916) ([ae1d589](https://bitbucket.org/atlassian/atlaskit/commits/ae1d589))
+## 3.1.0 (2017-11-23)
+
+
+
+* feature; hide groups without matches when filtering single-select component ([e5dde4b](https://bitbucket.org/atlassian/atlaskit/commits/e5dde4b))
 ## 3.0.1 (2017-11-13)
 
 * bug fix; fix single select focus in IE11 (issues closed: ak-3832) ([2b83759](https://bitbucket.org/atlassian/atlaskit/commits/2b83759))

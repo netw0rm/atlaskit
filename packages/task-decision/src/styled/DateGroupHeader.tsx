@@ -1,11 +1,9 @@
 import styled from 'styled-components';
-import {
-  akColorN200,
-} from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 
 // tslint:disable-next-line:variable-name
 const DateGroupHeader = styled.div`
-  color: ${akColorN200};
+  color: ${colors.N200};
   font-size: 12px;
   font-weight: 500;
   margin: 12px 0 4px 0;

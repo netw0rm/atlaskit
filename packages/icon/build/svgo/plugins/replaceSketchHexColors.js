@@ -11,7 +11,8 @@ const secondaryHex = '#79F2C0';
 
 exports.fn = function callbackOnDefinedFill(item) {
   var fill; // eslint-disable-line no-var
-  // look for an fill attributes within the SVG file
+  var stopColor; // eslint-disable-line no-var
+  // look for an fill or stop color attributes within the SVG file
   if (item.hasAttr('fill')) {
     fill = item.attr('fill').value;
     // If it's the primary hex colour, set that to "currentColor". This inherits from the
@@ -40,6 +41,19 @@ exports.fn = function callbackOnDefinedFill(item) {
     // the cascade of primaryColor/secondaryColor styles, and needs to be removed.
     if (fill && fill === 'none') {
       item.removeAttr('fill');
+    }
+  } else if (item.hasAttr('stop-color')) {
+    stopColor = item.attr('stop-color').value;
+    // If it's the primary hex colour, set that to "currentColor". This inherits from the
+    // color property set in CSS which is how the primaryColor prop on the Icon component
+    // is applied.
+    if (stopColor && stopColor === primaryHex) {
+      item.addAttr({
+        name: 'stop-color',
+        local: 'stop-color',
+        prefix: '',
+        value: 'currentColor',
+      });
     }
   }
 };

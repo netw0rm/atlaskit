@@ -23,7 +23,7 @@ exports.fn = function replaceIDs(node, opts) {
 
   if (node.isElem('linearGradient') && node.hasAttr('id')) {
     node.attrs.id.value += `-${placeholderStr}`;
-  } else if (node.isElem('path') && node.hasAttr('fill')) {
+  } else if (node.hasAttr('fill')) {
     const fillAttr = node.attr('fill');
     const replacedFillValue = fillAttr.value.replace(/\burl\(("|')?#(.+?)\1\)/,
       `url(#$2-${placeholderStr})`);

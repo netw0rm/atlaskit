@@ -2,12 +2,10 @@ import { storiesOf } from '@kadira/storybook';
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 import AkButton, { ButtonGroup } from '@atlaskit/button';
-import Tooltip from '@atlaskit/tooltip';
 
 import styles from './styles.less';
 
 import AnimationDemo from './AnimationDemo';
-import ChangingColor from './ChangingColor';
 import components from '../docs/icons';
 import { name } from '../package.json';
 import { size } from '../src';
@@ -16,15 +14,6 @@ import ToggleIcons from './ToggleIcons';
 const iconSizes = Object.values(size);
 const twoColorIcons = ['checkbox', 'radio'];
 const AtlassianIcon = components.atlassian.component;
-const BitbucketIcon = components.bitbucket.component;
-const ConfluenceIcon = components.confluence.component;
-const HipchatIcon = components.hipchat.component;
-const JiraIcon = components.jira.component;
-const StrideIcon = components.stride.component;
-const JiraCoreIcon = components['jira-core'].component;
-const JiraSoftwareIcon = components['jira-software'].component;
-const JiraServiceDeskIcon = components['jira-service-desk'].component;
-const StatuspageIcon = components.statuspage.component;
 
 if (!AtlassianIcon) {
   throw new Error('Atlassian icon was removed but is needed to display stories properly');
@@ -192,30 +181,4 @@ storiesOf(name, module)
       ))}
       </tbody>
     </table>
-  ))
-  .add('Product and company icons (with gradients)', () => {
-    const flagshipIcons = [
-      [AtlassianIcon, 'Atlassian'],
-      [BitbucketIcon, 'Bitbucket'],
-      [ConfluenceIcon, 'Confluence'],
-      [HipchatIcon, 'Hipchat'],
-      [JiraCoreIcon, 'Jira Core'],
-      [JiraIcon, 'Jira'],
-      [JiraServiceDeskIcon, 'Jira Service Desk'],
-      [JiraSoftwareIcon, 'Jira Software'],
-      [StatuspageIcon, 'Statuspage'],
-      [StrideIcon, 'Stride'],
-    ];
-
-    return (
-      <ChangingColor>
-        {
-          flagshipIcons.map(([Icon, label], key) => (
-            <Tooltip content={label} key={key}>
-              <Icon size="xlarge" label={label} />
-            </Tooltip>
-          ))
-        }
-      </ChangingColor>
-    );
-  });
+  ));

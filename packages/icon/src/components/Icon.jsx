@@ -28,12 +28,23 @@ export const spanStyles = css`
   display: inline-block;
   fill: ${p => p.secondaryColor || colors.background};
   line-height: 1;
+  stop-color: currentColor;
+
   > svg {
     ${getSize}
     max-height: 100%;
     max-width: 100%;
     overflow: hidden;
     vertical-align: bottom;
+  }
+  /*
+    The stop-color doesn't cascade down through these elements, so when we have a gradient
+    that inherits currentColor, it won't be seen by the <stop> element within the <linearGradient>
+  */
+  svg,
+  defs,
+  linearGradient {
+    stop-color: inherit;
   }
 `;
 

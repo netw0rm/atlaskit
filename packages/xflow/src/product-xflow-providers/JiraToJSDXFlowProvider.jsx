@@ -6,6 +6,8 @@ import productXFlowProviderFactory from '../common/productXFlowProviderFactory';
 import grantAccessToUsers from '../common/services/grantAccessToUsers';
 import productStatusChecker from '../common/services/productStatusChecker';
 import startProductTrial from '../common/services/startProductTrial';
+import productRequest from '../common/services/productRequest';
+import { setAlreadyRequestedFlag, getAlreadyRequestedFlag } from '../common/services/alreadyRequestedFlag';
 
 import retrieveUserManagementUsers, {
     JIRA_SOFTWARE_GROUP,
@@ -16,6 +18,8 @@ const VALID_GROUPS = [
   JIRA_SOFTWARE_GROUP,
   SITE_ADMINS_GROUP,
 ];
+
+const PRODUCT_KEY = 'jira-servicedesk.ondemand';
 
 const messages = defineMessages({
   // Start Trial
@@ -124,6 +128,8 @@ const messages = defineMessages({
 });
 
 export const defaultProps = intl => ({
+  productKey: PRODUCT_KEY,
+
   config: {
     productLogo: <JiraServiceDeskLogo size={'small'} />,
     requestTrial: {
@@ -222,14 +228,12 @@ export const defaultProps = intl => ({
   canCurrentUserAddProduct: isCurrentUserSiteAdmin,
   canCurrentUserGrantAccessToProducts: isCurrentUserSiteAdmin,
 
-  requestTrialAccess: async () => {},
-  requestTrialAccessWithNote: async () => {},
-  requestTrialAccessWithoutNote: async () => {},
-  cancelRequestTrialAccess: async () => {},
+  requestTrialWithNote: productRequest(PRODUCT_KEY),
+  cancelRequestTrial: async () => {},
 
-  startProductTrial: startProductTrial('jira-servicedesk.ondemand'),
+  startProductTrial: startProductTrial(PRODUCT_KEY),
   cancelStartProductTrial: async () => {},
-  productStatusChecker: productStatusChecker('jira-servicedesk.ondemand'),
+  productStatusChecker: productStatusChecker(PRODUCT_KEY),
   grantAccessToUsers: grantAccessToUsers('jira-servicedesk-users', 'Jira Service Desk', 'Grants access to Jira Service Desk'),
   retrieveUsers: retrieveUserManagementUsers(VALID_GROUPS),
   goToProduct: () => {
@@ -237,8 +241,8 @@ export const defaultProps = intl => ({
   },
   closeLoadingDialog: async () => {},
   closeAlreadyStartedDialog: async () => {},
-  checkProductRequestFlag: () => (false),
-  setProductRequestFlag: () => { /* do nothing */ },
+  checkProductRequestFlag: () => getAlreadyRequestedFlag(PRODUCT_KEY),
+  setProductRequestFlag: () => setAlreadyRequestedFlag(PRODUCT_KEY),
 });
 
 export default productXFlowProviderFactory(defaultProps);

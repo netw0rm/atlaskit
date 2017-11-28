@@ -1,21 +1,30 @@
 import 'es6-promise/auto';
 import 'whatwg-fetch';
 
-// This endpoint is Jira specific, will not work for non-Jira -> x flows
-export const userPreferencesEndpoint = (productKey) =>
-  `/rest/api/2/mypreferences?key=xflow.already.requested.${productKey}`;
+import { getAtlassianAccountId } from './tenantContext';
+import { getEnvAPIUrl } from '../utils/envDetection';
+
+export const makeStorageKey = (productKey) =>
+  `xflow.already.requested.${productKey}`;
+
+export const userPreferencesEndpoint = (atlassianAccountId) =>
+  `${getEnvAPIUrl()}/user/${atlassianAccountId}/preference/global/xflow`;
 
 /**
  * Set a flag that the user has already requested a trial
  */
 export const setAlreadyRequestedFlag = async (productKey) => {
-  const response = await fetch(userPreferencesEndpoint(productKey), {
+  const atlassianAccountId = await getAtlassianAccountId();
+  const url = userPreferencesEndpoint(atlassianAccountId);
+
+  const response = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',
     },
     method: 'PUT',
-    credentials: 'same-origin',
+    credentials: 'include',
     body: JSON.stringify({
+      key: makeStorageKey(productKey),
       value: true,
     }),
   });
@@ -31,8 +40,11 @@ export const setAlreadyRequestedFlag = async (productKey) => {
  * Return true if they've requested already, false if they haven't or there's an error
  */
 export const getAlreadyRequestedFlag = async (productKey) => {
-  const response = await fetch(userPreferencesEndpoint(productKey), {
-    credentials: 'same-origin',
+  const atlassianAccountId = await getAtlassianAccountId();
+  const url = `${userPreferencesEndpoint(atlassianAccountId)}?key=${makeStorageKey(productKey)}`;
+
+  const response = await fetch(url, {
+    credentials: 'include',
   });
 
   if (response.ok) {

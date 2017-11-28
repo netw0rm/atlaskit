@@ -9,6 +9,8 @@ import cancelOptOut from '../services/cancelOptOut';
 import optOutMessagesDefaultProps from '../messages/OptOutMessages';
 
 export const xFlowShape = PropTypes.shape({
+  productKey: PropTypes.string.isRequired,
+
   config: PropTypes.shape({
     productLogo: PropTypes.element,
     requestTrial: PropTypes.shape({

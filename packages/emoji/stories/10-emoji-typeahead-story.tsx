@@ -7,7 +7,7 @@ import { getEmojiResource, getUsageClearEmojiResource } from '../src/support/sto
 import TriggeredEmojiResource from './TriggeredEmojiResource';
 import UsageShowingEmojiTypeAheadTextInput from './demo-emoji-typeahead-showing-usage';
 
-const bottomStyle = {
+const bottomStyle: React.CSSProperties = {
   position: 'absolute',
   bottom: '30px',
 };
@@ -16,7 +16,7 @@ const tallPageStyle = {
   height: '2000px',
 };
 
-const downPage = {
+const downPage: React.CSSProperties = {
   position: 'absolute',
   top: '400px',
 };

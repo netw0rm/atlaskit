@@ -138,7 +138,7 @@ export default class CategorySelector extends PureComponent<Props, State> {
     }
   }
 
-  componentWillUpdate = (nextProps: Props, nextState: State) => {
+  componentWillUpdate(nextProps: Props, nextState: State) {
     if (this.props.dynamicCategories !== nextProps.dynamicCategories) {
       this.setState({
         categories: addNewCategories(defaultCategories, nextProps.dynamicCategories),

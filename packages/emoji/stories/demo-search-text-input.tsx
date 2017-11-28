@@ -24,7 +24,7 @@ export interface Props {
   label?: string;
 }
 
-class SearchTextInput extends PureComponent<Props, undefined> {
+class SearchTextInput extends PureComponent<Props, {}> {
   handleKeyDown = (event) => {
     if (noModifiers(event)) {
       let notify: Callback | undefined;

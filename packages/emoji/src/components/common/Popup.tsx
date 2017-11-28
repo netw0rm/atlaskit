@@ -23,7 +23,7 @@ export interface Props {
 /*
  * Simple implementation of popup while waiting for ak-inline-dialog
  */
-export default class Popup extends PureComponent<Props, undefined> {
+export default class Popup extends PureComponent<Props, {}> {
   private popup: HTMLElement;
   private debounced: number | null = null;
 

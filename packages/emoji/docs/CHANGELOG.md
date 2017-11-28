@@ -1,5 +1,9 @@
 # @atlaskit/emoji
 
+## 30.3.5 (2017-11-28)
+
+* bug fix; upgrade all atlaskit dependencies (issues closed: fs-1526) ([8dac2d2](https://bitbucket.org/atlassian/atlaskit/commits/8dac2d2))
+* bug fix; use theme package instead of util-shared-styles (issues closed: fs-1526) ([45d7bb9](https://bitbucket.org/atlassian/atlaskit/commits/45d7bb9))
 ## 30.3.4 (2017-11-28)
 
 

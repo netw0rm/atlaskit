@@ -1,14 +1,8 @@
 import {
-  akBorderRadius,
-  akColorN200,
-  akColorN300,
-  akColorN900,
-  akColorR500,
-  akColorN800,
-  akColorN0,
-  akGridSizeUnitless,
-} from '@atlaskit/util-shared-styles';
-
+  borderRadius,
+  colors,
+  gridSize,
+} from '@atlaskit/theme';
 import { defaultEmojiHeight } from '../../constants';
 import { akEmojiSelectedBackgroundColor } from '../../shared-styles';
 import { style, keyframes } from 'typestyle';
@@ -105,7 +99,7 @@ export const emojiButton = style({
 
 });
 
-const grid = akGridSizeUnitless / 2;
+const grid = gridSize() / 2;
 const fontSize = 3 * grid;
 
 export const slideUp = keyframes({
@@ -136,8 +130,8 @@ export const emojiTooltip = style({
       animationFillMode: 'backwards',
       content: 'attr(aria-label)',
       position: 'absolute',
-      backgroundColor: akColorN800,
-      color: akColorN0,
+      backgroundColor: colors.N800,
+      color: colors.N0,
       fontSize: fontSize,
       lineHeight: (4 * grid) / fontSize,
       padding: '2px 8px',
@@ -147,7 +141,7 @@ export const emojiTooltip = style({
       boxSizing: 'border-box',
       transform: 'translateX(-50%)',
       left: '50%',
-      top: `-${20 + akGridSizeUnitless}px`, // tooltip height + grid spacing above emoji
+      top: `-${20 + gridSize()}px`, // tooltip height + grid spacing above emoji
     }
   }
 
@@ -225,7 +219,7 @@ export const emojiPreview = style({
           $nest: {
             [`.${name}`]: {
               display: 'block',
-              color: akColorN900,
+              color: colors.N900,
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
@@ -239,7 +233,7 @@ export const emojiPreview = style({
 
             [`.${shortName}`]: {
               display: 'block',
-              color: akColorN200,
+              color: colors.N200,
               fontSize: '12px',
               lineHeight: 1,
               marginBottom: '-2px',
@@ -260,7 +254,7 @@ export const emojiPreview = style({
             },
 
             [`.${shortName}`]: {
-              color: akColorN900,
+              color: colors.N900,
               fontSize: '14px',
             },
           },
@@ -291,7 +285,7 @@ export const emojiPreview = style({
 
 export const emojiScrollable = style({
   border: '1px solid #fff',
-  borderRadius: akBorderRadius,
+  borderRadius: `${borderRadius()}px`,
   display: 'block',
   margin: '0',
   overflowX: 'hidden',
@@ -310,7 +304,7 @@ export const emojiUpload = style ({
 });
 
 export const uploadChooseFileMessage = style({
-  color: akColorN300,
+  color: colors.N300,
   marginBottom: '20px',
   fontSize: '0.9em',
 
@@ -351,7 +345,7 @@ export const uploadChooseFileBrowse = style({
 
 export const uploadPreview = style({
   background: `url(${checkerBoard})`,
-  borderRadius: akBorderRadius,
+  borderRadius: `${borderRadius()}px`,
   marginBottom: '10px',
   padding: '7px',
   width: '286px',
@@ -377,7 +371,7 @@ export const uploadError = style({
       }
     },
     svg: {
-      color: akColorR500,
+      color: colors.R500,
       $nest: {
         '&:first-child': {
           marginRight: 0,

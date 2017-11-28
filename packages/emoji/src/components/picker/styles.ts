@@ -1,15 +1,8 @@
 import { style } from 'typestyle';
 import {
-  akBorderRadius,
-  akColorB100,
-  akColorB300,
-  akColorN100A,
-  akColorN200,
-  akColorN30,
-  akColorN30A,
-  akColorN50,
-  akColorN900,
-} from '@atlaskit/util-shared-styles';
+  borderRadius,
+  colors,
+} from '@atlaskit/theme';
 
 import {
   akEmojiSelectedBackgroundColor,
@@ -39,7 +32,7 @@ export const emojiPicker = style({
   justifyContent: 'space-between',
   background: 'white',
   border: `${emojiPickerBorderColor} 1px solid`,
-  borderRadius: akBorderRadius,
+  borderRadius: borderRadius(),
   boxShadow: emojiPickerBoxShadow,
   height: `${emojiPickerHeight}px`,
   width: `${emojiPickerWidth}px`,
@@ -54,7 +47,7 @@ export const addButton = 'emoji-picker-add-button';
 
 export const categorySelector = style({
   flex: '0 0 auto',
-  backgroundColor: akColorN30,
+  backgroundColor: colors.N30,
 
   $nest: {
     ul: {
@@ -79,7 +72,7 @@ export const categorySelector = style({
     },
 
     [`.${addButton}`]: {
-      color: akColorN200,
+      color: colors.N200,
       margin: '0 0 0 5px',
       verticalAlign: 'middle',
     },
@@ -89,7 +82,7 @@ export const categorySelector = style({
 export const category = style({
   backgroundColor: 'transparent',
   border: 0,
-  color: akColorN100A,
+  color: colors.N100A,
   cursor: 'pointer',
   margin: '2px 0',
   padding: 0,
@@ -103,26 +96,26 @@ export const category = style({
     },
 
     [`&.${active}`]: {
-      color: akColorB300,
+      color: colors.B300,
 
       $nest: {
         ['&:hover']: {
-          color: akColorB300,
+          color: colors.B300,
         },
       },
     },
 
     ['&:hover']: {
-      color: akColorB100,
+      color: colors.B100,
     },
 
     [`&.${disable}`]: {
-      color: akColorN50,
+      color: colors.N50,
       cursor: 'default',
 
       $nest: {
         ['&:hover']: {
-          color: akColorN50,
+          color: colors.N50,
         },
       },
     },
@@ -216,7 +209,7 @@ export const emojiPickerRow = style({
 
 export const emojiCategoryTitle = style({
   boxSizing: 'border-box',
-  color: akColorN900,
+  color: colors.N900,
   fontSize: '14px',
   padding: '5px 8px',
   textTransform: 'lowercase',
@@ -268,7 +261,7 @@ export const emojiItem = style({
 
 export const addEmoji = style({
   border: '2px dashed #ccc',
-  borderRadius: akBorderRadius,
+  borderRadius: borderRadius(),
   backgroundColor: 'transparent',
   width: '32px',
   height: '32px',
@@ -297,6 +290,6 @@ export const emojiPickerFooter = style({
 });
 
 export const emojiPickerFooterWithTopShadow = style({
-  borderTop: `2px solid ${akColorN30A}`,
+  borderTop: `2px solid ${colors.N30A}`,
   boxShadow: emojiFooterBoxShadow,
 });

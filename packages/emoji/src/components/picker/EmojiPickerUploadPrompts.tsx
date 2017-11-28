@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as classnames from 'classnames';
 import AkButton from '@atlaskit/button';
 
-import { akColorB300 } from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 
 import * as styles from './styles';
 
@@ -22,8 +22,8 @@ export const UploadPromptButton = (props: Props) => {
   return (
     <button className={addButtonClassNames} onClick={props.onOpenUpload}>
       <svg viewBox={`0 0 30 30`} xmlns="http://www.w3.org/2000/svg" width="28px" height="28px">
-        <line x1="15" y1="10" x2="15" y2="20" stroke={akColorB300} strokeWidth="2" strokeLinecap="round" />
-        <line x1="10" y1="15" x2="20" y2="15" stroke={akColorB300} strokeWidth="2" strokeLinecap="round" />
+        <line x1="15" y1="10" x2="15" y2="20" stroke={colors.B300} strokeWidth="2" strokeLinecap="round" />
+        <line x1="10" y1="15" x2="20" y2="15" stroke={colors.B300} strokeWidth="2" strokeLinecap="round" />
       </svg>
     </button>
   );

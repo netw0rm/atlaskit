@@ -1,10 +1,11 @@
 import { EmojiDescription, toEmojiId } from '@atlaskit/emoji';
-import { emoji as emojiData } from '@atlaskit/util-data-test';
+import { testData } from '@atlaskit/emoji/src/support';
 
-const emojiRepository = emojiData.emojiTestData.emojiRepository;
+const { newEmojiRepository } = testData;
+const emojiRepository = newEmojiRepository();
 
 export const grinningId = toEmojiId(emojiRepository.findByShortName(':grinning:') as EmojiDescription);
-export const laughingId = toEmojiId(emojiRepository.findByShortName(':laughing:') as EmojiDescription);
+export const laughingId = toEmojiId(emojiRepository.findByShortName(':sweat_smile:') as EmojiDescription);
 export const thumbsupId = toEmojiId(emojiRepository.findByShortName(':thumbsup:') as EmojiDescription);
 export const grinId = toEmojiId(emojiRepository.findByShortName(':grin:') as EmojiDescription);
 export const smileyId = toEmojiId(emojiRepository.findByShortName(':smiley:') as EmojiDescription);

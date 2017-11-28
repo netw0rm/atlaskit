@@ -1,13 +1,16 @@
 import {
-  akBorderRadius,
-  akColorN900,
-} from '@atlaskit/util-shared-styles';
+  borderRadius,
+  colors
+} from '@atlaskit/theme';
 import * as cx from 'classnames';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { PureComponent } from 'react';
 import { style, keyframes } from 'typestyle';
 import { User } from '../reactions-resource';
+
+const akBorderRadius = borderRadius();
+const akColorN900 = colors.N900;
 
 const animateDown = keyframes({
   '0%': {

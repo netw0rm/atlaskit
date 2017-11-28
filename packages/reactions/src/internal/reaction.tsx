@@ -1,21 +1,24 @@
 import { EmojiProvider, ResourcedEmoji } from '@atlaskit/emoji';
 import {
-  akBorderRadius,
-  akColorN30A,
-  akColorN400,
-  akColorB50,
-  akColorB75,
-  akColorN500,
-} from '@atlaskit/util-shared-styles';
+  borderRadius,
+  colors
+} from '@atlaskit/theme';
 import * as cx from 'classnames';
 import * as React from 'react';
-import { PureComponent } from 'react';
+import { PureComponent, SyntheticEvent } from 'react';
 import { style, keyframes } from 'typestyle';
 import { ReactionSummary } from '../reactions-resource';
 import { isLeftClick } from './helpers';
 import { analyticsService } from '../analytics';
 import ReactionTooltip from './reaction-tooltip';
-import { SyntheticEvent } from 'react';
+import { isPromise } from './helpers';
+
+const akBorderRadius = borderRadius();
+const akColorN30A = colors.N30A;
+const akColorN400 = colors.N400;
+const akColorB50 = colors.B50;
+const akColorB75 = colors.B75;
+const akColorN500 = colors.N500;
 
 export const bouncingAnimation = keyframes({
   $debugName: 'bouncing',
@@ -52,28 +55,7 @@ const shakeAnimation = keyframes({
 
 const emojiStyle = style({
   transformOrigin: 'center center 0',
-  $nest: {
-    '&&> span': {
-      display: 'inline-block',
-      flex: 'auto',
-      width: 'auto',
-      minWidth: '24px',
-      backgroundSize: '16px 16px',
-      verticalAlign: 'middle',
-      $nest: {
-        '> span': {
-          margin: '2px 4px',
-          maxWidth: '16px',
-          maxHeight: '16px'
-        },
-        '> img': {
-          margin: '2px 4px',
-          maxWidth: '16px',
-          maxHeight: '16px'
-        }
-      }
-    }
-  }
+  margin: '0 4px',
 });
 
 const countStyle = style({
@@ -121,9 +103,6 @@ const reactionStyle = style({
     '&.bounce': {
       animation: `${bouncingAnimation} 200ms ease-in-out`,
     },
-    '&.reaction-enter-active': {
-      animation: `${bouncingAnimation} 200ms ease-in-out`,
-    },
     '&.shake': {
       animation: `${shakeAnimation} 200ms infinite ease-in-out`
     }
@@ -165,18 +144,22 @@ export default class Reaction extends PureComponent<Props, State> {
 
   componentWillMount() {
     this.props.emojiProvider.then((emojiResource) => {
-      const emojiPromise = emojiResource.findByEmojiId({
+      const foundEmoji = emojiResource.findByEmojiId({
         shortName: '',
         id: this.props.reaction.emojiId
       });
 
-      if (emojiPromise) {
-        emojiPromise.then(emoji => {
+      if (isPromise(foundEmoji)) {
+        foundEmoji.then(emoji => {
           if (emoji) {
             this.setState({
               emojiName: emoji.name
             });
           }
+        });
+      } else if (foundEmoji) {
+        this.setState({
+          emojiName: foundEmoji.name
         });
       }
     });
@@ -262,7 +245,7 @@ export default class Reaction extends PureComponent<Props, State> {
         onMouseOut={this.handleMouseOut}
       >
         {tooltip}
-        <div className={emojiStyle}><ResourcedEmoji emojiProvider={emojiProvider} emojiId={emojiId} /></div>
+        <div className={emojiStyle}><ResourcedEmoji emojiProvider={emojiProvider} emojiId={emojiId} fitToHeight={16}/></div>
         <div className={countStyle}>
           {reaction.count < 100 ? reaction.count : '99+'}
         </div>

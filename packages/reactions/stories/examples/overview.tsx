@@ -2,10 +2,10 @@ import { ReactionPicker, Reactions } from '../../src/';
 import * as React from 'react';
 
 import { reactionsProvider } from '../../src/mock-reactions-provider';
-import { emoji as emojiTestData } from '@atlaskit/util-data-test';
 
-const { getEmojiResource } = emojiTestData.emojiStoryData;
+import { storyData } from '@atlaskit/emoji/src/support';
 
+const getEmojiResource = storyData.getEmojiResource;
 const demoAri = 'ari:cloud:owner:demo-cloud-id:item/1';
 const containerAri = 'ari:cloud:owner:demo-cloud-id:container/1';
 

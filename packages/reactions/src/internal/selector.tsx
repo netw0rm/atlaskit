@@ -3,6 +3,7 @@ import * as cx from 'classnames';
 import { PureComponent, SyntheticEvent } from 'react';
 import { style } from 'typestyle';
 import { EmojiId, EmojiProvider, OnEmojiEvent, OptionalEmojiDescription } from '@atlaskit/emoji';
+import Tooltip from '@atlaskit/tooltip';
 import EmojiButton from './emoji-button';
 
 import { equalEmojiId } from './helpers';
@@ -87,7 +88,9 @@ export default class Selector extends PureComponent<Props, State> {
 
           return (
             <div className={classNames} key={key}>
-              <EmojiButton emojiId={emojiId} emojiProvider={emojiProvider} onClick={this.onEmojiSelected} />
+              <Tooltip content={emojiId.shortName}>
+                <EmojiButton emojiId={emojiId} emojiProvider={emojiProvider} onClick={this.onEmojiSelected} />
+              </Tooltip>
             </div>
           );
         })}

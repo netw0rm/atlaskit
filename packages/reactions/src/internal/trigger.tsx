@@ -1,14 +1,17 @@
-import { EditorEmojiIcon } from '@atlaskit/icon';
+import EditorEmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import {
-  akBorderRadius,
-  akColorN30A,
-  akColorN500,
-} from '@atlaskit/util-shared-styles';
+  borderRadius,
+  colors
+} from '@atlaskit/theme';
 import * as cx from 'classnames';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { style } from 'typestyle';
 import { isLeftClick } from './helpers';
+
+const akBorderRadius = borderRadius();
+const akColorN30A = colors.N30A;
+const akColorN500 = colors.N500;
 
 export interface Props {
   onClick: Function;
@@ -65,7 +68,7 @@ export default class Trigger extends PureComponent<Props, {}> {
         className={classNames}
         onMouseDown={this.handleMouseDown}
       >
-        <EditorEmojiIcon label="Add reaction" />
+        {<EditorEmojiIcon label="Add reaction" />}
       </button>
     );
   }

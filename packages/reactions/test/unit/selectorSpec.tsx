@@ -7,9 +7,9 @@ import { mount, shallow } from 'enzyme';
 import EmojiButton from '../../src/internal/emoji-button';
 import Selector from '../../src/internal/selector';
 import { defaultReactions, isDefaultReaction } from '../../src/internal/selector';
-import { emoji as emojiTestData } from '@atlaskit/util-data-test';
+import { testData } from '@atlaskit/emoji/src/support';
 
-const { getEmojiResourcePromise } = emojiTestData.emojiTestData;
+const { getEmojiResourcePromise } = testData;
 
 const { expect } = chai;
 

@@ -5,7 +5,6 @@ import { style, keyframes } from 'typestyle';
 import { EmojiProvider } from '@atlaskit/emoji';
 import Reaction from './internal/reaction';
 import ReactionPicker from './reaction-picker';
-import { CSSTransitionGroup } from 'react-transition-group';
 import { ReactionsProvider, ReactionSummary } from './reactions-resource';
 import { sortReactions } from './internal/helpers';
 
@@ -148,13 +147,7 @@ export default class Reactions extends Component<Props, State> {
     return (
       <div className={reactionsStyle}>
         {this.renderPicker()}
-        <CSSTransitionGroup
-            className={reactionsGroupStyle}
-            transitionName="reaction"
-            transitionEnterTimeout={500}
-            transitionLeaveTimeout={300}
-            component="div"
-        >
+        <div className={reactionsGroupStyle}>
           {reactions.sort(sortReactions).map((reaction, index) => {
             const { emojiId } = reaction;
             const key = emojiId || `unknown-${index}`;
@@ -174,7 +167,7 @@ export default class Reactions extends Component<Props, State> {
               </div>
             );
           })}
-        </CSSTransitionGroup>
+        </div>
       </div>
     );
   }

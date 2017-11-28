@@ -1,6 +1,6 @@
 import Button from '@atlaskit/button';
 import { EmojiPicker } from '@atlaskit/emoji';
-import { EditorMoreIcon } from '@atlaskit/icon';
+import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
 import * as chai from 'chai';
 import * as React from 'react';
 import * as sinon from 'sinon';
@@ -10,9 +10,9 @@ import { ReactionPicker } from '../../src';
 import EmojiButton from '../../src/internal/emoji-button';
 import Selector from '../../src/internal/selector';
 import Trigger from '../../src/internal/trigger';
-import { emoji as emojiTestData } from '@atlaskit/util-data-test';
+import { testData } from '@atlaskit/emoji/src/support';
 
-const { getEmojiResourcePromise } = emojiTestData.emojiTestData;
+const { getEmojiResourcePromise } = testData;
 
 const { expect } = chai;
 

@@ -1,15 +1,12 @@
 import Button from '@atlaskit/button';
 import { EmojiPicker, EmojiProvider } from '@atlaskit/emoji';
-import { EditorMoreIcon } from '@atlaskit/icon';
+import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
 import Layer from '@atlaskit/layer';
-import ToolTip from '@atlaskit/tooltip';
+import Tooltip from '@atlaskit/tooltip';
 import {
-  akBorderRadius,
-  akColorN0,
-  akColorN30A,
-  akColorN50A,
-  akColorN60A
-} from '@atlaskit/util-shared-styles';
+  borderRadius,
+  colors
+} from '@atlaskit/theme';
 import * as cx from 'classnames';
 import * as React from 'react';
 import { PureComponent } from 'react';
@@ -18,6 +15,12 @@ import { style } from 'typestyle';
 import Selector from './internal/selector';
 import Trigger from './internal/trigger';
 import { analyticsService } from './analytics';
+
+const akBorderRadius = borderRadius();
+const akColorN0 = colors.N0;
+const akColorN30A = colors.N30A;
+const akColorN50A = colors.N50A;
+const akColorN60A = colors.N60A;
 
 export interface Props {
   emojiProvider: Promise<EmojiProvider>;
@@ -153,11 +156,11 @@ export default class ReactionPicker extends PureComponent<Props, State> {
         { !allowAllEmojis ? null :
           <div className={moreEmojiContainerStyle}>
             <div className={separatorStyle}/>
-            <ToolTip description="More emoji">
+            <Tooltip content="More emoji">
               <button className={moreButtonStyle} onMouseDown={this.showFullPicker}>
-                <EditorMoreIcon label="More" />
+                <EditorMoreIcon label="More"/>
               </button>
-            </ToolTip>
+            </Tooltip>
           </div>
         }
       </div>

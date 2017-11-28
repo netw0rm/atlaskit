@@ -120,13 +120,9 @@ export default class Button extends Component {
 
   onBlur = () => this.setState({ isFocus: false })
 
-  /* Swallow click events when the button is disabled to mimic native disabled button
-   * behaviour.
-   */
+  /* Swallow click events when the button is disabled to prevent inner child clicks bubbling up */
   onInnerClick = (e) => {
-    // If children is an object, there is an element within the button which would cause click
-    // events to propagate with native buttons, so allow it here as well.
-    if (this.props.isDisabled && typeof this.props.children !== 'object') {
+    if (this.props.isDisabled) {
       e.stopPropagation();
     }
     return true;

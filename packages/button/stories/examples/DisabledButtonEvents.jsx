@@ -32,9 +32,12 @@ export default class extends Component {
         style={{ padding: 40 }}
         onClick={this.increment}
       >
-        <p>Disabled button should swallow onClick events when the button does not contain child
-           elements (only text) so they do not propagate to parent handlers, just like native
-           buttons.
+        <p>Native buttons only swallow onclick events when the button is the target of the click,
+           i.e. it has no child elements. If it does have child elements, they will be the target
+           of the click and then bubble up and be caught by parent event listeners.
+        </p>
+        <p>AK buttons that are disabled will swallow onClick events regardless of whether they
+           contain child elements or not so they do not propagate to parent handlers in all cases.
         </p>
         <p>
           <button disabled={this.state.disabled}>

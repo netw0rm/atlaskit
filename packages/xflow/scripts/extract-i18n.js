@@ -8,7 +8,7 @@
  * The current expectation is that translations are manually exported to Transifex,
  * and manually imported into "language-packs.json".
  */
-const Observable = require('rxjs').Observable;
+const Observable = require('rxjs').Observable; // eslint-disable-line
 const path = require('path');
 const fs = require('fs');
 const glob = require('glob');
@@ -42,7 +42,7 @@ getFileName$(
   }))
   .map(meta => meta.metadata['react-intl'].messages)
 
-  // accumalate the messages into a single map, checking for duplicates
+  // accumulate the messages into a single map, checking for duplicates
   .reduce((messagesSoFar, currentFileMessages) => {
     currentFileMessages.forEach((message) => {
       if (messagesSoFar[message.id]) {

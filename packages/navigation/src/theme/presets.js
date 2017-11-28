@@ -21,10 +21,9 @@ const focus = {
   outline: themed({ light: colors.B100, dark: colors.B75 }),
 };
 
-function lightenColor(alpha, color) {
-  // break color to red, green and blue values
-  const { r, g, b } = chromatism.convert(color).rgb;
-  return `rgba(${r}, ${g}, ${b}, 0.${alpha})`;
+function lightenColor(color, alpha) {
+  const { r: red, g: green, b: blue } = chromatism.convert(color).rgb;
+  return `rgba(${red}, ${green}, ${blue}, 0.${alpha})`;
 }
 
 export const container: Provided = ((): Provided => {
@@ -53,14 +52,14 @@ export const container: Provided = ((): Provided => {
   const scrollBar: ScrollBarTheme = {
     default: {
       background: themed({
-        light: lightenColor(36, colors.N500),
-        dark: lightenColor(36, colors.DN600),
+        light: lightenColor(colors.N500, 36),
+        dark: lightenColor(colors.DN600, 36),
       }),
     },
     hover: {
       background: themed({
-        light: lightenColor(56, colors.N500),
-        dark: lightenColor(56, colors.DN600),
+        light: lightenColor(colors.N500, 56),
+        dark: lightenColor(colors.DN600, 56),
       }),
     },
   };
@@ -120,10 +119,10 @@ export const dark: Provided = ((): Provided => {
   };
   const scrollBar: ScrollBarTheme = {
     default: {
-      background: lightenColor(36, colors.DN400),
+      background: lightenColor(colors.DN400, 36),
     },
     hover: {
-      background: lightenColor(26, colors.DN400),
+      background: lightenColor(colors.DN400, 26),
     },
   };
 
@@ -185,10 +184,10 @@ export const settings: Provided = ((): Provided => {
 
   const scrollBar: ScrollBarTheme = {
     default: {
-      background: lightenColor(36, colors.N0),
+      background: lightenColor(colors.N0, 36),
     },
     hover: {
-      background: lightenColor(26, colors.N0),
+      background: lightenColor(colors.N0, 26),
     },
   };
 
@@ -259,14 +258,14 @@ export const global: Provided = ((): Provided => {
   const scrollBar: ScrollBarTheme = {
     default: {
       background: themed({
-        light: lightenColor(36, colors.B50),
-        dark: lightenColor(36, colors.DN400),
+        light: lightenColor(colors.B50, 36),
+        dark: lightenColor(colors.DN400, 36),
       }),
     },
     hover: {
       background: themed({
-        light: lightenColor(56, colors.B50),
-        dark: lightenColor(56, colors.DN400),
+        light: lightenColor(colors.B50, 56),
+        dark: lightenColor(colors.DN400, 56),
       }),
     },
   };

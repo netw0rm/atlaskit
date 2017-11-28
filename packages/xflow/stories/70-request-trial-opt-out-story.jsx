@@ -4,7 +4,7 @@ import React from 'react';
 import { RequestProductTrialOptOut } from '@atlaskit/xflow';
 
 import setupStorybookAnalytics from './util/setupStorybookAnalytics';
-import MockConfluenceXFlowProvider from './providers/MockConfluenceXFlowProvider';
+import MockConfluenceXFlowProvider from './helpers/MockConfluenceXFlowProvider';
 
 const defaultProps = {
   canCurrentUserAddProduct: async () => true,

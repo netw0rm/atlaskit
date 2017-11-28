@@ -4,14 +4,14 @@ import React from 'react';
 import { RequestOrStartTrial } from '@atlaskit/xflow';
 
 import setupStorybookAnalytics from './util/setupStorybookAnalytics';
-import mockXFlowProviderFactory from './providers/mockXFlowProviderFactory';
+import mockXFlowProviderFactory from './helpers/mockXFlowProviderFactory';
 
 import JiraToConfluenceXFlowProvider from '../src/product-xflow-providers/JiraToConfluenceXFlowProvider';
 import JiraToJSDXFlowProvider from '../src/product-xflow-providers/JiraToJSDXFlowProvider';
 import JiraToJSWXFlowProvider from '../src/product-xflow-providers/JiraToJSWXFlowProvider';
 import JiraToJCXFlowProvider from '../src/product-xflow-providers/JiraToJCXFlowProvider';
 
-import mockProductStatusChecker from './providers/mockProductStatusChecker';
+import mockProductStatusChecker from './helpers/mockProductStatusChecker';
 import { ACTIVE, ACTIVATING, DEACTIVATED, UNKNOWN } from '../src/common/productProvisioningStates';
 
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
@@ -39,7 +39,7 @@ const XFLOW_PROVIDERS_UNDER_TEST = {
   },
 };
 
-const defaultProps = {
+const defaultXFlowProviderProps = {
   canCurrentUserAddProduct: async () => false,
   retrieveUsers: () =>
     Promise.resolve([
@@ -109,25 +109,19 @@ const defaultProps = {
         },
       },
     ]),
-  cancelStartProductTrial: async () => {
-  },
-  grantAccessToUsers: () => delay(1000),
-  goToProduct: async () => {
-  },
-  closeLoadingDialog: async () => {
-  },
-  requestTrialWithNote: async () => delay(1000),
-  cancelRequestTrial: async () => {
-  },
-  checkProductRequestFlag: async () => {
-  },
-  setProductRequestFlag: async () => {
-  },
+  cancelStartProductTrial: async (...args) => action('mock cancelStartProductTrial')(...args),
+  grantAccessToUsers: async (...args) => { action('mock grantAccessToUsers')(...args); return delay(1000); },
+  goToProduct: async (...args) => action('mock goToProduct')(...args),
+  closeLoadingDialog: async (...args) => action('mock closeLoadingDialog')(...args),
+  requestTrialWithNote: async (...args) => { action('mock requestTrialWithNote')(...args); return delay(1000); },
+  cancelRequestTrial: async (...args) => action('mock cancelRequestTrial')(...args),
+  checkProductRequestFlag: async (...args) => action('mock checkProductRequestFlag')(...args),
+  setProductRequestFlag: async (...args) => action('mock setProductRequestFlag')(...args),
 };
 
 const defaultRequestOrStartTrialProps = {
   onAnalyticsEvent: action('onAnalyticsEvent'),
-  sourceComponent: 'storybook-example-compontent',
+  sourceComponent: 'storybook-example-component',
   sourceContext: 'storybook-example-context',
   targetProduct: 'storybook-example-product',
 };
@@ -141,7 +135,10 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
   if (hasGrantAccess) {
     story = story.add('User can add a product (INACTIVE), Start Trial flow with Grant Access screen', () =>
       setupStorybookAnalytics(
-        <MockXFlowProvider {...defaultProps} canCurrentUserAddProduct={async () => true}>
+        <MockXFlowProvider
+          {...defaultXFlowProviderProps}
+          canCurrentUserAddProduct={async () => true}
+        >
           <RequestOrStartTrial
             {...defaultRequestOrStartTrialProps}
             onTrialActivating={action('onTrialActivating')}
@@ -155,7 +152,10 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
   story = story
     .add('User can add a product (INACTIVE), Start Trial flow without Grant Access screen', () =>
       setupStorybookAnalytics(
-        <MockXFlowProvider {...defaultProps} canCurrentUserAddProduct={async () => true}>
+        <MockXFlowProvider
+          {...defaultXFlowProviderProps}
+          canCurrentUserAddProduct={async () => true}
+        >
           <RequestOrStartTrial
             {...defaultRequestOrStartTrialProps}
             onTrialActivating={action('onTrialActivating')}
@@ -167,7 +167,7 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
     .add('User can add a product (DEACTIVATED), Start Trial flow without Grant Access screen', () =>
       setupStorybookAnalytics(
         <MockXFlowProvider
-          {...defaultProps}
+          {...defaultXFlowProviderProps}
           canCurrentUserAddProduct={async () => true}
           productStatusChecker={mockProductStatusChecker(DEACTIVATED)}
         >
@@ -179,7 +179,10 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
   if (hasContextualStart) {
     story = story.add('User can add a product (INACTIVE), Contextual Start Trial flow with Grant Access screen', () =>
       setupStorybookAnalytics(
-        <MockXFlowProvider {...defaultProps} canCurrentUserAddProduct={async () => true}>
+        <MockXFlowProvider
+          {...defaultXFlowProviderProps}
+          canCurrentUserAddProduct={async () => true}
+        >
           <RequestOrStartTrial
             {...defaultRequestOrStartTrialProps}
             onTrialActivating={action('onTrialActivating')}
@@ -196,7 +199,7 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
       .add('User can add a product (DEACTIVATED), Contextual Start Trial flow without Grant Access screen', () =>
         setupStorybookAnalytics(
           <MockXFlowProvider
-            {...defaultProps}
+            {...defaultXFlowProviderProps}
             canCurrentUserAddProduct={async () => true}
             productStatusChecker={mockProductStatusChecker(DEACTIVATED)}
           >
@@ -217,7 +220,7 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
   story.add('User can add a product (ACTIVATING), Already Started with progress bar', () =>
     setupStorybookAnalytics(
       <MockXFlowProvider
-        {...defaultProps}
+        {...defaultXFlowProviderProps}
         productStatusChecker={mockProductStatusChecker(ACTIVATING)}
         canCurrentUserAddProduct={async () => true}
       >
@@ -228,7 +231,7 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
     .add('User can add a product (ACTIVE), Already Started', () =>
       setupStorybookAnalytics(
         <MockXFlowProvider
-          {...defaultProps}
+          {...defaultXFlowProviderProps}
           productStatusChecker={mockProductStatusChecker(ACTIVE)}
           canCurrentUserAddProduct={async () => true}
         >
@@ -238,7 +241,7 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
     )
     .add('User cannot add a product (INACTIVE), Request Trial', () =>
       setupStorybookAnalytics(
-        <MockXFlowProvider {...defaultProps}>
+        <MockXFlowProvider {...defaultXFlowProviderProps}>
           <RequestOrStartTrial
             {...defaultRequestOrStartTrialProps}
             onTrialRequested={action('onTrialRequested')}
@@ -249,7 +252,7 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
     .add('Initializing dialog, (user can add a product), awaiting current product status (never resolves)', () =>
       setupStorybookAnalytics(
         <MockXFlowProvider
-          {...defaultProps}
+          {...defaultXFlowProviderProps}
           productStatusChecker={{
             check() {
               return new Promise(() => {
@@ -269,7 +272,7 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
     .add('Initializing dialog, (user can add a product), Error flag after product status check fails (UNKNOWN)', () =>
       setupStorybookAnalytics(
         <MockXFlowProvider
-          {...defaultProps}
+          {...defaultXFlowProviderProps}
           productStatusChecker={{
             check() {
               return new Promise(resolve => setTimeout(() => resolve(UNKNOWN), 500));
@@ -288,7 +291,7 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
     .add('Failed to retrieve permission to add product, fallback to request trial', () =>
       setupStorybookAnalytics(
         <MockXFlowProvider
-          {...defaultProps}
+          {...defaultXFlowProviderProps}
           canCurrentUserAddProduct={() =>
             new Promise((_, reject) => setTimeout(() => reject(new Error('Misc')), 500))}
         >

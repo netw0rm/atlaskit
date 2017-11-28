@@ -11,8 +11,8 @@ import {
   INACTIVE,
   DEACTIVATED,
 } from '../../../src/common/productProvisioningStates';
-import MockConfluenceXFlow from '../../../stories/providers/MockConfluenceXFlowProvider';
-import mockConfluenceStatusChecker from '../../../stories/providers/mockProductStatusChecker';
+import MockConfluenceXFlow from '../../../stories/helpers/MockConfluenceXFlowProvider';
+import mockConfluenceStatusChecker from '../../../stories/helpers/mockProductStatusChecker';
 import RequestOrStartTrial from '../../../src/common/components/RequestOrStartTrial';
 import StartTrial from '../../../src/request-or-start-trial/components/StartTrial';
 import ContextualStartTrial from '../../../src/request-or-start-trial/components/ContextualStartTrial';
@@ -40,7 +40,6 @@ const getXFlowProviderConfig = () =>
     .props().config;
 
 const defaultProps = {
-  isProductInstalledOrActivating: async () => INACTIVE,
   canCurrentUserAddProduct: async () => false,
   retrieveUsers: () =>
     Promise.resolve([

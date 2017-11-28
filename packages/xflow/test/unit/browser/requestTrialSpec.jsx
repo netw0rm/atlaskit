@@ -8,7 +8,7 @@ import ErrorIcon from '@atlaskit/icon/glyph/error';
 import waitUntil from '../../util/wait-until';
 import clickOnText from '../../util/click-on-text';
 import { userPreferencesEndpoint } from '../../../src/common/services/alreadyRequestedFlag';
-import MockConfluenceXFlow from '../../../stories/providers/MockConfluenceXFlowProvider';
+import MockConfluenceXFlow from '../../../stories/helpers/MockConfluenceXFlowProvider';
 import RequestOrStartTrial from '../../../src/common/components/RequestOrStartTrial';
 import ConfirmRequest from '../../../src/request-or-start-trial/components/ConfirmRequest';
 import RequestTrialNote from '../../../src/request-or-start-trial/components/RequestTrialNote';
@@ -45,7 +45,7 @@ const defaultRequestOrStartTrialProps = {
   targetProduct: 'storybook-example-product',
 };
 
-describe('@atlaskit/xflow', () => {
+describe('RequestOrStartTrial', () => {
   beforeEach(() => fetchMock.catch(417));
   afterEach(fetchMock.restore);
 

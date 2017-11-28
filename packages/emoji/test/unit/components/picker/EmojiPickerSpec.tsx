@@ -197,7 +197,8 @@ describe('<EmojiPicker />', () => {
 
             for (let i = 0; i < buttons.length; i++) {
               const button = buttons.at(i);
-              expect(button.text(), `Button #${i} (${button.text()})`).to.equal(CategoryDescriptionMap[expectedCategories[i]].name);
+              const expectedTitle = CategoryDescriptionMap[expectedCategories[i]].name;
+              expect(button.prop('title'), `Button #${i} (${expectedTitle})`).to.equal(expectedTitle);
             }
           });
         });

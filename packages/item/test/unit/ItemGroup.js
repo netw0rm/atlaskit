@@ -10,6 +10,8 @@ import {
   GroupTitleAfter,
 } from '../../src/styled/ItemGroup';
 
+import { FormattedMessage } from 'react-intl';
+
 describe(`${name} - ItemGroup`, () => {
   describe('props', () => {
     describe('children', () => {
@@ -72,6 +74,42 @@ describe(`${name} - ItemGroup`, () => {
     it('title should always have aria-hidden="true" because we use aria-label', () => {
       const wrapper = shallow(<ItemGroup title="Hello" />);
       expect(wrapper.find(GroupTitle).prop('aria-hidden')).toBe('true');
+    });
+
+    describe('root element aria-label', () => {
+      it('label should be used even if title is provided', () => {
+        const wrapper = shallow(<ItemGroup title="Hello" label="Bye" />);
+        expect(wrapper.find('[aria-label]').prop('aria-label')).toBe('Bye');
+      });
+
+      it('title should be used when label is not provided', () => {
+        const wrapper = shallow(<ItemGroup title="Hello" />);
+        expect(wrapper.find('[aria-label]').prop('aria-label')).toBe('Hello');
+      });
+
+      it('it should default to empty string if there are no title and no label', () => {
+        const wrapper = shallow(<ItemGroup />);
+        expect(wrapper.find('[aria-label]').prop('aria-label')).toBe('');
+      });
+
+      it('aria-label should still be correct if passing a node', () => {
+        const wrapper = shallow(<ItemGroup title={<span className="nodeClass">Hello</span>} />);
+        expect(wrapper.find('[aria-label]').prop('aria-label')).toBe('Hello');
+      });
+
+      it('aria-label should still be correct if passing a Formatted message in a component', () => {
+        const projectName = 'Atlaskit';
+        const wrapper = shallow(<ItemGroup
+          title={<p>
+            <FormattedMessage
+              id="welcome"
+              defaultMessage={'Hello {name}'}
+              values={{ name: <b>{projectName}</b> }}
+            />
+          </p>}
+        />);
+        expect(wrapper.find(GroupTitle).prop('aria-hidden')).toBe('true');
+      });
     });
   });
 });

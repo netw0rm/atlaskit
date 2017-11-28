@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
-  /* Calc needed for IE11 fix */
+  /* Performing a calc fixes max-height not working properly in IE11. */
   max-height: calc(100% - 1px);
 `;
 

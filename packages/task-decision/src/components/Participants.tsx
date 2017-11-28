@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { AvatarGroup } from '@atlaskit/avatar';
-import { akColorN20 } from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 
 import { Participant } from '../types';
 
@@ -23,7 +23,7 @@ export default class Partipants extends PureComponent<Props,{}> {
     return (
       <AvatarGroup
         appearance="stack"
-        borderColor={akColorN20}
+        borderColor={colors.N20}
         maxCount={4}
         size="small"
         data={this.getAvatarData()}

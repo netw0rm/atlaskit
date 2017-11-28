@@ -1,6 +1,20 @@
 # @atlaskit/reactions
 
-## Unreleased
+## 10.7.0 (2017-11-28)
+
+* bug fix; fS-1521 Remove util-data-test ([eb88f40](https://bitbucket.org/atlassian/atlaskit/commits/eb88f40))
+* feature; fS-1521 Compatibility with react 16 ([4bd5c13](https://bitbucket.org/atlassian/atlaskit/commits/4bd5c13))
+* bug fix; fS-1521 Bring back border radius ([f73ae4a](https://bitbucket.org/atlassian/atlaskit/commits/f73ae4a))
+* bug fix; aK-3962 Remove react-transition-group from reactions ([da2b92d](https://bitbucket.org/atlassian/atlaskit/commits/da2b92d))
+* feature; fS-994 Change reactions tooltips to be the chunky black ADG3 tooltips ([b574b07](https://bitbucket.org/atlassian/atlaskit/commits/b574b07))
+* bug fix; fS-1521 Upgrade reaction component's dependencies to latest versions ([cae82c6](https://bitbucket.org/atlassian/atlaskit/commits/cae82c6))
+* bug fix; fS-1521 Update emoji dependency ([405ab1a](https://bitbucket.org/atlassian/atlaskit/commits/405ab1a))
+
+
+
+
+
+
 
 ## 10.6.3 (2017-07-25)
 

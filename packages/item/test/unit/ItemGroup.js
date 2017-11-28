@@ -75,34 +75,31 @@ describe(`${name} - ItemGroup`, () => {
     });
 
     describe('root element aria-label', () => {
-      let wrapper;
-      let currentLabel;
-
-      beforeEach(() => {
-        wrapper = mount(<ItemGroup title="Hello" />);
-        currentLabel = () => (wrapper.find('[aria-label]').prop('aria-label'));
+      it('label should be used even if title is provided', () => {
+        const wrapper = shallow(<ItemGroup title="Hello" label="Bye" />);
+        expect(wrapper.find('[aria-label]').prop('aria-label')).toBe('Bye');
       });
 
-      it('should match title prop if no elemAfter provided', () => {
-        expect(currentLabel()).toBe('Hello');
+      it('title should be used when label is not provided', () => {
+        const wrapper = shallow(<ItemGroup title="Hello" />);
+        expect(wrapper.find('[aria-label]').prop('aria-label')).toBe('Hello');
       });
-      it('should contain title and elemAfter if elemAfter is a string', () => {
-        wrapper.setProps({ elemAfter: 'AK-1234' });
-        expect(currentLabel()).toBe('Hello AK-1234');
+
+      it('it should default to empty string if there are no title and no label', () => {
+        const wrapper = shallow(<ItemGroup />);
+        expect(wrapper.find('[aria-label]').prop('aria-label')).toBe('');
       });
-      it('should contain title and elemAfter text content if elemAfter is JSX', () => {
-        wrapper.setProps({
-          elemAfter: (
-            <div>
-              <span>there </span>
-              <span>friend</span>
-            </div>
-          ),
-        });
-        expect(currentLabel()).toBe('Hello there friend');
+
+      it('aria-label should still be correct if passing a node', () => {
+        const wrapper = shallow(<ItemGroup title={<span className="nodeClass">Hello</span>} />);
+        expect(wrapper.find('[aria-label]').prop('aria-label')).toBe('Hello');
+      });
+
+      it('aria-label should still be correct if passing a Formatted message in a component', () => {
+        const projectName = 'Atlaskit';
+        const wrapper = shallow(<ItemGroup title={<div>Hello <b>{projectName}</b></div>} />);
+        expect(wrapper.find('[aria-label]').prop('aria-label')).toBe('Hello Atlaskit');
       });
     });
   });
-
-  // aria-hidden="true" always (need title prop)
 });

@@ -23,16 +23,17 @@
     "@atlaskit/theme": "^2.1.0",
     "babel-runtime": "^6.23.0",
     "prop-types": "^15.5.10",
+    "react-addons-text-content": "^0.0.4",
     "styled-components": "^1.4.6",
     "uid": "0.0.2"
   },
   "devDependencies": {
-    "@atlaskit/icon": "^10.2.0",
-    "@atlaskit/tooltip": "^8.0.2",
     "@atlaskit/dropdown-menu": "^3.4.0",
     "@atlaskit/droplist": "^4.5.0",
+    "@atlaskit/icon": "^10.2.0",
     "@atlaskit/item": "*",
     "@atlaskit/page": "^5.0.0",
+    "@atlaskit/tooltip": "^8.0.2",
     "@atlaskit/util-readme": "^3.6.0",
     "polished": "^1.3.0"
   },

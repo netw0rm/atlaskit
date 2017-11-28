@@ -49,9 +49,8 @@
   ],
   "license": "Apache-2.0",
   "devDependencies": {
-    "@atlaskit/util-common-test": "1.0.2",
-    "@atlaskit/util-data-test": "^7.1.1",
-    "@atlaskit/util-readme": "^1.0.0",
+    "@atlaskit/util-common-test": "2.4.2",
+    "@atlaskit/util-readme": "^3.6.5",
     "@types/sinon": "^2.2.1",
     "fetch-mock": "^5.8.0",
     "sinon": "^2.2.0"

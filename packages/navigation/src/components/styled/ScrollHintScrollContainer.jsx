@@ -62,11 +62,11 @@ const ScrollHintScrollContainer = styled.div`
       background-color: rgba(0, 0, 0, 0);
     }
     &:hover::-webkit-scrollbar-thumb {
-      background-color: ${scrollbar.background};
+      background-color: ${({ theme }) => getProvided(theme).scrollBar.default.background};
       border-radius: ${scrollbar.size}px;
     }
     &::-webkit-scrollbar-thumb:hover {
-      background-color: ${scrollbar.hoverBackground};
+      background-color: ${({ theme }) => getProvided(theme).scrollBar.hover.background};
     }
   `}
 `;

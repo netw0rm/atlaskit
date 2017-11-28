@@ -48,6 +48,9 @@ export const createGlobalTheme = (text: Text, background: Background): Provided 
     keyline: globalTheme.keyline,
     item,
     dropdown: globalTheme.dropdown,
+    // we are not controlling the colour of the scrollbar
+    // for the global bar so there is no need to theme it
+    scrollBar: globalTheme.scrollBar,
   };
 
   return customisedGlobal;

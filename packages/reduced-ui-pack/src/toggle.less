@@ -30,12 +30,15 @@
     color: transparent;
     cursor: pointer;
     display: inline-block;
+    overflow: hidden;
     padding: @toggle-padding;
     text-indent: -9999px;
     transition:
       background-color @toggle-transition,
       border-color @toggle-transition;
-
+    vertical-align: top;
+    white-space: nowrap;
+    
     &::before {
       background: white;
       content: "";

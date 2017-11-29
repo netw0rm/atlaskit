@@ -7,7 +7,7 @@ import {
   scrollHintSpacing,
   scrollHintHeight,
 } from '../../shared-variables';
-import { whenCollapsed, whenNotCollapsed, getProvided } from '../../theme/util';
+import { whenCollapsed, whenNotCollapsed, getProvided, getProvidedScrollbar } from '../../theme/util';
 
 const bottomPadding = gridSize;
 
@@ -62,11 +62,11 @@ const ScrollHintScrollContainer = styled.div`
       background-color: rgba(0, 0, 0, 0);
     }
     &:hover::-webkit-scrollbar-thumb {
-      background-color: ${({ theme }) => getProvided(theme).scrollBar.default.background};
+      background-color: ${({ theme }) => getProvidedScrollbar(theme).default.background};
       border-radius: ${scrollbar.size}px;
     }
     &::-webkit-scrollbar-thumb:hover {
-      background-color: ${({ theme }) => getProvided(theme).scrollBar.hover.background};
+      background-color: ${({ theme }) => getProvidedScrollbar(theme).hover.background};
     }
   `}
 `;

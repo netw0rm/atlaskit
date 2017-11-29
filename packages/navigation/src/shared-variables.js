@@ -77,8 +77,12 @@ export const unthemedColors = {
 // these colours are for the scrollbars in ContainerNavigationChildren
 export const scrollbar = {
   size: gridSize,
-  background: unthemedColors.scrollbarBackground,
-  hoverBackground: unthemedColors.scrollbarHoverBackground,
+  default: {
+    background: unthemedColors.scrollbarBackground,
+  },
+  hover: {
+    background: unthemedColors.scrollbarHoverBackground,
+  },
 };
 
 export const scrollHintHeight = 2;

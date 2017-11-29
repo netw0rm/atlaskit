@@ -49,7 +49,7 @@ export type Provided = {|
   item: ItemTheme,
   dropdown: ItemTheme,
   hasDarkmode?: boolean,
-  scrollBar: ScrollBarTheme,
+  scrollBar?: ScrollBarTheme,
 |}
 
 export type RootTheme = {|

@@ -6,6 +6,8 @@ import productXFlowProviderFactory from '../common/productXFlowProviderFactory';
 import grantAccessToUsers from '../common/services/grantAccessToUsers';
 import productStatusChecker from '../common/services/productStatusChecker';
 import startProductTrial from '../common/services/startProductTrial';
+import productRequest from '../common/services/productRequest';
+import { setAlreadyRequestedFlag, getAlreadyRequestedFlag } from '../common/services/alreadyRequestedFlag';
 
 import retrieveUserManagementUsers, {
     SITE_ADMINS_GROUP,
@@ -14,6 +16,8 @@ import retrieveUserManagementUsers, {
 const VALID_GROUPS = [
   SITE_ADMINS_GROUP,
 ];
+
+const PRODUCT_KEY = 'jira-software.ondemand';
 
 const messages = defineMessages({
   // Start Trial
@@ -88,6 +92,8 @@ const messages = defineMessages({
 });
 
 export const defaultProps = intl => ({
+  productKey: PRODUCT_KEY,
+
   config: {
     productLogo: <JiraSoftwareLogo size={'small'} />,
     requestTrial: {
@@ -153,14 +159,12 @@ export const defaultProps = intl => ({
   canCurrentUserAddProduct: isCurrentUserSiteAdmin,
   canCurrentUserGrantAccessToProducts: isCurrentUserSiteAdmin,
 
-  requestTrialAccess: async () => {},
-  requestTrialAccessWithNote: async () => {},
-  requestTrialAccessWithoutNote: async () => {},
-  cancelRequestTrialAccess: async () => {},
+  requestTrialWithNote: productRequest(PRODUCT_KEY),
+  cancelRequestTrial: async () => {},
 
-  startProductTrial: startProductTrial('jira-software.ondemand'),
+  startProductTrial: startProductTrial(PRODUCT_KEY),
   cancelStartProductTrial: async () => {},
-  productStatusChecker: productStatusChecker('jira-software.ondemand'),
+  productStatusChecker: productStatusChecker(PRODUCT_KEY),
   grantAccessToUsers: grantAccessToUsers('jira-software-users', 'Jira Software', 'Grants access to Jira Software'),
   retrieveUsers: retrieveUserManagementUsers(VALID_GROUPS),
   goToProduct: () => {
@@ -168,8 +172,8 @@ export const defaultProps = intl => ({
   },
   closeLoadingDialog: async () => {},
   closeAlreadyStartedDialog: async () => {},
-  checkProductRequestFlag: () => (false),
-  setProductRequestFlag: () => { /* do nothing */ },
+  checkProductRequestFlag: () => getAlreadyRequestedFlag(PRODUCT_KEY),
+  setProductRequestFlag: () => setAlreadyRequestedFlag(PRODUCT_KEY),
 
   // Grant Access has not been developed for Jira Software. Do not activate in Production.
   grantAccessEnabled: false,

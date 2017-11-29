@@ -23,6 +23,8 @@ const VALID_GROUPS = [
   SITE_ADMINS_GROUP,
 ];
 
+const PRODUCT_KEY = 'confluence.ondemand';
+
 const messages = defineMessages({
   // Start Trial
   // - Confirm Trial dialog
@@ -136,6 +138,8 @@ const messages = defineMessages({
 });
 
 export const defaultProps = intl => ({
+  productKey: PRODUCT_KEY,
+
   config: {
     productLogo: <ConfluenceLogo size={'small'} />,
     requestTrial: {
@@ -219,18 +223,18 @@ export const defaultProps = intl => ({
   canCurrentUserAddProduct: isCurrentUserSiteAdmin,
   canCurrentUserGrantAccessToProducts: isCurrentUserSiteAdmin,
 
-  requestTrialWithNote: productRequest('confluence.ondemand'),
+  requestTrialWithNote: productRequest(PRODUCT_KEY),
   cancelRequestTrial: async () => {},
-  startProductTrial: startProductTrial('confluence.ondemand'),
+  startProductTrial: startProductTrial(PRODUCT_KEY),
   cancelStartProductTrial: async () => {},
-  productStatusChecker: productStatusChecker('confluence.ondemand'),
+  productStatusChecker: productStatusChecker(PRODUCT_KEY),
   grantAccessToUsers: grantAccessToUsers('confluence-users', 'confluence'),
   retrieveUsers: retrieveUserManagementUsers(VALID_GROUPS),
   goToProduct: () => { window.top.location.href = '/wiki/'; },
   closeLoadingDialog: async () => {},
   closeAlreadyStartedDialog: async () => {},
-  checkProductRequestFlag: () => getAlreadyRequestedFlag('confluence.ondemand'),
-  setProductRequestFlag: () => setAlreadyRequestedFlag('confluence.ondemand'),
+  checkProductRequestFlag: () => getAlreadyRequestedFlag(PRODUCT_KEY),
+  setProductRequestFlag: () => setAlreadyRequestedFlag(PRODUCT_KEY),
 });
 
 export default productXFlowProviderFactory(defaultProps);

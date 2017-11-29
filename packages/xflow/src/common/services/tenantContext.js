@@ -116,6 +116,9 @@ export const isCurrentUserSiteAdmin = () =>
     throw err;
   });
 
+export const getAtlassianAccountId = () =>
+  fetchCurrentUser().then(user => user.accountId);
+
 export const getInstanceName = () => window.location.hostname;
 
 /**

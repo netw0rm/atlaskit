@@ -1,7 +1,6 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 import Readme from '@atlaskit/util-readme';
-
 import { name, description } from '../package.json';
 
 /* eslint-disable import/no-duplicates, import/first */

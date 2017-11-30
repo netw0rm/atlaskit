@@ -79,7 +79,8 @@
     "akutil-common-test": "*",
     "babel-plugin-react-intl": "^2.3.1",
     "fetch-mock": "^5.12.1",
-    "rxjs": "^5.4.2"
+    "rxjs": "^5.4.2",
+    "sinon": "^4.1.2"
   },
   "keywords": [
     "media",

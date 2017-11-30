@@ -2,6 +2,8 @@ import styled, { css } from 'styled-components';
 import { borderRadius, colors, themed } from '@atlaskit/theme';
 import { WIDTH_ENUM } from '../shared-variables';
 
+import { flexMaxHeightIEFix, IEMaxHeightCalcPx } from '../utils/flex-max-height-ie-fix';
+
 const boxShadow = ({ isChromeless }) => (
   isChromeless ? 'none' : `
     0 0 0 1px ${colors.N30A}, 0 2px 1px ${colors.N30A},
@@ -12,6 +14,7 @@ const dialogBgColor = ({ isChromeless }) => (
 );
 const gutter = 60;
 const maxDimensions = css`calc(100% - ${gutter * 2}px)`;
+const maxHeightDimensions = css`calc(100% - ${(gutter * 2) - IEMaxHeightCalcPx}px)`;
 
 export const dialogWidth = ({ widthName, widthValue }) => {
   if (typeof widthValue === 'number') {
@@ -55,7 +58,7 @@ export const FillScreen = styled.div`
 export const PositionerAbsolute = styled.div`
   display: flex;
   flex-direction: column;
-  height: ${maxDimensions};
+  height: ${maxHeightDimensions};
   left: 0;
   margin-left: auto;
   margin-right: auto;
@@ -81,8 +84,7 @@ export const Dialog = styled.div`
   display: flex;
   flex-direction: column;
   height: ${dialogHeight};
-  /* Performing a calc fixes max-height not working properly in IE11. */
-  max-height: calc(100% - 1px);
+  ${flexMaxHeightIEFix};
   outline: 0;
 `;
 

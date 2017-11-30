@@ -7,7 +7,7 @@ import productXFlowProviderFactory from '../common/productXFlowProviderFactory';
 import { setAlreadyRequestedFlag, getAlreadyRequestedFlag } from '../common/services/alreadyRequestedFlag';
 import productRequest from '../common/services/productRequest';
 import startProductTrial from '../common/services/startProductTrial';
-import productStatusChecker from '../common/services/productStatusChecker';
+import productStatusChecker, { checkConfluenceAvailable } from '../common/services/productStatusChecker';
 import grantAccessToUsers from '../common/services/grantAccessToUsers';
 import retrieveUserManagementUsers, {
     JIRA_SOFTWARE_GROUP,
@@ -227,7 +227,7 @@ export const defaultProps = intl => ({
   cancelRequestTrial: async () => {},
   startProductTrial: startProductTrial(PRODUCT_KEY),
   cancelStartProductTrial: async () => {},
-  productStatusChecker: productStatusChecker(PRODUCT_KEY),
+  productStatusChecker: productStatusChecker(PRODUCT_KEY, checkConfluenceAvailable),
   grantAccessToUsers: grantAccessToUsers('confluence-users', 'confluence'),
   retrieveUsers: retrieveUserManagementUsers(VALID_GROUPS),
   goToProduct: () => { window.top.location.href = '/wiki/'; },

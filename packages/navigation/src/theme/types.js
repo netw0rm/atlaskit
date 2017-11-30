@@ -27,6 +27,15 @@ export type ItemTheme = {|
   |}
 |}
 
+export type ScrollBarTheme = {|
+  default: {|
+    background: Background
+  |},
+  hover: {|
+    background: Background
+  |}
+|}
+
 export type Provided = {|
   background: {|
     primary: Background,
@@ -40,6 +49,7 @@ export type Provided = {|
   item: ItemTheme,
   dropdown: ItemTheme,
   hasDarkmode?: boolean,
+  scrollBar?: ScrollBarTheme,
 |}
 
 export type RootTheme = {|

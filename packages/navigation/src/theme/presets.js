@@ -1,7 +1,7 @@
 // @flow
+import chromatism from 'chromatism';
 import { colors, themed } from '@atlaskit/theme';
-import type { Provided, ItemTheme, Background } from './types';
-
+import type { Provided, ItemTheme, Background, ScrollBarTheme } from './types';
 // the following colors have been added at request of Venn. These should either
 // be added to theme.colors or moved to specific AK colors. They are using a new
 // method to generate colors dynamically based on the background color.
@@ -20,6 +20,11 @@ const derivedGlobalSelectedBackground = '#1D2842';
 const focus = {
   outline: themed({ light: colors.B100, dark: colors.B75 }),
 };
+
+function lightenColor(color, alpha) {
+  const { r: red, g: green, b: blue } = chromatism.convert(color).rgb;
+  return `rgba(${red}, ${green}, ${blue}, 0.${alpha})`;
+}
 
 export const container: Provided = ((): Provided => {
   const primaryBackground: Background = colors.codeBlock;
@@ -41,6 +46,21 @@ export const container: Provided = ((): Provided => {
     dragging: {
       // similar to hover - but without opacity
       background: themed({ light: colors.N30, dark: colors.DN30 }),
+    },
+  };
+
+  const scrollBar: ScrollBarTheme = {
+    default: {
+      background: themed({
+        light: lightenColor(colors.N500, 36),
+        dark: lightenColor(colors.DN600, 36),
+      }),
+    },
+    hover: {
+      background: themed({
+        light: lightenColor(colors.N500, 56),
+        dark: lightenColor(colors.DN600, 56),
+      }),
     },
   };
 
@@ -68,6 +88,7 @@ export const container: Provided = ((): Provided => {
     keyline: themed({ light: colors.N30A, dark: colors.DN30A }),
     item,
     dropdown,
+    scrollBar,
   };
 
   return theme;
@@ -96,6 +117,14 @@ export const dark: Provided = ((): Provided => {
       background: colors.DN50,
     },
   };
+  const scrollBar: ScrollBarTheme = {
+    default: {
+      background: lightenColor(colors.DN400, 36),
+    },
+    hover: {
+      background: lightenColor(colors.DN400, 26),
+    },
+  };
 
   const dropdown: ItemTheme = {
     default: {
@@ -122,6 +151,7 @@ export const dark: Provided = ((): Provided => {
     keyline: colors.DN50,
     item,
     dropdown,
+    scrollBar,
   };
 
   return theme;
@@ -152,6 +182,15 @@ export const settings: Provided = ((): Provided => {
     },
   };
 
+  const scrollBar: ScrollBarTheme = {
+    default: {
+      background: lightenColor(colors.N0, 36),
+    },
+    hover: {
+      background: lightenColor(colors.N0, 26),
+    },
+  };
+
   const dropdown: ItemTheme = {
     default: {
       background: item.hover.background,
@@ -177,6 +216,7 @@ export const settings: Provided = ((): Provided => {
     keyline: colors.N900,
     item,
     dropdown,
+    scrollBar,
   };
 
   return theme;
@@ -215,6 +255,21 @@ export const global: Provided = ((): Provided => {
     },
   };
 
+  const scrollBar: ScrollBarTheme = {
+    default: {
+      background: themed({
+        light: lightenColor(colors.B50, 36),
+        dark: lightenColor(colors.DN400, 36),
+      }),
+    },
+    hover: {
+      background: themed({
+        light: lightenColor(colors.B50, 56),
+        dark: lightenColor(colors.DN400, 56),
+      }),
+    },
+  };
+
   const dropdown: ItemTheme = {
     default: {
       background: item.hover.background,
@@ -241,6 +296,7 @@ export const global: Provided = ((): Provided => {
     keyline: themed({ light: colors.N80A, dark: colors.DN50 }),
     item,
     dropdown,
+    scrollBar,
   };
 
   return theme;

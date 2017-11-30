@@ -1,7 +1,7 @@
 // @flow
 import { css } from 'styled-components';
 import hasOwnProperty from '../utils/has-own-property';
-import type { Provided } from '../theme/types';
+import type { Provided, ScrollBarTheme } from '../theme/types';
 import { container } from './presets';
 
 export const prefix = (key: string): string => `@atlaskit-private-theme-do-not-use/navigation:${key}`;
@@ -48,5 +48,16 @@ export const whenNotInOverflowDropdown = (...args: Array<any>) => css`
 export const whenCollapsedAndNotInOverflowDropdown = (...args: Array<any>) => css`
   ${({ theme }) => (isCollapsed(theme) && !isInOverflowDropdown(theme) ? css(...args) : '')}
 `;
+
+export const getProvidedScrollbar = (map?: Object): ScrollBarTheme => {
+  if (map !== undefined
+     && hasOwnProperty(map, rootKey)
+     && map[rootKey]
+     && map[rootKey].provided.scrollBar
+  ) {
+    return map[rootKey].provided.scrollBar;
+  }
+  return container.scrollBar;
+};
 
 export { default as WithRootTheme } from './with-root-theme';

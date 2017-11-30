@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import {
   gridSize,
   drawerContainerHeaderAnimationSpeed,
-  scrollbar,
+  scrollBarSize,
   scrollHintSpacing,
   scrollHintHeight,
 } from '../../shared-variables';
-import { whenCollapsed, whenNotCollapsed, getProvided } from '../../theme/util';
+import { whenCollapsed, whenNotCollapsed, getProvided, getProvidedScrollbar } from '../../theme/util';
 
 const bottomPadding = gridSize;
 
@@ -52,8 +52,8 @@ const ScrollHintScrollContainer = styled.div`
     /* The following styles are to style scrollbars when there is long/wide content */
     -ms-overflow-style: -ms-autohiding-scrollbar;
     &::-webkit-scrollbar {
-      height: ${scrollbar.size}px;
-      width: ${scrollbar.size}px;
+      height: ${scrollBarSize}px;
+      width: ${scrollBarSize}px;
     }
     &::-webkit-scrollbar-corner {
       display: none;
@@ -62,11 +62,11 @@ const ScrollHintScrollContainer = styled.div`
       background-color: rgba(0, 0, 0, 0);
     }
     &:hover::-webkit-scrollbar-thumb {
-      background-color: ${scrollbar.background};
-      border-radius: ${scrollbar.size}px;
+      background-color: ${({ theme }) => getProvidedScrollbar(theme).default.background};
+      border-radius: ${scrollBarSize}px;
     }
     &::-webkit-scrollbar-thumb:hover {
-      background-color: ${scrollbar.hoverBackground};
+      background-color: ${({ theme }) => getProvidedScrollbar(theme).hover.background};
     }
   `}
 `;

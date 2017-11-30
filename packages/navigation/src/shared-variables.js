@@ -70,16 +70,9 @@ export const zIndex = {
 export const unthemedColors = {
   resizer: themed({ light: colors.B200, dark: colors.B100 }),
   presenceIconBg: colors.N0,
-  scrollbarBackground: 'rgba(0,0,0,0.2)',
-  scrollbarHoverBackground: 'rgba(0,0,0,0.4)',
 };
 
-// these colours are for the scrollbars in ContainerNavigationChildren
-export const scrollbar = {
-  size: gridSize,
-  background: unthemedColors.scrollbarBackground,
-  hoverBackground: unthemedColors.scrollbarHoverBackground,
-};
+export const scrollBarSize = gridSize;
 
 export const scrollHintHeight = 2;
 export const scrollHintSpacing = gridSize * 2;

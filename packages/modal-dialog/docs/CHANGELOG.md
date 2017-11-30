@@ -1,5 +1,9 @@
 # @atlaskit/modal-dialog
 
+## 3.2.3 (2017-11-30)
+
+* bug fix; release stories with fixed console errors ([3321c2b](https://bitbucket.org/atlassian/atlaskit/commits/3321c2b))
+
 ## 3.2.2 (2017-11-17)
 
 * bug fix; bumping internal dependencies to latest major version ([3aefbce](https://bitbucket.org/atlassian/atlaskit/commits/3aefbce))

@@ -1,6 +1,16 @@
 # @atlaskit/css-reset
 
-## Unreleased
+## 1.1.6 (2017-11-30)
+
+* bug fix; release stories with fixed console errors ([3321c2b](https://bitbucket.org/atlassian/atlaskit/commits/3321c2b))
+
+
+
+
+
+
+
+
 
 ## 1.1.5 (2017-07-25)
 

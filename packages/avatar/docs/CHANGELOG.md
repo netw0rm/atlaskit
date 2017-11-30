@@ -1,5 +1,8 @@
 # @atlaskit/avatar
 
+## 8.3.5 (2017-11-30)
+
+* bug fix; release stories with fixed console errors ([3321c2b](https://bitbucket.org/atlassian/atlaskit/commits/3321c2b))
 ## 8.3.4 (2017-11-28)
 
 * bug fix; fix avatar group having less width than its children (issues closed: ak-3872) ([e88ee42](https://bitbucket.org/atlassian/atlaskit/commits/e88ee42))

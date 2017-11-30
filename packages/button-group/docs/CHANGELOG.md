@@ -1,5 +1,14 @@
 # @atlaskit/button-group
 
+## 1.5.4 (2017-11-30)
+
+* bug fix; release stories with fixed console errors ([3321c2b](https://bitbucket.org/atlassian/atlaskit/commits/3321c2b))
+
+
+
+
+
+
 ## 1.5.3 (2017-08-09)
 
 * bug fix; add deprecation warning to button-group ([acffe78](https://bitbucket.org/atlassian/atlaskit/commits/acffe78))

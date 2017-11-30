@@ -1,5 +1,10 @@
 # @atlaskit/inline-edit
 
+## 4.5.6 (2017-11-30)
+
+* bug fix; release stories with fixed console errors ([3321c2b](https://bitbucket.org/atlassian/atlaskit/commits/3321c2b))
+
+
 ## 4.5.5 (2017-11-14)
 
 

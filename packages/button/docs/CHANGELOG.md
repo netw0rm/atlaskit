@@ -1,5 +1,8 @@
 # @atlaskit/button
 
+## 5.4.13 (2017-11-30)
+
+* bug fix; fix disabled buttons with child elements propagating click events ([584ffdc](https://bitbucket.org/atlassian/atlaskit/commits/584ffdc))
 ## 5.4.12 (2017-11-27)
 
 * bug fix; export interface for ts ([15c291c](https://bitbucket.org/atlassian/atlaskit/commits/15c291c))

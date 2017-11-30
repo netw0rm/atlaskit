@@ -1,5 +1,10 @@
 # @atlaskit/reduced-ui-pack
 
+## 8.2.1 (2017-11-30)
+
+* bug fix; update the css style to reduce padding in safari ([89cf40c](https://bitbucket.org/atlassian/atlaskit/commits/89cf40c))
+
+
 ## 8.2.0 (2017-11-16)
 
 * feature; new and updated icons for the editor (issues closed: ak-3720) ([2c709e2](https://bitbucket.org/atlassian/atlaskit/commits/2c709e2))

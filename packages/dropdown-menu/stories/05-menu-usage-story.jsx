@@ -5,7 +5,7 @@ import Question from '@atlaskit/icon/glyph/question';
 import styled from 'styled-components';
 import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 
-import DropdownMenu from '../src';
+import DropdownMenu, { DropdownItem } from '../src';
 import { name } from '../package.json';
 
 import DropdownLoadItemsExample from './DropdownLoadItemsExample';
@@ -217,5 +217,19 @@ storiesOf(name, module)
   .add('with controlled items', () => (
     <StoryContainer>
       <ControlledItemsExample />
+    </StoryContainer>
+  ))
+  .add('with disabled button trigger', () => (
+    <StoryContainer>
+      <p>This is an example of a dropdown with a disabled button trigger, it should not open.</p>
+      <p>
+        <DropdownMenu
+          trigger="Disabled trigger"
+          triggerType="button"
+          triggerButtonProps={{ isDisabled: true }}
+        >
+          <DropdownItem>Item 1</DropdownItem>
+        </DropdownMenu>
+      </p>
     </StoryContainer>
   ));

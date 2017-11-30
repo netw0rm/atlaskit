@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {
   gridSize,
   drawerContainerHeaderAnimationSpeed,
-  scrollbar,
+  scrollBarSize,
   scrollHintSpacing,
   scrollHintHeight,
 } from '../../shared-variables';
@@ -52,8 +52,8 @@ const ScrollHintScrollContainer = styled.div`
     /* The following styles are to style scrollbars when there is long/wide content */
     -ms-overflow-style: -ms-autohiding-scrollbar;
     &::-webkit-scrollbar {
-      height: ${scrollbar.size}px;
-      width: ${scrollbar.size}px;
+      height: ${scrollBarSize}px;
+      width: ${scrollBarSize}px;
     }
     &::-webkit-scrollbar-corner {
       display: none;
@@ -63,7 +63,7 @@ const ScrollHintScrollContainer = styled.div`
     }
     &:hover::-webkit-scrollbar-thumb {
       background-color: ${({ theme }) => getProvidedScrollbar(theme).default.background};
-      border-radius: ${scrollbar.size}px;
+      border-radius: ${scrollBarSize}px;
     }
     &::-webkit-scrollbar-thumb:hover {
       background-color: ${({ theme }) => getProvidedScrollbar(theme).hover.background};

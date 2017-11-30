@@ -3,7 +3,6 @@ import { css } from 'styled-components';
 import hasOwnProperty from '../utils/has-own-property';
 import type { Provided, ScrollBarTheme } from '../theme/types';
 import { container } from './presets';
-import { scrollbar } from '../shared-variables';
 
 export const prefix = (key: string): string => `@atlaskit-private-theme-do-not-use/navigation:${key}`;
 export const rootKey = prefix('root');
@@ -58,7 +57,7 @@ export const getProvidedScrollbar = (map?: Object): ScrollBarTheme => {
   ) {
     return map[rootKey].provided.scrollBar;
   }
-  return scrollbar;
+  return container.scrollBar;
 };
 
 export { default as WithRootTheme } from './with-root-theme';

@@ -55,7 +55,7 @@ class PerfTest extends Component {
   render() {
     return (
       <div>
-        <button appearance="primary" onClick={this.startTest}>Start Test</button>
+        <button onClick={this.startTest}>Start Test</button>
         <div>
           {this.renderAvatars()}
         </div>

@@ -89,8 +89,8 @@ storiesOf(name, module)
           <p>{description}</p>
           <p>
             The &ldquo;smart&rdquo; multi-select component will handle it&apos;s own state for you
-            (you won&apos;t need to/be able to update the list of <code>selected</code> items). If
-            you require this functionality, use the <code>stateless</code> version instead.
+            (you won&apos;t need to/be able to update the list of <code>selected</code> items).
+            If you require this functionality, use the <code>stateless</code> version instead.
           </p>
         </div>
       }

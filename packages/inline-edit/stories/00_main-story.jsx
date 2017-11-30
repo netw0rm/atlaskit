@@ -76,7 +76,7 @@ storiesOf(name, module)
   ))
   .add('with lots of text and no spaces', () => (
     <div style={containerStyle}>
-      <TextInlineEdit initialValue="BananaBananaBananaBananaBananaBananaBananaBananaBananaBananaBananaBananaBanana" />
+      <TextInlineEdit initialValue="BananaBananaBananaBananaBananaBananaBananaBananaBananaBananaBananaBananaBananana" />
     </div>
   ))
   .add('with confirmation loop', () => (

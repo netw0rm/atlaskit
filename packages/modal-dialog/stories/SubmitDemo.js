@@ -50,7 +50,7 @@ export default class SubmitDemo extends Component {
         <div>
           <ModalDialog footer={footer} heading="Submit demo" onClose={NOOP}>
             <form action="https://httpbin.org/post" id={FORM} method="post" target={FRAME}>
-              <p>Enter some text and then submit the form to see the response.</p>
+              <p>Enter some text then submit the form to see the response.</p>
               <Field label="Name" name="my-name" placeholder="Your name" value="" />
               <Field label="Email" name="my-email" placeholder="gbelson@hooli.com" value="" />
               <Checkbox name="checkbox" value="example" label="Checkbox" />

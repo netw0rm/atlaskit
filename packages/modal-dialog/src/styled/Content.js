@@ -1,6 +1,8 @@
 import styled, { css } from 'styled-components';
 import { colors, gridSize, math, themed } from '@atlaskit/theme';
 
+import { flexMaxHeightIEFix } from '../utils/flex-max-height-ie-fix';
+
 // Constants
 // ==============================
 const innerGutter = 16;
@@ -14,7 +16,7 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
-  max-height: 100%;
+  ${flexMaxHeightIEFix};
 `;
 
 // Header

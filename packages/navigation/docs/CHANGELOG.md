@@ -1,5 +1,11 @@
 # @atlaskit/navigation
 
+## 26.8.3 (2017-11-30)
+
+
+
+
+* bug fix; updated scrollbar color for different themes in navigation (issues closed: ak-3695) ([c4eabab](https://bitbucket.org/atlassian/atlaskit/commits/c4eabab))
 ## 26.8.2 (2017-11-27)
 
 

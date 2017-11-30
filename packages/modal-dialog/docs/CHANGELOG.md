@@ -1,5 +1,10 @@
 # @atlaskit/modal-dialog
 
+## 3.2.4 (2017-11-30)
+
+
+
+* bug fix; fix modal dialog not shrinking to viewport height in IE11 (issues closed: ak-3879) ([d3bb5cd](https://bitbucket.org/atlassian/atlaskit/commits/d3bb5cd))
 ## 3.2.3 (2017-11-30)
 
 * bug fix; release stories with fixed console errors ([3321c2b](https://bitbucket.org/atlassian/atlaskit/commits/3321c2b))

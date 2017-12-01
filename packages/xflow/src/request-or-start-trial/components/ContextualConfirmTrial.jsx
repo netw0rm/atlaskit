@@ -25,7 +25,7 @@ const messages = defineMessages({
     defaultMessage: 'Oops... Something went wrong',
   },
   errorFlagDescription: {
-    id: 'xflow.generic.start-tral.error-flag.description',
+    id: 'xflow.generic.start-trial.error-flag.description',
     defaultMessage: "Let's try that again.",
   },
 });

@@ -44,15 +44,15 @@ exports.fn = function callbackOnDefinedFill(item) {
     }
   } else if (item.hasAttr('stop-color')) {
     stopColor = item.attr('stop-color').value;
-    // If it's the primary hex colour, set that to "currentColor". This inherits from the
-    // color property set in CSS which is how the primaryColor prop on the Icon component
-    // is applied.
+    /* The stopColor must be set to inherit for color change to be repainted properly in chrome in
+     * combination with the prop being overridden with currentColor in the Icon base component.
+     */
     if (stopColor && stopColor === primaryHex) {
       item.addAttr({
         name: 'stop-color',
         local: 'stop-color',
         prefix: '',
-        value: 'currentColor',
+        value: 'inherit',
       });
     }
   }

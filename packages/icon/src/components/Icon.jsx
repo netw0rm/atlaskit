@@ -28,7 +28,6 @@ export const spanStyles = css`
   display: inline-block;
   fill: ${p => p.secondaryColor || colors.background};
   line-height: 1;
-  stop-color: currentColor;
 
   > svg {
     ${getSize}
@@ -37,14 +36,12 @@ export const spanStyles = css`
     overflow: hidden;
     vertical-align: bottom;
   }
-  /*
-    The stop-color doesn't cascade down through these elements, so when we have a gradient
-    that inherits currentColor, it won't be seen by the <stop> element within the <linearGradient>
-  */
-  svg,
-  defs,
-  linearGradient {
-    stop-color: inherit;
+  /* Stop-color doesn't properly apply in chrome when the inherited/current color changes.
+   * We have to initially set stop-color to inherit (either via DOM attribute or an initial CSS
+   * rule) and then override it with currentColor for the color changes to be picked up.
+   */
+  stop {
+    stop-color: currentColor;
   }
 `;
 

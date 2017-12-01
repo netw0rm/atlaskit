@@ -4,9 +4,9 @@
     <title>icons/stride</title>
     <desc>Created with Sketch.</desc>
     <defs>
-        <linearGradient x1="29.2718401%" y1="25.7931437%" x2="88.2434944%" y2="53.9179104%" id="linearGradient-1">
-            <stop stop-color="#42526E" offset="0%"></stop>
-            <stop stop-color="#42526E" stop-opacity="0.4" offset="100%"></stop>
+        <linearGradient x1="62.9033741%" y1="37.9964517%" x2="3.20549956%" y2="70.7051948%" id="linearGradient-1">
+            <stop stop-color="#42526E" stop-opacity="0.4" offset="0%"></stop>
+            <stop stop-color="#42526E" offset="100%"></stop>
         </linearGradient>
     </defs>
     <g id="Global" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">

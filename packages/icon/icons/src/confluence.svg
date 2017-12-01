@@ -4,13 +4,13 @@
     <title>icons/confluence</title>
     <desc>Created with Sketch.</desc>
     <defs>
-        <linearGradient x1="29.2718401%" y1="25.7931437%" x2="87.4501696%" y2="53.5395579%" id="linearGradient-1">
+        <linearGradient x1="99.140087%" y1="112.745465%" x2="35.1847434%" y2="39.2902291%" id="linearGradient-1">
             <stop stop-color="#42526E" stop-opacity="0.4" offset="0%"></stop>
             <stop stop-color="#42526E" offset="100%"></stop>
         </linearGradient>
-        <linearGradient x1="29.2718401%" y1="25.7931437%" x2="88.2434944%" y2="53.9179104%" id="linearGradient-2">
-            <stop stop-color="#42526E" offset="0%"></stop>
-            <stop stop-color="#42526E" stop-opacity="0.4" offset="100%"></stop>
+        <linearGradient x1="14.1838118%" y1="5.80047897%" x2="60.1984309%" y2="69.6572503%" id="linearGradient-2">
+            <stop stop-color="#42526E" stop-opacity="0.4" offset="0%"></stop>
+            <stop stop-color="#42526E" offset="100%"></stop>
         </linearGradient>
     </defs>
     <g id="Global" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">

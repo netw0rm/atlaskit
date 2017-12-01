@@ -1,14 +1,9 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import DecisionItem from './DecisionItem';
 import ListWrapper from '../styled/ListWrapper';
 
-export interface ContentRef {
-  (ref: HTMLElement | undefined): void;
-}
-
 export interface Props {
-  children?: Array<DecisionItem> | DecisionItem;
+  children?: Array<JSX.Element> | JSX.Element;
 }
 
 export default class DecisionList extends PureComponent<Props,{}> {

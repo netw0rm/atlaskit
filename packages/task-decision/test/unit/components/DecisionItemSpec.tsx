@@ -32,7 +32,7 @@ describe('<DecisionItem/>', () => {
       expect(component.find(Placeholder).length).toEqual(1);
     });
 
-    it('should not render placeholder deciision is not empy', () => {
+    it('should not render placeholder if decision is not empty', () => {
       const component = mount(
         <DecisionItem showPlaceholder={true}>Hello <b>world</b></DecisionItem>
       );

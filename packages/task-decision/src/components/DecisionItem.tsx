@@ -1,17 +1,13 @@
 import * as React from 'react';
-import { PureComponent, ReactElement } from 'react';
+import { PureComponent } from 'react';
 import DecisionIcon from '@atlaskit/icon/glyph/editor/decision';
 import { colors } from '@atlaskit/theme';
 import { EditorIconWrapper } from '../styled/DecisionItem';
 import Item from './Item';
-import { Appearance, User } from '../types';
-
-export interface ContentRef {
-  (ref: HTMLElement | undefined): void;
-}
+import { Appearance, ContentRef, User } from '../types';
 
 export interface Props {
-  children?: ReactElement<any>;
+  children?: any;
   contentRef?: ContentRef;
   showPlaceholder?: boolean;
   appearance?: Appearance;

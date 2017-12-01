@@ -30,5 +30,5 @@ export interface Props {
   value?: string;
 }
 
-export class FieldText extends Component<Props, {}> { }
+export class FieldTextStateless extends Component<Props, {}> { }
 export default class extends Component<Props, {}> { }

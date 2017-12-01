@@ -168,25 +168,33 @@ describe('<ResourcedTaskItem/>', () => {
 
   describe('analytics', () => {
     it('should fire atlassian.fabric.action.check analytics event when checkbox is checked', () => {
-      const handleAnalyticsEvent = sinon.spy();
+      const publicSpy = sinon.spy();
+      const privateSpy = sinon.spy();
       const component = mount(
-        <AnalyticsListener onEvent={handleAnalyticsEvent} matchPrivate={true}>
-          <ResourcedTaskItem taskId="task-1" objectAri="objectAri" containerAri="containerAri">Hello <b>world</b></ResourcedTaskItem>
+        <AnalyticsListener onEvent={publicSpy}>
+          <AnalyticsListener onEvent={privateSpy} matchPrivate={true}>
+            <ResourcedTaskItem taskId="task-1" objectAri="objectAri" containerAri="containerAri">Hello <b>world</b></ResourcedTaskItem>
+          </AnalyticsListener>
         </AnalyticsListener>
       );
       component.find('input').simulate('change');
-      expect(handleAnalyticsEvent.calledWith('atlassian.fabric.action.check', {})).toEqual(true);
+      expect(publicSpy.calledWith('atlassian.fabric.action.check', {})).toEqual(true);
+      expect(privateSpy.calledWith('atlassian.fabric.action.check', {})).toEqual(true);
     });
 
     it('should fire atlassian.fabric.action.uncheck analytics event when checkbox is unchecked', () => {
-      const handleAnalyticsEvent = sinon.spy();
+      const publicSpy = sinon.spy();
+      const privateSpy = sinon.spy();
       const component = mount(
-        <AnalyticsListener onEvent={handleAnalyticsEvent} matchPrivate={true}>
-          <ResourcedTaskItem taskId="task-1" objectAri="objectAri" containerAri="containerAri" isDone={true}>Hello <b>world</b></ResourcedTaskItem>
+        <AnalyticsListener onEvent={publicSpy}>
+          <AnalyticsListener onEvent={privateSpy} matchPrivate={true}>
+            <ResourcedTaskItem taskId="task-1" objectAri="objectAri" containerAri="containerAri" isDone={true}>Hello <b>world</b></ResourcedTaskItem>
+          </AnalyticsListener>
         </AnalyticsListener>
       );
       component.find('input').simulate('change');
-      expect(handleAnalyticsEvent.calledWith('atlassian.fabric.action.uncheck', {})).toEqual(true);
+      expect(publicSpy.calledWith('atlassian.fabric.action.uncheck', {})).toEqual(true);
+      expect(privateSpy.calledWith('atlassian.fabric.action.uncheck', {})).toEqual(true);
     });
   });
 });

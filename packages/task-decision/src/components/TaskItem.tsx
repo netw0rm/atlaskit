@@ -21,6 +21,7 @@ export interface Props {
   showParticipants?: boolean;
   creator?: User;
   lastUpdater?: User;
+  fireAnalyticsEvent?: FireAnalyticsEvent;
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
 }
 
@@ -46,13 +47,16 @@ export class InternalTaskItem extends PureComponent<Props, {}> {
   }
 
   handleOnChange = (evt: React.SyntheticEvent<HTMLInputElement>) => {
-    const { onChange, taskId, isDone, firePrivateAnalyticsEvent } = this.props;
+    const { onChange, taskId, isDone, fireAnalyticsEvent, firePrivateAnalyticsEvent } = this.props;
     const newIsDone = !isDone;
     if (onChange) {
       onChange(taskId, newIsDone);
     }
+    const suffix = newIsDone ? 'check' : 'uncheck';
+    if (fireAnalyticsEvent) {
+      fireAnalyticsEvent(suffix, {});
+    }
     if (firePrivateAnalyticsEvent) {
-      const suffix = newIsDone ? 'check' : 'uncheck';
       firePrivateAnalyticsEvent(`atlassian.fabric.action.${suffix}`, {});
     }
   }
@@ -106,7 +110,7 @@ export class InternalTaskItem extends PureComponent<Props, {}> {
 // This is to ensure that the "type" is exported, as it gets lost and not exported along with TaskItem after
 // going through the high order component.
 // tslint:disable-next-line:variable-name
-const TaskItem = withAnalytics<typeof InternalTaskItem>(InternalTaskItem, {}, {});
+const TaskItem = withAnalytics<typeof InternalTaskItem>(InternalTaskItem, {}, { analyticsId: 'atlassian.fabric.action' });
 type TaskItem = InternalTaskItem;
 
 export default TaskItem;

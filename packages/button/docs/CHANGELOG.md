@@ -1,5 +1,8 @@
 # @atlaskit/button
 
+## 5.4.14 (2017-12-01)
+
+* bug fix; fix button group spacing (issues closed: ak-3978) ([f0037f2](https://bitbucket.org/atlassian/atlaskit/commits/f0037f2))
 ## 5.4.13 (2017-11-30)
 
 * bug fix; fix disabled buttons with child elements propagating click events ([584ffdc](https://bitbucket.org/atlassian/atlaskit/commits/584ffdc))

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import ErrorFlag from '../src/common/components/ErrorFlag';
 
@@ -20,4 +20,30 @@ storiesOf('common/ErrorFlag')
     ]}
     source="(source)"
     onDismissed={action('Flag dismissed.')}
-  />));
+  />))
+  .add('show/hide transitions', () => (
+    setupStorybookAnalytics(<TestComponent />)
+  ));
+
+class TestComponent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { showFlag: false };
+  }
+
+  render() {
+    return (
+      <div>
+        <button onClick={() => this.setState(state => ({ showFlag: !state.showFlag }))}>
+          {this.state.showFlag ? 'hide' : 'show'}
+        </button>
+        <ErrorFlag
+          showFlag={this.state.showFlag}
+          title="(Title) Oops... Something went wrong"
+          description="(description)"
+          source="(source)"
+        />
+      </div>
+    );
+  }
+}

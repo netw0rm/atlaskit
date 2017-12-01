@@ -5,9 +5,12 @@ Atlaskit
 [![npm](https://img.shields.io/badge/npm-3.8%2B-brightgreen.svg)]()
 [![yarn](https://img.shields.io/badge/yarn-0.18.1-brightgreen.svg)]()
 
-Atlaskit is the technical implementation of the [Atlassian Design Guidelines][ADG]. It is a collection of reusable components that can be downloaded independently into your projects. Each component is also independently versioned and published to npm. The full list of components can be found in the [Atlaskit Registry][AtlaskitRegistry].
+Atlaskit is the technical implementation of the [Atlassian Design Guidelines][ADG]. It is a collection of reusable components that can be downloaded independently into your projects. Each component is also independently versioned and published to npm.
+
+The full list of components can be found in the [Atlaskit Registry][AtlaskitRegistry].
 
 **This project is bound by a [Code of Conduct][codeofconduct].**
+
 
 Usage
 ======
@@ -60,6 +63,10 @@ To use:
 
 Check out the [Reduced UI pack](http://go.atlassian.com/reduced-ui-pack) for more examples and details.
 
+#### Upgrades
+
+When upgrading an Atlaskit component, all changelogs can be found in the [Atlaskit Registry][AtlaskitRegistry].
+
 
 Installation
 ============
@@ -104,6 +111,7 @@ Documentation
 A comprehensive list of components and detailed usage of each can be found in the [Atlaskit Registry][AtlaskitRegistry].
 
 You can also find how each component is meant to be used from a design perspective on the [Atlassian Design Guidelines][ADG] website.
+
 
 Tests
 =====
@@ -165,6 +173,7 @@ those contributing as an individual.
 * [CLA for corporate contributors](https://na2.docusign.net/Member/PowerFormSigning.aspx?PowerFormId=e1c17c66-ca4d-4aab-a953-2c231af4a20b)
 * [CLA for individuals](https://na2.docusign.net/Member/PowerFormSigning.aspx?PowerFormId=3f94fbdc-2fbe-46ac-b14c-5d152700ae5d)
 
+
 License
 ========
 
@@ -181,5 +190,5 @@ Copyright (c) 2016 Atlassian and others.
 [ADG_License]: http://atlassian.design/license
 [CONTRIBUTING]: ./CONTRIBUTING.md
 [LICENSE]: ./LICENSE
-[AtlaskitRegistry]: http://go.atlassian.com/atlaskit  "Atlaskit Registry"
+[AtlaskitRegistry]: https://atlaskit.atlassian.com/  "Atlaskit Registry"
 [CODEOFCONDUCT]: ./CODE_OF_CONDUCT.md

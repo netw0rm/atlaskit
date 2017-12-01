@@ -37,5 +37,5 @@ class InitializingScreen extends Component {
 
 export default withXFlowProvider(
   withAnalytics(InitializingScreen),
-  ({ xFlow: { config: { productLogo } } }) => ({ productLogo })
+  ({ xFlow }) => ({ productLogo: xFlow && xFlow.config.productLogo })
 );

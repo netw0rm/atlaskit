@@ -1,17 +1,12 @@
 import React, { Component } from 'react';
 import { storiesOf } from '@kadira/storybook';
-import InitializingScreen from '../src/common/components/InitializingScreen';
-import mockXFlowProviderFactory from './helpers/mockXFlowProviderFactory';
-import JiraToJSWXFlowProvider from '../src/product-xflow-providers/JiraToJSWXFlowProvider';
-
-const MockXFlowProvider = mockXFlowProviderFactory(JiraToJSWXFlowProvider);
+import { InitializingScreenBase } from '../src/common/components/InitializingScreen';
+import { AtlassianLogo } from '@atlaskit/logo';
 
 storiesOf('common/InitializingScreen')
-  .add('raw', () => <InitializingScreen isOpen />)
+  .add('raw', () => <InitializingScreenBase isOpen />)
   .add('with header', () => (
-    <MockXFlowProvider>
-      <InitializingScreen isOpen />
-    </MockXFlowProvider>
+    <InitializingScreenBase isOpen productLogo={<AtlassianLogo />} />
   ))
   .add('real case (2s loading)', () => <TestComponent />);
 
@@ -29,7 +24,7 @@ class TestComponent extends Component {
   render() {
     return (
       <div>
-        <InitializingScreen isOpen={this.state.isLoading} />
+        <InitializingScreenBase isOpen={this.state.isLoading} />
         {!this.state.isLoading && <p>Ready!</p>}
       </div>
     );

@@ -43,7 +43,7 @@ export default class ButtonGroup extends PureComponent {
     return (
       <Group>
         {Children.map(children, (child, idx) => {
-          if (child != null || child === false) {
+          if (child === null || child === false) {
             return child;
           }
           return (

@@ -39,5 +39,5 @@ export const InitializingScreenBase = withAnalytics(InitializingScreen);
 
 export default withXFlowProvider(
   InitializingScreenBase,
-  ({ xFlow }) => ({ productLogo: xFlow && xFlow.config.productLogo })
+  ({ xFlow }) => ({ productLogo: xFlow.config.productLogo })
 );

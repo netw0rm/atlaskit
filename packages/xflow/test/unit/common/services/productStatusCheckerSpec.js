@@ -21,6 +21,7 @@ import productStatusChecker, {
   JIRA_LANDING_PAGE,
   checkConfluenceAvailable,
   checkJiraAvailable,
+  getSiteAvailableCheckForProductKey,
 } from '../../../../src/common/services/productStatusChecker';
 
 import {
@@ -292,6 +293,34 @@ describe('productStatusChecker', () => {
 
       const result = await checkConfluenceAvailable();
       expect(result).toBe(true);
+    });
+  });
+
+  describe('getSiteAvailableCheckForProductKey', () => {
+    it('will return checkJiraAvailable for Jira Service Desk', async () => {
+      const result = getSiteAvailableCheckForProductKey('jira-servicedesk.ondemand');
+      expect(result).toBe(checkJiraAvailable);
+    });
+
+    it('will return checkJiraAvailable for Jira Core', async () => {
+      const result = getSiteAvailableCheckForProductKey('jira-core.ondemand');
+      expect(result).toBe(checkJiraAvailable);
+    });
+
+    it('will return checkJiraAvailable for Jira Software', async () => {
+      const result = getSiteAvailableCheckForProductKey('jira-software.ondemand');
+      expect(result).toBe(checkJiraAvailable);
+    });
+
+    it('will return checkConfluenceAvailable for Confluence', async () => {
+      const result = getSiteAvailableCheckForProductKey('confluence.ondemand');
+      expect(result).toBe(checkConfluenceAvailable);
+    });
+
+    it('will throw for a non defined product key', async () => {
+      expect(() => {
+        getSiteAvailableCheckForProductKey('doesntexist.ondemand');
+      }).toThrow();
     });
   });
 });

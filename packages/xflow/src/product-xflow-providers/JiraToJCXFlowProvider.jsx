@@ -4,7 +4,7 @@ import { defineMessages, FormattedMessage } from 'react-intl';
 import { isCurrentUserSiteAdmin } from '../common/services/tenantContext';
 import productXFlowProviderFactory from '../common/productXFlowProviderFactory';
 import grantAccessToUsers from '../common/services/grantAccessToUsers';
-import productStatusChecker, { checkJiraAvailable } from '../common/services/productStatusChecker';
+import productStatusChecker from '../common/services/productStatusChecker';
 import startProductTrial from '../common/services/startProductTrial';
 import productRequest from '../common/services/productRequest';
 import { setAlreadyRequestedFlag, getAlreadyRequestedFlag } from '../common/services/alreadyRequestedFlag';
@@ -164,7 +164,7 @@ export const defaultProps = intl => ({
 
   startProductTrial: startProductTrial(PRODUCT_KEY),
   cancelStartProductTrial: async () => {},
-  productStatusChecker: productStatusChecker(PRODUCT_KEY, checkJiraAvailable),
+  productStatusChecker: productStatusChecker(PRODUCT_KEY),
   grantAccessToUsers: grantAccessToUsers('jira-core-users', 'Jira Core', 'Grants access to Jira Core'),
   retrieveUsers: retrieveUserManagementUsers(VALID_GROUPS),
   goToProduct: () => {

@@ -46,6 +46,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@atlaskit/avatar": "^8.2.0",
+    "@atlaskit/button": "*",
     "@atlaskit/util-readme": "^3.6.2",
     "@atlaskit/dropdown-menu": "*",
     "@atlaskit/lozenge": "^3.4.2",

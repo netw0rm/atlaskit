@@ -24,7 +24,7 @@
     "@atlaskit/blanket": "^3.0.0",
     "@atlaskit/button": "^5.1.2",
     "@atlaskit/layer": "^2.5.4",
-    "@atlaskit/layer-manager": "^2.0.1",
+    "@atlaskit/layer-manager": "^2.4.0",
     "@atlaskit/modal-dialog": "^3.0.1",
     "@atlaskit/progress-indicator": "^2.0.0",
     "@atlaskit/theme": "^2.0.1",

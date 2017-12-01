@@ -181,5 +181,5 @@ Copyright (c) 2016 Atlassian and others.
 [ADG_License]: http://atlassian.design/license
 [CONTRIBUTING]: ./CONTRIBUTING.md
 [LICENSE]: ./LICENSE
-[AtlaskitRegistry]: http://go.atlassian.com/atlaskit  "Atlaskit Registry"
+[AtlaskitRegistry]: https://atlaskit.atlassian.com/  "Atlaskit Registry"
 [CODEOFCONDUCT]: ./CODE_OF_CONDUCT.md

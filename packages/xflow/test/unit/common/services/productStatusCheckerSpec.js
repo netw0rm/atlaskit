@@ -17,6 +17,11 @@ import productStatusChecker, {
   PRODUCT_USAGE_URL,
   PRICING_URL,
   PROSPECTIVE_PRICES_URL,
+  CONFLUENCE_LANDING_PAGE,
+  JIRA_LANDING_PAGE,
+  checkConfluenceAvailable,
+  checkJiraAvailable,
+  getSiteAvailableCheckForProductKey,
 } from '../../../../src/common/services/productStatusChecker';
 
 import {
@@ -69,6 +74,22 @@ const toBeOneOf = (...values) => ({
   asymmetricMatch: actual => values.includes(actual),
 });
 
+const mockCheckSiteAvailable = (requiredChecksToComplete) => {
+  let count = requiredChecksToComplete;
+  return async () => {
+    count--;
+    return count < 1;
+  };
+};
+
+const mockConfluenceLandingPageWithResponse = (response) => {
+  fetchMock.mock(CONFLUENCE_LANDING_PAGE, response);
+};
+
+const mockJiraLandingPageWithResponse = (response) => {
+  fetchMock.mock(JIRA_LANDING_PAGE, response);
+};
+
 describe('productStatusChecker', () => {
   let confluenceStatusChecker;
 
@@ -78,7 +99,7 @@ describe('productStatusChecker', () => {
   beforeEach(() => {
     jest.clearAllTimers();
 
-    confluenceStatusChecker = productStatusChecker('confluence.ondemand');
+    confluenceStatusChecker = productStatusChecker('confluence.ondemand', mockCheckSiteAvailable(3));
   });
 
   afterEach(() => {
@@ -108,6 +129,7 @@ describe('productStatusChecker', () => {
         expect.objectContaining({ progress: toBeNumberInRange(0, 1), status: ACTIVATING })
       );
       expect(progressHandler).toHaveBeenLastCalledWith({ progress: 1, status: ACTIVE });
+      expect(progressHandler).toHaveBeenCalledTimes(9);
     });
 
     it('will invoke the progressHandler with the status and progress', async () => {
@@ -226,6 +248,79 @@ describe('productStatusChecker', () => {
       mockPricingEndpointWithFailureStatus(500);
       const result = await confluenceStatusChecker.check();
       expect(result).toBe(UNKNOWN);
+    });
+  });
+
+  describe('Jira site availability check', () => {
+    it('will return true when Jira site is available', async () => {
+      mockJiraLandingPageWithResponse(200);
+
+      const result = await checkJiraAvailable();
+      expect(result).toBe(true);
+    });
+
+    it('will return true when Jira site was redirected, but to an onboarding inside Jira', async () => {
+      mockJiraLandingPageWithResponse({
+        __redirectUrl: 'https://myjira.atlassian.net/onboarding/software',
+      });
+
+      const result = await checkJiraAvailable();
+      expect(result).toBe(true);
+    });
+
+    it('will return false when Jira site was redirected to Confluence - the site is not ready yet', async () => {
+      mockJiraLandingPageWithResponse({
+        __redirectUrl: 'https://myjira.atlassian.net/wiki/',
+      });
+
+      const result = await checkJiraAvailable();
+      expect(result).toBe(false);
+    });
+  });
+
+  describe('Confluence site availability check', () => {
+    it('will return true when Confluence site is available', async () => {
+      mockConfluenceLandingPageWithResponse(200);
+
+      const result = await checkConfluenceAvailable();
+      expect(result).toBe(true);
+    });
+
+    it('will return true when Confluence site was redirected, but to an onboarding inside Confluence', async () => {
+      mockConfluenceLandingPageWithResponse({
+        __redirectUrl: 'https://myjira.atlassian.net/wiki/welcome.action',
+      });
+
+      const result = await checkConfluenceAvailable();
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('getSiteAvailableCheckForProductKey', () => {
+    it('will return checkJiraAvailable for Jira Service Desk', async () => {
+      const result = getSiteAvailableCheckForProductKey('jira-servicedesk.ondemand');
+      expect(result).toBe(checkJiraAvailable);
+    });
+
+    it('will return checkJiraAvailable for Jira Core', async () => {
+      const result = getSiteAvailableCheckForProductKey('jira-core.ondemand');
+      expect(result).toBe(checkJiraAvailable);
+    });
+
+    it('will return checkJiraAvailable for Jira Software', async () => {
+      const result = getSiteAvailableCheckForProductKey('jira-software.ondemand');
+      expect(result).toBe(checkJiraAvailable);
+    });
+
+    it('will return checkConfluenceAvailable for Confluence', async () => {
+      const result = getSiteAvailableCheckForProductKey('confluence.ondemand');
+      expect(result).toBe(checkConfluenceAvailable);
+    });
+
+    it('will throw for a non defined product key', async () => {
+      expect(() => {
+        getSiteAvailableCheckForProductKey('doesntexist.ondemand');
+      }).toThrow();
     });
   });
 });

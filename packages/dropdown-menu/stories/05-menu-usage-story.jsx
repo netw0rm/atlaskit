@@ -15,6 +15,7 @@ import StatusDropdown from './examples/StatusDropdown';
 import LongItemsDropdown from './examples/LongItemsDropdown';
 import WideDropdown from './examples/WideDropdown';
 import ControlledItemsExample from './examples/ControlledItemsExample';
+import WithThemeToggle from './examples/WithThemeToggle';
 
 import {
   simpleDropdownItems,
@@ -231,5 +232,10 @@ storiesOf(name, module)
           <DropdownItem>Item 1</DropdownItem>
         </DropdownMenu>
       </p>
+    </StoryContainer>
+  ))
+  .add('with theme toggle', () => (
+    <StoryContainer>
+      <WithThemeToggle />
     </StoryContainer>
   ));

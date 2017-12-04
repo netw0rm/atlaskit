@@ -32,8 +32,6 @@ class RequestOrStartTrial extends Component {
     onComplete: PropTypes.func,
     onTrialRequested: PropTypes.func,
     onTrialActivating: PropTypes.func,
-    // ESLint doesn't detect prop types only used in async functions
-    // eslint-disable-next-line react/no-unused-prop-types
     checkProductRequestFlag: PropTypes.func,
     contextInfo: PropTypes.shape({
       contextualImage: PropTypes.string,

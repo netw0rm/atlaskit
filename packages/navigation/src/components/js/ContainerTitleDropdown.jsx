@@ -4,6 +4,7 @@ import { ThemeProvider, withTheme } from 'styled-components';
 import { itemThemeNamespace } from '@atlaskit/item';
 import AkDropdownMenu from '@atlaskit/dropdown-menu';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
+import memoizeOne from 'memoize-one';
 import AkNavigationItem from './NavigationItem';
 import ContainerTitleIcon from '../styled/ContainerTitleIcon';
 import ContainerTitleText from '../styled/ContainerTitleText';
@@ -38,6 +39,8 @@ const key = itemThemeNamespace;
 class ContainerTitleDropdown extends PureComponent {
   props: Props
 
+  withOuterTheme = memoizeOne((outerTheme) => overrideItemTheme(outerTheme, key));
+
   render() {
     const {
       children,
@@ -55,6 +58,7 @@ class ContainerTitleDropdown extends PureComponent {
     const isNavCollapsed = this.props.theme[rootKey] ?
       this.props.theme[rootKey].isCollapsed
       : false;
+    const theme = this.withOuterTheme(this.props.theme);
     /* eslint-enable react/prop-types */
 
     return (
@@ -69,7 +73,7 @@ class ContainerTitleDropdown extends PureComponent {
         onOpenChange={onDropdownOpenChange}
 
         trigger={(
-          <ThemeProvider theme={theme => overrideItemTheme(theme, key)}>
+          <ThemeProvider theme={theme}>
             <AkNavigationItem
               dropIcon={isNavCollapsed ? null : <ExpandIcon label="chevron" />}
               isDropdownTrigger

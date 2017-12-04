@@ -82,6 +82,10 @@ class Resizer extends PureComponent {
 
     const delta = screenX - this.state.startScreenX;
 
+    if (delta === 0) {
+      this.resizeButtonHandler();
+    }
+
     // Perform one final resize before ending
     this.props.onResize(delta);
 

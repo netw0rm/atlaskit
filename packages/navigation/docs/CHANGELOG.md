@@ -1,5 +1,10 @@
 # @atlaskit/navigation
 
+## 27.0.0 (2017-12-04)
+
+
+* breaking; Confluence should remove the click-to-collapse/expand hack in the onResize handler. ([763b07e](https://bitbucket.org/atlassian/atlaskit/commits/763b07e))
+* breaking; simulate chevron behaviour in the whole navigation border ([763b07e](https://bitbucket.org/atlassian/atlaskit/commits/763b07e))
 ## 26.8.3 (2017-11-30)
 
 

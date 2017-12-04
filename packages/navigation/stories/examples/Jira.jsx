@@ -25,7 +25,6 @@ export default class JIRAExample extends PureComponent {
       stack: [Menu],
       isHeaderInlineDialogOpen: false,
       openDrawer: this.props.openDrawer,
-      width: this.props.width,
     };
   }
 
@@ -52,7 +51,6 @@ export default class JIRAExample extends PureComponent {
     action('onResize')();
     this.setState({
       isOpen: resizeState.isOpen,
-      width: resizeState.width,
     });
   }
 
@@ -271,7 +269,6 @@ export default class JIRAExample extends PureComponent {
           onSearchDrawerOpen={() => { this.openDrawer('search'); }}
           openDrawer={this.state.openDrawer}
           resizeHandler={action('resize')}
-          width={this.state.width}
           drawers={[searchDrawer, createDrawer]}
         >
           <AkContainerNavigationNested

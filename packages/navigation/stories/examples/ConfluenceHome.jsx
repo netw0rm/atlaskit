@@ -204,15 +204,9 @@ export default class ConfluenceHome extends PureComponent {
   resize = (resizeState) => {
     action('onResize')();
     this.setState({
-      isOpen: !this.state.isOpen,
-      width: this.state.isOpen ? resizeState.width : this.state.width,
+      isOpen: resizeState.isOpen,
+      width: resizeState.width,
     });
-    if (resizeState.width >= this.state.width && this.state.isOpen !== resizeState.isOpen) {
-      this.setState({
-        isOpen: !this.state.isOpen,
-        width: resizeState.width,
-      });
-    }
   }
 
   goBackHome = () => {

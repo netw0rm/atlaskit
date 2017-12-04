@@ -68,7 +68,7 @@ export const zIndex = {
 
 // these are colors that are currently not controllable via theming
 export const unthemedColors = {
-  resizer: themed({ light: colors.B200, dark: colors.B100 }),
+  resizer: themed({ light: colors.B100, dark: colors.B100 }),
   presenceIconBg: colors.N0,
 };
 

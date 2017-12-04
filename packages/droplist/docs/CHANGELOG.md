@@ -1,5 +1,9 @@
 # @atlaskit/droplist
 
+## 4.11.4 (2017-12-04)
+
+* bug fix; updated backgorund and color for droplist item in selected mode (issues closed: ak-3624) ([c1cb987](https://bitbucket.org/atlassian/atlaskit/commits/c1cb987))
+
 ## 4.11.3 (2017-11-15)
 
 * bug fix; bumping to latest major version of internal dependencies ([be44c19](https://bitbucket.org/atlassian/atlaskit/commits/be44c19))

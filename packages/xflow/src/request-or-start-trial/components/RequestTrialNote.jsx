@@ -18,7 +18,7 @@ const messages = defineMessages({
     defaultMessage: "Uh oh. That didn't work.",
   },
   errorFlagDescription: {
-    id: 'xflow.generic.request-tral-note.error-flag.description',
+    id: 'xflow.generic.request-trial-note.error-flag.description',
     defaultMessage: "Your trial request wasn't sent.",
   },
   errorFlagResendRequest: {
@@ -34,7 +34,7 @@ const messages = defineMessages({
     defaultMessage: 'That\'s sent!',
   },
   successFlagDescription: {
-    id: 'xflow.generic.request-tral-note.success-flag.description',
+    id: 'xflow.generic.request-trial-note.success-flag.description',
     defaultMessage: 'We\'ll let your admin know right away.',
   },
 });

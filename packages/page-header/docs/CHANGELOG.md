@@ -1,3 +1,0 @@
-# @atlaskit/page-header
-
-## Unreleased

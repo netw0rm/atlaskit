@@ -1,6 +1,7 @@
 import 'es6-promise/auto';
 import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
+import sinon from 'sinon';
 
 import * as tenantContext from '../../../../src/common/services/tenantContext';
 
@@ -24,6 +25,10 @@ const mockNotifyEastEndpointWithResponse = (response) => {
 };
 
 describe('notifyUsersAccessGranted', () => {
+  let sandbox;
+  beforeEach(() => { sandbox = sinon.createSandbox(); });
+  afterEach(() => sandbox.restore());
+
   beforeEach(() => fetchMock.catch(417));
   afterEach(fetchMock.restore);
 
@@ -36,9 +41,8 @@ describe('notifyUsersAccessGranted', () => {
   });
 
   it('should return a resolved promise with no value if the endpoint returns a 200 response', async () => {
-    tenantContext.fetchCurrentUser = jest.fn().mockReturnValue(Promise.resolve(userAdminResponse));
-    tenantContext.getInstanceName = jest.fn().mockReturnValue('example.atlassian.net');
-
+    sandbox.stub(tenantContext, 'fetchCurrentUser').resolves(userAdminResponse);
+    sandbox.stub(tenantContext, 'getInstanceName').returns('example.atlassian.net');
     mockNotifyEastEndpointWithResponse(accessgrantedJiraUsersResponse);
 
     const result = await notifyUsersAccessGranted(jiraUsersResponse, 'confluence');
@@ -65,6 +69,8 @@ describe('notifyUsersAccessGranted', () => {
   });
 
   it('should return a rejected promise if both endpoints return a 500 response', async () => {
+    sandbox.stub(tenantContext, 'fetchCurrentUser').resolves(userAdminResponse);
+    sandbox.stub(tenantContext, 'getInstanceName').returns('example.atlassian.net');
     fetchMock.mock(notifyAccessEndpoint(), 500);
     expect.assertions(1);
 

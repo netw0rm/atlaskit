@@ -15,7 +15,8 @@ import {
 import { MockEmojiResource } from '../../../../src/support/MockEmojiResource';
 import { isEmojiTypeAheadItemSelected, getEmojiTypeAheadItemById, getSelectedEmojiTypeAheadItem  } from '../../_emoji-selectors';
 
-import EmojiTypeAhead, { defaultListLimit, Props } from '../../../../src/components/typeahead/EmojiTypeAhead';
+import { defaultListLimit } from '../../../../src/constants';
+import EmojiTypeAhead, { Props } from '../../../../src/components/typeahead/EmojiTypeAhead';
 import EmojiTypeAheadComponent from '../../../../src/components/typeahead/EmojiTypeAheadComponent';
 import { OnLifecycle } from '../../../../src/components/typeahead/EmojiTypeAheadComponent';
 import EmojiTypeAheadItem from '../../../../src/components/typeahead/EmojiTypeAheadItem';

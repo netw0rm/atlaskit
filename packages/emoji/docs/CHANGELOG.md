@@ -1,5 +1,10 @@
 # @atlaskit/emoji
 
+## 30.3.6 (2017-12-05)
+
+* bug fix; fixed typescript error in unit test ([a4dceec](https://bitbucket.org/atlassian/atlaskit/commits/a4dceec))
+* bug fix; removed circular dependency on constant defaultListLimit ([1978b73](https://bitbucket.org/atlassian/atlaskit/commits/1978b73))
+* bug fix; fixed EmojiPlaceHolder height for big emoji to fix stride scrolling bug ([06638c5](https://bitbucket.org/atlassian/atlaskit/commits/06638c5))
 ## 30.3.5 (2017-11-28)
 
 * bug fix; upgrade all atlaskit dependencies (issues closed: fs-1526) ([8dac2d2](https://bitbucket.org/atlassian/atlaskit/commits/8dac2d2))

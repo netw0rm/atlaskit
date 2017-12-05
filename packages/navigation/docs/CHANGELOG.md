@@ -1,5 +1,9 @@
 # @atlaskit/navigation
 
+## 27.0.2 (2017-12-05)
+
+
+* bug fix; update icon dependency to fix logo gradients not rendering properly (issues closed: ak-3744) ([7b66c25](https://bitbucket.org/atlassian/atlaskit/commits/7b66c25))
 ## 27.0.1 (2017-12-04)
 
 * bug fix; changed colour of the collapse/expand handle from B200 to B100 for light theme (issues closed: nav-31) ([a1813ec](https://bitbucket.org/atlassian/atlaskit/commits/a1813ec))

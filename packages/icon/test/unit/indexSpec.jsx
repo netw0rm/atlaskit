@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount, shallow, render } from 'enzyme';
 
 import { name } from '../../package.json';
 import * as bundle from '../../src';
@@ -390,6 +390,42 @@ describe(name, () => {
 
         expect(span.is('[aria-label="my label"]')).toBe(true);
       });
+    });
+  });
+
+  describe('gradients', () => {
+    it('multiple gradients in a single icon should use unique ids', () => {
+      const ConfluenceIcon = components.confluence.component;
+
+      const wrapper = render(<ConfluenceIcon label="My icon" />);
+      const gradientIds = wrapper.find('lineargradient').map((i, el) => el.attribs.id);
+
+      expect(gradientIds[0]).not.toBe(gradientIds[1]);
+    });
+
+    it('ids should be referenced correctly in fill properties', () => {
+      const BitbucketIcon = components.bitbucket.component;
+
+      const wrapper = render(<BitbucketIcon label="My icon" />);
+      const gradientId = wrapper.find('linearGradient').prop('id');
+      const gradientFillPaths = wrapper.find('path').filter((i, el) =>
+        /^url\(#/.test(el.attribs.fill)
+      );
+
+      expect(gradientFillPaths.length).toBeGreaterThanOrEqual(1);
+
+      gradientFillPaths.each((i, el) => {
+        expect(el.attribs.fill).toBe(`url(#${gradientId})`);
+      });
+    });
+
+    it('should have unique ids across icon instances', () => {
+      const BitbucketIcon = components.bitbucket.component;
+
+      const gradientId = render(<BitbucketIcon label="My icon" />).find('linearGradient').prop('id');
+      const otherGradientId = render(<BitbucketIcon label="My icon" />).find('linearGradient').prop('id');
+
+      expect(gradientId).not.toBe(otherGradientId);
     });
   });
 });

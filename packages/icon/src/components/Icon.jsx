@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
+import uuid from 'uuid';
 import { colors } from '@atlaskit/theme';
 
 const sizes = {
@@ -27,12 +28,20 @@ export const spanStyles = css`
   display: inline-block;
   fill: ${p => p.secondaryColor || colors.background};
   line-height: 1;
+
   > svg {
     ${getSize}
     max-height: 100%;
     max-width: 100%;
     overflow: hidden;
     vertical-align: bottom;
+  }
+  /* Stop-color doesn't properly apply in chrome when the inherited/current color changes.
+   * We have to initially set stop-color to inherit (either via DOM attribute or an initial CSS
+   * rule) and then override it with currentColor for the color changes to be picked up.
+   */
+  stop {
+    stop-color: currentColor;
   }
 `;
 
@@ -61,6 +70,24 @@ class Icon extends PureComponent {
     onClick: () => {},
   }
 
+  /* Icons need unique gradient IDs across instances for different gradient definitions to work
+   * correctly.
+   * A step in the icon build process replaces linear gradient IDs and their references in paths
+   * to a placeholder string so we can replace them with a dynamic ID here.
+   * Replacing the original IDs with placeholders in the build process is more robust than not
+   * using placeholders as we do not have to rely on regular expressions to find specific element
+   * to replace.
+   */
+  static insertDynamicGradientID(svgStr) {
+    const id = uuid();
+
+    const replacedSvgStr = svgStr
+      .replace(/id="([^"]+)-idPlaceholder"/g, `id=$1-${id}`)
+      .replace(/fill="url\(#([^"]+)-idPlaceholder\)"/g, `fill="url(#$1-${id})"`);
+
+    return replacedSvgStr;
+  }
+
   render() {
     const {
       glyph: Glyph,
@@ -81,7 +108,7 @@ class Icon extends PureComponent {
           size={size}
           role="img"
           aria-label={this.props.label}
-          dangerouslySetInnerHTML={{ __html: dangerouslySetGlyph }}
+          dangerouslySetInnerHTML={{ __html: Icon.insertDynamicGradientID(dangerouslySetGlyph) }}
         />
       );
     }

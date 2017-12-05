@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { mount } from 'enzyme';
+import { mount, render } from 'enzyme';
 
 import { colors } from '@atlaskit/theme';
 import { name } from '../../package.json';
@@ -38,6 +38,22 @@ describe(name, () => {
 
       it('should render an SVG provided as a string', () => {
         expect(wrapper.html().includes(`<svg id="${id}"`)).toBe(true);
+      });
+      it('should replace idPlaceholders with a unique ID generated at runtime', () => {
+        const gradientId = 'a-idPlaceholder';
+        const glyphString = `<svg><defs><linearGradient id="${gradientId}"></linearGradient></defs><g><path fill="url(#${gradientId})"></path></g></svg>`;
+        // Using render as mount/shallow as .find does not work with dangerouslySetInnerHTML
+        const icon = render(<Icon dangerouslySetGlyph={glyphString} label="My icon" />);
+        const uuidLength = 7;
+
+        const gradientDomId = icon.find('lineargradient').prop('id');
+        expect(typeof gradientDomId).toBe('string');
+        expect(gradientDomId).not.toBe(gradientId);
+        expect(gradientDomId.length).toBeGreaterThan(uuidLength);
+
+        const otherIcon = render(<Icon dangerouslySetGlyph={glyphString} label="My icon" />);
+        const otherId = otherIcon.find('lineargradient').prop('id');
+        expect(otherId).not.toBe(gradientDomId);
       });
     });
 

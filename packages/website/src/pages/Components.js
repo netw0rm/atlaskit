@@ -178,7 +178,7 @@ export default class Components extends PureComponent {
         </Section>
         <Section style={{ marginLeft: -gridSize(this.props) }}>
           <Message title="Atlassians">
-            For internal, Fabric, and Media Services components please see the <a href="//aui-cdn.atlassian.com/atlaskit/registry/components.html" target="_blank" rel="noopener noreferrer">registry website</a>.
+            For internal, Fabric, and Media Services components please see the <a href="https://atlaskit-storybooks.glitch.me/" target="_blank" rel="noopener noreferrer">registry website</a>.
           </Message>
         </Section>
       </Wrapper>

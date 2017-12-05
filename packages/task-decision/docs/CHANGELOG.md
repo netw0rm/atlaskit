@@ -1,5 +1,9 @@
 # @atlaskit/task-decision
 
+## 4.5.0 (2017-12-05)
+
+* bug fix; restore public analytics handling in TaskItem ([6a0153d](https://bitbucket.org/atlassian/atlaskit/commits/6a0153d))
+* feature; fS-1461 duplicate props between TaskItem and ResourcedTaskItem ([d27cd65](https://bitbucket.org/atlassian/atlaskit/commits/d27cd65))
 ## 4.4.1 (2017-11-28)
 
 * bug fix; fix export of sample-elements support data ([0a5fc11](https://bitbucket.org/atlassian/atlaskit/commits/0a5fc11))

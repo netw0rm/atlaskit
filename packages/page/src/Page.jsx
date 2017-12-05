@@ -39,6 +39,8 @@ const PageContent = styled.div`
   z-index: 1;
 `;
 
+const emptyTheme = {};
+
 export default class Page extends PureComponent {
   static displayName = 'AkPage';
 
@@ -54,7 +56,7 @@ export default class Page extends PureComponent {
   }
   render() {
     return (
-      <ThemeProvider theme={{}}>
+      <ThemeProvider theme={emptyTheme}>
         <Wrapper>
           {this.props.banner ? (
             <BannerContainer

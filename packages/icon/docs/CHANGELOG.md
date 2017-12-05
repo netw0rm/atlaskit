@@ -1,5 +1,19 @@
 # @atlaskit/icon
 
+## 10.3.3 (2017-12-05)
+
+
+
+
+
+* bug fix; fix product icon gradients not appearing with default icon colour ([013f52a](https://bitbucket.org/atlassian/atlaskit/commits/013f52a))
+
+
+
+
+
+
+* bug fix; fix icon gradients not applying properly in safari in some cases (issues closed: ak-3744) ([e35edf8](https://bitbucket.org/atlassian/atlaskit/commits/e35edf8))
 ## 10.3.2 (2017-11-23)
 
 * bug fix; remove theme package direct references ([0f99302](https://bitbucket.org/atlassian/atlaskit/commits/0f99302))

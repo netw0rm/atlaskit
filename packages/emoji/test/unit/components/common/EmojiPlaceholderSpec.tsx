@@ -15,8 +15,8 @@ describe('<EmojiPlaceholder />', () => {
       />);
 
       const spanStyle = wrapper.find('span').prop('style');
-      expect(spanStyle.width).to.equal('48px');
-      expect(spanStyle.height).to.equal('48px');
+      expect(spanStyle!.width).to.equal('48px');
+      expect(spanStyle!.height).to.equal('48px');
     });
 
     it('should render with default height', () => {
@@ -27,8 +27,8 @@ describe('<EmojiPlaceholder />', () => {
       />);
 
       const spanStyle = wrapper.find('span').prop('style');
-      expect(spanStyle.width).to.equal('20px');
-      expect(spanStyle.height).to.equal('20px');
+      expect(spanStyle!.width).to.equal('20px');
+      expect(spanStyle!.height).to.equal('20px');
     });
 
     it('should render with provided size', () => {
@@ -40,8 +40,8 @@ describe('<EmojiPlaceholder />', () => {
       />);
 
       const spanStyle = wrapper.find('span').prop('style');
-      expect(spanStyle.width).to.equal('64px');
-      expect(spanStyle.height).to.equal('64px');
+      expect(spanStyle!.width).to.equal('64px');
+      expect(spanStyle!.height).to.equal('64px');
     });
 
 
@@ -60,8 +60,8 @@ describe('<EmojiPlaceholder />', () => {
       />);
 
       const spanStyle = wrapper.find('span').prop('style');
-      expect(spanStyle.width).to.equal('96px');
-      expect(spanStyle.height).to.equal('48px');
+      expect(spanStyle!.width).to.equal('96px');
+      expect(spanStyle!.height).to.equal('48px');
     });
 
     it('should render media representation with fitToHeight', () => {
@@ -79,8 +79,8 @@ describe('<EmojiPlaceholder />', () => {
       />);
 
       const spanStyle = wrapper.find('span').prop('style');
-      expect(spanStyle.width).to.equal('96px');
-      expect(spanStyle.height).to.equal('48px');
+      expect(spanStyle!.width).to.equal('96px');
+      expect(spanStyle!.height).to.equal('48px');
     });
   });
 });

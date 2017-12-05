@@ -1,5 +1,10 @@
 # @atlaskit/page
 
+## 5.0.5 (2017-12-05)
+
+* bug fix; remove the object literal being passed to the ThemeProvider which was causing unnece (issues closed: ak-3988) ([96ebc12](https://bitbucket.org/atlassian/atlaskit/commits/96ebc12))
+
+
 ## 5.0.4 (2017-11-17)
 
 * bug fix; bumping internal dependencies to the latest major versions ([4da3a3d](https://bitbucket.org/atlassian/atlaskit/commits/4da3a3d))

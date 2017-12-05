@@ -113,21 +113,30 @@ storiesOf(name, module)
   .add('with a banner at the top of the page', () => (
     <ToggleBannerPage />
   ))
-  .add('with app-switcher', () => (
-    <HtmlPage>
-      <BasicNavigation
-        globalSecondaryActions={[
-          <AkGlobalItem>
-            <SettingsIcon label="Settings" secondaryColor="inherit" />
-          </AkGlobalItem>,
-          <AkAppSwitcher {...appswitcherProps} />,
-          <AkGlobalItem>
-            <QuestionCircleIcon label="Help icon" secondaryColor="inherit" />
-          </AkGlobalItem>,
-          <AkGlobalItem>
-            <AkAvatar size="small" src={emmaAvatar} borderColor="transparent" />
-          </AkGlobalItem>,
-        ]}
-      />
-    </HtmlPage>
-   ));
+  .add('with app-switcher', () => {
+    const content = (
+      <p>
+        When loading the app-switcher inside navigation, be sure to wrap the trigger element of
+        the app-switcher with <code>{'<GlobalItem>'}</code> rather than the <code>{'<AppSwitcher>'}</code> element itself.
+        This ensures that styling and keyboard events continue to work.
+      </p>
+    );
+    return (
+      <HtmlPage content={content}>
+        <BasicNavigation
+          globalSecondaryActions={[
+            <AkGlobalItem>
+              <SettingsIcon label="Settings" secondaryColor="inherit" />
+            </AkGlobalItem>,
+            <AkAppSwitcher {...appswitcherProps} />,
+            <AkGlobalItem>
+              <QuestionCircleIcon label="Help icon" secondaryColor="inherit" />
+            </AkGlobalItem>,
+            <AkGlobalItem>
+              <AkAvatar size="small" src={emmaAvatar} borderColor="transparent" />
+            </AkGlobalItem>,
+          ]}
+        />
+      </HtmlPage>
+    );
+  });

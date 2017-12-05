@@ -31,8 +31,8 @@ export interface State extends LoadingState {
 
 export default class ResourcedEmoji extends LoadingEmojiCompoent<Props, State> {
   renderLoading() {
-    const { shortName } = this.props.emojiId;
-    return <EmojiPlaceholder shortName={shortName} showTooltip={this.props.showTooltip}/>;
+    const {fitToHeight, emojiId, showTooltip} = this.props;
+    return <EmojiPlaceholder shortName={emojiId.shortName} showTooltip={showTooltip} fitToHeight={fitToHeight} />;
   }
 
   renderLoaded(loadedEmojiProvider: EmojiProvider) {

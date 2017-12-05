@@ -23,12 +23,12 @@ const EmojiPlaceholder = (props: Props) => {
     const width = representation.width;
     const height = representation.height;
     if (width && height) {
-      scaledWidth = fitToHeight / height * width;
+      scaledWidth = (fitToHeight / height) * width;
       scaledHeight = fitToHeight;
     }
   }
-  const width: number = scaledWidth || size;
-  const height: number = scaledHeight || size;
+  const width: number = scaledWidth || fitToHeight || size;
+  const height: number = scaledHeight || fitToHeight || size;
   const style = {
     fill: 'f7f7f7',
     width: `${width}px`,

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { akZIndexLayer } from '@atlaskit/util-shared-styles';
-import Popper from 'popper.js';
+import Popper from '../popper.js/index.min';
 
 import { POSITION_ATTRIBUTE_ENUM, getFlipBehavior, positionPropToPopperPosition } from './internal/helpers';
 import ContentContainer from './styledContentContainer';

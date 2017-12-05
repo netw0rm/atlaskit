@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import ProgressBarBackground from '../styled/ProgressBarBackground';
 import ProgressBarValue from '../styled/ProgressBarValue';
 
-function toPercentage(progress) {
+export function toPercentage(progress) {
   // 0 <= progress <= 1
   // 0 <= percentage <= 100, calculated to 1 decimal place
   return `${(Math.min(Math.max(0, progress), 1) * 100).toFixed(1)}%`;

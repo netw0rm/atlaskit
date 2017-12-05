@@ -1,14 +1,9 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import TaskItem from './TaskItem';
 import ListWrapper from '../styled/ListWrapper';
 
-export interface ContentRef {
-  (ref: HTMLElement | undefined): void;
-}
-
 export interface Props {
-  children?: Array<TaskItem> | TaskItem;
+  children?: Array<JSX.Element> | JSX.Element;
 }
 
 export default class TaskList extends PureComponent<Props,{}> {

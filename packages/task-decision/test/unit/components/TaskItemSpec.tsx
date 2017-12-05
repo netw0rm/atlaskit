@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as sinon from 'sinon';
 import { mount } from 'enzyme';
-import { AnalyticsListener } from '@atlaskit/analytics';
 import TaskItem from '../../../src/components/TaskItem';
 import Participants from '../../../src/components/Participants';
 import { AttributionWrapper, ContentWrapper } from '../../../src/styled/Item';
@@ -37,28 +36,6 @@ describe('<TaskItem/>', () => {
       component.find('input').simulate('change');
       expect(spy.calledWith('task-1', true)).toEqual(true);
     });
-
-    it('should fire atlassian.fabric.action.check analytics event when checkbox is checked', () => {
-      const spy = sinon.spy();
-      const component = mount(
-        <AnalyticsListener onEvent={spy}>
-          <TaskItem taskId="task-1">Hello <b>world</b></TaskItem>
-        </AnalyticsListener>
-      );
-      component.find('input').simulate('change');
-      expect(spy.calledWith('atlassian.fabric.action.check', {})).toEqual(true);
-    });
-
-    it('should fire atlassian.fabric.action.uncheck analytics event when checkbox is unchecked', () => {
-      const spy = sinon.spy();
-      const component = mount(
-        <AnalyticsListener onEvent={spy}>
-          <TaskItem taskId="task-1" isDone={true}>Hello <b>world</b></TaskItem>
-        </AnalyticsListener>
-      );
-      component.find('input').simulate('change');
-      expect(spy.calledWith('atlassian.fabric.action.uncheck', {})).toEqual(true);
-    });
   });
 
   describe('showPlaceholder', () => {
@@ -67,7 +44,7 @@ describe('<TaskItem/>', () => {
       expect(component.find(Placeholder).length).toEqual(1);
     });
 
-    it('should not render placeholder deciision is not empy', () => {
+    it('should not render placeholder if task is not empty', () => {
       const component = mount(
         <TaskItem taskId="task-1" showPlaceholder={true}>Hello <b>world</b></TaskItem>
       );

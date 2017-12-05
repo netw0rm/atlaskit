@@ -7,6 +7,10 @@ export type Cursor = string;
 export type DecisionType = 'DECISION';
 export type TaskType = 'TASK';
 
+export interface ContentRef {
+  (ref: HTMLElement | undefined): void;
+}
+
 export interface ObjectKey {
   localId: string;
   containerAri: string;

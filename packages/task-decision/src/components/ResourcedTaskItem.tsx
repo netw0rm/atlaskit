@@ -1,18 +1,21 @@
 import * as React from 'react';
-import { PureComponent, ReactElement } from 'react';
+import { PureComponent } from 'react';
 import TaskItem from './TaskItem';
-import { Appearance, TaskDecisionProvider, TaskState, User } from '../types';
+import { Appearance, ContentRef, TaskDecisionProvider, TaskState, User } from '../types';
 
 export interface Props {
   taskId: string;
   isDone?: boolean;
   onChange?: (taskId: string, isChecked: boolean) => void;
-  children?: ReactElement<any>;
+  contentRef?: ContentRef;
+  children?: any;
   taskDecisionProvider?: Promise<TaskDecisionProvider>;
   objectAri: string;
   containerAri: string;
+  showPlaceholder?: boolean;
   appearance?: Appearance;
   participants?: User[];
+  showParticipants?: boolean;
   creator?: User;
   lastUpdater?: User;
 }
@@ -96,7 +99,7 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
 
   render() {
     const { isDone } = this.state;
-    const { appearance, children, creator, participants, taskId, lastUpdater } = this.props;
+    const { appearance, children, contentRef, creator, participants, showParticipants, showPlaceholder, taskId, lastUpdater } = this.props;
 
     return (
       <TaskItem
@@ -104,7 +107,10 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
         taskId={taskId}
         onChange={this.handleOnChange}
         appearance={appearance}
+        contentRef={contentRef}
         participants={participants}
+        showParticipants={showParticipants}
+        showPlaceholder={showPlaceholder}
         creator={creator}
         lastUpdater={lastUpdater}
       >
@@ -112,5 +118,4 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
       </TaskItem>
     );
   }
-
 }

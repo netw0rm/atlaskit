@@ -1,25 +1,20 @@
 import * as React from 'react';
-import { PureComponent, ReactElement } from 'react';
-
-import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
+import { PureComponent } from 'react';
 
 import {
   CheckBoxWrapper,
 } from '../styled/TaskItem';
 
 import Item from './Item';
-import { Appearance, User } from '../types';
-
-export interface ContentRef {
-  (ref: HTMLElement | undefined): void;
-}
+import { Appearance, ContentRef, User } from '../types';
+import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
 
 export interface Props {
   taskId: string;
   isDone?: boolean;
   onChange?: (taskId: string, isChecked: boolean) => void;
   contentRef?: ContentRef;
-  children?: ReactElement<any>;
+  children?: any;
   showPlaceholder?: boolean;
   appearance?: Appearance;
   participants?: User[];
@@ -27,6 +22,7 @@ export interface Props {
   creator?: User;
   lastUpdater?: User;
   fireAnalyticsEvent?: FireAnalyticsEvent;
+  firePrivateAnalyticsEvent?: FireAnalyticsEvent;
 }
 
 let taskCount = 0;
@@ -51,13 +47,17 @@ export class InternalTaskItem extends PureComponent<Props, {}> {
   }
 
   handleOnChange = (evt: React.SyntheticEvent<HTMLInputElement>) => {
-    const { onChange, fireAnalyticsEvent, taskId, isDone } = this.props;
+    const { onChange, taskId, isDone, fireAnalyticsEvent, firePrivateAnalyticsEvent } = this.props;
     const newIsDone = !isDone;
     if (onChange) {
       onChange(taskId, newIsDone);
     }
+    const suffix = newIsDone ? 'check' : 'uncheck';
     if (fireAnalyticsEvent) {
-      fireAnalyticsEvent(newIsDone ? 'check' : 'uncheck', {});
+      fireAnalyticsEvent(suffix, {});
+    }
+    if (firePrivateAnalyticsEvent) {
+      firePrivateAnalyticsEvent(`atlassian.fabric.action.${suffix}`, {});
     }
   }
 

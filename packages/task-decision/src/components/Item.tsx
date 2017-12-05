@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PureComponent, ReactElement } from 'react';
+import { PureComponent } from 'react';
 import Participants from './Participants';
 
 import {
@@ -10,16 +10,12 @@ import {
   Wrapper,
 } from '../styled/Item';
 
-import { Appearance, Participant } from '../types';
+import { Appearance, ContentRef, Participant } from '../types';
 import { Placeholder } from '../styled/Placeholder';
-
-export interface ContentRef {
-  (ref: HTMLElement | undefined): void;
-}
 
 export interface Props {
   icon: JSX.Element;
-  children?: ReactElement<any>;
+  children?: any;
   participants?: Participant[];
   appearance?: Appearance;
   contentRef?: ContentRef;

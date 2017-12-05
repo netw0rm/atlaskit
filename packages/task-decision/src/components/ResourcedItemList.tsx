@@ -36,10 +36,6 @@ import {
 import DecisionItem from './DecisionItem';
 import ResourcedTaskItem from './ResourcedTaskItem';
 
-export interface ContentRef {
-  (ref: HTMLElement | undefined): void;
-}
-
 export interface Props {
   taskDecisionProvider: Promise<TaskDecisionProvider>;
   initialQuery: Query;

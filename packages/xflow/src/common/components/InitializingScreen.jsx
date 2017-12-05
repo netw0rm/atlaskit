@@ -4,12 +4,14 @@ import ModalDialog from '@atlaskit/modal-dialog';
 import Spinner from '@atlaskit/spinner';
 import { withAnalytics } from '@atlaskit/analytics';
 
+import { withXFlowProvider } from './XFlowProvider';
 import InitializingSpinnerDiv from '../styled/InitializingSpinnerDiv';
 
 class InitializingScreen extends Component {
   static propTypes = {
     firePrivateAnalyticsEvent: PropTypes.func.isRequired,
     isOpen: PropTypes.bool,
+    productLogo: PropTypes.element,
   };
 
   defaultProps = {
@@ -22,8 +24,9 @@ class InitializingScreen extends Component {
   }
 
   render() {
+    const { productLogo } = this.props;
     return (
-      <ModalDialog isOpen={this.props.isOpen} width="small" header={<div />} footer={<div />}>
+      <ModalDialog isOpen={this.props.isOpen} width="small" header={productLogo || <div />} footer={<div />}>
         <InitializingSpinnerDiv>
           <Spinner size="large" isCompleting={false} />
         </InitializingSpinnerDiv>
@@ -32,4 +35,9 @@ class InitializingScreen extends Component {
   }
 }
 
-export default withAnalytics(InitializingScreen);
+export const InitializingScreenBase = withAnalytics(InitializingScreen);
+
+export default withXFlowProvider(
+  InitializingScreenBase,
+  ({ xFlow }) => ({ productLogo: xFlow.config.productLogo })
+);

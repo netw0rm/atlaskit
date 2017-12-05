@@ -7,8 +7,6 @@ import EmojiTypeAheadComponent, { EmojiTypeAheadBaseProps } from './EmojiTypeAhe
 import Popup from '../common/Popup';
 import debug from '../../util/logger';
 
-export const defaultListLimit = 50;
-
 export interface Props extends EmojiTypeAheadBaseProps, LoadingProps {
   /** CSS selector, or target HTML element */
   target?: string | HTMLElement;

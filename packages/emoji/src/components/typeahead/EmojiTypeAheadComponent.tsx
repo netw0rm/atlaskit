@@ -11,7 +11,7 @@ import EmojiList from './EmojiTypeAheadList';
 import { EmojiContext } from '../common/internal-types';
 import debug from '../../util/logger';
 import { toEmojiId } from '../../type-helpers';
-import { defaultListLimit } from './EmojiTypeAhead';
+import { defaultListLimit } from '../../constants';
 
 export interface OnLifecycle {
   (): void;

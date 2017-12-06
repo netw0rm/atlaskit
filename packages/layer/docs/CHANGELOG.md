@@ -1,5 +1,9 @@
 # @atlaskit/layer
 
+## 2.5.9 (2017-12-06)
+
+
+* bug fix; fix popper.js repaint flip issue caused by flaky native browser testing of MutationObs ([912dd87](https://bitbucket.org/atlassian/atlaskit/commits/912dd87))
 ## 2.5.8 (2017-11-27)
 
 

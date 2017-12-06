@@ -18,6 +18,10 @@ type Props = {|
   children?: ReactElement,
 |}
 
+const theme = {
+  [isDropdownOverflowKey]: true,
+};
+
 export default class OverflowDropdown extends Component {
   constructor(props: Props, context: any) {
     super(props, context);
@@ -45,7 +49,7 @@ export default class OverflowDropdown extends Component {
     );
 
     return (
-      <ThemeProvider theme={{ [isDropdownOverflowKey]: true }}>
+      <ThemeProvider theme={theme}>
         <DropdownMenu
           onOpenChange={this.handleDropdownToggle}
           shouldFlip={false}

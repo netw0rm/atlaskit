@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 27.0.3 (2017-12-06)
+
+* bug fix; memoize theme updates to prevent unnecessary re-rendering of themed components (issues closed: ak-3988) ([c785544](https://bitbucket.org/atlassian/atlaskit/commits/c785544))
 ## 27.0.2 (2017-12-05)
 
 

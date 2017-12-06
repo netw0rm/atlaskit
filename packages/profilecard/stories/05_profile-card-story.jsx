@@ -5,6 +5,7 @@ import React, { PureComponent } from 'react';
 import { name } from '../package.json';
 import { AkProfilecard } from '../src/';
 import interActiveCard from './profile-interactive';
+import ProfileCardInDynamicTable from './examples/ProfileCardInDynamicTable';
 
 const { profiles } = profilecardUtils;
 const InteractiveCard = interActiveCard({ React, AkProfilecard });
@@ -209,5 +210,10 @@ storiesOf(`${name}`, module)
   .add('interactive playground', () => (
     <div style={canvasStyle}>
       <InteractiveCard />
+    </div>
+  ))
+  .add('profile card in dynamic table', () => (
+    <div style={canvasStyle}>
+      <ProfileCardInDynamicTable />
     </div>
   ));

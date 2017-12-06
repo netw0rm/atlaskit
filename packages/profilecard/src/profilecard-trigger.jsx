@@ -122,7 +122,7 @@ export default class ProfilecardTrigger extends PureComponent {
     }
 
     return (
-      <div style={{ display: 'inline-block' }} {...containerListeners}>
+      <div style={{ display: 'inline-block', maxWidth: '100%' }} {...containerListeners}>
         {
           this.state.visible ? <Layer
             autoFlip

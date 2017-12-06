@@ -3,7 +3,7 @@ import React from 'react';
 import ProgressIndicator from '../src/request-or-start-trial/components/ProgressIndicator';
 import { ACTIVE, ACTIVATING, UNKNOWN } from '../src/common/productProvisioningStates';
 
-import setupStorybookAnalytics from './util/setupStorybookAnalytics';
+import setupStorybookAnalytics from './helpers/setupStorybookAnalytics';
 
 storiesOf('request-or-start-trial/ProgressIndicator')
   .add('Empty Progress Bar', () =>

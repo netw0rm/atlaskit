@@ -5,7 +5,7 @@ import { LoadingTimeBase } from '../src/request-or-start-trial/components/Loadin
 
 import { ConfluenceLogo } from '@atlaskit/logo';
 
-import setupStorybookAnalytics from './util/setupStorybookAnalytics';
+import setupStorybookAnalytics from './helpers/setupStorybookAnalytics';
 
 import { ACTIVE, ACTIVATING, UNKNOWN } from '../src/common/productProvisioningStates';
 

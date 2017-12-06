@@ -4,7 +4,7 @@ import { ConfluenceLogo } from '@atlaskit/logo';
 
 import { ConfirmTrialBase } from '../src/request-or-start-trial/components/ConfirmTrial';
 
-import setupStorybookAnalytics from './util/setupStorybookAnalytics';
+import setupStorybookAnalytics from './helpers/setupStorybookAnalytics';
 import { INACTIVE, DEACTIVATED } from '../src/common/productProvisioningStates';
 
 const defaultProps = {

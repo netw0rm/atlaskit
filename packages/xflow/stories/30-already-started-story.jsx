@@ -4,7 +4,7 @@ import React from 'react';
 import { ConfluenceLogo } from '@atlaskit/logo';
 
 import { AlreadyStartedBase } from '../src/request-or-start-trial/components/AlreadyStarted';
-import setupStorybookAnalytics from './util/setupStorybookAnalytics';
+import setupStorybookAnalytics from './helpers/setupStorybookAnalytics';
 import { ACTIVE, ACTIVATING } from '../src/common/productProvisioningStates';
 
 const defaultProps = {

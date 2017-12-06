@@ -3,7 +3,7 @@ import React from 'react';
 
 import { RequestProductTrialOptOut } from '@atlaskit/xflow';
 
-import setupStorybookAnalytics from './util/setupStorybookAnalytics';
+import setupStorybookAnalytics from './helpers/setupStorybookAnalytics';
 import MockConfluenceXFlowProvider from './helpers/MockConfluenceXFlowProvider';
 
 const defaultProps = {

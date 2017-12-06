@@ -3,7 +3,7 @@ import React from 'react';
 
 import { ConfirmTrialBase } from '../src/request-or-start-trial/components/ContextualConfirmTrial';
 
-import setupStorybookAnalytics from './util/setupStorybookAnalytics';
+import setupStorybookAnalytics from './helpers/setupStorybookAnalytics';
 import { INACTIVE, DEACTIVATED } from '../src/common/productProvisioningStates';
 
 const defaultProps = {

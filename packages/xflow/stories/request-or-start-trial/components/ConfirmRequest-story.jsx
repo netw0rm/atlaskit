@@ -23,7 +23,15 @@ storiesOf('request-or-start-trial/ConfirmRequest')
       />
     )
   )
-  .add('with context info', () =>
+  .add('already Requested', () =>
+    setupStorybookAnalytics(
+      <ConfirmRequestBase
+        {...defaultProps}
+        alreadyRequested
+      />
+    )
+  )
+  .add('with custom messages', () =>
     setupStorybookAnalytics(
       <ConfirmRequestBase
         {...defaultProps}
@@ -34,11 +42,15 @@ storiesOf('request-or-start-trial/ConfirmRequest')
       />
     )
   )
-  .add('already Requested', () =>
-  setupStorybookAnalytics(
-    <ConfirmRequestBase
-      {...defaultProps}
-      alreadyRequested
-    />
-  )
-);
+  .add('with custom messages - extreme length', () =>
+    setupStorybookAnalytics(
+      <ConfirmRequestBase
+        {...defaultProps}
+        contextInfo={{
+          contextualHeading: '[custom contextualHeading] Lorem ipsum dolor amet Lorem ipsum dolor amet',
+          contextualMessage: '[custom contextualMessage] Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...',
+        }}
+      />
+    )
+  );
+

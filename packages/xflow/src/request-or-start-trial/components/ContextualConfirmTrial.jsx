@@ -278,10 +278,10 @@ class ContextualConfirmTrial extends Component {
   }
 }
 
-export const ConfirmTrialBase = withAnalytics(injectIntl(ContextualConfirmTrial));
+export const ContextualConfirmTrialBase = withAnalytics(injectIntl(ContextualConfirmTrial));
 
 export default withXFlowProvider(
-  ConfirmTrialBase,
+  ContextualConfirmTrialBase,
   ({
      xFlow: {
        config: {

@@ -11,8 +11,9 @@ const defaultProps = {
   status: INACTIVE,
   spinnerActive: false,
   getStartedButtonDisabled: false,
-  onComplete: () => {},
-  goToProduct: action('ConfirmTrialBase goToProduct'),
+  onComplete: async () => true,
+  onCancel: async () => true,
+  goToProduct: action('ContextualConfirmTrialBase goToProduct'),
   contextInfo: {
     contextualHeading: 'Project pages are powered by Confluence',
     contextualMessage: 'Create, share, and collaborate on all your project docs in one place, with Confluence pages.',
@@ -26,8 +27,6 @@ storiesOf('request-or-start-trial/ContextualConfirmTrial')
     setupStorybookAnalytics(
       <ContextualConfirmTrialBase
         {...defaultProps}
-        onComplete={() => Promise.resolve(true)}
-        onCancel={() => Promise.resolve(true)}
       />
     )
   )
@@ -35,8 +34,6 @@ storiesOf('request-or-start-trial/ContextualConfirmTrial')
     setupStorybookAnalytics(
       <ContextualConfirmTrialBase
         {...defaultProps}
-        onComplete={() => Promise.resolve(true)}
-        onCancel={() => Promise.resolve(true)}
         contextInfo={{
           contextualImage: 'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/kEL9zW2kcU8_U4Y_Rc1p3Zmm8J8Jq_JR0ikTg6cEWe8/Multi-Document.svg',
           contextualHeading: 'Project pages are powered by Confluence',
@@ -51,8 +48,6 @@ storiesOf('request-or-start-trial/ContextualConfirmTrial')
     setupStorybookAnalytics(
       <ContextualConfirmTrialBase
         {...defaultProps}
-        onComplete={() => Promise.resolve(true)}
-        onCancel={() => Promise.resolve(true)}
         spinnerActive
         buttonsDisabled
       />
@@ -73,8 +68,6 @@ storiesOf('request-or-start-trial/ContextualConfirmTrial')
       <ContextualConfirmTrialBase
         {...defaultProps}
         status={DEACTIVATED}
-        onComplete={() => Promise.resolve(true)}
-        onCancel={() => Promise.resolve(true)}
       />
     )
   )
@@ -83,8 +76,6 @@ storiesOf('request-or-start-trial/ContextualConfirmTrial')
       <ContextualConfirmTrialBase
         {...defaultProps}
         status={DEACTIVATED}
-        onComplete={() => Promise.resolve(true)}
-        onCancel={() => Promise.resolve(true)}
         spinnerActive
         buttonsDisabled
       />

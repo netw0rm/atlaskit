@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
-import { MultiStep, Step } from '../src/common/components/multi-step';
+import { MultiStep, Step } from '../../../src/common/components/multi-step';
 
 storiesOf('common/MultiStep')
   .add('basic', () =>

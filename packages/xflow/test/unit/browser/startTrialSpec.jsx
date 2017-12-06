@@ -122,7 +122,7 @@ const defaultProps = {
 
 const defaultRequestOrStartTrialProps = {
   onAnalyticsEvent: noop,
-  sourceComponent: 'storybook-example-compontent',
+  sourceComponent: 'storybook-example-component',
   sourceContext: 'storybook-example-context',
   targetProduct: 'storybook-example-product',
 };

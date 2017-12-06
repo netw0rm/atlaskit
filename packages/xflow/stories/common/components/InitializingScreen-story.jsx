@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { storiesOf } from '@kadira/storybook';
-import { InitializingScreenBase } from '../src/common/components/InitializingScreen';
+import { InitializingScreenBase } from '../../../src/common/components/InitializingScreen';
 import { AtlassianLogo } from '@atlaskit/logo';
 
 storiesOf('common/InitializingScreen')

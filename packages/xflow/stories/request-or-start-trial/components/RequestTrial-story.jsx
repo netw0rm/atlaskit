@@ -3,10 +3,10 @@ import React from 'react';
 
 import { ConfluenceLogo } from '@atlaskit/logo';
 
-import { ConfirmRequestBase } from '../src/request-or-start-trial/components/ConfirmRequest';
-import { RequestTrialNoteBase } from '../src/request-or-start-trial/components/RequestTrialNote';
-import setupStorybookAnalytics from './util/setupStorybookAnalytics';
-import { INACTIVE } from '../src/common/productProvisioningStates';
+import { ConfirmRequestBase } from '../../../src/request-or-start-trial/components/ConfirmRequest';
+import { RequestTrialNoteBase } from '../../../src/request-or-start-trial/components/RequestTrialNote';
+import setupStorybookAnalytics from '../../helpers/setupStorybookAnalytics';
+import { INACTIVE } from '../../../src/common/productProvisioningStates';
 
 const defaultProps = {
   alreadyRequested: false,
@@ -22,7 +22,7 @@ const defaultProps = {
   onComplete: () => {},
 };
 
-storiesOf('RequestTrial')
+storiesOf('request-or-start-trial/RequestTrial')
   .add('Request Trial (INACTIVE)', () =>
     setupStorybookAnalytics(
       <ConfirmRequestBase

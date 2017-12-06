@@ -2,10 +2,10 @@ import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import { ConfluenceLogo } from '@atlaskit/logo';
 
-import { ConfirmTrialBase } from '../src/request-or-start-trial/components/ConfirmTrial';
+import { ConfirmTrialBase } from '../../../src/request-or-start-trial/components/ConfirmTrial';
 
-import setupStorybookAnalytics from './util/setupStorybookAnalytics';
-import { INACTIVE, DEACTIVATED } from '../src/common/productProvisioningStates';
+import setupStorybookAnalytics from '../../helpers/setupStorybookAnalytics';
+import { INACTIVE, DEACTIVATED } from '../../../src/common/productProvisioningStates';
 
 const defaultProps = {
   productLogo: <ConfluenceLogo />,

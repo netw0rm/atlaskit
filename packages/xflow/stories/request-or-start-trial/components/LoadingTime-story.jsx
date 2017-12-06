@@ -1,13 +1,13 @@
 import { storiesOf } from '@kadira/storybook';
 import React from 'react';
 
-import { LoadingTimeBase } from '../src/request-or-start-trial/components/LoadingTime';
+import { LoadingTimeBase } from '../../../src/request-or-start-trial/components/LoadingTime';
 
 import { ConfluenceLogo } from '@atlaskit/logo';
 
-import setupStorybookAnalytics from './util/setupStorybookAnalytics';
+import setupStorybookAnalytics from '../../helpers/setupStorybookAnalytics';
 
-import { ACTIVE, ACTIVATING, UNKNOWN } from '../src/common/productProvisioningStates';
+import { ACTIVE, ACTIVATING, UNKNOWN } from '../../../src/common/productProvisioningStates';
 
 const noop = () => {};
 const defaultProps = {

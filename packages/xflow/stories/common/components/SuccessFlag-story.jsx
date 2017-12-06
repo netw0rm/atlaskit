@@ -1,8 +1,8 @@
 import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
-import SuccessFlag from '../src/common/components/SuccessFlag';
+import SuccessFlag from '../../../src/common/components/SuccessFlag';
 
-import setupStorybookAnalytics from './util/setupStorybookAnalytics';
+import setupStorybookAnalytics from '../../helpers/setupStorybookAnalytics';
 
 storiesOf('common/SuccessFlag')
   .add('basic', () => setupStorybookAnalytics(<SuccessFlag

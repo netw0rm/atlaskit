@@ -1,10 +1,10 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 
-import { ConfirmTrialBase } from '../src/request-or-start-trial/components/ContextualConfirmTrial';
+import { ConfirmTrialBase } from '../../../src/request-or-start-trial/components/ContextualConfirmTrial';
 
-import setupStorybookAnalytics from './util/setupStorybookAnalytics';
-import { INACTIVE, DEACTIVATED } from '../src/common/productProvisioningStates';
+import setupStorybookAnalytics from '../../helpers/setupStorybookAnalytics';
+import { INACTIVE, DEACTIVATED } from '../../../src/common/productProvisioningStates';
 
 const defaultProps = {
   image: 'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/gzztkbTAQf3dfk3_iD9r4hu-ke0srRD9B6qCE4yZbqA/creating-content.svg',

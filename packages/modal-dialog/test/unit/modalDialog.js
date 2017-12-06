@@ -7,12 +7,11 @@ import Content from '../../src/components/Content';
 import { Body } from '../../src/styled/Content';
 import { dialogHeight, dialogWidth, Dialog, Positioner } from '../../src/styled/Modal';
 
+import createWaitForElement from './wait';
+
 // dialogs require an onClose function
 const noop = () => {};
 const StubDialog = props => <ModalDialog onClose={noop} {...props} />;
-
-// wait for react-transition-group to mount the modal
-const wait = (fn) => setTimeout(fn, 1);
 
 describe('modal-dialog', () => {
   it('should be possible to create a component', () => {
@@ -22,13 +21,12 @@ describe('modal-dialog', () => {
 
   describe('props', () => {
     describe('height', () => {
-      it('should be passed to Dialog', () => {
-        const wrapper = mount(<StubDialog height="42%" />);
+      it.only('should be passed to Dialog', async () => {
+        const waitForElement = createWaitForElement(Dialog);
+        const component = mount(<ModalDialog height="42%" onClose={noop} />);
+        const componentReady = await waitForElement(component);
 
-        wait(() => {
-          const dialogHeightProp = wrapper.find(Dialog).prop('heightValue');
-          expect(dialogHeightProp).toBe('42%');
-        });
+        expect(componentReady.prop('heightValue')).toEqual('not the real value');
       });
 
       it('should return px if number', () => {

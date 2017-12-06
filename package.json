@@ -149,8 +149,7 @@
   },
   "engines": {
     "npm": "^3.10.7",
-    "node": "^6.9.2",
-    "yarn": "^0.28.4 || 1.2.1"
+    "node": "^6.9.2"
   },
   "homepage": "https://aui-cdn.atlassian.com/atlaskit/registry/",
   "keywords": [

@@ -1,4 +1,5 @@
 import * as uid from 'uid';
+import { FrontEndSyncEventListener } from '@atlaskit/frontend-sync';
 import { RequestServiceOptions, ServiceConfig, utils } from '@atlaskit/util-service-support';
 import { defaultLimit } from '../constants';
 
@@ -267,10 +268,13 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
   private serviceConfig: ServiceConfig;
   private recentUpdates = new RecentUpdates();
   private itemStateManager: ItemStateManager;
+  private frontEndSyncEventListener: FrontEndSyncEventListener;
 
-  constructor(serviceConfig: ServiceConfig) {
+  constructor(serviceConfig: ServiceConfig, frontEndSyncEventListener: FrontEndSyncEventListener) {
     this.serviceConfig = serviceConfig;
     this.itemStateManager = new ItemStateManager(serviceConfig);
+    this.frontEndSyncEventListener = frontEndSyncEventListener;
+    this.frontEndSyncEventListener.on('avi:task-decision:updated:task', (event, payload) => this.syncUpdates(event, payload));
   }
 
   getDecisions(query: Query, recentUpdatesListener?: RecentUpdatesListener): Promise<DecisionResponse> {
@@ -287,6 +291,13 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
 
   unsubscribeRecentUpdates(id: RecentUpdatesId) {
     this.recentUpdates.unsubscribe(id);
+  }
+
+  syncUpdates(event, payload) {
+    this.recentUpdates.notify({
+      containerAri: payload.containerAri
+    });
+    this.itemStateManager.refreshAllTasks();
   }
 
   notifyRecentUpdates(recentUpdateContext: RecentUpdateContext) {

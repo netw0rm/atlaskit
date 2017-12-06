@@ -1,4 +1,5 @@
 import { AbstractResource, OnProviderChange, Provider, ServiceConfig, utils as serviceUtils } from '@atlaskit/util-service-support';
+import { FrontEndSyncEventListener } from '@atlaskit/frontend-sync';
 
 import { customCategory, selectedToneStorageKey } from '../constants';
 import { EmojiDescription, EmojiId, EmojiResponse, EmojiSearchResult, EmojiUpload, OptionalEmojiDescription, SearchOptions, ToneSelection } from '../types';
@@ -193,8 +194,9 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
   protected retries: Map<Retry<any>, ResolveReject<any>> = new Map();
   protected siteEmojiResource?: SiteEmojiResource;
   protected selectedTone: ToneSelection;
+  protected frontEndSyncEventListener: FrontEndSyncEventListener;
 
-  constructor(config: EmojiResourceConfig) {
+  constructor(config: EmojiResourceConfig, frontEndSyncEventListener: FrontEndSyncEventListener) {
     super();
     this.recordConfig = config.recordConfig;
 
@@ -224,8 +226,22 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
       this.selectedTone = this.loadStoredTone();
     }
 
+    this.frontEndSyncEventListener = frontEndSyncEventListener;
+    frontEndSyncEventListener.on('avi:emoji-service:updated:emoji', (event, payload) => this.loadNewSiteEmoji(event, payload));
+
     if (config.providers.length === 0) {
       throw new Error('No providers specified');
+    }
+  }
+
+  protected loadNewSiteEmoji(event, payload) {
+    if (this.siteEmojiResource) {
+      const emojiFromPayload = payload.emoji;
+      if (emojiFromPayload) {
+        this.addUnknownEmoji(emojiFromPayload);
+        this.refreshLastFilter();
+        return emojiFromPayload;
+      }
     }
   }
 
@@ -508,8 +524,8 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
 export default class UploadingEmojiResource extends EmojiResource implements UploadingEmojiProvider {
   protected allowUpload: boolean;
 
-  constructor(config: EmojiResourceConfig) {
-    super(config);
+  constructor(config: EmojiResourceConfig, frontEndSyncEventListener: FrontEndSyncEventListener) {
+    super(config, frontEndSyncEventListener);
     this.allowUpload = !!config.allowUpload;
   }
 

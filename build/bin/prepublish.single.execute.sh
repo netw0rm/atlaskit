@@ -6,7 +6,7 @@ CHALK="`yarn bin`/chalk"
 popd > /dev/null
 
 $CHALK --no-stdin -t "{blue Generating UMD bundle...}"
-webpack --config ../../build/webpack/production-umd.js $@
+webpack --config ../../build/webpack/production-umd.js --display-error-details $@
 
 $CHALK --no-stdin -t "{blue Generating CJS bundle...}"
-webpack --config ../../build/webpack/production-cjs.js $@
+webpack --config ../../build/webpack/production-cjs.js --display-error-details $@

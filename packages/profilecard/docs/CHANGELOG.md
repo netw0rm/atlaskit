@@ -1,5 +1,8 @@
 # @atlaskit/profilecard
 
+## 3.12.2 (2017-12-06)
+
+* bug fix; add max-width to profilecard trigger to allow CSS truncation of children (issues closed: ak-3989) ([ad721a1](https://bitbucket.org/atlassian/atlaskit/commits/ad721a1))
 ## 3.12.1 (2017-11-27)
 
 * bug fix; fix profilecard error when user has null presenceMessage ([b250e2b](https://bitbucket.org/atlassian/atlaskit/commits/b250e2b))

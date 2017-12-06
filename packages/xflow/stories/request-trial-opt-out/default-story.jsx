@@ -18,7 +18,7 @@ const defaultOptOutProps = {
   onComplete: () => Promise.resolve(true),
 };
 
-storiesOf('RequestProductTrialOptOut')
+storiesOf('request-trial-opt-out/RequestProductTrialOptOut')
   .add('Opt Out Dialog', () =>
     setupStorybookAnalytics(
       <MockConfluenceXFlowProvider {...defaultProps}>

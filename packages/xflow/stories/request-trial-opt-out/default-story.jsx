@@ -3,8 +3,8 @@ import React from 'react';
 
 import { RequestProductTrialOptOut } from '@atlaskit/xflow';
 
-import setupStorybookAnalytics from './helpers/setupStorybookAnalytics';
-import MockConfluenceXFlowProvider from './helpers/MockConfluenceXFlowProvider';
+import setupStorybookAnalytics from '../helpers/setupStorybookAnalytics';
+import MockConfluenceXFlowProvider from '../helpers/MockConfluenceXFlowProvider';
 
 const defaultProps = {
   canCurrentUserAddProduct: async () => true,
@@ -13,7 +13,7 @@ const defaultProps = {
 
 const defaultOptOutProps = {
   onAnalyticsEvent: action('onAnalyticsEvent'),
-  sourceComponent: 'storybook-example-compontent',
+  sourceComponent: 'storybook-example-compontent', // XXX
   sourceContext: 'storybook-example-context',
   onComplete: () => Promise.resolve(true),
 };
@@ -25,8 +25,8 @@ storiesOf('RequestProductTrialOptOut')
         <RequestProductTrialOptOut
           {...defaultOptOutProps}
           optOutRequestTrialFeature={() =>
-            new Promise(resolve => setTimeout(resolve, 1000)
-          )}
+            new Promise(resolve => setTimeout(resolve, 1000))
+          }
         />
       </MockConfluenceXFlowProvider>
     )
@@ -38,8 +38,8 @@ storiesOf('RequestProductTrialOptOut')
           {...defaultOptOutProps}
           optOutRequestTrialFeature={() =>
             new Promise((_, reject) =>
-              setTimeout(() => reject({ message: 'Example failure' }), 1000)
-            )}
+              setTimeout(() => reject({ message: 'Example failure' }), 1000))
+          }
         />
       </MockConfluenceXFlowProvider>
     )

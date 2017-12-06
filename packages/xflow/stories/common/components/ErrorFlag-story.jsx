@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { storiesOf, action } from '@kadira/storybook';
-import ErrorFlag from '../src/common/components/ErrorFlag';
+import ErrorFlag from '../../../src/common/components/ErrorFlag';
 
-import setupStorybookAnalytics from './helpers/setupStorybookAnalytics';
+import setupStorybookAnalytics from '../../helpers/setupStorybookAnalytics';
 
 storiesOf('common/ErrorFlag')
   .add('basic', () => setupStorybookAnalytics(<ErrorFlag

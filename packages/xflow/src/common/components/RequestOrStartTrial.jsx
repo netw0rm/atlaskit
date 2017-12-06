@@ -11,7 +11,7 @@ import RequestOrStartTrialDialog from '../styled/RequestOrStartTrialDialog';
 
 import { ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN } from '../productProvisioningStates';
 
-const Screens = {
+export const Screens = {
   INITIALIZING: 'INITIALIZING',
   CANNOT_ADD: 'CANNOT_ADD',
   ALREADY_STARTED: 'ALREADY_STARTED',
@@ -58,81 +58,94 @@ class RequestOrStartTrial extends Component {
     alreadyRequested: false,
   };
 
-  componentWillMount() {
-    const { checkProductRequestFlag, firePrivateAnalyticsEvent } = this.props;
-
-    Promise.resolve(checkProductRequestFlag())
-      .catch(e => {
-        firePrivateAnalyticsEvent('xflow.request-or-start-trial.product-request-flag-check.failed');
-        this.setState({
-          initializingCheckFailed: true,
-          showInitializationError: true,
-        });
-        throw e;
-      })
-      .then(alreadyRequested => {
-        this.setState({ alreadyRequested });
-        return this.resetRequestOrStartTrial();
-      });
+  componentDidMount() {
+    return this.fetchAsyncData();
   }
 
-  resetRequestOrStartTrial = async () => {
+  onFailure(operationName) {
+    this.props.firePrivateAnalyticsEvent(`xflow.request-or-start-trial.${operationName}.failed`);
+    this.setState({
+      initializingCheckFailed: true,
+      showInitializationError: true,
+    });
+  }
+
+  fetchAsyncData = async () => {
+    let hasPermissionToAddProduct;
+    try {
+      hasPermissionToAddProduct = await this.props.canCurrentUserAddProduct();
+    } catch (e) {
+      this.onFailure('trusted-user-check');
+      throw e;
+    }
+
+    return hasPermissionToAddProduct ?
+      (await this.fetchAsyncStartFlowData()) :
+      (await this.fetchAsyncRequestFlowData());
+  }
+
+  fetchAsyncRequestFlowData = async () => {
+    let alreadyRequested;
+    try {
+      alreadyRequested = await this.props.checkProductRequestFlag();
+    } catch (e) {
+      this.onFailure('product-request-flag-check');
+      throw e;
+    }
+
+    this.setState({
+      alreadyRequested,
+      screen: Screens.REQUEST_TRIAL,
+      // We assume that the product is inactive if they don't have permission.
+      activationState: INACTIVE,
+    });
+  }
+
+  fetchAsyncStartFlowData = async () => {
     const {
       getProductActivationState,
-      canCurrentUserAddProduct,
       waitForActivation,
-      firePrivateAnalyticsEvent,
     } = this.props;
 
-    let currentOperation = 'request-or-start-trial';
+    let activationState;
     try {
-      currentOperation = 'request-or-start-trial.trusted-user-check';
-      const hasPermissionToAddProduct = await canCurrentUserAddProduct();
-      if (!hasPermissionToAddProduct) {
-        this.setState({
-          screen: Screens.REQUEST_TRIAL,
-          // We assume that the product is inactive if they don't have permission.
-          activationState: INACTIVE,
-        });
-        return;
-      }
-
-      currentOperation = 'request-or-start-trial.product-activation-state-check';
-      const activationState = await getProductActivationState();
-
-      switch (activationState) {
-        case ACTIVE:
-        case ACTIVATING:
-          this.setState({
-            screen: Screens.ALREADY_STARTED,
-            activationState,
-          });
-
-          if (activationState === ACTIVATING) {
-            currentOperation = 'request-or-start-trial.wait-for-activation';
-            await waitForActivation();
-          }
-          break;
-
-        case INACTIVE:
-        case DEACTIVATED:
-          this.setState({
-            screen: Screens.START_TRIAL,
-            activationState,
-          });
-          break;
-
-        default:
-          throw new Error('unrecognized activation state!');
-      }
+      activationState = await getProductActivationState();
     } catch (e) {
-      firePrivateAnalyticsEvent(`xflow.${currentOperation}.failed`);
-      this.setState({
-        initializingCheckFailed: true,
-        showInitializationError: true,
-      });
+      this.onFailure('product-activation-state-check');
+      throw e;
     }
-  };
+
+    switch (activationState) {
+      case ACTIVE:
+      case ACTIVATING:
+        this.setState({
+          screen: Screens.ALREADY_STARTED,
+          activationState,
+        });
+
+        if (activationState === ACTIVATING) {
+          try {
+            await waitForActivation();
+          } catch (e) {
+            this.onFailure('wait-for-activation');
+            throw e;
+          }
+        }
+        break;
+
+      case INACTIVE:
+      case DEACTIVATED:
+        this.setState({
+          screen: Screens.START_TRIAL,
+          activationState,
+        });
+        break;
+
+      default:
+        this.onFailure('product-activation-state-check');
+        throw new Error('unrecognized activation state!');
+    }
+  }
 
   flagActions = [
     {
@@ -142,7 +155,7 @@ class RequestOrStartTrial extends Component {
           initializingCheckFailed: false,
           showInitializationError: false,
         });
-        return this.resetRequestOrStartTrial();
+        return this.fetchAsyncData();
       },
     },
   ];
@@ -249,10 +262,10 @@ class RequestOrStartTrial extends Component {
   }
 }
 
-export const RequestOrStartTrialBase = withAnalytics(RequestOrStartTrial);
+export const RequestOrStartTrialBase = RequestOrStartTrial;
 
 export default withXFlowProvider(
-  RequestOrStartTrialBase,
+  withAnalytics(RequestOrStartTrialBase),
   ({ xFlow: {
       canCurrentUserAddProduct,
       checkProductRequestFlag,

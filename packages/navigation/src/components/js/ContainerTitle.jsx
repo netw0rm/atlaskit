@@ -2,6 +2,7 @@
 import React, { PureComponent } from 'react';
 import { ThemeProvider, withTheme } from 'styled-components';
 import { itemThemeNamespace } from '@atlaskit/item';
+import memoizeOne from 'memoize-one';
 import AkNavigationItem from './NavigationItem';
 import ContainerTitleIcon from '../styled/ContainerTitleIcon';
 import ContainerTitleText from '../styled/ContainerTitleText';
@@ -45,6 +46,8 @@ const key = itemThemeNamespace;
 class ContainerTitle extends PureComponent {
   props: Props;
 
+  withOuterTheme = memoizeOne((outerTheme) => overrideItemTheme(outerTheme, key));
+
   render() {
     const {
       text,
@@ -57,6 +60,7 @@ class ContainerTitle extends PureComponent {
     const isNavCollapsed = this.props.theme[rootKey] ?
       this.props.theme[rootKey].isCollapsed
       : false;
+    const theme = this.withOuterTheme(this.props.theme);
     /* eslint-enable react/prop-types */
 
     const interactiveWrapperProps = {
@@ -69,7 +73,7 @@ class ContainerTitle extends PureComponent {
     };
 
     return (
-      <ThemeProvider theme={theme => overrideItemTheme(theme, key)}>
+      <ThemeProvider theme={theme}>
         <AkNavigationItem
           icon={isNavCollapsed ? null : <ContainerTitleIcon>{icon}</ContainerTitleIcon>}
           subText={isNavCollapsed ? null : subText}

@@ -130,7 +130,7 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
                                      productName) => {
   const MockXFlowProvider = mockXFlowProviderFactory(provider);
 
-  let story = storiesOf(`RequestOrStartTrial (${productName})`);
+  let story = storiesOf(`request-or-start-trial/RequestOrStartTrial (${productName})`);
 
   if (hasGrantAccess) {
     story = story.add('User can add a product (INACTIVE), Start Trial flow with Grant Access screen', () =>

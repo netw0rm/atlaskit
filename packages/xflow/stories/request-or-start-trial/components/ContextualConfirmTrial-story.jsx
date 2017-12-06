@@ -1,7 +1,7 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 
-import { ConfirmTrialBase } from '../../../src/request-or-start-trial/components/ContextualConfirmTrial';
+import { ContextualConfirmTrialBase } from '../../../src/request-or-start-trial/components/ContextualConfirmTrial';
 
 import setupStorybookAnalytics from '../../helpers/setupStorybookAnalytics';
 import { INACTIVE, DEACTIVATED } from '../../../src/common/productProvisioningStates';
@@ -11,8 +11,9 @@ const defaultProps = {
   status: INACTIVE,
   spinnerActive: false,
   getStartedButtonDisabled: false,
-  onComplete: () => {},
-  goToProduct: action('ConfirmTrialBase goToProduct'),
+  onComplete: async () => true,
+  onCancel: async () => true,
+  goToProduct: action('ContextualConfirmTrialBase goToProduct'),
   contextInfo: {
     contextualHeading: 'Project pages are powered by Confluence',
     contextualMessage: 'Create, share, and collaborate on all your project docs in one place, with Confluence pages.',
@@ -24,19 +25,15 @@ const defaultProps = {
 storiesOf('request-or-start-trial/ContextualConfirmTrial')
   .add('Confirm Trial dialog (INACTIVE)', () =>
     setupStorybookAnalytics(
-      <ConfirmTrialBase
+      <ContextualConfirmTrialBase
         {...defaultProps}
-        onComplete={() => Promise.resolve(true)}
-        onCancel={() => Promise.resolve(true)}
       />
     )
   )
   .add('Confirm Trial dialog (INACTIVE) with custom contextual image', () =>
     setupStorybookAnalytics(
-      <ConfirmTrialBase
+      <ContextualConfirmTrialBase
         {...defaultProps}
-        onComplete={() => Promise.resolve(true)}
-        onCancel={() => Promise.resolve(true)}
         contextInfo={{
           contextualImage: 'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/kEL9zW2kcU8_U4Y_Rc1p3Zmm8J8Jq_JR0ikTg6cEWe8/Multi-Document.svg',
           contextualHeading: 'Project pages are powered by Confluence',
@@ -49,10 +46,8 @@ storiesOf('request-or-start-trial/ContextualConfirmTrial')
   )
   .add('Confirm Trial dialog (INACTIVE) with spinner', () =>
     setupStorybookAnalytics(
-      <ConfirmTrialBase
+      <ContextualConfirmTrialBase
         {...defaultProps}
-        onComplete={() => Promise.resolve(true)}
-        onCancel={() => Promise.resolve(true)}
         spinnerActive
         buttonsDisabled
       />
@@ -60,7 +55,7 @@ storiesOf('request-or-start-trial/ContextualConfirmTrial')
   )
   .add('Confirm Trial dialog (INACTIVE), Error flag after Confirm', () =>
     setupStorybookAnalytics(
-      <ConfirmTrialBase
+      <ContextualConfirmTrialBase
         {...defaultProps}
         startProductTrial={() => new Promise((_, reject) => setTimeout(reject, 1500))}
         onComplete={() => Promise.resolve()}
@@ -70,21 +65,17 @@ storiesOf('request-or-start-trial/ContextualConfirmTrial')
   )
   .add('Confirm Trial dialog (DEACTIVATED)', () =>
     setupStorybookAnalytics(
-      <ConfirmTrialBase
+      <ContextualConfirmTrialBase
         {...defaultProps}
         status={DEACTIVATED}
-        onComplete={() => Promise.resolve(true)}
-        onCancel={() => Promise.resolve(true)}
       />
     )
   )
   .add('Confirm Trial dialog (DEACTIVATED) with spinner', () =>
     setupStorybookAnalytics(
-      <ConfirmTrialBase
+      <ContextualConfirmTrialBase
         {...defaultProps}
         status={DEACTIVATED}
-        onComplete={() => Promise.resolve(true)}
-        onCancel={() => Promise.resolve(true)}
         spinnerActive
         buttonsDisabled
       />
@@ -92,7 +83,7 @@ storiesOf('request-or-start-trial/ContextualConfirmTrial')
   )
   .add('Confirm Trial dialog (DEACTIVATED), Error flag after Confirm', () =>
     setupStorybookAnalytics(
-      <ConfirmTrialBase
+      <ContextualConfirmTrialBase
         {...defaultProps}
         status={DEACTIVATED}
         startProductTrial={() => new Promise((_, reject) => setTimeout(reject, 1500))}

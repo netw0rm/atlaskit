@@ -46,7 +46,8 @@ const defaultRequestOrStartTrialProps = {
 };
 
 describe('RequestOrStartTrial', () => {
-  const sandbox = sinon.createSandbox();
+  let sandbox;
+  beforeEach(() => { sandbox = sinon.createSandbox(); });
   afterEach(() => sandbox.restore());
 
   beforeEach(() => fetchMock.catch(417));
@@ -54,12 +55,11 @@ describe('RequestOrStartTrial', () => {
 
   describe('new to confluence', () => {
     let xflow;
-    let requestTrialWithNoteSpy;
 
     beforeEach(() => {
       fetchMock.putOnce(userPreferencesEndpoint('confluence.ondemand'), 200);
 
-      requestTrialWithNoteSpy = sandbox.spy(defaultProps, 'requestTrialWithNote');
+      sandbox.spy(defaultProps, 'requestTrialWithNote');
       xflow = mount(
         <XFlowIntlProvider locale="en_US">
           <XFlowAnalyticsListener onEvent={noop}>
@@ -103,7 +103,7 @@ describe('RequestOrStartTrial', () => {
       expect(xflow.find(CheckCircleIcon).props().label).toMatch('Success icon');
       expect(xflow.find(SuccessFlag).text()).toMatch('That\'s sent!');
       expect(xflow.find(SuccessFlag).text()).toMatch('We\'ll let your admin know right away.');
-      sinon.assert.calledWith(requestTrialWithNoteSpy, 'Hi! I\'d like to try Confluence. It helps give the team more context on anything happening in Jira - and there\'s a free 30 day trial.');
+      sinon.assert.calledWith(defaultProps.requestTrialWithNote, 'Hi! I\'d like to try Confluence. It helps give the team more context on anything happening in Jira - and there\'s a free 30 day trial.');
     });
 
     it('should send a custom note', async () => {
@@ -118,7 +118,7 @@ describe('RequestOrStartTrial', () => {
       expect(xflow.find(CheckCircleIcon).props().label).toMatch('Success icon');
       expect(xflow.find(SuccessFlag).text()).toMatch('That\'s sent!');
       expect(xflow.find(SuccessFlag).text()).toMatch('We\'ll let your admin know right away.');
-      sinon.assert.calledWith(requestTrialWithNoteSpy, 'Hey, look a custom note');
+      sinon.assert.calledWith(defaultProps.requestTrialWithNote, 'Hey, look a custom note');
     });
 
     it('should render Success Flag with no note', async () => {
@@ -132,7 +132,7 @@ describe('RequestOrStartTrial', () => {
       expect(xflow.find(CheckCircleIcon).props().label).toMatch('Success icon');
       expect(xflow.find(SuccessFlag).text()).toMatch('That\'s sent!');
       expect(xflow.find(SuccessFlag).text()).toMatch('We\'ll let your admin know right away.');
-      sinon.assert.calledWith(requestTrialWithNoteSpy, 'Hi! I\'d like to try Confluence.');
+      sinon.assert.calledWith(defaultProps.requestTrialWithNote, 'Hi! I\'d like to try Confluence.');
     });
   });
 

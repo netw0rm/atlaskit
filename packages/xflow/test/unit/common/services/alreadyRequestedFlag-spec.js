@@ -36,7 +36,10 @@ describe('alreadyRequestedFlag', () => {
     }
 
     it('should return a promise resolved with TRUE if the flag was previously set', async () => {
-      const matcher = mockUserPreferencesGetEndpointWithResponse({ value: true }, TEST_PRODUCT_KEY);
+      const matcher = mockUserPreferencesGetEndpointWithResponse(
+        [{ value: true }],
+        TEST_PRODUCT_KEY
+      );
 
       const result = await getAlreadyRequestedFlag(TEST_PRODUCT_KEY);
 
@@ -46,7 +49,7 @@ describe('alreadyRequestedFlag', () => {
 
     it('should return a promise resolved with FALSE if the flag was NOT previously set', async () => {
       const matcher = mockUserPreferencesGetEndpointWithResponse(
-        { value: false },
+        [{ value: false }],
         TEST_PRODUCT_KEY
       );
 

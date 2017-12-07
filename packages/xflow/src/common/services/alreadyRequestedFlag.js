@@ -48,7 +48,8 @@ export const getAlreadyRequestedFlag = async (productKey) => {
   });
 
   if (response.ok) {
-    const data = await response.json();
+    // response returns [{key, value}]
+    const [data] = await response.json();
     return data.value;
   }
   return false;

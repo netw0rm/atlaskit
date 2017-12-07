@@ -1,6 +1,13 @@
 const DISPLAY_NAME = 'waitForElement';
 
-const waitForElement = (selector, maxTime = 2000, interval = 10) => rootComponent => {
+describe('wait-for-element', () => {
+  it('wait', () => {
+    const val = 1;
+    expect(val).toEqual(1);
+  });
+});
+
+const waitForElement = (selector, maxTime = 15000, interval = 10) => rootComponent => {
   // Check correct usage
   if (!selector) {
     return Promise.reject(new Error(`No selector specified in ${DISPLAY_NAME}.`));
@@ -16,7 +23,7 @@ const waitForElement = (selector, maxTime = 2000, interval = 10) => rootComponen
   return new Promise((resolve, reject) => {
     let remainingTime = maxTime;
 
-    const intervalId = setInterval(() => {
+    const intervalId = setInterval(() => { // eslint-disable-line
       // reject with error when timeout
       if (remainingTime < 0) {
         clearInterval(intervalId);

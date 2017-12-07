@@ -37,5 +37,13 @@ describe('envDetection', () => {
       };
       expect(getEnvAPIUrl(mockWindow)).toEqual(API_PROD_URL);
     });
+
+    it('should return the session storage URL override if present', () => {
+      const SESSION_STORAGE_VALUE = 'foo';
+      const mockSessionStorage = {
+        getItem: () => SESSION_STORAGE_VALUE,
+      };
+      expect(getEnvAPIUrl({}, mockSessionStorage)).toEqual(SESSION_STORAGE_VALUE);
+    });
   });
 });

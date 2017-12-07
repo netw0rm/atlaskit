@@ -10,6 +10,7 @@ const NoteText = styled.textarea`
   border: solid 1px ${colors.N30};
   border-radius: ${borderRadius}px;
   font-size: ${fontSize}px;
+  font-family: inherit;
   height: 100px;
   line-height: 1.43;
   max-height: ${HEIGHT_OF_40_PX_WITH_PADDING}px;

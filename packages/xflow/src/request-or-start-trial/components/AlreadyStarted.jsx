@@ -39,8 +39,8 @@ class AlreadyStarted extends Component {
   };
 
   static defaultProps = {
-    startProductTrial: async () => {},
-    closeAlreadyStartedDialog: async () => {},
+    startProductTrial: () => {},
+    closeAlreadyStartedDialog: () => {},
   };
 
   state = {
@@ -78,7 +78,7 @@ class AlreadyStarted extends Component {
       isLoading: true,
     });
     await goToProduct();
-    onComplete();
+    return onComplete();
   };
 
   render() {

@@ -41,7 +41,7 @@ class ConfirmRequest extends Component {
 
   static defaultProps = {
     productLogo: <AtlassianLogo />,
-    cancelRequestTrial: () => Promise.resolve(),
+    cancelRequestTrial: () => {},
   };
 
   componentDidMount() {
@@ -54,13 +54,13 @@ class ConfirmRequest extends Component {
   handleRequestTrialClick = () => {
     const { firePrivateAnalyticsEvent, onComplete } = this.props;
     firePrivateAnalyticsEvent('xflow.request-trial.request-button.clicked');
-    onComplete();
+    return onComplete();
   };
 
   handleLearnMoreClick = () => {
     const { firePrivateAnalyticsEvent, onComplete } = this.props;
     firePrivateAnalyticsEvent('xflow.already-requested-trial.learn-more-button.clicked');
-    Promise.resolve(() => onComplete());
+    return onComplete();
   };
 
   // This is necessary to capture middle and right mouse clicks
@@ -82,7 +82,8 @@ class ConfirmRequest extends Component {
     firePrivateAnalyticsEvent(alreadyRequested ?
       'xflow.already-requested-trial.close-button.clicked' :
       'xflow.request-trial.close-button.clicked');
-    Promise.resolve(cancelRequestTrial()).then(onCancel);
+    return Promise.resolve(cancelRequestTrial())
+      .then(onCancel);
   };
 
   render() {

@@ -59,8 +59,8 @@ class LoadingTime extends Component {
   };
 
   static defaultProps = {
-    closeLoadingDialog: async () => {},
-    goToProduct: async () => {},
+    closeLoadingDialog: () => {},
+    goToProduct: () => {},
   };
 
   state = {
@@ -134,7 +134,7 @@ class LoadingTime extends Component {
       isLoading: true,
     });
     await goToProduct();
-    onComplete();
+    return onComplete();
   };
 
   handleErrorFlagDismiss = () => {

@@ -111,8 +111,8 @@ class GrantAccess extends Component {
   };
 
   static defaultProps = {
-    grantAccessToUsers: async () => {},
-    retrieveUsers: async () => [],
+    grantAccessToUsers: () => {},
+    retrieveUsers: () => [],
     showNotifyUsersOption: true,
     showProgressIndicator: true,
     showAffectMyBill: true,
@@ -223,8 +223,7 @@ class GrantAccess extends Component {
     });
 
     if (selectedRadio === laterOption) {
-      onComplete();
-      return;
+      return onComplete(); // eslint-disable-line consistent-return
     }
 
     try {
@@ -238,7 +237,7 @@ class GrantAccess extends Component {
 
       this.notifyDocumentOfUsersGrantedAccess(users);
 
-      onComplete();
+      return onComplete(); // eslint-disable-line consistent-return
     } catch (e) {
       firePrivateAnalyticsEvent('xflow.grant-access.continue-button.failed-to-grant-access', {
         errorMessage: e.message,

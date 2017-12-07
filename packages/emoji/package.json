@@ -35,6 +35,7 @@
     "@atlaskit/icon": "^10.3.2",
     "@atlaskit/spinner": "^4.0.2",
     "@atlaskit/theme": "^2.2.4",
+    "@atlaskit/tooltip": "^8.0.7",
     "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-service-support": "^2.0.2",
     "babel-runtime": "^6.11.6",

@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import * as React from 'react';
 import { expect } from 'chai';
 import { waitUntil } from '@atlaskit/util-common-test';
-import * as styles from '../../../../src/components/common/styles';
+import Tooltip from '@atlaskit/tooltip';
 
 import { EmojiDescription } from '../../../../src/types';
 import Emoji from '../../../../src/components/common/Emoji';
@@ -43,20 +43,19 @@ describe('<ResourcedEmoji />', () => {
     });
   });
 
-  it('should not render a tooltip on hover if there is no showTooltip prop', () => {
+  it('should not wrap with a tooltip if there is no showTooltip prop', () => {
     const component = mount(<ResourcedEmoji
       emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
       emojiId={{ shortName: 'shouldnotbeused', id: grinEmoji.id }}
     />);
 
     return waitUntil(() => emojiVisible(component)).then(() => {
-      component.simulate('mouseenter');
-      const tooltip = component.find(`.${styles.emojiTooltip} span`);
+      const tooltip = component.find(Tooltip);
       expect(tooltip).to.have.length(0);
     });
   });
 
-  it('should render a tooltip on hover if showTooltip is set to true', () => {
+  it('should wrap with tooltip if showTooltip is set to true', () => {
     const component = mount(<ResourcedEmoji
       emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
       emojiId={{ shortName: 'shouldnotbeused', id: grinEmoji.id }}
@@ -64,11 +63,8 @@ describe('<ResourcedEmoji />', () => {
     />);
 
     return waitUntil(() => emojiVisible(component)).then(() => {
-      component.simulate('mouseenter');
-      const tooltip = component.find(`.${styles.emojiTooltip} span`);
-      // Nested span in tooltip for ResourcedEmoji
-      expect(tooltip).to.have.length(2);
-      expect(tooltip.at(0).prop('aria-label')).to.equal(grinEmoji.shortName);
+      const tooltip = component.find(Tooltip);
+      expect(tooltip).to.have.length(1);
     });
   });
 
@@ -148,7 +144,7 @@ describe('<ResourcedEmoji />', () => {
     });
   });
 
-  it('placeholder should render a tooltip on hover if showTooltip is set to true', () => {
+  it('placeholder should be wrapped with a tooltip if showTooltip is set to true', () => {
     let resolver;
     let resolverResult;
     const config: MockEmojiResourceConfig = {
@@ -164,10 +160,8 @@ describe('<ResourcedEmoji />', () => {
     />);
 
     return waitUntil(() => emojiPlaceHolderVisible(component)).then(() => {
-      component.simulate('mouseenter');
-      const tooltip = component.find(`.${styles.emojiTooltip} span`);
+      const tooltip = component.find(Tooltip);
       expect(tooltip).to.have.length(1);
-      expect(tooltip.at(0).prop('aria-label')).to.equal('doesnotexist');
     });
   });
 });

@@ -1,8 +1,9 @@
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import * as React from 'react';
 import { SyntheticEvent } from 'react';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
+import Tooltip from '@atlaskit/tooltip';
 
 import * as styles from '../../../../src/components/common/styles';
 import Emoji from '../../../../src/components/common/Emoji';
@@ -47,25 +48,23 @@ describe('<Emoji />', () => {
       expect((wrapper.find(`.${styles.emojiContainer}`)).hasClass((styles.selected))).to.equal(true);
     });
 
-    it('should not render a tooltip on hover if there is no showTooltip prop', () => {
-      const wrapper = mount(<Emoji
-        emoji={spriteEmoji}
-      />);
-      wrapper.simulate('mouseenter');
-      const tooltip = wrapper.find(`.${styles.emojiTooltip} span`);
-      expect(tooltip).to.have.length(0);
-    });
-
-    it('should render a tooltip on hover if showTooltip is set to true', () => {
-      const wrapper = mount(<Emoji
+    it('should be wrapped in a tooltip if showTooltip is set to true', () => {
+      const wrapper = shallow(<Emoji
         emoji={spriteEmoji}
         showTooltip={true}
       />);
-      wrapper.simulate('mouseenter');
-      const tooltip = wrapper.find(`.${styles.emojiTooltip} span`);
-      // One span for enclosing tooltip and span for emoji node
-      expect(tooltip).to.have.length(2);
-      expect(tooltip.at(0).prop('aria-label')).to.equal(spriteEmoji.shortName);
+
+      const tooltip = wrapper.find(Tooltip);
+      expect(tooltip).to.have.length(1);
+    });
+
+    it('should not be wrapped in a tooltip if showTooltip is not set', () => {
+      const wrapper = shallow(<Emoji
+        emoji={spriteEmoji}
+      />);
+
+      const tooltip = wrapper.find(Tooltip);
+      expect(tooltip).to.have.length(0);
     });
   });
 
@@ -116,24 +115,23 @@ describe('<Emoji />', () => {
       expect((image).hasClass((styles.selected))).to.equal(true);
     });
 
-    it('should not render a tooltip on hover if there is no showTooltip prop', () => {
-      const wrapper = mount(<Emoji
-        emoji={imageEmoji}
-      />);
-      wrapper.simulate('mouseenter');
-      const tooltip = wrapper.find(`.${styles.emojiTooltip} span`);
-      expect(tooltip).to.have.length(0);
-    });
-
-    it('should render a tooltip on hover if showTooltip is set to true', () => {
-      const wrapper = mount(<Emoji
+    it('should be wrapped in a tooltip if showTooltip is set to true', () => {
+      const wrapper = shallow(<Emoji
         emoji={imageEmoji}
         showTooltip={true}
       />);
-      wrapper.simulate('mouseenter');
-      const tooltip = wrapper.find(`.${styles.emojiTooltip} span`);
+
+      const tooltip = wrapper.find(Tooltip);
       expect(tooltip).to.have.length(1);
-      expect(tooltip.at(0).prop('aria-label')).to.equal(spriteEmoji.shortName);
+    });
+
+    it('should not be wrapped in a tooltip if showTooltip is not set', () => {
+      const wrapper = shallow(<Emoji
+        emoji={imageEmoji}
+      />);
+
+      const tooltip = wrapper.find(Tooltip);
+      expect(tooltip).to.have.length(0);
     });
   });
 });

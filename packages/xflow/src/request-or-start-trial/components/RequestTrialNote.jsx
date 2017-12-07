@@ -41,14 +41,16 @@ const messages = defineMessages({
 
 class RequestTrialNote extends Component {
   static propTypes = {
-    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
-    intl: intlShape.isRequired,
-    onComplete: PropTypes.func.isRequired,
     prompt: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
     placeholderShort: PropTypes.string.isRequired,
+
+    onComplete: PropTypes.func.isRequired,
     requestTrialWithNote: PropTypes.func,
     setProductRequestFlag: PropTypes.func,
+
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
+    intl: intlShape.isRequired,
   };
 
   static defaultProps = {

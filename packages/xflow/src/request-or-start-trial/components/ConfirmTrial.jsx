@@ -26,20 +26,23 @@ const messages = defineMessages({
 
 class ConfirmTrial extends Component {
   static propTypes = {
-    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
-    intl: intlShape.isRequired,
     productLogo: PropTypes.node.isRequired,
-    spinnerActive: PropTypes.bool,
-    buttonsDisabled: PropTypes.bool,
-    onComplete: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired,
-    startProductTrial: PropTypes.func,
-    cancelStartProductTrial: PropTypes.func,
-    status: PropTypes.oneOf([INACTIVE, DEACTIVATED]),
+
     trialHeading: PropTypes.string.isRequired,
     trialMessage: PropTypes.node.isRequired,
     reactivateHeading: PropTypes.string.isRequired,
     reactivateMessage: PropTypes.node.isRequired,
+    spinnerActive: PropTypes.bool,
+    buttonsDisabled: PropTypes.bool,
+    status: PropTypes.oneOf([INACTIVE, DEACTIVATED]),
+
+    startProductTrial: PropTypes.func,
+    cancelStartProductTrial: PropTypes.func,
+    onComplete: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+
+    intl: intlShape.isRequired,
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
   };
 
   static defaultProps = {

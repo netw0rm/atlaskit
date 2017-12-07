@@ -13,7 +13,6 @@ export default class XFlowIntlProvider extends Component {
   static propTypes = {
     locale: PropTypes.string.isRequired,
     children: PropTypes.node,
-
   }
   render() {
     const { children } = this.props;

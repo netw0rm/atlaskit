@@ -92,9 +92,6 @@ class GrantAccess extends Component {
     heading: PropTypes.string,
     defaultAccess: PropTypes.node,
 
-    intl: intlShape.isRequired,
-    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
-
     userSelectInFocus: PropTypes.bool,
     userSelectIsInvalid: PropTypes.bool,
     changeUsers: PropTypes.bool,
@@ -108,6 +105,9 @@ class GrantAccess extends Component {
     showNotifyUsersOption: PropTypes.bool,
     showProgressIndicator: PropTypes.bool,
     showAffectMyBill: PropTypes.bool,
+
+    intl: intlShape.isRequired,
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
   };
 
   static defaultProps = {

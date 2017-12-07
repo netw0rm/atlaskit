@@ -12,6 +12,7 @@ import RequestTrialNote from './RequestTrialNote';
 class RequestTrial extends Component {
   static propTypes = {
     alreadyRequested: PropTypes.bool.isRequired,
+
     contextInfo: PropTypes.shape({
       contextualImage: PropTypes.string,
       contextualHeading: PropTypes.string,
@@ -19,9 +20,11 @@ class RequestTrial extends Component {
       reactivateCTA: PropTypes.string,
       trialCTA: PropTypes.string,
     }),
-    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
+
     onComplete: PropTypes.func,
     onTrialRequested: PropTypes.func,
+
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
   };
 
   static defaultProps = {

@@ -32,16 +32,7 @@ const messages = defineMessages({
 
 class ContextualConfirmTrial extends Component {
   static propTypes = {
-    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
-    intl: intlShape.isRequired,
     image: PropTypes.string.isRequired,
-    spinnerActive: PropTypes.bool,
-    buttonsDisabled: PropTypes.bool,
-    onComplete: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired,
-    startProductTrial: PropTypes.func,
-    cancelStartProductTrial: PropTypes.func,
-    status: PropTypes.oneOf([INACTIVE, DEACTIVATED]),
     contextInfo: PropTypes.shape({
       contextualImage: PropTypes.string,
       contextualHeading: PropTypes.string.isRequired,
@@ -49,6 +40,17 @@ class ContextualConfirmTrial extends Component {
       reactivateCTA: PropTypes.string.isRequired,
       trialCTA: PropTypes.string.isRequired,
     }).isRequired,
+    spinnerActive: PropTypes.bool,
+    buttonsDisabled: PropTypes.bool,
+    status: PropTypes.oneOf([INACTIVE, DEACTIVATED]),
+
+    onComplete: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+    startProductTrial: PropTypes.func,
+    cancelStartProductTrial: PropTypes.func,
+
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
+    intl: intlShape.isRequired,
   };
 
   static defaultProps = {

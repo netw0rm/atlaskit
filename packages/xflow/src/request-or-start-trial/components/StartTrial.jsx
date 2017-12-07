@@ -11,10 +11,12 @@ import LoadingTime from './LoadingTime';
 
 class StartTrial extends Component {
   static propTypes = {
-    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
     showGrantAccess: PropTypes.bool.isRequired,
+
     onComplete: PropTypes.func,
     onTrialActivating: PropTypes.func,
+
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
   };
 
   static defaultProps = {

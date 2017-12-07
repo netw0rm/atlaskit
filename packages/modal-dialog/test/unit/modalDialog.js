@@ -30,7 +30,7 @@ describe('modal-dialog', () => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
       });
 
-      it.only('should be passed to Dialog', async () => {
+      it('should be passed to Dialog', async () => {
         const waitForElement = createWaitForElement(Dialog);
         const component = mount(<ModalDialog height="42%" onClose={noop} />);
         const componentReady = await waitForElement(component);

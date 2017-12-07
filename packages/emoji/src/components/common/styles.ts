@@ -1,7 +1,6 @@
 import {
   borderRadius,
   colors,
-  gridSize,
 } from '@atlaskit/theme';
 import { defaultEmojiHeight } from '../../constants';
 import { akEmojiSelectedBackgroundColor } from '../../shared-styles';
@@ -98,9 +97,6 @@ export const emojiButton = style({
 
 
 });
-
-const grid = gridSize() / 2;
-const fontSize = 3 * grid;
 
 export const slideUp = keyframes({
   '0%': {

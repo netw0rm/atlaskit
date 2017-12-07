@@ -3,6 +3,10 @@ import { PureComponent, SyntheticEvent } from 'react';
 import { MentionStyle, MentionContainer } from './styles';
 import Tooltip from '@atlaskit/tooltip';
 import { isRestricted, MentionType } from '../../types';
+import { isSpecialMentionText } from '../../types';
+import {FireAnalyticsEvent, withAnalytics} from '../../../../analytics/src/index';
+
+const MENTION_ANALYTICS_PREFIX = 'atlassian.fabric.mention';
 
 export type MentionEventHandler = (mentionId: string, text: string, event?: SyntheticEvent<HTMLSpanElement>) => void;
 
@@ -14,19 +18,29 @@ export interface Props {
   onClick?: MentionEventHandler;
   onMouseEnter?: MentionEventHandler;
   onMouseLeave?: MentionEventHandler;
+
+  fireAnalyticsEvent?: FireAnalyticsEvent;
+  firePrivateAnalyticsEvent?: FireAnalyticsEvent;
 }
 
-export default class Mention extends PureComponent<Props, {}> {
+export class MentionInternal extends PureComponent<Props, {}> {
+  private startTime: number = 0;
+
+  public setStartTime = (startTime: number) => {
+    this.startTime = startTime;
+  }
 
   private handleOnClick = (e: SyntheticEvent<HTMLSpanElement>) => {
     const { id, text, onClick } = this.props;
     if (onClick) {
       onClick(id, text, e);
     }
+    this.fireAnalytics('lozenge.select');
   }
 
   private handleOnMouseEnter = (e: SyntheticEvent<HTMLSpanElement>) => {
     const { id, text, onMouseEnter } = this.props;
+    this.startTime = Date.now();
     if (onMouseEnter) {
       onMouseEnter(id, text, e);
     }
@@ -37,7 +51,25 @@ export default class Mention extends PureComponent<Props, {}> {
     if (onMouseLeave) {
       onMouseLeave(id, text, e);
     }
+
+    const duration: number = Date.now() - this.startTime;
+    if (duration > 1000) {
+      this.fireAnalytics('lozenge.hover');
+    }
+    this.startTime = 0;
   }
+
+  private fireAnalytics = (eventName: string) => {
+      const {accessLevel, text, firePrivateAnalyticsEvent} = this.props;
+
+      if (firePrivateAnalyticsEvent) {
+        firePrivateAnalyticsEvent(`${MENTION_ANALYTICS_PREFIX}.${eventName}`, {
+          accessLevel,
+          isSpecial: isSpecialMentionText(text),
+        });
+      }
+  }
+
 
   private getMentionType = (): MentionType => {
     const { accessLevel, isHighlighted } = this.props;
@@ -89,3 +121,9 @@ export default class Mention extends PureComponent<Props, {}> {
     );
   }
 }
+
+// tslint:disable-next-line:variable-name
+const Mention = withAnalytics<typeof MentionInternal>(MentionInternal, {}, {});
+type Mention = MentionInternal;
+
+export default Mention;

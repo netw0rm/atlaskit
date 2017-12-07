@@ -65,3 +65,7 @@ export function isSpecialMention(mention: MentionDescription) {
 export function isAppMention(mention: MentionDescription) {
   return mention.userType && mention.userType === UserType[UserType.APP];
 }
+
+export function isSpecialMentionText(mentionText: string) {
+  return mentionText && (mentionText === '@all' || mentionText === '@here');
+}

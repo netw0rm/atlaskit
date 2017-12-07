@@ -9,7 +9,7 @@ import { ACTIVE, ACTIVATING } from '../../../src/common/productProvisioningState
 
 const defaultProps = {
   productLogo: <ConfluenceLogo />,
-  heading: 'You already have Confluece',
+  heading: 'You already have Confluence',
   message: (
     <div>
       <p>A site administrator already started a trial.</p>
@@ -17,18 +17,17 @@ const defaultProps = {
     </div>
   ),
   getStartedButtonText: 'Get started',
-  spinnerActive: false,
-  getStartedButtonDisabled: false,
   status: ACTIVATING,
   progress: 0,
-  onComplete: () => {},
-  goToProduct: action('ConfirmTrialBase goToProduct'),
+  onComplete: action('onComplete'),
+  goToProduct: action('goToProduct'),
+  closeAlreadyStartedDialog: action('closeAlreadyStartedDialog'),
 };
 
 storiesOf('request-or-start-trial/AlreadyStarted')
   .add('Already Started (ACTIVATING) progress bar (0%)', () =>
     setupStorybookAnalytics(
-      <AlreadyStartedBase {...defaultProps} onComplete={() => Promise.resolve(true)} />
+      <AlreadyStartedBase {...defaultProps} />
     )
   )
   .add('Already Started (ACTIVATING) progress bar (50%)', () =>
@@ -36,7 +35,6 @@ storiesOf('request-or-start-trial/AlreadyStarted')
       <AlreadyStartedBase
         {...defaultProps}
         progress={0.5}
-        onComplete={() => Promise.resolve(true)}
       />
     )
   )
@@ -46,7 +44,6 @@ storiesOf('request-or-start-trial/AlreadyStarted')
         {...defaultProps}
         progress={1}
         status={ACTIVATING}
-        onComplete={() => Promise.resolve(true)}
       />
     )
   )
@@ -57,7 +54,6 @@ storiesOf('request-or-start-trial/AlreadyStarted')
         progress={1}
         initialStatus={ACTIVATING}
         status={ACTIVE}
-        onComplete={() => Promise.resolve(true)}
       />
     )
   )
@@ -67,7 +63,6 @@ storiesOf('request-or-start-trial/AlreadyStarted')
         {...defaultProps}
         progress={1}
         status={ACTIVE}
-        onComplete={() => Promise.resolve(true)}
       />
     )
   );

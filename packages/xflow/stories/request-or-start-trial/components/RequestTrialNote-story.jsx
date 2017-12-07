@@ -29,7 +29,6 @@ storiesOf('request-or-start-trial/RequestTrialNote')
             setTimeout(() =>
               reject(new Error('It\'s borked')), 100))
         }
-        onComplete={() => Promise.resolve(true)}
       />
     )
   );

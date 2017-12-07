@@ -53,19 +53,29 @@ const defaultProps = {
       { name: 'gburrows', 'display-name': 'George Burrows', email: 'gburrows@example.com', attributes: { attributes: [{ name: 'atlassianid.openid.identity', values: ['https://id.atlassian.com/openid/v2/u/5'] }] } },
     ]),
 
-  onComplete: action('GrantAccessToUsers onComplete'),
+  onComplete: action('onComplete'),
 };
 
 storiesOf('request-or-start-trial/GrantAccess', module)
   .addDecorator(story => setupStorybookAnalytics(story()))
   .add('Grant Access dialog', () =>
-    <GrantAccessBase {...defaultProps} />
+    <GrantAccessBase
+      {...defaultProps}
+    />
   )
   .add('Grant Access dialog, Manage ("everyone" selected)', () =>
-    <GrantAccessBase {...defaultProps} changeUsers defaultSelectedRadio="everyone" />
+    <GrantAccessBase
+      {...defaultProps}
+      changeUsers
+      defaultSelectedRadio="everyone"
+    />
   )
   .add('Grant Access dialog, Manage ("site-admins" selected)', () =>
-    <GrantAccessBase {...defaultProps} changeUsers defaultSelectedRadio="site-admins" />
+    <GrantAccessBase
+      {...defaultProps}
+      changeUsers
+      defaultSelectedRadio="site-admins"
+    />
   )
   .add('Grant Access dialog, Manage ("specific-users" selected)', () =>
     <GrantAccessBase
@@ -95,16 +105,30 @@ storiesOf('request-or-start-trial/GrantAccess', module)
     />
   )
   .add('Grant Access dialog with spinner', () =>
-    <GrantAccessBase {...defaultProps} spinnerActive continueButtonDisabled />
+    <GrantAccessBase
+      {...defaultProps}
+      spinnerActive
+      continueButtonDisabled
+    />
   )
   .add('Grant Access dialog (ACTIVATING) progress bar (25%)', () =>
-    <GrantAccessBase {...defaultProps} progress={0.25} />
+    <GrantAccessBase
+      {...defaultProps}
+      progress={0.25}
+    />
   )
   .add('Grant Access dialog (ACTIVATING Error) progress bar (100%)', () =>
-    <GrantAccessBase {...defaultProps} progress={1} />
+    <GrantAccessBase
+      {...defaultProps}
+      progress={1}
+    />
   )
   .add('Grant Access dialog (ACTIVE) progress bar (100%)', () =>
-    <GrantAccessBase {...defaultProps} progress={1} status={ACTIVE} />
+    <GrantAccessBase
+      {...defaultProps}
+      progress={1}
+      status={ACTIVE}
+    />
   )
   .add('Grant Access dialog, Manage Error flag after Continue', () =>
     <GrantAccessBase

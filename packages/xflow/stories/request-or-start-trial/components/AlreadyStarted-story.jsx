@@ -19,6 +19,7 @@ const defaultProps = {
   getStartedButtonText: 'Get started',
   status: ACTIVATING,
   progress: 0,
+
   onComplete: action('onComplete'),
   goToProduct: action('goToProduct'),
   closeAlreadyStartedDialog: action('closeAlreadyStartedDialog'),
@@ -27,7 +28,9 @@ const defaultProps = {
 storiesOf('request-or-start-trial/AlreadyStarted', module)
   .addDecorator(story => setupStorybookAnalytics(story()))
   .add('Already Started (ACTIVATING) progress bar (0%)', () =>
-    <AlreadyStartedBase {...defaultProps} />
+    <AlreadyStartedBase
+      {...defaultProps}
+    />
   )
   .add('Already Started (ACTIVATING) progress bar (50%)', () =>
     <AlreadyStartedBase

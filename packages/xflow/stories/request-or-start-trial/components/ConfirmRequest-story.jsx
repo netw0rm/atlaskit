@@ -39,13 +39,11 @@ storiesOf('request-or-start-trial/ConfirmRequest', module)
       }}
     />
   )
-  .add('with custom messages - extreme length', () =>
+  .add('with extreme message length', () =>
     <ConfirmRequestBase
       {...defaultProps}
-      contextInfo={{
-        contextualHeading: '[custom contextualHeading] Lorem ipsum dolor amet Lorem ipsum dolor amet',
-        contextualMessage: '[custom contextualMessage] Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...',
-      }}
+      heading={'[heading] Lorem ipsum dolor amet Lorem ipsum dolor amet'}
+      message={'[message] Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...'}
     />
   );
 

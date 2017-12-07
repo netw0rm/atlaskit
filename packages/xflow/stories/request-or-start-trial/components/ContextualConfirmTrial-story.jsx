@@ -8,18 +8,20 @@ import { INACTIVE, DEACTIVATED } from '../../../src/common/productProvisioningSt
 
 const defaultProps = {
   image: 'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/gzztkbTAQf3dfk3_iD9r4hu-ke0srRD9B6qCE4yZbqA/creating-content.svg',
-  status: INACTIVE,
-  spinnerActive: false,
-  getStartedButtonDisabled: false,
-  onComplete: async () => true,
-  onCancel: async () => true,
-  goToProduct: action('ContextualConfirmTrialBase goToProduct'),
   contextInfo: {
     contextualHeading: 'Project pages are powered by Confluence',
     contextualMessage: 'Create, share, and collaborate on all your project docs in one place, with Confluence pages.',
     reactivateCTA: 'Reactivate Confluence',
     trialCTA: 'Try Confluence free for 30 days',
   },
+  spinnerActive: false,
+  buttonsDisabled: false,
+  status: INACTIVE,
+
+  onComplete: action('onComplete'),
+  onCancel: action('onCancel'),
+  startProductTrial: action('startProductTrial'),
+  cancelStartProductTrial: action('cancelStartProductTrial'),
 };
 
 storiesOf('request-or-start-trial/ContextualConfirmTrial', module)
@@ -52,8 +54,6 @@ storiesOf('request-or-start-trial/ContextualConfirmTrial', module)
     <ContextualConfirmTrialBase
       {...defaultProps}
       startProductTrial={() => new Promise((_, reject) => setTimeout(reject, 1500))}
-      onComplete={() => Promise.resolve()}
-      onCancel={() => Promise.resolve()}
     />
   )
   .add('Confirm Trial dialog (DEACTIVATED)', () =>
@@ -75,7 +75,5 @@ storiesOf('request-or-start-trial/ContextualConfirmTrial', module)
       {...defaultProps}
       status={DEACTIVATED}
       startProductTrial={() => new Promise((_, reject) => setTimeout(reject, 1500))}
-      onComplete={() => Promise.resolve()}
-      onCancel={() => Promise.resolve()}
     />
   );

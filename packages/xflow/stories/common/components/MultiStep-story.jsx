@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import { MultiStep, Step } from '../../../src/common/components/multi-step';
 
-storiesOf('common/MultiStep')
+storiesOf('common/MultiStep', module)
   .add('basic', () =>
     <MultiStep onComplete={action('complete')}>
 

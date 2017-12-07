@@ -17,42 +17,35 @@ const defaultProps = {
   onCancel: action('onCancel'),
 };
 
-storiesOf('request-or-start-trial/ConfirmRequest')
+storiesOf('request-or-start-trial/ConfirmRequest', module)
+  .addDecorator(story => setupStorybookAnalytics(story()))
   .add('default', () =>
-    setupStorybookAnalytics(
-      <ConfirmRequestBase
-        {...defaultProps}
-      />
-    )
+    <ConfirmRequestBase
+      {...defaultProps}
+    />
   )
   .add('already Requested', () =>
-    setupStorybookAnalytics(
-      <ConfirmRequestBase
-        {...defaultProps}
-        alreadyRequested
-      />
-    )
+    <ConfirmRequestBase
+      {...defaultProps}
+      alreadyRequested
+    />
   )
   .add('with custom messages', () =>
-    setupStorybookAnalytics(
-      <ConfirmRequestBase
-        {...defaultProps}
-        contextInfo={{
-          contextualHeading: '[custom contextualHeading]',
-          contextualMessage: '[custom contextualMessage]',
-        }}
-      />
-    )
+    <ConfirmRequestBase
+      {...defaultProps}
+      contextInfo={{
+        contextualHeading: '[custom contextualHeading]',
+        contextualMessage: '[custom contextualMessage]',
+      }}
+    />
   )
   .add('with custom messages - extreme length', () =>
-    setupStorybookAnalytics(
-      <ConfirmRequestBase
-        {...defaultProps}
-        contextInfo={{
-          contextualHeading: '[custom contextualHeading] Lorem ipsum dolor amet Lorem ipsum dolor amet',
-          contextualMessage: '[custom contextualMessage] Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...',
-        }}
-      />
-    )
+    <ConfirmRequestBase
+      {...defaultProps}
+      contextInfo={{
+        contextualHeading: '[custom contextualHeading] Lorem ipsum dolor amet Lorem ipsum dolor amet',
+        contextualMessage: '[custom contextualMessage] Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...',
+      }}
+    />
   );
 

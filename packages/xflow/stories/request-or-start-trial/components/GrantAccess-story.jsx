@@ -56,76 +56,65 @@ const defaultProps = {
   onComplete: action('GrantAccessToUsers onComplete'),
 };
 
-storiesOf('request-or-start-trial/GrantAccess')
-  .add('Grant Access dialog', () => setupStorybookAnalytics(<GrantAccessBase {...defaultProps} />))
+storiesOf('request-or-start-trial/GrantAccess', module)
+  .addDecorator(story => setupStorybookAnalytics(story()))
+  .add('Grant Access dialog', () =>
+    <GrantAccessBase {...defaultProps} />
+  )
   .add('Grant Access dialog, Manage ("everyone" selected)', () =>
-    setupStorybookAnalytics(
-      <GrantAccessBase {...defaultProps} changeUsers defaultSelectedRadio="everyone" />
-    )
+    <GrantAccessBase {...defaultProps} changeUsers defaultSelectedRadio="everyone" />
   )
   .add('Grant Access dialog, Manage ("site-admins" selected)', () =>
-    setupStorybookAnalytics(
-      <GrantAccessBase {...defaultProps} changeUsers defaultSelectedRadio="site-admins" />
-    )
+    <GrantAccessBase {...defaultProps} changeUsers defaultSelectedRadio="site-admins" />
   )
   .add('Grant Access dialog, Manage ("specific-users" selected)', () =>
-    setupStorybookAnalytics(
-      <GrantAccessBase
-        {...defaultProps}
-        changeUsers
-        defaultSelectedRadio="specific-users"
-        userSelectInFocus
-      />
-    )
+    <GrantAccessBase
+      {...defaultProps}
+      changeUsers
+      defaultSelectedRadio="specific-users"
+      userSelectInFocus
+    />
   )
   .add('Grant Access dialog, Manage ("specific-users" selected, error)', () =>
-    setupStorybookAnalytics(
-      <GrantAccessBase
-        {...defaultProps}
-        changeUsers
-        defaultSelectedRadio="specific-users"
-        userSelectInFocus
-        userSelectIsInvalid
-      />
-    )
+    <GrantAccessBase
+      {...defaultProps}
+      changeUsers
+      defaultSelectedRadio="specific-users"
+      userSelectInFocus
+      userSelectIsInvalid
+    />
   )
   .add('Grant Access dialog, error retrieving users', () =>
-    setupStorybookAnalytics(
-      <GrantAccessBase
-        {...defaultProps}
-        retrieveUsers={() => Promise.reject(new Error('Error retrieving users.'))}
-        changeUsers
-        defaultSelectedRadio="specific-users"
-        userSelectInFocus
-        userSelectIsInvalid
-      />
-    )
+    <GrantAccessBase
+      {...defaultProps}
+      retrieveUsers={() => Promise.reject(new Error('Error retrieving users.'))}
+      changeUsers
+      defaultSelectedRadio="specific-users"
+      userSelectInFocus
+      userSelectIsInvalid
+    />
   )
   .add('Grant Access dialog with spinner', () =>
-    setupStorybookAnalytics(
-      <GrantAccessBase {...defaultProps} spinnerActive continueButtonDisabled />
-    )
+    <GrantAccessBase {...defaultProps} spinnerActive continueButtonDisabled />
   )
   .add('Grant Access dialog (ACTIVATING) progress bar (25%)', () =>
-    setupStorybookAnalytics(<GrantAccessBase {...defaultProps} progress={0.25} />)
+    <GrantAccessBase {...defaultProps} progress={0.25} />
   )
   .add('Grant Access dialog (ACTIVATING Error) progress bar (100%)', () =>
-    setupStorybookAnalytics(<GrantAccessBase {...defaultProps} progress={1} />)
+    <GrantAccessBase {...defaultProps} progress={1} />
   )
   .add('Grant Access dialog (ACTIVE) progress bar (100%)', () =>
-    setupStorybookAnalytics(<GrantAccessBase {...defaultProps} progress={1} status={ACTIVE} />)
+    <GrantAccessBase {...defaultProps} progress={1} status={ACTIVE} />
   )
   .add('Grant Access dialog, Manage Error flag after Continue', () =>
-    setupStorybookAnalytics(
-      <GrantAccessBase
-        {...defaultProps}
-        changeUsers
-        defaultSelectedRadio="everyone"
-        grantAccessToUsers={() => {
-          action('grantAccessToUsers')();
-          console.log('grantAccessToUsers', ...arguments);
-          return new Promise((_, reject) => setTimeout(reject(new Error('Error granting access.')), 1500));
-        }}
-      />
-    )
+    <GrantAccessBase
+      {...defaultProps}
+      changeUsers
+      defaultSelectedRadio="everyone"
+      grantAccessToUsers={() => {
+        action('grantAccessToUsers')();
+        console.log('grantAccessToUsers', ...arguments);
+        return new Promise((_, reject) => setTimeout(reject(new Error('Error granting access.')), 1500));
+      }}
+    />
   );

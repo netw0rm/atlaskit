@@ -22,7 +22,7 @@ const defaultProps = {
   onComplete: action('onComplete'),
 };
 
-storiesOf('request-or-start-trial/RequestTrial')
+storiesOf('request-or-start-trial/RequestTrial', module)
   .add('Request Trial (INACTIVE)', () =>
     setupStorybookAnalytics(
       <ConfirmRequestBase

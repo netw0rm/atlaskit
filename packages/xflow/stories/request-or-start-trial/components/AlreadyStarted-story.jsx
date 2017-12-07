@@ -24,45 +24,36 @@ const defaultProps = {
   closeAlreadyStartedDialog: action('closeAlreadyStartedDialog'),
 };
 
-storiesOf('request-or-start-trial/AlreadyStarted')
+storiesOf('request-or-start-trial/AlreadyStarted', module)
+  .addDecorator(story => setupStorybookAnalytics(story()))
   .add('Already Started (ACTIVATING) progress bar (0%)', () =>
-    setupStorybookAnalytics(
-      <AlreadyStartedBase {...defaultProps} />
-    )
+    <AlreadyStartedBase {...defaultProps} />
   )
   .add('Already Started (ACTIVATING) progress bar (50%)', () =>
-    setupStorybookAnalytics(
-      <AlreadyStartedBase
-        {...defaultProps}
-        progress={0.5}
-      />
-    )
+    <AlreadyStartedBase
+      {...defaultProps}
+      progress={0.5}
+    />
   )
   .add('Already Started (ACTIVATING Error) progress bar (100%)', () =>
-    setupStorybookAnalytics(
-      <AlreadyStartedBase
-        {...defaultProps}
-        progress={1}
-        status={ACTIVATING}
-      />
-    )
+    <AlreadyStartedBase
+      {...defaultProps}
+      progress={1}
+      status={ACTIVATING}
+    />
   )
   .add('Already Started (ACTIVATING) progress bar (100%)', () =>
-    setupStorybookAnalytics(
-      <AlreadyStartedBase
-        {...defaultProps}
-        progress={1}
-        initialStatus={ACTIVATING}
-        status={ACTIVE}
-      />
-    )
+    <AlreadyStartedBase
+      {...defaultProps}
+      progress={1}
+      initialStatus={ACTIVATING}
+      status={ACTIVE}
+    />
   )
   .add('Already Started (ACTIVE)', () =>
-    setupStorybookAnalytics(
-      <AlreadyStartedBase
-        {...defaultProps}
-        progress={1}
-        status={ACTIVE}
-      />
-    )
+    <AlreadyStartedBase
+      {...defaultProps}
+      progress={1}
+      status={ACTIVE}
+    />
   );

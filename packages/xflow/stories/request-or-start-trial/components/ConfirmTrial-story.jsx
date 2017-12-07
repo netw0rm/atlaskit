@@ -35,55 +35,44 @@ const defaultProps = {
   onCancel: action('onCancel'),
 };
 
-storiesOf('request-or-start-trial/ConfirmTrial')
+storiesOf('request-or-start-trial/ConfirmTrial', module)
+  .addDecorator(story => setupStorybookAnalytics(story()))
   .add('Confirm Trial dialog (INACTIVE)', () =>
-    setupStorybookAnalytics(
-      <ConfirmTrialBase
-        {...defaultProps}
-      />
-    )
+    <ConfirmTrialBase
+      {...defaultProps}
+    />
   )
   .add('Confirm Trial dialog (INACTIVE) with spinner', () =>
-    setupStorybookAnalytics(
-      <ConfirmTrialBase
-        {...defaultProps}
-        spinnerActive
-        buttonsDisabled
-      />
-    )
+    <ConfirmTrialBase
+      {...defaultProps}
+      spinnerActive
+      buttonsDisabled
+    />
   )
   .add('Confirm Trial dialog (INACTIVE), Error flag after Confirm', () =>
-    setupStorybookAnalytics(
-      <ConfirmTrialBase
-        {...defaultProps}
-        startProductTrial={() => new Promise((_, reject) => setTimeout(reject, 1500))}
-      />
-    )
+    <ConfirmTrialBase
+      {...defaultProps}
+      startProductTrial={() => new Promise((_, reject) => setTimeout(reject, 1500))}
+    />
   )
   .add('Confirm Trial dialog (DEACTIVATED)', () =>
-    setupStorybookAnalytics(
-      <ConfirmTrialBase
-        {...defaultProps}
-        status={DEACTIVATED}
-      />
-    )
+    <ConfirmTrialBase
+      {...defaultProps}
+      status={DEACTIVATED}
+    />
   )
   .add('Confirm Trial dialog (DEACTIVATED) with spinner', () =>
-    setupStorybookAnalytics(
-      <ConfirmTrialBase
-        {...defaultProps}
-        status={DEACTIVATED}
-        spinnerActive
-        buttonsDisabled
-      />
-    )
+    <ConfirmTrialBase
+      {...defaultProps}
+      status={DEACTIVATED}
+      spinnerActive
+      buttonsDisabled
+    />
   )
   .add('Confirm Trial dialog (DEACTIVATED), Error flag after Confirm', () =>
-    setupStorybookAnalytics(
-      <ConfirmTrialBase
-        {...defaultProps}
-        status={DEACTIVATED}
-        startProductTrial={() => new Promise((_, reject) => setTimeout(reject, 1500))}
-      />
-    )
+    <ConfirmTrialBase
+      {...defaultProps}
+      status={DEACTIVATED}
+      startProductTrial={() => new Promise((_, reject) => setTimeout(reject, 1500))}
+    />
   );

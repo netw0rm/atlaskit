@@ -3,7 +3,7 @@ import { storiesOf } from '@kadira/storybook';
 import { InitializingScreenBase } from '../../../src/common/components/InitializingScreen';
 import { AtlassianLogo } from '@atlaskit/logo';
 
-storiesOf('common/InitializingScreen')
+storiesOf('common/InitializingScreen', module)
   .add('raw', () => <InitializingScreenBase isOpen />)
   .add('with header', () => (
     <InitializingScreenBase isOpen productLogo={<AtlassianLogo />} />

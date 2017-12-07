@@ -12,23 +12,20 @@ const defaultProps = {
   setProductRequestFlag: async () => true,
 };
 
-storiesOf('request-or-start-trial/RequestTrialNote')
-  .add('RequestTrialWithNote (INACTIVE), success flag after Send Note', () =>
-    setupStorybookAnalytics(
-      <RequestTrialNoteBase
-        {...defaultProps}
-      />
-    )
+storiesOf('request-or-start-trial/RequestTrialNote', module)
+  .addDecorator(story => setupStorybookAnalytics(story()))
+  .add('RequestTrialWithNote (INACTIVE), default, success on send', () =>
+    <RequestTrialNoteBase
+      {...defaultProps}
+    />
   )
-  .add('RequestTrialWithNote (INACTIVE), error flag after Send Note', () =>
-    setupStorybookAnalytics(
-      <RequestTrialNoteBase
-        {...defaultProps}
-        requestTrialWithNote={
+  .add('RequestTrialWithNote (INACTIVE), default, failure on send', () =>
+    <RequestTrialNoteBase
+      {...defaultProps}
+      requestTrialWithNote={
           () => new Promise((_, reject) =>
             setTimeout(() =>
               reject(new Error('It\'s borked')), 100))
         }
-      />
-    )
+    />
   );

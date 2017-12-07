@@ -5,19 +5,20 @@ import { ACTIVE, ACTIVATING, UNKNOWN } from '../../../src/common/productProvisio
 
 import setupStorybookAnalytics from '../../helpers/setupStorybookAnalytics';
 
-storiesOf('request-or-start-trial/ProgressIndicator')
+storiesOf('request-or-start-trial/ProgressIndicator', module)
+  .addDecorator(story => setupStorybookAnalytics(story()))
   .add('Empty Progress Bar', () =>
-    setupStorybookAnalytics(<ProgressIndicator progress={0} status={ACTIVATING} />)
+    <ProgressIndicator progress={0} status={ACTIVATING} />
   )
   .add('25% Full, ACTIVATING status', () =>
-    setupStorybookAnalytics(<ProgressIndicator progress={0.25} status={ACTIVATING} />)
+    <ProgressIndicator progress={0.25} status={ACTIVATING} />
   )
   .add('50% Full, UNKNOWN status', () =>
-    setupStorybookAnalytics(<ProgressIndicator progress={0.5} status={UNKNOWN} />)
+    <ProgressIndicator progress={0.5} status={UNKNOWN} />
   )
   .add('Complete, ACTIVE status', () =>
-    setupStorybookAnalytics(<ProgressIndicator progress={1} status={ACTIVE} />)
+    <ProgressIndicator progress={1} status={ACTIVE} />
   )
   .add('Complete, ACTIVATING status', () =>
-    setupStorybookAnalytics(<ProgressIndicator progress={1} status={ACTIVATING} />)
+    <ProgressIndicator progress={1} status={ACTIVATING} />
   );

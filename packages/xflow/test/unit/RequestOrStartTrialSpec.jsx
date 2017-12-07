@@ -2,11 +2,14 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
 
-import { RequestOrStartTrialBase as RequestOrStartTrial, Screens } from '../../../../src/common/components/RequestOrStartTrial';
-import InitializingScreen from '../../../../src/common/components/InitializingScreen';
-import ErrorFlag from '../../../../src/common/components/ErrorFlag';
-import { ContextualStartTrial, StartTrial, RequestTrial, AlreadyStarted } from '../../../../src/request-or-start-trial';
-import { INACTIVE, DEACTIVATED, ACTIVE, ACTIVATING } from '../../../../src/common/productProvisioningStates';
+import InitializingScreen from '../../src/common/components/InitializingScreen';
+import ErrorFlag from '../../src/common/components/ErrorFlag';
+import { INACTIVE, DEACTIVATED, ACTIVE, ACTIVATING } from '../../src/common/productProvisioningStates';
+import { RequestOrStartTrialBase as RequestOrStartTrial, Screens } from '../../src/request-or-start-trial';
+import StartTrial from '../../src/request-or-start-trial/components/StartTrial';
+import ContextualStartTrial from '../../src/request-or-start-trial/components/ContextualStartTrial';
+import RequestTrial from '../../src/request-or-start-trial/components/RequestTrial';
+import AlreadyStarted from '../../src/request-or-start-trial/components/AlreadyStarted';
 
 describe('<RequestOrStartTrial> Component', () => {
   let mockProps = null;

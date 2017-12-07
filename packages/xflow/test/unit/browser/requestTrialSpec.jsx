@@ -9,7 +9,7 @@ import waitUntil from '../../util/wait-until';
 import clickOnText from '../../util/click-on-text';
 import { userPreferencesEndpoint } from '../../../src/common/services/alreadyRequestedFlag';
 import MockConfluenceXFlow from '../../../stories/helpers/MockConfluenceXFlowProvider';
-import RequestOrStartTrial from '../../../src/common/components/RequestOrStartTrial';
+import RequestOrStartTrial from '../../../src/request-or-start-trial';
 import ConfirmRequest from '../../../src/request-or-start-trial/components/ConfirmRequest';
 import RequestTrialNote from '../../../src/request-or-start-trial/components/RequestTrialNote';
 import ErrorFlag from '../../../src/common/components/ErrorFlag';

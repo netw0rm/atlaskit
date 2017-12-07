@@ -32,7 +32,7 @@ class StartTrial extends Component {
       firePrivateAnalyticsEvent,
     } = this.props;
     return (
-      <MultiStep start={0} onComplete={onComplete}>
+      <MultiStep onComplete={onComplete}>
         <Step
           render={(nextStep, cancel) =>
             <ConfirmTrial

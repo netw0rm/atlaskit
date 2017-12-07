@@ -211,6 +211,7 @@ class GrantAccess extends Component {
       });
       return;
     }
+
     firePrivateAnalyticsEvent('xflow.grant-access.continue-button.clicked', {
       selectedRadio,
       notfiyUsers: this.state.notifyUsers,
@@ -227,8 +228,9 @@ class GrantAccess extends Component {
     }
 
     try {
-      const users =
-        selectedRadio === usersOption ? selectedUsers : [...userSets.get(selectedRadio).values()];
+      const users = selectedRadio === usersOption
+        ? selectedUsers
+        : [...userSets.get(selectedRadio).values()];
       await grantAccessToUsers(users, notifyUsers);
       const grantedAccessTo = users.map(user => this.getAtlassianAccountId(user));
       firePrivateAnalyticsEvent('xflow.grant-access.continue-button.grant-access-successful', {

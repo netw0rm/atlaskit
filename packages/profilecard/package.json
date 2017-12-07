@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/profilecard",
-  "version": "3.12.1",
+  "version": "3.12.2",
   "config": {
     "access": "public"
   },
@@ -43,6 +43,7 @@
   },
   "devDependencies": {
     "@atlaskit/profilecard": "*",
+    "@atlaskit/dynamic-table": "^6.1.1",
     "@atlaskit/util-common-test": "*",
     "@atlaskit/util-data-test": "*",
     "@atlaskit/util-readme": "^1.0.3",

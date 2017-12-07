@@ -28,11 +28,11 @@ describe('theme', () => {
       });
     });
 
-    it('should publish updates to children', () => {
+    it('should publish updates to children if "provided" is changed', () => {
       const stub = jest.fn(() => 'my-cool-rule');
       const Item = styled.div`
         fake: ${stub}
-    `;
+      `;
 
       const wrapper = mount(
         <WithRootTheme
@@ -51,6 +51,54 @@ describe('theme', () => {
       expect(stub.mock.calls[1][0]).toEqual({
         theme: getRootTheme(presets.settings),
       });
+    });
+
+    it('should publish updates to children if "isCollapsed" is changed', () => {
+      const stub = jest.fn(() => 'my-cool-rule');
+      const Item = styled.div`
+        fake: ${stub}
+      `;
+
+      const wrapper = mount(
+        <WithRootTheme
+          provided={presets.container}
+          isCollapsed
+        >
+          <Item />
+        </WithRootTheme>
+      );
+      wrapper.setProps({
+        isCollapsed: false,
+      });
+
+      expect(stub.mock.calls[0][0]).toEqual({
+        theme: getRootTheme(presets.container, true),
+      });
+      expect(stub.mock.calls[1][0]).toEqual({
+        theme: getRootTheme(presets.container, false),
+      });
+    });
+
+    it('should not publish updates to children if "provided" or "isCollapsed" did not change', () => {
+      const stub = jest.fn(() => 'my-cool-rule');
+      const Item = styled.div`
+        fake: ${stub}
+      `;
+
+      const wrapper = mount(
+        <WithRootTheme
+          provided={presets.container}
+          isCollapsed
+        >
+          <Item />
+        </WithRootTheme>
+      );
+      wrapper.update();
+
+      expect(stub.mock.calls[0][0]).toEqual({
+        theme: getRootTheme(presets.container, true),
+      });
+      expect(stub.mock.calls.length).toEqual(1);
     });
 
     it('should preserve parent styled-component theme values', () => {

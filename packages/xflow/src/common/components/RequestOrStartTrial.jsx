@@ -11,7 +11,7 @@ import RequestOrStartTrialDialog from '../styled/RequestOrStartTrialDialog';
 
 import { ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN } from '../productProvisioningStates';
 
-const Screens = {
+export const Screens = {
   INITIALIZING: 'INITIALIZING',
   CANNOT_ADD: 'CANNOT_ADD',
   ALREADY_STARTED: 'ALREADY_STARTED',
@@ -32,8 +32,6 @@ class RequestOrStartTrial extends Component {
     onComplete: PropTypes.func,
     onTrialRequested: PropTypes.func,
     onTrialActivating: PropTypes.func,
-    // ESLint doesn't detect prop types only used in async functions
-    // eslint-disable-next-line react/no-unused-prop-types
     checkProductRequestFlag: PropTypes.func,
     contextInfo: PropTypes.shape({
       contextualImage: PropTypes.string,
@@ -60,63 +58,61 @@ class RequestOrStartTrial extends Component {
     alreadyRequested: false,
   };
 
-  componentWillMount() {
-    const { checkProductRequestFlag, firePrivateAnalyticsEvent } = this.props;
-
-    Promise.resolve(checkProductRequestFlag())
-      .catch(e => {
-        firePrivateAnalyticsEvent('xflow.request-or-start-trial.product-request-flag-check.failed');
-        this.setState({
-          initializingCheckFailed: true,
-          showInitializationError: true,
-        });
-        throw e;
-      })
-      .then(alreadyRequested => {
-        this.setState({ alreadyRequested });
-        return this.resetRequestOrStartTrial();
-      });
+  componentDidMount() {
+    return this.fetchAsyncData();
   }
 
-  resetRequestOrStartTrial = async () => {
-    const {
-      getProductActivationState,
-      canCurrentUserAddProduct,
-      waitForActivation,
-      firePrivateAnalyticsEvent,
-    } = this.props;
+  onFailure(operationName) {
+    this.props.firePrivateAnalyticsEvent(`xflow.request-or-start-trial.${operationName}.failed`);
+    this.setState({
+      initializingCheckFailed: true,
+      showInitializationError: true,
+    });
+  }
 
+  fetchAsyncData = async () => {
     let hasPermissionToAddProduct;
     try {
-      hasPermissionToAddProduct = await canCurrentUserAddProduct();
+      hasPermissionToAddProduct = await this.props.canCurrentUserAddProduct();
     } catch (e) {
-      firePrivateAnalyticsEvent('xflow.request-or-start-trial.trusted-user-check.failed');
-      this.setState({
-        initializingCheckFailed: true,
-        showInitializationError: true,
-      });
-      return;
+      this.onFailure('trusted-user-check');
+      throw e;
     }
 
-    if (!hasPermissionToAddProduct) {
-      this.setState({
-        screen: Screens.REQUEST_TRIAL,
-        // We assume that the product is inactive if they don't have permission.
-        activationState: INACTIVE,
-      });
-      return;
+    return hasPermissionToAddProduct ?
+      (await this.fetchAsyncStartFlowData()) :
+      (await this.fetchAsyncRequestFlowData());
+  }
+
+  fetchAsyncRequestFlowData = async () => {
+    let alreadyRequested;
+    try {
+      alreadyRequested = await this.props.checkProductRequestFlag();
+    } catch (e) {
+      this.onFailure('product-request-flag-check');
+      throw e;
     }
+
+    this.setState({
+      alreadyRequested,
+      screen: Screens.REQUEST_TRIAL,
+      // We assume that the product is inactive if they don't have permission.
+      activationState: INACTIVE,
+    });
+  }
+
+  fetchAsyncStartFlowData = async () => {
+    const {
+      getProductActivationState,
+      waitForActivation,
+    } = this.props;
 
     let activationState;
     try {
       activationState = await getProductActivationState();
     } catch (e) {
-      firePrivateAnalyticsEvent('xflow.request-or-start-trial.product-activation-state-check.failed');
-      this.setState({
-        initializingCheckFailed: true,
-        showInitializationError: true,
-      });
-      return;
+      this.onFailure('product-activation-state-check');
+      throw e;
     }
 
     switch (activationState) {
@@ -131,11 +127,8 @@ class RequestOrStartTrial extends Component {
           try {
             await waitForActivation();
           } catch (e) {
-            firePrivateAnalyticsEvent('xflow.request-or-start-trial.wait-for-activation.failed');
-            this.setState({
-              initializingCheckFailed: true,
-              showInitializationError: true,
-            });
+            this.onFailure('wait-for-activation');
+            throw e;
           }
         }
         break;
@@ -149,14 +142,10 @@ class RequestOrStartTrial extends Component {
         break;
 
       default:
-        firePrivateAnalyticsEvent('xflow.request-or-start-trial.product-activation-state-check.failed');
-        this.setState({
-          initializingCheckFailed: true,
-          showInitializationError: true,
-        });
-        break;
+        this.onFailure('product-activation-state-check');
+        throw new Error('unrecognized activation state!');
     }
-  };
+  }
 
   flagActions = [
     {
@@ -166,7 +155,7 @@ class RequestOrStartTrial extends Component {
           initializingCheckFailed: false,
           showInitializationError: false,
         });
-        return this.resetRequestOrStartTrial();
+        return this.fetchAsyncData();
       },
     },
   ];
@@ -273,10 +262,10 @@ class RequestOrStartTrial extends Component {
   }
 }
 
-export const RequestOrStartTrialBase = withAnalytics(RequestOrStartTrial);
+export const RequestOrStartTrialBase = RequestOrStartTrial;
 
 export default withXFlowProvider(
-  RequestOrStartTrialBase,
+  withAnalytics(RequestOrStartTrialBase),
   ({ xFlow: {
       canCurrentUserAddProduct,
       checkProductRequestFlag,

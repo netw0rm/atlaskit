@@ -3,56 +3,54 @@ import React from 'react';
 import { Code, Chrome, Description, Props } from '@atlaskit/util-readme';
 
 /* eslint-disable import/first, import/no-duplicates */
-import StatelessSelectOverview from './examples/StatelessSelectOverview';
-import StatelessSelectOverviewRaw from '!raw!./examples/StatelessSelectOverview';
-import SmartSelectOverview from './examples/SmartSelectOverview';
-import SmartSelectOverviewRaw from '!raw!./examples/SmartSelectOverview';
-import DefaultSelectedItem from './examples/DefaultSelectedItem';
-import DefaultSelectedItemRaw from '!raw!./examples/DefaultSelectedItem';
-import WideSelect from './examples/WideSelect';
-import WideSelectRaw from '!raw!./examples/WideSelect';
-import WideDroplist from './examples/WideDroplist';
-import WideDroplistRaw from '!raw!./examples/WideDroplist';
-import SelectAlignment from './examples/SelectAlignment';
-import SelectAlignmentRaw from '!raw!./examples/SelectAlignment';
-import SelectWithGroups from './examples/SelectWithGroups';
-import SelectWithGroupsRaw from '!raw!./examples/SelectWithGroups';
-import SelectWithIcons from './examples/SelectWithIcons';
-import SelectWithIconsRaw from '!raw!./examples/SelectWithIcons';
-import SelectInForm from './examples/SelectInForm';
-import SelectInFormRaw from '!raw!./examples/SelectInForm';
-import SelectWithAutocomplete from './examples/SelectWithAutocomplete';
-import SelectWithAutocompleteRaw from '!raw!./examples/SelectWithAutocomplete';
 import Appearances from './examples/Appearances';
 import AppearancesRaw from '!raw!./examples/Appearances';
-import SelectWithJsxContent from './examples/SelectWithJsxContent';
-import SelectWithJsxContentRaw from '!raw!./examples/SelectWithJsxContent';
+import DefaultSelectedItem from './examples/DefaultSelectedItem';
+import DefaultSelectedItemRaw from '!raw!./examples/DefaultSelectedItem';
+import InitialLoading from './examples/InitialLoading';
+import InitialLoadingRaw from '!raw!./examples/InitialLoading';
+import ItemsOverview from './examples/ItemsOverview';
+import ItemsOverviewRaw from '!raw!./examples/ItemsOverview';
+import SelectAlignment from './examples/SelectAlignment';
+import SelectAlignmentRaw from '!raw!./examples/SelectAlignment';
 import SelectAutocompleteWithJsxContent from './examples/SelectAutocompleteWithJsxContent';
 import SelectAutocompleteWithJsxContentRaw from '!raw!./examples/SelectAutocompleteWithJsxContent';
-import SelectWithHeapsOfOptions from './examples/SelectWithHeapsOfOptions';
-import SelectWithHeapsOfOptionsRaw from '!raw!./examples/SelectWithHeapsOfOptions';
+import SelectInForm from './examples/SelectInForm';
+import SelectInFormRaw from '!raw!./examples/SelectInForm';
+import SelectNoPositionFlip from './examples/SelectNoPositionFlip';
+import SelectNoPositionFlipRaw from '!raw!./examples/SelectNoPositionFlip';
+import SelectOpenedByDefault from './examples/SelectOpenedByDefault';
+import SelectOpenedByDefaultRaw from '!raw!./examples/SelectOpenedByDefault';
+import SelectWithAutocomplete from './examples/SelectWithAutocomplete';
+import SelectWithAutocompleteRaw from '!raw!./examples/SelectWithAutocomplete';
 import SelectWithDescriptions from './examples/SelectWithDescriptions';
 import SelectWithDescriptionsRaw from '!raw!./examples/SelectWithDescriptions';
 import SelectWithFilterValues from './examples/SelectWithFilterValues';
 import SelectWithFilterValuesRaw from '!raw!./examples/SelectWithFilterValues';
+import SelectWithGroups from './examples/SelectWithGroups';
+import SelectWithGroupsRaw from '!raw!./examples/SelectWithGroups';
+import SelectWithHeapsOfOptions from './examples/SelectWithHeapsOfOptions';
+import SelectWithHeapsOfOptionsRaw from '!raw!./examples/SelectWithHeapsOfOptions';
+import SelectWithIcons from './examples/SelectWithIcons';
+import SelectWithIconsRaw from '!raw!./examples/SelectWithIcons';
+import SelectWithJsxContent from './examples/SelectWithJsxContent';
+import SelectWithJsxContentRaw from '!raw!./examples/SelectWithJsxContent';
 import SelectWithLongDescriptions from './examples/SelectWithLongDescriptions';
 import SelectWithLongDescriptionsRaw from '!raw!./examples/SelectWithLongDescriptions';
 import SelectWithTooltips from './examples/SelectWithTooltips';
 import SelectWithTooltipsRaw from '!raw!./examples/SelectWithTooltips';
-import ItemsOverview from './examples/ItemsOverview';
-import ItemsOverviewRaw from '!raw!./examples/ItemsOverview';
-import SelectOpenedByDefault from './examples/SelectOpenedByDefault';
-import SelectOpenedByDefaultRaw from '!raw!./examples/SelectOpenedByDefault';
-import SelectNoPositionFlip from './examples/SelectNoPositionFlip';
-import SelectNoPositionFlipRaw from '!raw!./examples/SelectNoPositionFlip';
-import InitialLoading from './examples/InitialLoading';
-import InitialLoadingRaw from '!raw!./examples/InitialLoading';
-
 import ShouldFocus from './examples/ShouldFocus';
 import ShouldFocusRaw from '!raw!./examples/ShouldFocus';
-
 import ShouldFocusStateful from './examples/ShouldFocusStateful';
 import ShouldFocusStatefulRaw from '!raw!./examples/ShouldFocusStateful';
+import SmartSelectOverview from './examples/SmartSelectOverview';
+import SmartSelectOverviewRaw from '!raw!./examples/SmartSelectOverview';
+import StatelessSelectOverview from './examples/StatelessSelectOverview';
+import StatelessSelectOverviewRaw from '!raw!./examples/StatelessSelectOverview';
+import WideDroplist from './examples/WideDroplist';
+import WideDroplistRaw from '!raw!./examples/WideDroplist';
+import WideSelect from './examples/WideSelect';
+import WideSelectRaw from '!raw!./examples/WideSelect';
 /* eslint-enable import/first, import/no-duplicates */
 
 // Dummy components exist so that we have a component to pass to <Props/>
@@ -324,7 +322,7 @@ storiesOf(name, module)
     </Chrome>
   ))
   .add('Autocomplete select with JSX content', () => (
-    <Chrome title="Select with JSX content">
+    <Chrome title="Autocomplete select with JSX content">
       <div style={{ width: '300px' }}>
         {SelectAutocompleteWithJsxContent}
       </div>

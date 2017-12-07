@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatelessSelect } from '@atlaskit/single-select';
+import { StatelessSelect } from '../../src';
 
 export default (
   <StatelessSelect

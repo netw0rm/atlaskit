@@ -1,5 +1,5 @@
 import React from 'react';
-import Select from '@atlaskit/single-select';
+import Select from '../../src';
 
 const selectItems = [
   {

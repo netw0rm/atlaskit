@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { StatelessSelect } from '@atlaskit/single-select';
+import { StatelessSelect } from '../../src';
 
 const selectItems = [
   {

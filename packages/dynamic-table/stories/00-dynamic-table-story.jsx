@@ -13,6 +13,7 @@ import OverviewStatefulExample from './examples/overview-stateful';
 import OverviewStatefulExampleRaw from '!raw!./examples/overview-stateful';
 import LotsOfPagesExample from './examples/with-lots-of-pages';
 import LotsOfPagesExampleRaw from '!raw!./examples/with-lots-of-pages';
+import OnePageExample from './examples/with-one-page';
 import HeadlessExample from './examples/headless';
 import HeadlessExampleRaw from '!raw!./examples/headless';
 import FixedSizeExample from './examples/fixed-size';
@@ -120,6 +121,11 @@ storiesOf(name, module)
         descriptions={propDescriptionsStateless}
         types={propTypesStateless}
       />
+    </Chrome>
+  ))
+  .add('With one page', () => (
+    <Chrome title="DynamicTable with one page">
+      <OnePageExample />
     </Chrome>
   ))
   .add('With a lot of pages', () => (

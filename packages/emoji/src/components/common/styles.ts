@@ -1,7 +1,6 @@
 import {
   borderRadius,
   colors,
-  gridSize,
 } from '@atlaskit/theme';
 import { defaultEmojiHeight } from '../../constants';
 import { akEmojiSelectedBackgroundColor } from '../../shared-styles';
@@ -99,9 +98,6 @@ export const emojiButton = style({
 
 });
 
-const grid = gridSize() / 2;
-const fontSize = 3 * grid;
-
 export const slideUp = keyframes({
   '0%': {
     'transform': 'translate(-50%, 12px)',
@@ -117,34 +113,6 @@ export const slideUp = keyframes({
     'transform': 'translate(-50%, 0px)',
     'opacity': 1
   }
-});
-
-export const emojiTooltip = style({
-  position: 'relative',
-
-  $nest: {
-    '&:hover::before': {
-      animationName: slideUp,
-      animationDelay: '0.1s',
-      animationDuration: '1s',
-      animationFillMode: 'backwards',
-      content: 'attr(aria-label)',
-      position: 'absolute',
-      backgroundColor: colors.N800,
-      color: colors.N0,
-      fontSize: fontSize,
-      lineHeight: (4 * grid) / fontSize,
-      padding: '2px 8px',
-      whiteSpace: 'nowrap',
-      borderRadius: '3px',
-      zIndex: 1,
-      boxSizing: 'border-box',
-      transform: 'translateX(-50%)',
-      left: '50%',
-      top: `-${20 + gridSize()}px`, // tooltip height + grid spacing above emoji
-    }
-  }
-
 });
 
 // Emoji Preview

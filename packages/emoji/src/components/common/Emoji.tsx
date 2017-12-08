@@ -1,6 +1,7 @@
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { MouseEvent, SyntheticEvent } from 'react';
+import Tooltip from '@atlaskit/tooltip';
 
 import { getPixelRatio } from '../../api/EmojiUtils';
 import * as styles from './styles';
@@ -107,8 +108,7 @@ const renderAsSprite = (props: Props) => {
   const classes = {
     [styles.emojiContainer]: true,
     [styles.selected]: selected,
-    [styles.selectOnHover]: selectOnHover,
-    [styles.emojiTooltip]: showTooltip
+    [styles.selectOnHover]: selectOnHover
   };
 
   if (className) {
@@ -147,7 +147,10 @@ const renderAsSprite = (props: Props) => {
       onMouseMove={(event) => { handleMouseMove(props, event); }}
       aria-label={emoji.shortName}
     >
-      {emojiNode}
+      { showTooltip ?
+        <Tooltip content={emoji.shortName}>{emojiNode}</Tooltip> :
+        emojiNode
+      }
     </span>
   );
 };
@@ -160,7 +163,6 @@ const renderAsImage = (props: Props) => {
     [styles.emoji]: true,
     [styles.selected]: selected,
     [styles.selectOnHover]: selectOnHover,
-    [styles.emojiTooltip]: showTooltip
   };
 
   if (className) {
@@ -218,7 +220,10 @@ const renderAsImage = (props: Props) => {
       onMouseMove={(event) => { handleMouseMove(props, event); }}
       aria-label={emoji.shortName}
     >
-    {emojiNode}
+      { showTooltip ?
+        <Tooltip description={emoji.shortName}>{emojiNode}</Tooltip> :
+        emojiNode
+      }
     </span>
   );
 };

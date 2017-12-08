@@ -1,5 +1,10 @@
 # @atlaskit/emoji
 
+## 30.3.7 (2017-12-08)
+
+* bug fix; fS-1504 Fix lint error ([64563cf](https://bitbucket.org/atlassian/atlaskit/commits/64563cf))
+* bug fix; fS-1504: Delete emoji tooltip style ([07e6300](https://bitbucket.org/atlassian/atlaskit/commits/07e6300))
+* bug fix; fS-1504 Use tooltip component instead of css solution ([fde67b6](https://bitbucket.org/atlassian/atlaskit/commits/fde67b6))
 ## 30.3.6 (2017-12-05)
 
 * bug fix; fixed typescript error in unit test ([a4dceec](https://bitbucket.org/atlassian/atlaskit/commits/a4dceec))

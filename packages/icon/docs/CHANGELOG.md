@@ -1,5 +1,8 @@
 # @atlaskit/icon
 
+## 10.4.0 (2017-12-08)
+
+* feature; added new media layout icons for the editor (issues closed: ak-4012) ([ee770f5](https://bitbucket.org/atlassian/atlaskit/commits/ee770f5))
 ## 10.3.3 (2017-12-05)
 
 

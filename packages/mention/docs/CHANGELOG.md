@@ -1,5 +1,8 @@
 # @atlaskit/mention
 
+## 8.2.1 (2017-12-08)
+
+* bug fix; update mock data under dist folder ([615dfd3](https://bitbucket.org/atlassian/atlaskit/commits/615dfd3))
 ## 8.2.0 (2017-11-26)
 
 

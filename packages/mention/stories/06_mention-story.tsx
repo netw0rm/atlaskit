@@ -18,7 +18,7 @@ function withN20Container(mention) {
 }
 
 function listenerHandler (eventName: string, eventData: Object) {
-  debug(`AnalysticsListener event: ${eventName} `, eventData);
+  debug(`AnalyticsListener event: ${eventName} `, eventData);
 }
 
 storiesOf(`${name}/Mention`, module)

@@ -4,7 +4,7 @@ import { MentionStyle, MentionContainer } from './styles';
 import Tooltip from '@atlaskit/tooltip';
 import { isRestricted, MentionType } from '../../types';
 import { isSpecialMentionText } from '../../types';
-import {FireAnalyticsEvent, withAnalytics} from '../../../../analytics/src/index';
+import {FireAnalyticsEvent, withAnalytics} from '@atlaskit/analytics';
 
 const MENTION_ANALYTICS_PREFIX = 'atlassian.fabric.mention';
 

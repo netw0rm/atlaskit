@@ -10,8 +10,8 @@ export interface Props {
   contentRef?: ContentRef;
   children?: any;
   taskDecisionProvider?: Promise<TaskDecisionProvider>;
-  objectAri: string;
-  containerAri: string;
+  objectAri?: string;
+  containerAri?: string;
   showPlaceholder?: boolean;
   appearance?: Appearance;
   participants?: User[];
@@ -28,7 +28,6 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
   public static defaultProps: Partial<Props> = {
     appearance: 'inline'
   };
-
   private mounted: boolean;
 
   constructor(props: Props) {
@@ -41,13 +40,15 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
 
   componentDidMount() {
     this.mounted = true;
-    this.subscribe(this.props.taskDecisionProvider);
+    this.subscribe(this.props.taskDecisionProvider, this.props.containerAri, this.props.objectAri);
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.taskDecisionProvider !== this.props.taskDecisionProvider) {
+    if (nextProps.taskDecisionProvider !== this.props.taskDecisionProvider ||
+        nextProps.containerAri !== this.props.containerAri ||
+        nextProps.objectAri !== this.props.objectAri) {
       this.unsubscribe();
-      this.subscribe(nextProps.taskDecisionProvider);
+      this.subscribe(nextProps.taskDecisionProvider, nextProps.containerAri, nextProps.objectAri);
     }
   }
 
@@ -56,13 +57,13 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
     this.mounted = false;
   }
 
-  private subscribe(taskDecisionProvider?: Promise<TaskDecisionProvider>) {
-    if (taskDecisionProvider) {
+  private subscribe(taskDecisionProvider?: Promise<TaskDecisionProvider>, containerAri?: string, objectAri?: string) {
+    if (taskDecisionProvider && containerAri && objectAri) {
       taskDecisionProvider.then(provider => {
         if (!this.mounted) {
           return;
         }
-        const { taskId, objectAri, containerAri } = this.props;
+        const { taskId } = this.props;
         provider.subscribe({ localId: taskId, objectAri, containerAri }, this.onUpdate);
       });
     }
@@ -70,7 +71,7 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
 
   private unsubscribe() {
     const { taskDecisionProvider, taskId, objectAri, containerAri } = this.props;
-    if (taskDecisionProvider) {
+    if (taskDecisionProvider && containerAri && objectAri) {
       taskDecisionProvider.then(provider => {
         provider.unsubscribe({ localId: taskId, objectAri, containerAri }, this.onUpdate);
       });
@@ -83,7 +84,7 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
 
   private handleOnChange = (taskId: string, isDone: boolean) => {
     const { taskDecisionProvider, objectAri, containerAri } = this.props;
-    if (taskDecisionProvider) {
+    if (taskDecisionProvider && containerAri && objectAri) {
       // Optimistically update the task
       this.setState({ isDone });
 

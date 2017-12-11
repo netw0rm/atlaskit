@@ -53,8 +53,8 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
-    "@atlaskit/editor-common": "^3.9.7",
-    "@atlaskit/renderer": "^8.10.5",
+    "@atlaskit/editor-common": "^4.3.1",
+    "@atlaskit/renderer": "^9.1.4",
     "@atlaskit/util-common-test": "^2.4.2",
     "@types/fetch-mock": "^5.8.0",
     "fetch-mock": "^5.8.0"

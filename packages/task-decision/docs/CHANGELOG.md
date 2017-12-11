@@ -1,5 +1,10 @@
 # @atlaskit/task-decision
 
+## 4.6.0 (2017-12-11)
+
+* bug fix; use onChange prop in ResourcedTaskItem ([e56bc38](https://bitbucket.org/atlassian/atlaskit/commits/e56bc38))
+* bug fix; bumped renderer and editor-common versions ([cb4fff5](https://bitbucket.org/atlassian/atlaskit/commits/cb4fff5))
+* feature; fS-1461 objectAri and containerAri are optional props within ResourcedTaskItem ([4ec360c](https://bitbucket.org/atlassian/atlaskit/commits/4ec360c))
 ## 4.5.0 (2017-12-05)
 
 * bug fix; restore public analytics handling in TaskItem ([6a0153d](https://bitbucket.org/atlassian/atlaskit/commits/6a0153d))

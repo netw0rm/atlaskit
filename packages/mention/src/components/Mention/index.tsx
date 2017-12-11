@@ -7,7 +7,7 @@ import { isSpecialMentionText } from '../../types';
 import { FireAnalyticsEvent, withAnalytics } from '@atlaskit/analytics';
 
 const MENTION_ANALYTICS_PREFIX = 'atlassian.fabric.mention';
-const ARBITRARY_DELAY = 1000;
+const ANALYTICS_HOVER_DELAY = 1000;
 
 export type MentionEventHandler = (mentionId: string, text: string, event?: SyntheticEvent<HTMLSpanElement>) => void;
 
@@ -50,8 +50,7 @@ export class MentionInternal extends PureComponent<Props, {}> {
     }
     const duration: number = Date.now() - this.startTime;
 
-    // Arbitrary delay added to guess user intention of looking for tooltips when hovering
-    if (duration > ARBITRARY_DELAY) {
+    if (duration > ANALYTICS_HOVER_DELAY) {
       this.fireAnalytics('lozenge.hover');
     }
     this.startTime = 0;

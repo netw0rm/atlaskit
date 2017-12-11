@@ -448,29 +448,6 @@ describe('<RequestOrStartTrial> Component', () => {
     });
   });
 
-  describe('handleAnalyticsEvent', () => {
-    it('should call onAnalyticsEvent with props', () => {
-      const wrapper = shallow(<RequestOrStartTrial {...mockProps} />);
-      const instance = wrapper.instance();
-
-      const mockEventName = 'my-amazing-event';
-      const mockData = {
-        apples: 'oranges',
-        cost: 2,
-        links: ['cabbage'],
-      };
-
-      instance.handleAnalyticsEvent(mockEventName, mockData);
-
-      expect(mockProps.onAnalyticsEvent).toBeCalledWith(mockEventName, {
-        ...mockData,
-        sourceComponent: mockProps.sourceComponent,
-        sourceContext: mockProps.sourceContext,
-        targetProduct: mockProps.targetProduct,
-      });
-    });
-  });
-
   describe('Flag Actions - Retry - onClick', () => {
     it('should clear the error state', () => {
       const wrapper = shallow(<RequestOrStartTrial {...mockProps} />);

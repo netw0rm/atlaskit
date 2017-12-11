@@ -6,32 +6,30 @@ import XFlowAnalyticsListener from '../../common/components/XFlowAnalyticsListen
 
 import AdminSettings from './AdminSettings';
 
-export default class OptOut extends Component {
+class OptOut extends Component {
   static contextTypes = {
     xFlow: xFlowShape,
   };
 
-  static propTypes = {
-    onAnalyticsEvent: PropTypes.func.isRequired,
-  };
-
-  handleAnalyticsEvent = (name, data) => {
-    const { onAnalyticsEvent } = this.props;
-    if (onAnalyticsEvent) {
-      onAnalyticsEvent(name, {
-        ...data,
-      });
-    }
-  };
-
   render() {
     return (
-      <XFlowAnalyticsListener onEvent={this.handleAnalyticsEvent}>
-        <AdminSettings
-          id="xflow-opt-out-dialog"
-          {...this.props}
-        />
-      </XFlowAnalyticsListener>
+      <AdminSettings
+        id="xflow-opt-out-dialog"
+        {...this.props}
+      />
     );
   }
 }
+
+function OptOutWrap01({ onAnalyticsEvent, ...props }) {
+  return (
+    <XFlowAnalyticsListener onEvent={onAnalyticsEvent}>
+      <OptOut {...props} />
+    </XFlowAnalyticsListener>
+  );
+}
+OptOutWrap01.propTypes = {
+  onAnalyticsEvent: PropTypes.func,
+};
+
+export default OptOutWrap01;

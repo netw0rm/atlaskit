@@ -67,7 +67,7 @@ class AdminSettings extends Component {
     cancelOptOut: PropTypes.func,
     onComplete: PropTypes.func.isRequired,
 
-    firePrivateAnalyticsEvent: PropTypes.func,
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
     intl: intlShape.isRequired,
   };
 

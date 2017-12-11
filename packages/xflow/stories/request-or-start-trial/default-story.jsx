@@ -120,7 +120,7 @@ const defaultXFlowProviderProps = {
 };
 
 const defaultRequestOrStartTrialProps = {
-  onAnalyticsEvent: action('onAnalyticsEvent'),
+  // onAnalyticsEvent: provided by setupStorybookAnalytics()
   sourceComponent: 'storybook-example-component',
   sourceContext: 'storybook-example-context',
   targetProduct: 'storybook-example-product',

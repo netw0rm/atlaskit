@@ -12,7 +12,7 @@ const defaultProps = {
 };
 
 const defaultOptOutProps = {
-  onAnalyticsEvent: action('onAnalyticsEvent'),
+  // onAnalyticsEvent: provided by setupStorybookAnalytics()
   sourceComponent: 'storybook-example-component',
   sourceContext: 'storybook-example-context',
   onComplete: () => Promise.resolve(true),

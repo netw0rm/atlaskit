@@ -7,7 +7,7 @@ import matchEvent from './internal/matchEvent';
 
 /*
 The Decorator component extends analytics event data for any events fired by
-its descendents, then passes the event up the hierarchy
+its descendants, then passes the event up the hierarchy
 */
 class AnalyticsDecorator extends Component {
   props: {
@@ -22,7 +22,7 @@ class AnalyticsDecorator extends Component {
     name will be used.
     */
     match?: string | ((name: string) => boolean) | RegExp,
-    /** Sets wether to extended private or public events. */
+    /** Sets whether to extend private or public events. */
     matchPrivate?: boolean,
   };
   static defaultProps = {

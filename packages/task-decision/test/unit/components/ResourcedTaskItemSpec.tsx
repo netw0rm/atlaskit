@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as sinon from 'sinon';
 import { mount } from 'enzyme';
 import { AnalyticsListener } from '@atlaskit/analytics';
 import { waitUntil } from '@atlaskit/util-common-test';
@@ -44,6 +43,16 @@ describe('<ResourcedTaskItem/>', () => {
     expect(component.find('b').length).toEqual(1);
     expect(contentRef).not.toEqual(undefined);
     expect(contentRef!.textContent).toEqual('Hello world');
+  });
+
+  it('should call onChange prop in change handling', () => {
+    const spy = jest.fn();
+    component = mount(
+      <ResourcedTaskItem taskId="task-id" objectAri="objectAri" containerAri="containerAri" onChange={spy}>Hello <b>world</b></ResourcedTaskItem>
+    );
+    const input = component.find('input');
+    input.simulate('change');
+    expect(spy.mock.calls.length).toEqual(1);
   });
 
   it('should subscribe to updates', () => {
@@ -168,8 +177,8 @@ describe('<ResourcedTaskItem/>', () => {
 
   describe('analytics', () => {
     it('should fire atlassian.fabric.action.check analytics event when checkbox is checked', () => {
-      const publicSpy = sinon.spy();
-      const privateSpy = sinon.spy();
+      const publicSpy = jest.fn();
+      const privateSpy = jest.fn();
       const component = mount(
         <AnalyticsListener onEvent={publicSpy}>
           <AnalyticsListener onEvent={privateSpy} matchPrivate={true}>
@@ -178,13 +187,13 @@ describe('<ResourcedTaskItem/>', () => {
         </AnalyticsListener>
       );
       component.find('input').simulate('change');
-      expect(publicSpy.calledWith('atlassian.fabric.action.check', {})).toEqual(true);
-      expect(privateSpy.calledWith('atlassian.fabric.action.check', {})).toEqual(true);
+      expect(publicSpy.mock.calls[0][0]).toEqual('atlassian.fabric.action.check');
+      expect(privateSpy.mock.calls[0][0]).toEqual('atlassian.fabric.action.check');
     });
 
     it('should fire atlassian.fabric.action.uncheck analytics event when checkbox is unchecked', () => {
-      const publicSpy = sinon.spy();
-      const privateSpy = sinon.spy();
+      const publicSpy = jest.fn();
+      const privateSpy = jest.fn();
       const component = mount(
         <AnalyticsListener onEvent={publicSpy}>
           <AnalyticsListener onEvent={privateSpy} matchPrivate={true}>
@@ -193,8 +202,8 @@ describe('<ResourcedTaskItem/>', () => {
         </AnalyticsListener>
       );
       component.find('input').simulate('change');
-      expect(publicSpy.calledWith('atlassian.fabric.action.uncheck', {})).toEqual(true);
-      expect(privateSpy.calledWith('atlassian.fabric.action.uncheck', {})).toEqual(true);
+      expect(publicSpy.mock.calls[0][0]).toEqual('atlassian.fabric.action.uncheck');
+      expect(privateSpy.mock.calls[0][0]).toEqual('atlassian.fabric.action.uncheck');
     });
   });
 });

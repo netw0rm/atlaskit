@@ -83,7 +83,7 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
   }
 
   private handleOnChange = (taskId: string, isDone: boolean) => {
-    const { taskDecisionProvider, objectAri, containerAri } = this.props;
+    const { taskDecisionProvider, objectAri, containerAri, onChange } = this.props;
     if (taskDecisionProvider && containerAri && objectAri) {
       // Optimistically update the task
       this.setState({ isDone });
@@ -95,6 +95,9 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
         }
         provider.toggleTask({ localId: taskId, objectAri, containerAri }, isDone ? 'DONE' : 'TODO');
       });
+    }
+    if (onChange) {
+      onChange(taskId, isDone);
     }
   }
 

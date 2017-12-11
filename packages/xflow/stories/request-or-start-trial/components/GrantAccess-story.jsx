@@ -39,10 +39,7 @@ const defaultProps = {
   spinnerActive: false,
   continueButtonDisabled: false,
 
-  grantAccessToUsers: async (...args) => {
-    action('grantAccessToUsers')();
-    console.log('grantAccessToUsers', ...args);
-  },
+  grantAccessToUsers: action('grantAccessToUsers'),
 
   retrieveUsers: () =>
     Promise.resolve([

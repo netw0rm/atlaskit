@@ -13,7 +13,7 @@ import {
 } from '../../../src/common/productProvisioningStates';
 import MockConfluenceXFlow from '../../../stories/helpers/MockConfluenceXFlowProvider';
 import mockConfluenceStatusChecker from '../../../stories/helpers/mockProductStatusChecker';
-import RequestOrStartTrial from '../../../src/common/components/RequestOrStartTrial';
+import RequestOrStartTrial from '../../../src/request-or-start-trial';
 import StartTrial from '../../../src/request-or-start-trial/components/StartTrial';
 import ContextualStartTrial from '../../../src/request-or-start-trial/components/ContextualStartTrial';
 import ConfirmTrial from '../../../src/request-or-start-trial/components/ConfirmTrial';

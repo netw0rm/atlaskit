@@ -4,9 +4,10 @@ import { MentionStyle, MentionContainer } from './styles';
 import Tooltip from '@atlaskit/tooltip';
 import { isRestricted, MentionType } from '../../types';
 import { isSpecialMentionText } from '../../types';
-import {FireAnalyticsEvent, withAnalytics} from '@atlaskit/analytics';
+import { FireAnalyticsEvent, withAnalytics } from '@atlaskit/analytics';
 
 const MENTION_ANALYTICS_PREFIX = 'atlassian.fabric.mention';
+const ARBITRARY_DELAY = 1000;
 
 export type MentionEventHandler = (mentionId: string, text: string, event?: SyntheticEvent<HTMLSpanElement>) => void;
 
@@ -25,10 +26,6 @@ export interface Props {
 
 export class MentionInternal extends PureComponent<Props, {}> {
   private startTime: number = 0;
-
-  public setStartTime = (startTime: number) => {
-    this.startTime = startTime;
-  }
 
   private handleOnClick = (e: SyntheticEvent<HTMLSpanElement>) => {
     const { id, text, onClick } = this.props;
@@ -51,16 +48,17 @@ export class MentionInternal extends PureComponent<Props, {}> {
     if (onMouseLeave) {
       onMouseLeave(id, text, e);
     }
-
     const duration: number = Date.now() - this.startTime;
-    if (duration > 1000) {
+
+    // Arbitrary delay added to guess user intention of looking for tooltips when hovering
+    if (duration > ARBITRARY_DELAY) {
       this.fireAnalytics('lozenge.hover');
     }
     this.startTime = 0;
   }
 
   private fireAnalytics = (eventName: string) => {
-      const {accessLevel, text, firePrivateAnalyticsEvent} = this.props;
+      const { accessLevel, text, firePrivateAnalyticsEvent } = this.props;
 
       if (firePrivateAnalyticsEvent) {
         firePrivateAnalyticsEvent(`${MENTION_ANALYTICS_PREFIX}.${eventName}`, {

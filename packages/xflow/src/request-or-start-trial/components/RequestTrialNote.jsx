@@ -41,19 +41,21 @@ const messages = defineMessages({
 
 class RequestTrialNote extends Component {
   static propTypes = {
-    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
-    intl: intlShape.isRequired,
-    onComplete: PropTypes.func.isRequired,
     prompt: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
     placeholderShort: PropTypes.string.isRequired,
+
+    onComplete: PropTypes.func.isRequired,
     requestTrialWithNote: PropTypes.func,
     setProductRequestFlag: PropTypes.func,
+
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
+    intl: intlShape.isRequired,
   };
 
   static defaultProps = {
     onRequestTrialClick: () => {},
-    requestTrialWithNote: () => Promise.resolve(),
+    requestTrialWithNote: () => {},
   };
 
   state = {
@@ -73,13 +75,13 @@ class RequestTrialNote extends Component {
       requestTrialWithNote,
       setProductRequestFlag,
     } = this.props;
-    requestTrialWithNote(this.state.noteText)
+    Promise.resolve(requestTrialWithNote(this.state.noteText))
     .then(() => {
       firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.successful');
       this.setState({
         requestTrialSendNoteStatus: 'successful',
       });
-      setProductRequestFlag()
+      return Promise.resolve(setProductRequestFlag())
         .then(() => {
           firePrivateAnalyticsEvent('xflow.request-trial-note.set-requested-flag.successful');
         })

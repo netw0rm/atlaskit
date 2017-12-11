@@ -42,23 +42,25 @@ const messages = defineMessages({
 
 class LoadingTime extends Component {
   static propTypes = {
-    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
-    intl: intlShape.isRequired,
-    onComplete: PropTypes.func.isRequired,
-    progress: PropTypes.number.isRequired,
     status: PropTypes.oneOf([ACTIVE, ACTIVATING, DEACTIVATED, INACTIVE, UNKNOWN]).isRequired,
     productLogo: PropTypes.node.isRequired,
-    closeLoadingDialog: PropTypes.func,
-    goToProduct: PropTypes.func.isRequired,
     heading: PropTypes.string,
     message: PropTypes.string,
     gotoButton: PropTypes.string,
     headerImage: PropTypes.string,
+    progress: PropTypes.number.isRequired,
+
+    onComplete: PropTypes.func.isRequired,
+    closeLoadingDialog: PropTypes.func,
+    goToProduct: PropTypes.func.isRequired,
+
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
+    intl: intlShape.isRequired,
   };
 
   static defaultProps = {
-    closeLoadingDialog: async () => {},
-    goToProduct: async () => {},
+    closeLoadingDialog: () => {},
+    goToProduct: () => {},
   };
 
   state = {
@@ -132,7 +134,7 @@ class LoadingTime extends Component {
       isLoading: true,
     });
     await goToProduct();
-    onComplete();
+    return onComplete();
   };
 
   handleErrorFlagDismiss = () => {

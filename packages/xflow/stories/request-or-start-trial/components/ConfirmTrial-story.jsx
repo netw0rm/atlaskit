@@ -28,71 +28,51 @@ const defaultProps = {
   ),
   spinnerActive: false,
   getStartedButtonDisabled: false,
-  onComplete: () => {},
-  goToProduct: action('ConfirmTrialBase goToProduct'),
+
+  startProductTrial: action('startProductTrial'),
+  cancelStartProductTrial: action('cancelStartProductTrial'),
+  onComplete: action('onComplete'),
+  onCancel: action('onCancel'),
 };
 
-storiesOf('request-or-start-trial/ConfirmTrial')
+storiesOf('request-or-start-trial/ConfirmTrial', module)
+  .addDecorator(story => setupStorybookAnalytics(story()))
   .add('Confirm Trial dialog (INACTIVE)', () =>
-    setupStorybookAnalytics(
-      <ConfirmTrialBase
-        {...defaultProps}
-        onComplete={() => Promise.resolve(true)}
-        onCancel={() => Promise.resolve(true)}
-      />
-    )
+    <ConfirmTrialBase
+      {...defaultProps}
+    />
   )
   .add('Confirm Trial dialog (INACTIVE) with spinner', () =>
-    setupStorybookAnalytics(
-      <ConfirmTrialBase
-        {...defaultProps}
-        onComplete={() => Promise.resolve(true)}
-        onCancel={() => Promise.resolve(true)}
-        spinnerActive
-        buttonsDisabled
-      />
-    )
+    <ConfirmTrialBase
+      {...defaultProps}
+      spinnerActive
+      buttonsDisabled
+    />
   )
   .add('Confirm Trial dialog (INACTIVE), Error flag after Confirm', () =>
-    setupStorybookAnalytics(
-      <ConfirmTrialBase
-        {...defaultProps}
-        startProductTrial={() => new Promise((_, reject) => setTimeout(reject, 1500))}
-        onComplete={() => Promise.resolve()}
-        onCancel={() => Promise.resolve()}
-      />
-    )
+    <ConfirmTrialBase
+      {...defaultProps}
+      startProductTrial={() => new Promise((_, reject) => setTimeout(reject, 1500))}
+    />
   )
   .add('Confirm Trial dialog (DEACTIVATED)', () =>
-    setupStorybookAnalytics(
-      <ConfirmTrialBase
-        {...defaultProps}
-        status={DEACTIVATED}
-        onComplete={() => Promise.resolve(true)}
-        onCancel={() => Promise.resolve(true)}
-      />
-    )
+    <ConfirmTrialBase
+      {...defaultProps}
+      status={DEACTIVATED}
+    />
   )
   .add('Confirm Trial dialog (DEACTIVATED) with spinner', () =>
-    setupStorybookAnalytics(
-      <ConfirmTrialBase
-        {...defaultProps}
-        status={DEACTIVATED}
-        onComplete={() => Promise.resolve(true)}
-        onCancel={() => Promise.resolve(true)}
-        spinnerActive
-        buttonsDisabled
-      />
-    )
+    <ConfirmTrialBase
+      {...defaultProps}
+      status={DEACTIVATED}
+      spinnerActive
+      buttonsDisabled
+    />
   )
   .add('Confirm Trial dialog (DEACTIVATED), Error flag after Confirm', () =>
-    setupStorybookAnalytics(
-      <ConfirmTrialBase
-        {...defaultProps}
-        status={DEACTIVATED}
-        startProductTrial={() => new Promise((_, reject) => setTimeout(reject, 1500))}
-        onComplete={() => Promise.resolve()}
-        onCancel={() => Promise.resolve()}
-      />
-    )
+    <ConfirmTrialBase
+      {...defaultProps}
+      status={DEACTIVATED}
+      startProductTrial={() => new Promise((_, reject) => setTimeout(reject, 1500))}
+    />
   );

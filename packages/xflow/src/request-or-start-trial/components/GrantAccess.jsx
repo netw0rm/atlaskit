@@ -92,9 +92,6 @@ class GrantAccess extends Component {
     heading: PropTypes.string,
     defaultAccess: PropTypes.node,
 
-    intl: intlShape.isRequired,
-    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
-
     userSelectInFocus: PropTypes.bool,
     userSelectIsInvalid: PropTypes.bool,
     changeUsers: PropTypes.bool,
@@ -108,11 +105,14 @@ class GrantAccess extends Component {
     showNotifyUsersOption: PropTypes.bool,
     showProgressIndicator: PropTypes.bool,
     showAffectMyBill: PropTypes.bool,
+
+    intl: intlShape.isRequired,
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    grantAccessToUsers: async () => {},
-    retrieveUsers: async () => [],
+    grantAccessToUsers: () => {},
+    retrieveUsers: () => [],
     showNotifyUsersOption: true,
     showProgressIndicator: true,
     showAffectMyBill: true,
@@ -211,6 +211,7 @@ class GrantAccess extends Component {
       });
       return;
     }
+
     firePrivateAnalyticsEvent('xflow.grant-access.continue-button.clicked', {
       selectedRadio,
       notfiyUsers: this.state.notifyUsers,
@@ -223,13 +224,13 @@ class GrantAccess extends Component {
     });
 
     if (selectedRadio === laterOption) {
-      onComplete();
-      return;
+      return onComplete(); // eslint-disable-line consistent-return
     }
 
     try {
-      const users =
-        selectedRadio === usersOption ? selectedUsers : [...userSets.get(selectedRadio).values()];
+      const users = selectedRadio === usersOption
+        ? selectedUsers
+        : [...userSets.get(selectedRadio).values()];
       await grantAccessToUsers(users, notifyUsers);
       const grantedAccessTo = users.map(user => this.getAtlassianAccountId(user));
       firePrivateAnalyticsEvent('xflow.grant-access.continue-button.grant-access-successful', {
@@ -238,7 +239,7 @@ class GrantAccess extends Component {
 
       this.notifyDocumentOfUsersGrantedAccess(users);
 
-      onComplete();
+      return onComplete(); // eslint-disable-line consistent-return
     } catch (e) {
       firePrivateAnalyticsEvent('xflow.grant-access.continue-button.failed-to-grant-access', {
         errorMessage: e.message,

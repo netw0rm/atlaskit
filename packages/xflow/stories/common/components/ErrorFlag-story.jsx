@@ -4,26 +4,31 @@ import ErrorFlag from '../../../src/common/components/ErrorFlag';
 
 import setupStorybookAnalytics from '../../helpers/setupStorybookAnalytics';
 
-storiesOf('common/ErrorFlag')
-  .add('basic', () => setupStorybookAnalytics(<ErrorFlag
-    showFlag
-    title="(Title) Oops... Something went wrong"
-    description="(description)"
-    source="(source)"
-  />))
-  .add('advanced', () => setupStorybookAnalytics(<ErrorFlag
-    showFlag
-    title="(Title) Oops... Something went wrong"
-    description="(description) Let's try again."
-    flagActions={[
+storiesOf('common/ErrorFlag', module)
+  .addDecorator(story => setupStorybookAnalytics(story()))
+  .add('basic', () =>
+    <ErrorFlag
+      showFlag
+      title="(Title) Oops... Something went wrong"
+      description="(description)"
+      source="(source)"
+    />
+  )
+  .add('advanced', () =>
+    <ErrorFlag
+      showFlag
+      title="(Title) Oops... Something went wrong"
+      description="(description) Let's try again."
+      flagActions={[
       { content: 'retry', onClick: action('Flag action') },
-    ]}
-    source="(source)"
-    onDismissed={action('Flag dismissed.')}
-  />))
-  .add('show/hide transitions', () => (
-    setupStorybookAnalytics(<TestComponent />)
-  ));
+      ]}
+      source="(source)"
+      onDismissed={action('Flag dismissed.')}
+    />
+  )
+  .add('show/hide transitions', () =>
+    <TestComponent />
+  );
 
 class TestComponent extends Component {
   constructor(props) {

@@ -11,10 +11,12 @@ import LoadingTime from './LoadingTime';
 
 class StartTrial extends Component {
   static propTypes = {
-    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
     showGrantAccess: PropTypes.bool.isRequired,
+
     onComplete: PropTypes.func,
     onTrialActivating: PropTypes.func,
+
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -30,7 +32,7 @@ class StartTrial extends Component {
       firePrivateAnalyticsEvent,
     } = this.props;
     return (
-      <MultiStep start={0} onComplete={onComplete}>
+      <MultiStep onComplete={onComplete}>
         <Step
           render={(nextStep, cancel) =>
             <ConfirmTrial

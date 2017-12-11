@@ -18,29 +18,26 @@ const defaultOptOutProps = {
   onComplete: () => Promise.resolve(true),
 };
 
-storiesOf('request-trial-opt-out/RequestProductTrialOptOut')
+storiesOf('request-trial-opt-out/RequestProductTrialOptOut', module)
+  .addDecorator(story => setupStorybookAnalytics(story()))
   .add('Opt Out Dialog', () =>
-    setupStorybookAnalytics(
-      <MockConfluenceXFlowProvider {...defaultProps}>
-        <RequestProductTrialOptOut
-          {...defaultOptOutProps}
-          optOutRequestTrialFeature={() =>
+    <MockConfluenceXFlowProvider {...defaultProps}>
+      <RequestProductTrialOptOut
+        {...defaultOptOutProps}
+        optOutRequestTrialFeature={() =>
             new Promise(resolve => setTimeout(resolve, 1000))
           }
-        />
-      </MockConfluenceXFlowProvider>
-    )
+      />
+    </MockConfluenceXFlowProvider>
   )
   .add('Opt Out, error flag after failed request', () =>
-    setupStorybookAnalytics(
-      <MockConfluenceXFlowProvider {...defaultProps}>
-        <RequestProductTrialOptOut
-          {...defaultOptOutProps}
-          optOutRequestTrialFeature={() =>
+    <MockConfluenceXFlowProvider {...defaultProps}>
+      <RequestProductTrialOptOut
+        {...defaultOptOutProps}
+        optOutRequestTrialFeature={() =>
             new Promise((_, reject) =>
               setTimeout(() => reject({ message: 'Example failure' }), 1000))
           }
-        />
-      </MockConfluenceXFlowProvider>
-    )
+      />
+    </MockConfluenceXFlowProvider>
   );

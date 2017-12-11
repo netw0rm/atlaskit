@@ -13,8 +13,10 @@ class SuccessFlagBase extends Component {
     description: PropTypes.string,
     showFlag: PropTypes.bool,
     source: PropTypes.string,
-    onDismissed: PropTypes.func,
     flagActions: PropTypes.arrayOf(PropTypes.object),
+
+    onDismissed: PropTypes.func,
+
     firePrivateAnalyticsEvent: PropTypes.func,
   };
 

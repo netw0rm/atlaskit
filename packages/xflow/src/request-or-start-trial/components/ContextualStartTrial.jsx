@@ -11,10 +11,7 @@ import LoadingTime from './LoadingTime';
 
 class ContextualStartTrial extends Component {
   static propTypes = {
-    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
     showGrantAccess: PropTypes.bool.isRequired,
-    onComplete: PropTypes.func,
-    onTrialActivating: PropTypes.func,
     contextInfo: PropTypes.shape({
       contextualImage: PropTypes.string,
       contextualHeading: PropTypes.string.isRequired,
@@ -22,6 +19,11 @@ class ContextualStartTrial extends Component {
       reactivateCTA: PropTypes.string.isRequired,
       trialCTA: PropTypes.string.isRequired,
     }).isRequired,
+
+    onComplete: PropTypes.func,
+    onTrialActivating: PropTypes.func,
+
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
   };
 
   static defaultProps = {

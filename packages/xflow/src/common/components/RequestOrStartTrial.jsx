@@ -24,15 +24,6 @@ class RequestOrStartTrial extends Component {
     sourceComponent: PropTypes.string.isRequired,
     sourceContext: PropTypes.string.isRequired,
     targetProduct: PropTypes.string.isRequired,
-    canCurrentUserAddProduct: PropTypes.func.isRequired,
-    getProductActivationState: PropTypes.func.isRequired,
-    waitForActivation: PropTypes.func.isRequired,
-    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
-    onAnalyticsEvent: PropTypes.func.isRequired,
-    onComplete: PropTypes.func,
-    onTrialRequested: PropTypes.func,
-    onTrialActivating: PropTypes.func,
-    checkProductRequestFlag: PropTypes.func,
     contextInfo: PropTypes.shape({
       contextualImage: PropTypes.string,
       contextualHeading: PropTypes.string,
@@ -41,6 +32,17 @@ class RequestOrStartTrial extends Component {
       trialCTA: PropTypes.string,
     }),
     grantAccessEnabled: PropTypes.bool,
+
+    canCurrentUserAddProduct: PropTypes.func.isRequired,
+    getProductActivationState: PropTypes.func.isRequired,
+    checkProductRequestFlag: PropTypes.func,
+    waitForActivation: PropTypes.func.isRequired,
+    onAnalyticsEvent: PropTypes.func.isRequired,
+    onComplete: PropTypes.func,
+    onTrialRequested: PropTypes.func,
+    onTrialActivating: PropTypes.func,
+
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
   };
 
   static defaultProps = {

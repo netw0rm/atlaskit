@@ -4,17 +4,25 @@ import ProgressBar from '../../../src/common/components/ProgressBar';
 
 import setupStorybookAnalytics from '../../helpers/setupStorybookAnalytics';
 
-storiesOf('common/ProgressBar')
-  .add('Empty Progress Bar', () => setupStorybookAnalytics(<ProgressBar progress={0} />))
-  .add('25% Full', () => setupStorybookAnalytics(<ProgressBar progress={0.25} />))
-  .add('50% Full', () => setupStorybookAnalytics(<ProgressBar progress={0.5} />))
+storiesOf('common/ProgressBar', module)
+  .addDecorator(story => setupStorybookAnalytics(story()))
+  .add('Empty Progress Bar', () =>
+    <ProgressBar progress={0} />)
+  .add('25% Full', () =>
+    <ProgressBar progress={0.25} />
+  )
+  .add('50% Full', () =>
+    <ProgressBar progress={0.5} />
+  )
   .add('Complete', () =>
-    setupStorybookAnalytics(
-      <ProgressBar progress={1} onComplete={action('ProgressBar onComplete')} />
-    )
+    <ProgressBar progress={1} onComplete={action('ProgressBar onComplete')} />
   )
   .add('Indeterminate state', () =>
-    setupStorybookAnalytics(<ProgressBar progress={1} indeterminate />)
+    <ProgressBar progress={1} indeterminate />
   )
-  .add('Negative', () => setupStorybookAnalytics(<ProgressBar progress={-1} />))
-  .add('Over 100%', () => setupStorybookAnalytics(<ProgressBar progress={2} />));
+  .add('Negative', () =>
+    <ProgressBar progress={-1} />
+  )
+  .add('Over 100%', () =>
+    <ProgressBar progress={2} />
+  );

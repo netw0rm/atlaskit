@@ -9,7 +9,7 @@ import { ACTIVE, ACTIVATING } from '../../../src/common/productProvisioningState
 
 const defaultProps = {
   productLogo: <ConfluenceLogo />,
-  heading: 'You already have Confluece',
+  heading: 'You already have Confluence',
   message: (
     <div>
       <p>A site administrator already started a trial.</p>
@@ -17,57 +17,46 @@ const defaultProps = {
     </div>
   ),
   getStartedButtonText: 'Get started',
-  spinnerActive: false,
-  getStartedButtonDisabled: false,
   status: ACTIVATING,
   progress: 0,
-  onComplete: () => {},
-  goToProduct: action('ConfirmTrialBase goToProduct'),
+
+  onComplete: action('onComplete'),
+  goToProduct: action('goToProduct'),
+  closeAlreadyStartedDialog: action('closeAlreadyStartedDialog'),
 };
 
-storiesOf('request-or-start-trial/AlreadyStarted')
+storiesOf('request-or-start-trial/AlreadyStarted', module)
+  .addDecorator(story => setupStorybookAnalytics(story()))
   .add('Already Started (ACTIVATING) progress bar (0%)', () =>
-    setupStorybookAnalytics(
-      <AlreadyStartedBase {...defaultProps} onComplete={() => Promise.resolve(true)} />
-    )
+    <AlreadyStartedBase
+      {...defaultProps}
+    />
   )
   .add('Already Started (ACTIVATING) progress bar (50%)', () =>
-    setupStorybookAnalytics(
-      <AlreadyStartedBase
-        {...defaultProps}
-        progress={0.5}
-        onComplete={() => Promise.resolve(true)}
-      />
-    )
+    <AlreadyStartedBase
+      {...defaultProps}
+      progress={0.5}
+    />
   )
   .add('Already Started (ACTIVATING Error) progress bar (100%)', () =>
-    setupStorybookAnalytics(
-      <AlreadyStartedBase
-        {...defaultProps}
-        progress={1}
-        status={ACTIVATING}
-        onComplete={() => Promise.resolve(true)}
-      />
-    )
+    <AlreadyStartedBase
+      {...defaultProps}
+      progress={1}
+      status={ACTIVATING}
+    />
   )
   .add('Already Started (ACTIVATING) progress bar (100%)', () =>
-    setupStorybookAnalytics(
-      <AlreadyStartedBase
-        {...defaultProps}
-        progress={1}
-        initialStatus={ACTIVATING}
-        status={ACTIVE}
-        onComplete={() => Promise.resolve(true)}
-      />
-    )
+    <AlreadyStartedBase
+      {...defaultProps}
+      progress={1}
+      initialStatus={ACTIVATING}
+      status={ACTIVE}
+    />
   )
   .add('Already Started (ACTIVE)', () =>
-    setupStorybookAnalytics(
-      <AlreadyStartedBase
-        {...defaultProps}
-        progress={1}
-        status={ACTIVE}
-        onComplete={() => Promise.resolve(true)}
-      />
-    )
+    <AlreadyStartedBase
+      {...defaultProps}
+      progress={1}
+      status={ACTIVE}
+    />
   );

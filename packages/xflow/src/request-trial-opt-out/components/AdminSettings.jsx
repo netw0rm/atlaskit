@@ -62,11 +62,13 @@ class AdminSettings extends Component {
     ).isRequired,
     spinnerActive: PropTypes.bool,
     buttonsDisabled: PropTypes.bool,
-    firePrivateAnalyticsEvent: PropTypes.func,
-    intl: intlShape.isRequired,
+
     optOutRequestTrialFeature: PropTypes.func,
     cancelOptOut: PropTypes.func,
     onComplete: PropTypes.func.isRequired,
+
+    firePrivateAnalyticsEvent: PropTypes.func,
+    intl: intlShape.isRequired,
   };
 
   static defaultProps = {

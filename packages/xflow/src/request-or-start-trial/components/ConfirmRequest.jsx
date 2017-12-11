@@ -17,8 +17,13 @@ import RequestTrialDiv from '../styled/RequestTrialDiv';
 
 class ConfirmRequest extends Component {
   static propTypes = {
+    productLogo: PropTypes.element,
+    image: PropTypes.string.isRequired,
+    heading: PropTypes.string.isRequired,
+    message: PropTypes.node.isRequired,
+    learnMoreLink: PropTypes.string,
     alreadyRequested: PropTypes.bool.isRequired,
-    cancelRequestTrial: PropTypes.func,
+
     contextInfo: PropTypes.shape({
       contextualImage: PropTypes.string,
       contextualHeading: PropTypes.string,
@@ -26,19 +31,17 @@ class ConfirmRequest extends Component {
       reactivateCTA: PropTypes.string,
       trialCTA: PropTypes.string,
     }),
-    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
-    heading: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    learnMoreLink: PropTypes.string,
-    message: PropTypes.node.isRequired,
+
+    cancelRequestTrial: PropTypes.func,
     onComplete: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
-    productLogo: PropTypes.element,
+
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     productLogo: <AtlassianLogo />,
-    cancelRequestTrial: () => Promise.resolve(),
+    cancelRequestTrial: () => {},
   };
 
   componentDidMount() {
@@ -51,13 +54,13 @@ class ConfirmRequest extends Component {
   handleRequestTrialClick = () => {
     const { firePrivateAnalyticsEvent, onComplete } = this.props;
     firePrivateAnalyticsEvent('xflow.request-trial.request-button.clicked');
-    onComplete();
+    return onComplete();
   };
 
   handleLearnMoreClick = () => {
     const { firePrivateAnalyticsEvent, onComplete } = this.props;
     firePrivateAnalyticsEvent('xflow.already-requested-trial.learn-more-button.clicked');
-    Promise.resolve(() => onComplete());
+    return onComplete();
   };
 
   // This is necessary to capture middle and right mouse clicks
@@ -79,7 +82,8 @@ class ConfirmRequest extends Component {
     firePrivateAnalyticsEvent(alreadyRequested ?
       'xflow.already-requested-trial.close-button.clicked' :
       'xflow.request-trial.close-button.clicked');
-    Promise.resolve(cancelRequestTrial()).then(onCancel);
+    return Promise.resolve(cancelRequestTrial())
+      .then(onCancel);
   };
 
   render() {

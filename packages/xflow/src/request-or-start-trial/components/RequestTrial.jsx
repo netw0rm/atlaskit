@@ -12,6 +12,7 @@ import RequestTrialNote from './RequestTrialNote';
 class RequestTrial extends Component {
   static propTypes = {
     alreadyRequested: PropTypes.bool.isRequired,
+
     contextInfo: PropTypes.shape({
       contextualImage: PropTypes.string,
       contextualHeading: PropTypes.string,
@@ -19,9 +20,11 @@ class RequestTrial extends Component {
       reactivateCTA: PropTypes.string,
       trialCTA: PropTypes.string,
     }),
-    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
+
     onComplete: PropTypes.func,
     onTrialRequested: PropTypes.func,
+
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -39,7 +42,7 @@ class RequestTrial extends Component {
       onTrialRequested,
     } = this.props;
     return (
-      <MultiStep start={0} onComplete={onComplete}>
+      <MultiStep onComplete={onComplete}>
         <Step
           render={(nextStep, cancel) =>
             <ConfirmRequest
@@ -57,7 +60,10 @@ class RequestTrial extends Component {
               onCancel={cancel}
             />}
         />
-        <Step render={nextStep => <RequestTrialNote onComplete={nextStep} />} />
+        <Step
+          render={nextStep =>
+            <RequestTrialNote onComplete={nextStep} />}
+        />
       </MultiStep>
     );
   }

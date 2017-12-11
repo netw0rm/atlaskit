@@ -9,9 +9,10 @@ import InitializingSpinnerDiv from '../styled/InitializingSpinnerDiv';
 
 class InitializingScreen extends Component {
   static propTypes = {
-    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
     isOpen: PropTypes.bool,
     productLogo: PropTypes.element,
+
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
   };
 
   defaultProps = {

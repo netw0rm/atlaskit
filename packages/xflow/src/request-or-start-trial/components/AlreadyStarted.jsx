@@ -23,22 +23,24 @@ import {
 
 class AlreadyStarted extends Component {
   static propTypes = {
-    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
-    onComplete: PropTypes.func.isRequired,
     productLogo: PropTypes.node.isRequired,
     heading: PropTypes.string.isRequired,
     message: PropTypes.node.isRequired,
     getStartedButtonText: PropTypes.string,
-    goToProduct: PropTypes.func,
-    closeAlreadyStartedDialog: PropTypes.func,
     progress: PropTypes.number.isRequired,
     status: PropTypes.oneOf([ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN]).isRequired,
     initialStatus: PropTypes.oneOf([ACTIVE, ACTIVATING]),
+
+    onComplete: PropTypes.func.isRequired,
+    goToProduct: PropTypes.func,
+    closeAlreadyStartedDialog: PropTypes.func,
+
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    startProductTrial: async () => {},
-    closeAlreadyStartedDialog: async () => {},
+    startProductTrial: () => {},
+    closeAlreadyStartedDialog: () => {},
   };
 
   state = {
@@ -76,7 +78,7 @@ class AlreadyStarted extends Component {
       isLoading: true,
     });
     await goToProduct();
-    onComplete();
+    return onComplete();
   };
 
   render() {

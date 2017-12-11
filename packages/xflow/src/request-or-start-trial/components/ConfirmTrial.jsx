@@ -26,25 +26,28 @@ const messages = defineMessages({
 
 class ConfirmTrial extends Component {
   static propTypes = {
-    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
-    intl: intlShape.isRequired,
     productLogo: PropTypes.node.isRequired,
-    spinnerActive: PropTypes.bool,
-    buttonsDisabled: PropTypes.bool,
-    onComplete: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired,
-    startProductTrial: PropTypes.func,
-    cancelStartProductTrial: PropTypes.func,
-    status: PropTypes.oneOf([INACTIVE, DEACTIVATED]),
+
     trialHeading: PropTypes.string.isRequired,
     trialMessage: PropTypes.node.isRequired,
     reactivateHeading: PropTypes.string.isRequired,
     reactivateMessage: PropTypes.node.isRequired,
+    spinnerActive: PropTypes.bool,
+    buttonsDisabled: PropTypes.bool,
+    status: PropTypes.oneOf([INACTIVE, DEACTIVATED]),
+
+    startProductTrial: PropTypes.func,
+    cancelStartProductTrial: PropTypes.func,
+    onComplete: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+
+    intl: intlShape.isRequired,
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
-    startProductTrial: () => Promise.resolve(),
-    cancelStartProductTrial: () => Promise.resolve(),
+    startProductTrial: () => {},
+    cancelStartProductTrial: () => {},
   };
 
   state = {
@@ -82,14 +85,16 @@ class ConfirmTrial extends Component {
       productFailedToStart: false,
     });
 
-    startProductTrial()
+    this.notifyDocumentOfConfirmClick(status);
+
+    return Promise.resolve(startProductTrial())
       .then(() => {
         firePrivateAnalyticsEvent(
           status === INACTIVE
             ? 'xflow.confirm-trial.start-product-trial.successful'
             : 'xflow.reactivate-trial.start-product-trial.successful'
         );
-        onComplete();
+        return onComplete();
       })
       .catch(() => {
         firePrivateAnalyticsEvent(
@@ -103,8 +108,6 @@ class ConfirmTrial extends Component {
           buttonsDisabled: false,
         });
       });
-
-    this.notifyDocumentOfConfirmClick(status);
   };
 
   handleCancelClick = () => {
@@ -114,7 +117,8 @@ class ConfirmTrial extends Component {
         ? 'xflow.confirm-trial.cancel-button.clicked'
         : 'xflow.reactivate-trial.cancel-button.clicked'
     );
-    cancelStartProductTrial().then(onCancel);
+    return Promise.resolve(cancelStartProductTrial())
+      .then(onCancel);
   };
 
   handleErrorFlagDismiss = () => {

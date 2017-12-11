@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { DropdownMenuStateless } from '@atlaskit/dropdown-menu';
 
 import type {
+  HomeLink,
   RecentContainers,
   LinkedApplications,
   DropdownOptions,
@@ -22,6 +23,7 @@ export default class AppSwitcher extends Component {
     linkedApplications: LinkedApplications,
     isAnonymousUser: boolean,
     isHomeLinkEnabled: boolean,
+    homeLink?: HomeLink,
     isSiteAdminLinkEnabled?: boolean,
     i18n: Translations,
     trigger: Function,
@@ -74,6 +76,7 @@ export default class AppSwitcher extends Component {
       i18n,
       isAnonymousUser,
       isHomeLinkEnabled,
+      homeLink,
       isSiteAdminLinkEnabled,
       isLoading,
       recentContainers,
@@ -86,7 +89,7 @@ export default class AppSwitcher extends Component {
     // This is not the intended behaviour of DropdownMenu and could result in major issues in the
     // future. (Its what is throwing the warnings in tests too)
     const dropdownItems = [
-      getTopLinks(i18n, isAnonymousUser, isHomeLinkEnabled, isSiteAdminLinkEnabled),
+      getTopLinks(i18n, isAnonymousUser, isHomeLinkEnabled, isSiteAdminLinkEnabled, homeLink),
       getRecentContainers(i18n, isAnonymousUser, recentContainers),
       getLinkedApplications(i18n, isAnonymousUser, linkedApplications),
     ].filter(item => item != null);

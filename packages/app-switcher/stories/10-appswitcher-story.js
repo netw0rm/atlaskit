@@ -2,6 +2,7 @@ import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 import { Chrome } from '@atlaskit/util-readme';
 import Button from '@atlaskit/button';
+import CustomIcon from '@atlaskit/icon/glyph/home-circle';
 
 import AppSwitcher from '../src';
 import { name } from '../package.json';
@@ -114,6 +115,19 @@ storiesOf(name, module)
         {...{
           ...data,
           isHomeLinkEnabled: false,
+        }}
+      />
+    </Chrome>
+  ))
+
+  .add('with custom Home link', () => (
+    <Chrome>
+      <AppSwitcher
+        {...data}
+        homeLink={{
+          name: 'Atlassian Home',
+          url: '/home/notifications',
+          icon: <CustomIcon size="large" label="" />,
         }}
       />
     </Chrome>

@@ -15,6 +15,12 @@ const suggestedApplications = PropTypes.arrayOf(PropTypes.shape({
 const configureLink = PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired;
 
 export default {
+  homeLink: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    icon: PropTypes.node.isRequired,
+  }),
+
   recentContainers: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,

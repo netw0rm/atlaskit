@@ -7,8 +7,8 @@ import setupStorybookAnalytics from '../helpers/setupStorybookAnalytics';
 import MockConfluenceXFlowProvider from '../helpers/MockConfluenceXFlowProvider';
 
 const defaultProps = {
-  canCurrentUserAddProduct: async () => true,
-  cancelOptOut: async () => {},
+  canCurrentUserAddProduct: () => true,
+  cancelOptOut: action('cancelOptOut'),
 };
 
 const defaultOptOutProps = {

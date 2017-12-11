@@ -40,7 +40,7 @@ const XFLOW_PROVIDERS_UNDER_TEST = {
 };
 
 const defaultXFlowProviderProps = {
-  canCurrentUserAddProduct: async () => false,
+  canCurrentUserAddProduct: () => true,
   retrieveUsers: () =>
     Promise.resolve([
       {
@@ -109,14 +109,14 @@ const defaultXFlowProviderProps = {
         },
       },
     ]),
-  cancelStartProductTrial: async (...args) => action('mock cancelStartProductTrial')(...args),
-  grantAccessToUsers: async (...args) => { action('mock grantAccessToUsers')(...args); return delay(1000); },
-  goToProduct: async (...args) => action('mock goToProduct')(...args),
-  closeLoadingDialog: async (...args) => action('mock closeLoadingDialog')(...args),
-  requestTrialWithNote: async (...args) => { action('mock requestTrialWithNote')(...args); return delay(1000); },
-  cancelRequestTrial: async (...args) => action('mock cancelRequestTrial')(...args),
-  checkProductRequestFlag: async (...args) => action('mock checkProductRequestFlag')(...args),
-  setProductRequestFlag: async (...args) => action('mock setProductRequestFlag')(...args),
+  cancelStartProductTrial: action('mock cancelStartProductTrial'),
+  grantAccessToUsers: (...args) => { action('mock grantAccessToUsers')(...args); return delay(1000); },
+  goToProduct: action('mock goToProduct'),
+  closeLoadingDialog: action('mock closeLoadingDialog'),
+  requestTrialWithNote: (...args) => { action('mock requestTrialWithNote')(...args); return delay(1000); },
+  cancelRequestTrial: action('mock cancelRequestTrial'),
+  checkProductRequestFlag: action('mock checkProductRequestFlag'),
+  setProductRequestFlag: action('mock setProductRequestFlag'),
 };
 
 const defaultRequestOrStartTrialProps = {
@@ -137,7 +137,6 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
     stories = stories.add('User can add a product (INACTIVE), Start Trial flow with Grant Access screen', () =>
       <MockXFlowProvider
         {...defaultXFlowProviderProps}
-        canCurrentUserAddProduct={async () => true}
       >
         <RequestOrStartTrial
           {...defaultRequestOrStartTrialProps}
@@ -152,7 +151,6 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
     .add('User can add a product (INACTIVE), Start Trial flow without Grant Access screen', () =>
       <MockXFlowProvider
         {...defaultXFlowProviderProps}
-        canCurrentUserAddProduct={async () => true}
       >
         <RequestOrStartTrial
           {...defaultRequestOrStartTrialProps}
@@ -164,7 +162,6 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
     .add('User can add a product (DEACTIVATED), Start Trial flow without Grant Access screen', () =>
       <MockXFlowProvider
         {...defaultXFlowProviderProps}
-        canCurrentUserAddProduct={async () => true}
         productStatusChecker={mockProductStatusChecker(DEACTIVATED)}
       >
         <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
@@ -175,7 +172,6 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
     stories = stories.add('User can add a product (INACTIVE), Contextual Start Trial flow with Grant Access screen', () =>
       <MockXFlowProvider
         {...defaultXFlowProviderProps}
-        canCurrentUserAddProduct={async () => true}
       >
         <RequestOrStartTrial
           {...defaultRequestOrStartTrialProps}
@@ -192,7 +188,6 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
       .add('User can add a product (DEACTIVATED), Contextual Start Trial flow without Grant Access screen', () =>
         <MockXFlowProvider
           {...defaultXFlowProviderProps}
-          canCurrentUserAddProduct={async () => true}
           productStatusChecker={mockProductStatusChecker(DEACTIVATED)}
         >
           <RequestOrStartTrial
@@ -212,7 +207,6 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
     <MockXFlowProvider
       {...defaultXFlowProviderProps}
       productStatusChecker={mockProductStatusChecker(ACTIVATING)}
-      canCurrentUserAddProduct={async () => true}
     >
       <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
     </MockXFlowProvider>
@@ -221,13 +215,15 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
       <MockXFlowProvider
         {...defaultXFlowProviderProps}
         productStatusChecker={mockProductStatusChecker(ACTIVE)}
-        canCurrentUserAddProduct={async () => true}
       >
         <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
       </MockXFlowProvider>
     )
     .add('User cannot add a product (INACTIVE), Request Trial', () =>
-      <MockXFlowProvider {...defaultXFlowProviderProps}>
+      <MockXFlowProvider
+        {...defaultXFlowProviderProps}
+        canCurrentUserAddProduct={() => false}
+      >
         <RequestOrStartTrial
           {...defaultRequestOrStartTrialProps}
           onTrialRequested={action('onTrialRequested')}
@@ -247,7 +243,6 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
           stop() {
           },
         }}
-        canCurrentUserAddProduct={async () => true}
       >
         <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
       </MockXFlowProvider>
@@ -264,7 +259,6 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
           stop() {
           },
         }}
-        canCurrentUserAddProduct={async () => true}
       >
         <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
       </MockXFlowProvider>

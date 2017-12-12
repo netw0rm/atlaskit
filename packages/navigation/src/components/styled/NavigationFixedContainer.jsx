@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { zIndex } from '../../shared-variables';
 
 const NavigationFixedContainer = styled.div`
-  height: calc(100% - ${({ topOffset }) => (topOffset ? `${topOffset}px` : '0px')});
+  height: ${({ topOffset }) => (topOffset ? `calc(100% - ${topOffset}px)` : '100%')};
   /* This transition height is borrowed from banner specifically to make the
   shortening occur in line with banner's lengthening. */
   transition: height 0.25s ease-in-out;

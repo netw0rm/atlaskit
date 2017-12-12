@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { MouseEvent } from '@types/react';
 import { PureComponent } from 'react';
-import Avatar from '@atlaskit/avatar';
+import Avatar from '@atlaskit/avatar/dist/esm/components/Avatar';
 import Lozenge from '@atlaskit/lozenge';
 import LockCircleIcon from '@atlaskit/icon/glyph/lock-circle';
 import Tooltip from '@atlaskit/tooltip';

@@ -1,7 +1,7 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 
-import { RequestProductTrialOptOut } from '@atlaskit/xflow';
+import { RequestProductTrialOptOut } from '../../src';
 
 import setupStorybookAnalytics from '../helpers/setupStorybookAnalytics';
 import MockConfluenceXFlowProvider from '../helpers/MockConfluenceXFlowProvider';

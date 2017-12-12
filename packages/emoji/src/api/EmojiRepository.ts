@@ -189,6 +189,13 @@ export default class EmojiRepository {
   }
 
   /**
+   * Returns all emoji with matching shortName
+   */
+  findAllMatchingShortName(shortName: string): EmojiDescription[] {
+    return this.shortNameMap.get(shortName) || [];
+  }
+
+  /**
    * Returns the first matching emoji matching the shortName, or null if none found.
    */
   findByShortName(shortName: string): OptionalEmojiDescription {

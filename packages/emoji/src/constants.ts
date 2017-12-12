@@ -19,3 +19,5 @@ export const selectedToneStorageKey = `${localStoragePrefix}.selectedTone`;
 export const defaultCategories = ['PEOPLE', 'NATURE', 'FOODS', 'ACTIVITY', 'PLACES', 'OBJECTS', 'SYMBOLS', 'FLAGS'];
 
 export const defaultListLimit = 50;
+
+export const migrationUserId = 'hipchat_migration_emoticons';

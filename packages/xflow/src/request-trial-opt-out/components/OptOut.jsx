@@ -14,7 +14,6 @@ class OptOut extends Component {
   render() {
     return (
       <AdminSettings
-        id="xflow-opt-out-dialog"
         {...this.props}
       />
     );

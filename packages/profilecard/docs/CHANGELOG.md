@@ -1,5 +1,8 @@
 # @atlaskit/profilecard
 
+## 3.12.3 (2017-12-13)
+
+* bug fix; cap profilecard cache age at 30 days ([6e112c0](https://bitbucket.org/atlassian/atlaskit/commits/6e112c0))
 ## 3.12.2 (2017-12-06)
 
 * bug fix; add max-width to profilecard trigger to allow CSS truncation of children (issues closed: ak-3989) ([ad721a1](https://bitbucket.org/atlassian/atlaskit/commits/ad721a1))

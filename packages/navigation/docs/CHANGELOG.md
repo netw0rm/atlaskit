@@ -1,5 +1,9 @@
 # @atlaskit/navigation
 
+## 27.0.4 (2017-12-13)
+
+* bug fix; use vh instead of percent ([e138d4b](https://bitbucket.org/atlassian/atlaskit/commits/e138d4b))
+* bug fix; tweak NavigationFixedContainer styling so avoid calc'ing the height when not require (issues closed: ak-4062) ([bd6afa2](https://bitbucket.org/atlassian/atlaskit/commits/bd6afa2))
 ## 27.0.3 (2017-12-06)
 
 * bug fix; memoize theme updates to prevent unnecessary re-rendering of themed components (issues closed: ak-3988) ([c785544](https://bitbucket.org/atlassian/atlaskit/commits/c785544))

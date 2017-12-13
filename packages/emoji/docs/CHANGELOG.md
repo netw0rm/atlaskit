@@ -1,5 +1,9 @@
 # @atlaskit/emoji
 
+## 30.3.8 (2017-12-13)
+
+
+* bug fix; atlassianEmojiMigrationResource does not resolve atlassian emojis by id (issues closed: fs-1557) ([1bfc13c](https://bitbucket.org/atlassian/atlaskit/commits/1bfc13c))
 ## 30.3.7 (2017-12-08)
 
 * bug fix; fS-1504 Fix lint error ([64563cf](https://bitbucket.org/atlassian/atlaskit/commits/64563cf))

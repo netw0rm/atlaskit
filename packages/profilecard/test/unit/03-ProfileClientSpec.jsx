@@ -31,6 +31,17 @@ describe('Profilecard', () => {
       expect(client.cacheMaxAge).toEqual(clientCacheMaxAge);
     });
 
+    it('should cap the cache at 30 days, even if you set a longer one', () => {
+      const client = new AkProfileClient({
+        url: clientUrl,
+        cacheSize: clientCacheSize,
+        // 40 days
+        cacheMaxAge: 40 * 24 * 60 * 60 * 1000,
+      });
+
+      expect(client.cacheMaxAge).toEqual(30 * 24 * 60 * 60 * 1000);
+    });
+
     describe('LRU Cache', () => {
       const client = new AkProfileClient({
         url: clientUrl,

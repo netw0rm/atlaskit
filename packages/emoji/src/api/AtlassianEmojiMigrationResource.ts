@@ -3,14 +3,16 @@ import { customType, migrationUserId } from '../constants';
 import EmojiRepository from './EmojiRepository';
 import EmojiResource from './EmojiResource';
 
+const atlassian = 'atlassian';
+
 const removeDuplicateAtlassianEmoji = (emojis: EmojiDescription[], duplicateEmojis: Set<string>): EmojiDescription[] => {
   if (!duplicateEmojis.size) {
     return emojis;
   }
-  return emojis.filter(emoji => !(duplicateEmojis.has(emoji.shortName) && emoji.type.toUpperCase() === 'ATLASSIAN'));
+  return emojis.filter(emoji => !(duplicateEmojis.has(emoji.shortName) && emoji.type.toLowerCase() === atlassian));
 };
 
-const isAtlassianId = (id?: string) => id && id.indexOf('atlassian-') === 0;
+const isAtlassianId = (id?: string) => id && id.indexOf(`${atlassian}-`) === 0;
 
 /**
  * EmojiResource that removes an Atlassian emoji if there is a corresponding site emoji duplicate
@@ -33,7 +35,7 @@ export default class AtlassianEmojiMigrationResource extends EmojiResource {
       if (emojiResponse.emojis[0].type.toUpperCase() === customType) {
         emojiResponse.emojis.forEach(emoji => siteEmojis.add(emoji.shortName));
       }
-      if (emojiResponse.emojis[0].type.toUpperCase() === 'ATLASSIAN') {
+      if (emojiResponse.emojis[0].type.toLowerCase() === atlassian) {
         emojiResponse.emojis.forEach(emoji => atlassianEmojis.add(emoji.shortName));
       }
       emojis = emojis.concat(emojiResponse.emojis);

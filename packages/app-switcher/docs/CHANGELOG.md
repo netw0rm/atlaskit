@@ -1,5 +1,11 @@
 # @atlaskit/app-switcher
 
+## 3.3.0 (2017-12-13)
+
+* bug fix; add required homeLink argument to getTopLinks() tests (issues closed: nav-35) ([e89f924](https://bitbucket.org/atlassian/atlaskit/commits/e89f924))
+
+* feature; add new prop for custom Home link to app-switcher (issues closed: nav-35) ([759b032](https://bitbucket.org/atlassian/atlaskit/commits/759b032))
+
 ## 3.2.2 (2017-11-14)
 
 * bug fix; bumping internal dependencies to latest major versions ([c9f1af6](https://bitbucket.org/atlassian/atlaskit/commits/c9f1af6))

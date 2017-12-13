@@ -1,6 +1,12 @@
 import getTopLinks from '../../src/items/top-links';
 import { name } from '../../package.json';
 
+const homeLink = {
+  name: 'Home',
+  icon: null,
+  url: '/home',
+};
+
 describe(name, () => {
   it('should return null if the user is anonymous', () => {
     const result = getTopLinks({}, true, true, true);
@@ -15,7 +21,7 @@ describe(name, () => {
   });
 
   it('should return Home link item when it is enabled', () => {
-    const result = getTopLinks({}, false, true, false);
+    const result = getTopLinks({}, false, true, false, homeLink);
 
     expect(result).not.toBe(null);
     expect(result.items).not.toBe(null);
@@ -33,7 +39,7 @@ describe(name, () => {
   });
 
   it('should return both Home and Site Admin links item when they are enabled', () => {
-    const result = getTopLinks({}, false, true, true);
+    const result = getTopLinks({}, false, true, true, homeLink);
 
     expect(result).not.toBe(null);
     expect(result.items).not.toBe(null);

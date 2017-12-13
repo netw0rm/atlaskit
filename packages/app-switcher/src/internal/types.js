@@ -1,6 +1,12 @@
 // @flow
 type ReactNode = any; // @todo: https://github.com/facebook/flow/pull/3931
 
+export type HomeLink = {
+  name: string,
+  url: string,
+  icon: ReactNode,
+};
+
 export type Applications = Array<{
   name: string,
   url: string,

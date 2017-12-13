@@ -13,6 +13,7 @@ import BasicUsageExampleRaw from '!raw!./examples/basic-usage';
 const AppSwitcherDescription = 'This component provides the app switcher used in Atlassian Cloud products.';
 
 const propDescriptions = {
+  homeLink: 'Object to configure the top link to Atlassian Home.',
   recentContainers: 'Array of recent containers. If this array is empty the recent container section will be hidden.',
   linkedApplications: 'Map containing an array of linked applications.',
   i18n: 'Mapping of i18n keys to translations.',
@@ -26,6 +27,24 @@ const propDescriptions = {
   isDropdownOpenInitially: 'The initial state of the dropdown.',
   dropdownOptions: 'Any additional options to pass into StatelessDropdown',
 };
+
+const homeLinkPropDescriptions = [
+  {
+    name: 'name',
+    type: 'String',
+    description: 'Text label of the HomeLink item.',
+  },
+  {
+    name: 'url',
+    type: 'String',
+    description: 'Link target of the HomeLink item.',
+  },
+  {
+    name: 'icon',
+    type: 'Node',
+    description: 'Icon element for the HomeLink item',
+  },
+];
 
 const recentContainerPropDescriptions = [
   {
@@ -201,6 +220,11 @@ storiesOf(name, module)
         </Code>
         <Props component={AppSwitcher} descriptions={propDescriptions} />
         <Description>
+          <Heading type="3">homeLink property</Heading>
+          <p>
+            The homeLink property is an object configuring the link to Atlassian Home.
+          </p>
+          {propDescriptionList(homeLinkPropDescriptions)}
           <Heading type="3">recentContainers property</Heading>
           <p>
             The recentContainers property is an array containing the recent containers to display.

@@ -404,6 +404,23 @@ describe('EmojiRepository', () => {
     });
   });
 
+  describe('#findAllMatchingShortName', () => {
+    it('returns a list of emoji with exact match in shortName', () => {
+      const repository = new EmojiRepository([...allEmojis, siteTest, atlassianTest]);
+      expect(repository.findAllMatchingShortName(':test:')).to.deep.equal([siteTest, atlassianTest]);
+    });
+
+    it('returns an empty list if no emoji shortNames match', () => {
+      const repository = new EmojiRepository(allEmojis);
+      expect(repository.findAllMatchingShortName(':test:')).to.deep.equal([]);
+    });
+
+    it('does not partially match on shortname', () => {
+      const repository = new EmojiRepository([...allEmojis, standardTest]);
+      expect(repository.findAllMatchingShortName(':test:')).to.deep.equal([]);
+    });
+  });
+
   describe('#delete', () => {
     let copyEmojis;
     beforeEach(() => {

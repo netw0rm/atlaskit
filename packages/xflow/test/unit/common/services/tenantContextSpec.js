@@ -22,6 +22,7 @@ describe('tenantContext', () => {
   beforeEach(() => fetchMock.catch(417));
   afterEach(fetchMock.restore);
   afterEach(() => fetchCurrentUser.resetCache());
+  afterEach(() => fetchCloudId.resetCache());
 
   describe('fetchCurrentUser()', () => {
     const EXPECTED_USER = {
@@ -88,6 +89,15 @@ describe('tenantContext', () => {
       });
     });
 
+    it('should return a cached response', async () => {
+      fetchMock.getOnce(JIRA_CURRENT_USER_AND_GROUPS_URL, EXPECTED_USER);
+      fetchMock.getOnce(CONFLUENCE_CURRENT_USER_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
+      const result = await fetchCurrentUser();
+      const anotherResult = await fetchCurrentUser();
+
+      return expect(anotherResult).toEqual(result);
+    });
+
     it('should reject with an error if both endpoints return a 500', async () => {
       expect.assertions(1);
       fetchMock.getOnce(JIRA_CURRENT_USER_AND_GROUPS_URL, 500);
@@ -139,6 +149,15 @@ describe('tenantContext', () => {
         const result = await fetchCloudId();
         return expect(result).toBe(EXPECTED_CLOUD_ID);
       });
+    });
+
+    it('should return a cached response', async () => {
+      fetchMock.getOnce(JIRA_CLOUD_ID_URL, { cloudId: EXPECTED_CLOUD_ID });
+      fetchMock.getOnce(CONFLUENCE_CLOUD_ID_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
+      const result = await fetchCloudId();
+      const anotherResult = await fetchCloudId();
+
+      return expect(anotherResult).toBe(result);
     });
 
     it('should reject with an error if both endpoints return a 500', async () => {

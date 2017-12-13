@@ -124,15 +124,21 @@ export const getInstanceName = () => window.location.hostname;
 /**
  * Attempt to fetch cloud id from JIRA, then Confluence, otherwise throw an error
  */
+let fetchCloudIdPromiseCached = null;
 export const fetchCloudId = async () => {
-  const response = await promiseAny([
+  fetchCloudIdPromiseCached = fetchCloudIdPromiseCached || await promiseAny([
     fetchSameOrigin(JIRA_CLOUD_ID_URL, 'Jira endpoint:'),
     fetchSameOrigin(CONFLUENCE_CLOUD_ID_URL, 'Confluence endpoint:'),
   ])
+  .then((response) => response.cloudId)
   .catch(err => {
     err.message = `Unable to retrieve cloud id: ${err.message}`;
     throw err;
   });
 
-  return response.cloudId;
+  return fetchCloudIdPromiseCached;
+};
+
+fetchCloudId.resetCache = () => {
+  fetchCloudIdPromiseCached = null;
 };

@@ -158,6 +158,10 @@ class ProfileClient {
     this.cacheMaxAge = Math.max(
       parseInt(this.config.cacheMaxAge, 10), 0
     ) || null;
+    // DIR-474: cap cache at 30 days.
+    if (this.cacheMaxAge) {
+      this.cacheMaxAge = Math.min(this.cacheMaxAge, 30 * 24 * 60 * 60 * 1000);
+    }
     // Only set cache if maxCacheAge is set
     this.cache = this.cacheMaxAge === null
       ? null : new LRUCache(this.config.cacheSize);

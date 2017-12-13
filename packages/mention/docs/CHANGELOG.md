@@ -1,5 +1,11 @@
 # @atlaskit/mention
 
+## 8.3.0 (2017-12-13)
+
+
+
+* bug fix; minor code improvements and fixed build error ([56bc6bb](https://bitbucket.org/atlassian/atlaskit/commits/56bc6bb))
+* feature; added some mention front-end analytics ([74b7ee6](https://bitbucket.org/atlassian/atlaskit/commits/74b7ee6))
 ## 8.2.1 (2017-12-08)
 
 * bug fix; update mock data under dist folder ([615dfd3](https://bitbucket.org/atlassian/atlaskit/commits/615dfd3))

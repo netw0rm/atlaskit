@@ -1,7 +1,7 @@
 import 'es6-promise/auto';
 import 'whatwg-fetch';
 
-import { getAtlassianAccountId } from './tenantContext';
+import { getAtlassianAccountId, fetchCloudId } from './tenantContext';
 import { getEnvAPIUrl } from '../utils/envDetection';
 
 export const makeStorageKey = (productKey) =>
@@ -15,6 +15,7 @@ export const userPreferencesEndpoint = (atlassianAccountId) =>
  */
 export const setAlreadyRequestedFlag = async (productKey) => {
   const atlassianAccountId = await getAtlassianAccountId();
+  const cloudId = await fetchCloudId();
   const url = userPreferencesEndpoint(atlassianAccountId);
 
   const response = await fetch(url, {
@@ -25,6 +26,7 @@ export const setAlreadyRequestedFlag = async (productKey) => {
     credentials: 'include',
     body: JSON.stringify({
       key: makeStorageKey(productKey),
+      context: cloudId,
       value: true,
     }),
   });
@@ -41,7 +43,8 @@ export const setAlreadyRequestedFlag = async (productKey) => {
  */
 export const getAlreadyRequestedFlag = async (productKey) => {
   const atlassianAccountId = await getAtlassianAccountId();
-  const url = `${userPreferencesEndpoint(atlassianAccountId)}?key=${makeStorageKey(productKey)}`;
+  const cloudId = await fetchCloudId();
+  const url = `${userPreferencesEndpoint(atlassianAccountId)}?key=${makeStorageKey(productKey)}&context=${cloudId}`;
 
   const response = await fetch(url, {
     credentials: 'include',

@@ -4,6 +4,7 @@ import fetchMock from 'fetch-mock';
 
 import {
   JIRA_CURRENT_USER_AND_GROUPS_URL,
+  JIRA_CLOUD_ID_URL,
 } from '../../../../src/common/services/tenantContext';
 
 import {
@@ -16,10 +17,15 @@ import {
 describe('alreadyRequestedFlag', () => {
   const TEST_PRODUCT_KEY = 'Foo';
   const MOCK_ATLASSIAN_ACCOUNT_ID = 'AccountID';
+  const MOCK_CLOUD_ID = 'CloudID';
 
   beforeEach(() => {
     fetchMock.getOnce(JIRA_CURRENT_USER_AND_GROUPS_URL, {
       accountId: MOCK_ATLASSIAN_ACCOUNT_ID,
+    });
+
+    fetchMock.getOnce(JIRA_CLOUD_ID_URL, {
+      cloudId: MOCK_CLOUD_ID,
     });
 
     fetchMock.catch(417);
@@ -29,7 +35,8 @@ describe('alreadyRequestedFlag', () => {
 
   describe('getAlreadyRequestedFlag()', () => {
     function mockUserPreferencesGetEndpointWithResponse(response, productKey) {
-      const matcher = `${userPreferencesEndpoint(MOCK_ATLASSIAN_ACCOUNT_ID)}?key=${makeStorageKey(productKey)}`;
+      const matcher = `${userPreferencesEndpoint(MOCK_ATLASSIAN_ACCOUNT_ID)}?key=${makeStorageKey(productKey)}` +
+        `&context=${MOCK_CLOUD_ID}`;
       fetchMock
         .getOnce(matcher, response);
       return matcher; // for assertions
@@ -85,6 +92,7 @@ describe('alreadyRequestedFlag', () => {
       expect(fetchMock.done(matcher)).toBe(true);
       expect(fetchMock.lastCall(matcher)[1].body).toBe(JSON.stringify({
         key: makeStorageKey(TEST_PRODUCT_KEY),
+        context: MOCK_CLOUD_ID,
         value: true,
       }));
     });
@@ -98,6 +106,7 @@ describe('alreadyRequestedFlag', () => {
       expect(fetchMock.done(matcher)).toBe(true);
       expect(fetchMock.lastCall(matcher)[1].body).toBe(JSON.stringify({
         key: makeStorageKey(TEST_PRODUCT_KEY),
+        context: MOCK_CLOUD_ID,
         value: true,
       }));
     });
@@ -113,6 +122,7 @@ describe('alreadyRequestedFlag', () => {
         expect(fetchMock.done(matcher)).toBe(true);
         expect(fetchMock.lastCall(matcher)[1].body).toBe(JSON.stringify({
           key: makeStorageKey(TEST_PRODUCT_KEY),
+          context: MOCK_CLOUD_ID,
           value: true,
         }));
       }

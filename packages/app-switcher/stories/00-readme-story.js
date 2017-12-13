@@ -13,7 +13,7 @@ import BasicUsageExampleRaw from '!raw!./examples/basic-usage';
 const AppSwitcherDescription = 'This component provides the app switcher used in Atlassian Cloud products.';
 
 const propDescriptions = {
-  homeLink: 'Object to configure the top link to Atlassian Home. If this prop is set it will ignore the `isHomeLinkEnabled` prop.',
+  homeLink: 'Object to configure the top link to Atlassian Home.',
   recentContainers: 'Array of recent containers. If this array is empty the recent container section will be hidden.',
   linkedApplications: 'Map containing an array of linked applications.',
   i18n: 'Mapping of i18n keys to translations.',

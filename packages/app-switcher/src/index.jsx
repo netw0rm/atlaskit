@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import { DropdownMenuStateless } from '@atlaskit/dropdown-menu';
 
 import type {
@@ -85,11 +86,19 @@ export default class AppSwitcher extends Component {
       dropdownOptions,
     } = this.props;
 
+    // Fallback to default Home link if no `homeLink` prop was passed
+    const homeLinkConfig : HomeLink = homeLink || {
+      name: this.props.i18n.home,
+      icon: <AtlassianIcon size="large" label="" />,
+      url: '/home',
+    };
+
     // NOTE: dropdownItems here are passing content that are React elements and not strings
     // This is not the intended behaviour of DropdownMenu and could result in major issues in the
     // future. (Its what is throwing the warnings in tests too)
+
     const dropdownItems = [
-      getTopLinks(i18n, isAnonymousUser, isHomeLinkEnabled, isSiteAdminLinkEnabled, homeLink),
+      getTopLinks(i18n, isAnonymousUser, isHomeLinkEnabled, isSiteAdminLinkEnabled, homeLinkConfig),
       getRecentContainers(i18n, isAnonymousUser, recentContainers),
       getLinkedApplications(i18n, isAnonymousUser, linkedApplications),
     ].filter(item => item != null);

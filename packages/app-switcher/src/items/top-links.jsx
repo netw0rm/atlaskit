@@ -1,5 +1,4 @@
 // @flow
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import React from 'react';
 import SiteAdminIcon from '../components/SiteAdminIcon';
 import { HomeIconContainer, SiteAdminIconContainer, TopLinkContainer } from '../styled';
@@ -10,25 +9,19 @@ export default function (
   isAnonymousUser: boolean,
   isHomeLinkEnabled: boolean,
   isSiteAdminLinkEnabled?: boolean,
-  homeLink?: HomeLink,
+  homeLink: HomeLink,
 ): DropdownConfig | null {
   if (isAnonymousUser) {
     return null;
   }
 
   const items = [];
-  if (homeLink) {
+
+  if (isHomeLinkEnabled) {
     items.push({
       content: (<TopLinkContainer>{homeLink.name}</TopLinkContainer>),
       elemBefore: (<HomeIconContainer>{homeLink.icon}</HomeIconContainer>),
       href: homeLink.url,
-      analyticEvent: { key: 'appswitcher.home.link.click' },
-    });
-  } else if (isHomeLinkEnabled) {
-    items.push({
-      content: (<TopLinkContainer>{i18n.home}</TopLinkContainer>),
-      elemBefore: (<HomeIconContainer><AtlassianIcon size="large" label="" /></HomeIconContainer>),
-      href: '/home',
       analyticEvent: { key: 'appswitcher.home.link.click' },
     });
   }

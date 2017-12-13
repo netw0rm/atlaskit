@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withAnalytics } from '@atlaskit/analytics';
-import XFlowAnalyticsListener from '../common/components/XFlowAnalyticsListener';
+import { withAnalytics, AnalyticsDecorator } from '@atlaskit/analytics';
 
+import XFlowAnalyticsListener from '../common/components/XFlowAnalyticsListener';
 import { withXFlowProvider } from '../common/components/XFlowProvider';
 import InitializingScreen from '../common/components/InitializingScreen';
 import ContextualStartTrial from './components/ContextualStartTrial';
@@ -26,7 +26,6 @@ class RequestOrStartTrial extends Component {
   static propTypes = {
     sourceComponent: PropTypes.string.isRequired,
     sourceContext: PropTypes.string.isRequired,
-    targetProduct: PropTypes.string.isRequired,
     contextInfo: PropTypes.shape({
       contextualImage: PropTypes.string,
       contextualHeading: PropTypes.string,
@@ -40,7 +39,6 @@ class RequestOrStartTrial extends Component {
     getProductActivationState: PropTypes.func.isRequired,
     checkProductRequestFlag: PropTypes.func,
     waitForActivation: PropTypes.func.isRequired,
-    onAnalyticsEvent: PropTypes.func.isRequired,
     onComplete: PropTypes.func,
     onTrialRequested: PropTypes.func,
     onTrialActivating: PropTypes.func,
@@ -165,18 +163,6 @@ class RequestOrStartTrial extends Component {
     },
   ];
 
-  handleAnalyticsEvent = (name, data) => {
-    const { onAnalyticsEvent, sourceComponent, sourceContext, targetProduct } = this.props;
-    if (onAnalyticsEvent) {
-      onAnalyticsEvent(name, {
-        ...data,
-        sourceComponent,
-        sourceContext,
-        targetProduct,
-      });
-    }
-  };
-
   render() {
     const {
       onComplete,
@@ -195,82 +181,105 @@ class RequestOrStartTrial extends Component {
     } = this.state;
 
     return (
-      <XFlowAnalyticsListener
-        onEvent={this.handleAnalyticsEvent}
+      <RequestOrStartTrialDialog
+        id="xflow-request-or-start-trial-dialog"
+        sourceComponent={sourceComponent}
+        sourceContext={sourceContext}
       >
-        <RequestOrStartTrialDialog
-          id="xflow-request-or-start-trial-dialog"
-          sourceComponent={sourceComponent}
-          sourceContext={sourceContext}
-        >
-          {(() => {
-            switch (this.state.screen) {
-              case Screens.INITIALIZING: {
-                return (
-                  <div>
-                    <InitializingScreen isOpen={!initializingCheckFailed} />
-                    <ErrorFlag
-                      flagActions={this.flagActions}
-                      title="Oops... Something went wrong"
-                      description="Let's try again."
-                      showFlag={showInitializationError}
-                      source="request-or-start-trial"
-                      onDismissed={() => {
-                        this.setState({
-                          showInitializationError: false,
-                        });
-                        return onComplete();
-                      }}
-                    />
-                  </div>
-                );
-              }
-              case Screens.START_TRIAL: {
-                return (
-                  contextInfo
-                    ? (
-                      <ContextualStartTrial
-                        onComplete={onComplete}
-                        onTrialActivating={onTrialActivating}
-                        showGrantAccess={activationState === INACTIVE && grantAccessEnabled}
-                        contextInfo={contextInfo}
-                      />
-                    )
-                    : (
-                      <StartTrial
-                        onComplete={onComplete}
-                        onTrialActivating={onTrialActivating}
-                        showGrantAccess={activationState === INACTIVE && grantAccessEnabled}
-                      />
-                    )
-                );
-              }
-              case Screens.ALREADY_STARTED: {
-                return <AlreadyStarted onComplete={onComplete} />;
-              }
-              case Screens.REQUEST_TRIAL: {
-                return (<RequestTrial
-                  alreadyRequested={alreadyRequested}
-                  onComplete={onComplete}
-                  onTrialRequested={onTrialRequested}
-                  contextInfo={contextInfo}
-                />);
-              }
-              default: {
-                return <InitializingScreen />;
-              }
+        {(() => {
+          switch (this.state.screen) {
+            case Screens.INITIALIZING: {
+              return (
+                <div>
+                  <InitializingScreen isOpen={!initializingCheckFailed} />
+                  <ErrorFlag
+                    flagActions={this.flagActions}
+                    title="Oops... Something went wrong"
+                    description="Let's try again."
+                    showFlag={showInitializationError}
+                    source="request-or-start-trial"
+                    onDismissed={() => {
+                      this.setState({
+                        showInitializationError: false,
+                      });
+                      return onComplete();
+                    }}
+                  />
+                </div>
+              );
             }
-          })()}
-        </RequestOrStartTrialDialog>
-      </XFlowAnalyticsListener>
+            case Screens.START_TRIAL: {
+              return (
+                contextInfo
+                  ? (
+                    <ContextualStartTrial
+                      onComplete={onComplete}
+                      onTrialActivating={onTrialActivating}
+                      showGrantAccess={activationState === INACTIVE && grantAccessEnabled}
+                      contextInfo={contextInfo}
+                    />
+                  )
+                  : (
+                    <StartTrial
+                      onComplete={onComplete}
+                      onTrialActivating={onTrialActivating}
+                      showGrantAccess={activationState === INACTIVE && grantAccessEnabled}
+                    />
+                  )
+              );
+            }
+            case Screens.ALREADY_STARTED: {
+              return <AlreadyStarted onComplete={onComplete} />;
+            }
+            case Screens.REQUEST_TRIAL: {
+              return (<RequestTrial
+                alreadyRequested={alreadyRequested}
+                onComplete={onComplete}
+                onTrialRequested={onTrialRequested}
+                contextInfo={contextInfo}
+              />);
+            }
+            default: {
+              return <InitializingScreen />;
+            }
+          }
+        })()}
+      </RequestOrStartTrialDialog>
     );
   }
 }
 
+const RequestOrStartTrialWrap01 = withAnalytics(RequestOrStartTrial);
+
+function RequestOrStartTrialWrap02(props) {
+  const { sourceComponent, sourceContext, targetProduct } = props;
+  return (
+    <AnalyticsDecorator data={{ sourceComponent, sourceContext, targetProduct }} matchPrivate>
+      <RequestOrStartTrialWrap01 {...props} />
+    </AnalyticsDecorator>
+  );
+}
+RequestOrStartTrialWrap02.propTypes = {
+  sourceComponent: PropTypes.string.isRequired,
+  sourceContext: PropTypes.string.isRequired,
+  targetProduct: PropTypes.string.isRequired,
+};
+
+function RequestOrStartTrialWrap03({ onAnalyticsEvent, ...props }) {
+  return (
+    <XFlowAnalyticsListener onEvent={onAnalyticsEvent}>
+      <RequestOrStartTrialWrap02 {...props} />
+    </XFlowAnalyticsListener>
+  );
+}
+RequestOrStartTrialWrap03.propTypes = {
+  onAnalyticsEvent: PropTypes.func,
+};
+
 export const RequestOrStartTrialBase = RequestOrStartTrial;
 
 export default withXFlowProvider(
-  withAnalytics(RequestOrStartTrialBase),
+  RequestOrStartTrialWrap03,
   ({ xFlow: {
       canCurrentUserAddProduct,
       checkProductRequestFlag,

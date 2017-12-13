@@ -7,10 +7,13 @@ export default class XFlowAnalyticsListener extends Component {
     children: PropTypes.node,
     onEvent: PropTypes.func.isRequired,
   }
+
   render() {
     const { onEvent, children } = this.props;
-    return (<AnalyticsListener matchPrivate match="xflow." onEvent={onEvent}>
-      { children }
-    </AnalyticsListener>);
+    return (
+      <AnalyticsListener matchPrivate match="xflow." onEvent={onEvent}>
+        { children }
+      </AnalyticsListener>)
+      ;
   }
 }

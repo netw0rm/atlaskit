@@ -17,7 +17,7 @@ class ErrorFlagBase extends Component {
 
     onDismissed: PropTypes.func,
 
-    firePrivateAnalyticsEvent: PropTypes.func,
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
   };
 
   render() {

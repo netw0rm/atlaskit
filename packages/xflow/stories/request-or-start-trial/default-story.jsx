@@ -1,7 +1,7 @@
 import forEach from 'lodash/forEach';
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
-import { RequestOrStartTrial } from '@atlaskit/xflow';
+import { RequestOrStartTrial } from '../../src';
 
 import setupStorybookAnalytics from '../helpers/setupStorybookAnalytics';
 import mockXFlowProviderFactory from '../helpers/mockXFlowProviderFactory';

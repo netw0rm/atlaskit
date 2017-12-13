@@ -62,6 +62,7 @@ class RequestOrStartTrial extends Component {
   };
 
   componentDidMount() {
+    this.props.firePrivateAnalyticsEvent('xflow.request-or-start-trial.displayed');
     return this.fetchAsyncData();
   }
 

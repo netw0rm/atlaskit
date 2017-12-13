@@ -6,6 +6,8 @@ import Mention from '../src/components/Mention';
 import ResourcedMention from '../src/components/Mention/ResourcedMention';
 import { mentionData, mentionProvider } from '../test/unit/_mock-mention-provider';
 import { akColorN20 } from '../../util-shared-styles/index';
+import {AnalyticsListener} from '../../analytics/src/index';
+import debug from '../src/util/logger';
 
 function withN20Container(mention) {
   return (
@@ -15,15 +17,21 @@ function withN20Container(mention) {
   );
 }
 
+function listenerHandler (eventName: string, eventData: Object) {
+  debug(`AnalyticsListener event: ${eventName} `, eventData);
+}
+
 storiesOf(`${name}/Mention`, module)
   .add('Default', () => (
-    <Mention
-      {...mentionData}
-      accessLevel={'CONTAINER'}
-      onClick={action('onClick')}
-      onMouseEnter={action('onMouseEnter')}
-      onMouseLeave={action('onMouseLeave')}
-    />
+    <AnalyticsListener onEvent={listenerHandler} matchPrivate={true}>
+      <Mention
+        {...mentionData}
+        accessLevel={'CONTAINER'}
+        onClick={action('onClick')}
+        onMouseEnter={action('onMouseEnter')}
+        onMouseLeave={action('onMouseLeave')}
+      />
+    </AnalyticsListener>
   ))
   .add('Default on N20 background', () => {
     return withN20Container(

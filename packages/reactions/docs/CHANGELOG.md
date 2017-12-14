@@ -1,5 +1,8 @@
 # @atlaskit/reactions
 
+## 10.7.1 (2017-12-14)
+
+* bug fix; fix TS errors in reactions ([21c92b6](https://bitbucket.org/atlassian/atlaskit/commits/21c92b6))
 ## 10.7.0 (2017-11-28)
 
 * bug fix; fS-1521 Remove util-data-test ([eb88f40](https://bitbucket.org/atlassian/atlaskit/commits/eb88f40))

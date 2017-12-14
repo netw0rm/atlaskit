@@ -50,10 +50,11 @@ export const getTextContent = (item) => {
 const isMatched = (item, matchingValue) => {
   const filterValues = item.filterValues;
   if (filterValues && filterValues.length > 0) {
-    return filterValues.some(value => value.toLowerCase().indexOf(matchingValue) > -1);
+    return filterValues.some(value =>
+      value.toLowerCase().indexOf(matchingValue.toLowerCase()) > -1);
   }
 
-  return getTextContent(item).toLowerCase().indexOf(matchingValue) > -1;
+  return getTextContent(item).toLowerCase().indexOf(matchingValue.toLowerCase()) > -1;
 };
 
 export default class StatelessSelect extends PureComponent {
@@ -173,10 +174,10 @@ export default class StatelessSelect extends PureComponent {
   }
 
   onOpenChange = (attrs) => {
-    this.props.onOpenChange(attrs);
     this.setState({
       focusedItemIndex: undefined,
     });
+    this.props.onOpenChange(attrs);
 
     if (attrs.isOpen) {
       this.focus();
@@ -247,6 +248,7 @@ export default class StatelessSelect extends PureComponent {
   focus = () => {
     if (this.inputNode) {
       this.inputNode.focus();
+      this.inputNode.select();
     } else {
       this.triggerNode.focus();
     }
@@ -258,15 +260,11 @@ export default class StatelessSelect extends PureComponent {
   }
 
   filterItems = (items) => {
-    const value = this.props.filterValue;
-    const trimmedValue = value && value.toLowerCase().trim();
-    const selectedItem = this.props.selectedItem;
-    const unselectedItems = items.filter(item => selectedItem.value !== item.value);
-    const selectedItemContent = getTextContent(selectedItem).toLowerCase();
+    const filterValue = this.props.filterValue.trim();
+    const selectedItemValue = getTextContent(this.props.selectedItem);
+    const filteredItems = items.filter(item => isMatched(item, filterValue));
 
-    return trimmedValue && (trimmedValue !== selectedItemContent) ?
-      unselectedItems.filter(item => isMatched(item, trimmedValue)) :
-      unselectedItems;
+    return filterValue !== selectedItemValue ? filteredItems : items;
   }
 
   scrollToFocused = (index) => {
@@ -391,7 +389,9 @@ export default class StatelessSelect extends PureComponent {
 
     if (value !== this.props.filterValue) {
       this.props.onFilterChange(value);
-      this.onOpenChange({ event, isOpen: true });
+      if (!this.props.isOpen) {
+        this.onOpenChange({ event, isOpen: true });
+      }
     }
   }
 
@@ -489,6 +489,19 @@ export default class StatelessSelect extends PureComponent {
     {this.renderOptGroups(this.props.items)}
   </select>)
 
+  renderAutocompleteElemBefore = () => {
+    const {
+      filterValue,
+      isOpen,
+      selectedItem,
+    } = this.props;
+
+    return selectedItem.elemBefore ?
+      <ElemBefore isHidden={isOpen || filterValue !== getTextContent(selectedItem)}>
+        {selectedItem.elemBefore}
+      </ElemBefore> : null;
+  }
+
   render() {
     const {
       appearance,
@@ -570,6 +583,7 @@ export default class StatelessSelect extends PureComponent {
                     </Content>
                   ) : (
                     <AutocompleteWrapper>
+                      {this.renderAutocompleteElemBefore()}
                       <AutocompleteInput
                         autoComplete="off"
                         onChange={this.handleInputOnChange}

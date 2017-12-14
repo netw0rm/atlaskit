@@ -103,7 +103,7 @@ export default class AkSingleSelect extends PureComponent {
   }
 
   selectItem = (item) => {
-    this.setState({ isOpen: false, selectedItem: item });
+    this.setState({ isOpen: false, selectedItem: item, filterValue: getTextContent(item) });
     this.props.onSelected({ item });
   }
 
@@ -113,7 +113,18 @@ export default class AkSingleSelect extends PureComponent {
     // the target DOM node no-longer exists
     if (!attrs.isOpen) attrs.event.preventDefault();
 
-    this.setState({ isOpen: attrs.isOpen });
+    const filterValue = this.state.filterValue.trim();
+    const selectedItem = this.state.selectedItem;
+
+    this.setState({
+      isOpen: attrs.isOpen,
+      filterValue: !filterValue && selectedItem ? getTextContent(selectedItem) : filterValue,
+    });
+
+    if (attrs.isOpen) {
+      this.statelessSelect.focusItem(selectedItem);
+    }
+
     this.props.onOpenChange(attrs);
   }
 
@@ -150,6 +161,7 @@ export default class AkSingleSelect extends PureComponent {
         shouldFocus={this.props.shouldFocus}
         shouldFlip={this.props.shouldFlip}
         maxHeight={this.props.maxHeight}
+        ref={ref => (this.statelessSelect = ref)}
       />
     );
   }

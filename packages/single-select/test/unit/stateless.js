@@ -544,18 +544,6 @@ describe(name, () => {
       //   expect(instance.filterItems(items)).toEqual(items);
       // });
 
-      it('should filter out selected item and return filtered items', () => {
-        const items = [
-          { value: 1, content: 'Test one' },
-          { value: 2, content: 'Test two' },
-          { value: 3, content: 'Test three' },
-          { value: 4, content: 'This should stay behind' },
-        ];
-        wrapper.setProps({ filterValue: 'Test' });
-        wrapper.setProps({ selectedItem: items[0] });
-        expect(instance.filterItems(items)).toEqual([items[1], items[2]]);
-      });
-
       describe('with filterValues', () => {
         it('should filter using filterValues instead of props, if available', () => {
           const items = [
@@ -636,7 +624,7 @@ describe(name, () => {
         ];
 
         wrapper.setProps({ items: [{ heading: '', items }], filterValue: 'test', selectedItem: items[0] });
-        expect(instance.getAllVisibleItems(wrapper.prop('items'))).toEqual([items[1], items[2]]);
+        expect(instance.getAllVisibleItems(wrapper.prop('items'))).toEqual([items[0], items[1], items[2]]);
       });
     });
 

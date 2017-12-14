@@ -13,6 +13,8 @@ import ItemsOverview from './examples/ItemsOverview';
 import ItemsOverviewRaw from '!raw!./examples/ItemsOverview';
 import SelectAlignment from './examples/SelectAlignment';
 import SelectAlignmentRaw from '!raw!./examples/SelectAlignment';
+import SelectAutocompleteWithIcons from './examples/SelectAutocompleteWithIcons';
+import SelectAutocompleteWithIconsRaw from '!raw!./examples/SelectAutocompleteWithIcons';
 import SelectAutocompleteWithJsxContent from './examples/SelectAutocompleteWithJsxContent';
 import SelectAutocompleteWithJsxContentRaw from '!raw!./examples/SelectAutocompleteWithJsxContent';
 import SelectInForm from './examples/SelectInForm';
@@ -227,6 +229,14 @@ storiesOf(name, module)
       {SelectWithIcons}
       <Code>
         {SelectWithIconsRaw}
+      </Code>
+    </Chrome>
+  ))
+  .add('Autocomplete select with icons', () => (
+    <Chrome title="Autocomplete select with icons">
+      {SelectAutocompleteWithIcons}
+      <Code>
+        {SelectAutocompleteWithIconsRaw}
       </Code>
     </Chrome>
   ))

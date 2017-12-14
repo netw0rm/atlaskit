@@ -24,6 +24,8 @@ const getPlaceholderStyle = style => css`
 `;
 
 const AutocompleteWrapper = styled.div`
+  display: flex;
+  align-items: center;
   flex: 1 1 auto;
   white-space: nowrap;
   padding: 0 ${gridSize}px;

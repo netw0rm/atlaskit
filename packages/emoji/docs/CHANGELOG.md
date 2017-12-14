@@ -1,5 +1,9 @@
 # @atlaskit/emoji
 
+## 31.0.0 (2017-12-14)
+
+* breaking; property fitHeight removed in favor of size property in EmojiPlaceholder ([fedf004](https://bitbucket.org/atlassian/atlaskit/commits/fedf004))
+* breaking; removed redundant prop fitToHeight in EmojiPlaceholder ([fedf004](https://bitbucket.org/atlassian/atlaskit/commits/fedf004))
 ## 30.3.8 (2017-12-13)
 
 

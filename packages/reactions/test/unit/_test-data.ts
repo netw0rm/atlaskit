@@ -1,5 +1,5 @@
 import { EmojiDescription, toEmojiId } from '@atlaskit/emoji';
-import { testData } from '@atlaskit/emoji/src/support';
+import { testData } from '@atlaskit/emoji/dist/es5/support';
 
 const { newEmojiRepository } = testData;
 const emojiRepository = newEmojiRepository();

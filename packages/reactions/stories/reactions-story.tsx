@@ -9,7 +9,7 @@ import Trigger from '../src/internal/trigger';
 import { reactionsProvider, reactionsProviderPromise } from '../src/mock-reactions-provider';
 import { analyticsService } from '../src/analytics';
 
-import { storyData } from '@atlaskit/emoji/src/support';
+import { storyData } from '@atlaskit/emoji/dist/es5/support';
 import { name } from '../package.json';
 
 const { getEmojiResource } = storyData;

@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import { reactionsProvider } from '../../src/mock-reactions-provider';
 
-import { storyData } from '@atlaskit/emoji/src/support';
+import { storyData } from '@atlaskit/emoji/dist/es5/support';
 
 const getEmojiResource = storyData.getEmojiResource;
 const demoAri = 'ari:cloud:owner:demo-cloud-id:item/1';

@@ -11,7 +11,7 @@ describe('<EmojiPlaceholder />', () => {
       const wrapper = shallow(<EmojiPlaceholder
         shortName={shortName}
         showTooltip={false}
-        fitToHeight={48}
+        size={48}
       />);
 
       const spanStyle = wrapper.find('span').prop('style');
@@ -45,7 +45,7 @@ describe('<EmojiPlaceholder />', () => {
     });
 
 
-    it('should render image representation with fitToHeight', () => {
+    it('should render image representation with custom size', () => {
       const shortName = ':rage:';
       const rep = {
         imagePath: '/path/bla.png',
@@ -56,7 +56,7 @@ describe('<EmojiPlaceholder />', () => {
         shortName={shortName}
         showTooltip={false}
         representation={rep}
-        fitToHeight={48}
+        size={48}
       />);
 
       const spanStyle = wrapper.find('span').prop('style');
@@ -64,7 +64,7 @@ describe('<EmojiPlaceholder />', () => {
       expect(spanStyle!.height).to.equal('48px');
     });
 
-    it('should render media representation with fitToHeight', () => {
+    it('should render media representation with custom size', () => {
       const shortName = ':rage:';
       const rep = {
         mediaPath: '/path/bla.png',
@@ -75,7 +75,7 @@ describe('<EmojiPlaceholder />', () => {
         shortName={shortName}
         showTooltip={false}
         representation={rep}
-        fitToHeight={48}
+        size={48}
       />);
 
       const spanStyle = wrapper.find('span').prop('style');

@@ -32,7 +32,7 @@ export interface State extends LoadingState {
 export default class ResourcedEmoji extends LoadingEmojiCompoent<Props, State> {
   renderLoading() {
     const {fitToHeight, emojiId, showTooltip} = this.props;
-    return <EmojiPlaceholder shortName={emojiId.shortName} showTooltip={showTooltip} fitToHeight={fitToHeight} />;
+    return <EmojiPlaceholder shortName={emojiId.shortName} showTooltip={showTooltip} size={fitToHeight || defaultEmojiHeight} />;
   }
 
   renderLoaded(loadedEmojiProvider: EmojiProvider) {
@@ -131,7 +131,7 @@ class ResourcedEmojiComponent extends PureComponent<ComponentProps, State> {
     }
 
     return this.emojiWrapper((
-      <EmojiPlaceholder shortName={shortName} showTooltip={showTooltip} fitToHeight={fitToHeight} />
+      <EmojiPlaceholder shortName={shortName} showTooltip={showTooltip} size={fitToHeight || defaultEmojiHeight} />
     ));
   }
 

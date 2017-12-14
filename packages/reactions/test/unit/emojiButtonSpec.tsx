@@ -7,7 +7,7 @@ import { mount, shallow } from 'enzyme';
 
 import { emojiVisible } from './_test-utils';
 import EmojiButton from '../../src/internal/emoji-button';
-import { testData } from '@atlaskit/emoji/src/support';
+import { testData } from '@atlaskit/emoji/dist/es5/support';
 
 const { getEmojiResourcePromise, newEmojiRepository } = testData;
 const emojiRepository = newEmojiRepository();

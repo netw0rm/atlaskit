@@ -9,7 +9,7 @@ import Reaction from '../../src/internal/reaction';
 import { reactionsProvider } from '../../src/mock-reactions-provider';
 import { smileyId } from './_test-data';
 import {ObjectReactionKey} from '../../src/reactions-resource';
-import { testData } from '@atlaskit/emoji/src/support';
+import { testData } from '@atlaskit/emoji/dist/es5/support';
 
 const { getEmojiResourcePromise } = testData;
 

@@ -7,6 +7,7 @@ import { ConfirmRequestBase } from '../../../src/request-or-start-trial/componen
 import setupStorybookAnalytics from '../../helpers/setupStorybookAnalytics';
 
 const defaultProps = {
+  alreadyRequested: false,
   productLogo: <ConfluenceLogo />,
   image: 'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/kEL9zW2kcU8_U4Y_Rc1p3Zmm8J8Jq_JR0ikTg6cEWe8/Multi-Document.svg',
   heading: '[heading] Jira\'s perfect partner',

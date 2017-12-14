@@ -30,6 +30,7 @@
     "src"
   ],
   "dependencies": {
+    "@atlaskit/analytics": "^2.3.2",
     "@atlaskit/avatar": "^8.0.0",
     "@atlaskit/icon": "^10.0.0",
     "@atlaskit/lozenge": "^3.4.2",
@@ -44,7 +45,6 @@
     "xregexp": "^3.2.0"
   },
   "devDependencies": {
-    "@atlaskit/analytics": "^2.3.2",
     "@atlaskit/util-common-test": "2.4.2",
     "fetch-mock": "^5.8.0"
   },

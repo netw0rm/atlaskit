@@ -5,8 +5,8 @@ import { name } from '../package.json';
 import Mention from '../src/components/Mention';
 import ResourcedMention from '../src/components/Mention/ResourcedMention';
 import { mentionData, mentionProvider } from '../test/unit/_mock-mention-provider';
-import { akColorN20 } from '../../util-shared-styles/index';
-import {AnalyticsListener} from '../../analytics/src/index';
+import { akColorN20 } from '@atlaskit/util-shared-styles';
+import { AnalyticsListener } from '@atlaskit/analytics';
 import debug from '../src/util/logger';
 
 function withN20Container(mention) {

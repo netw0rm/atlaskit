@@ -17,7 +17,7 @@ export const PRICING_URL = '/admin/rest/billing/api/instance/pricing';
 export const PROSPECTIVE_PRICES_URL = '/admin/rest/billing/api/instance/prospective-prices';
 
 export const JIRA_LANDING_PAGE = '/secure/LandingPage.jspa';
-export const CONFLUENCE_LANDING_PAGE = '/wiki/';
+export const CONFLUENCE_LANDING_PAGE = '/wiki';
 
 export async function checkJiraAvailable() {
   const response = await fetch(JIRA_LANDING_PAGE, {
@@ -26,7 +26,7 @@ export async function checkJiraAvailable() {
   });
 
   // redirects may happen because of onboarding in Jira, but
-  // a redirect to /wiki/ means that Jira is not ready yet when
+  // a redirect to /wiki means that Jira is not ready yet when
   // expanding from Confluence. For the time being, this assumes its not
   // possible to expand from a non-Jira and non-Confluence product.
   return response.ok && !response.url.includes(CONFLUENCE_LANDING_PAGE);

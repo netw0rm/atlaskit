@@ -55,6 +55,6 @@ XFLOW_PROVIDERS.reduce(
         </MockXFlowProvider>
         ));
   },
-  storiesOf('request-or-start-trial/RequestTrial', module)
+  storiesOf('request-or-start-trial/[internal path 4] RequestTrial', module)
   .addDecorator(story => setupStorybookAnalytics(story()))
 );

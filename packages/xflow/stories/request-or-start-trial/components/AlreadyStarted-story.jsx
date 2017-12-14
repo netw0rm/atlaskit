@@ -25,7 +25,7 @@ const defaultProps = {
   closeAlreadyStartedDialog: action('closeAlreadyStartedDialog'),
 };
 
-storiesOf('request-or-start-trial/AlreadyStarted', module)
+storiesOf('request-or-start-trial/[internal path 3] AlreadyStarted', module)
   .addDecorator(story => setupStorybookAnalytics(story()))
   .add('Already Started (ACTIVATING) progress bar (0%)', () =>
     <AlreadyStartedBase

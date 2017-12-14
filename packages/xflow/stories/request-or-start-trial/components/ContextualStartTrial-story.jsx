@@ -59,6 +59,6 @@ XFLOW_PROVIDERS.reduce(
         </MockXFlowProvider>
         ));
   },
-  storiesOf('request-or-start-trial/ContextualStartTrialBase', module)
+  storiesOf('request-or-start-trial/[internal path 2] ContextualStartTrialBase', module)
   .addDecorator(story => setupStorybookAnalytics(story()))
 );

@@ -232,12 +232,14 @@ class RequestOrStartTrial extends Component {
               return <AlreadyStarted onComplete={onComplete} />;
             }
             case Screens.REQUEST_TRIAL: {
-              return (<RequestTrial
-                alreadyRequested={alreadyRequested}
-                onComplete={onComplete}
-                onTrialRequested={onTrialRequested}
-                contextInfo={contextInfo}
-              />);
+              return (
+                <RequestTrial
+                  alreadyRequested={alreadyRequested}
+                  contextInfo={contextInfo}
+                  onComplete={onComplete}
+                  onTrialRequested={onTrialRequested}
+                />
+              );
             }
             default: {
               return <InitializingScreen />;

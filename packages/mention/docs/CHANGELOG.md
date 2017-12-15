@@ -1,5 +1,9 @@
 # @atlaskit/mention
 
+## 8.3.1 (2017-12-15)
+
+* bug fix; analytics now correctly a dep of the mention component ([da6cd5d](https://bitbucket.org/atlassian/atlaskit/commits/da6cd5d))
+* bug fix; mention component no longer uses relative imports in one of the stories ([1109ecc](https://bitbucket.org/atlassian/atlaskit/commits/1109ecc))
 ## 8.3.0 (2017-12-13)
 
 

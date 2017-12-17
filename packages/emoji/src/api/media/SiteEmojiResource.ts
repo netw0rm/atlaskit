@@ -6,15 +6,15 @@ import {
   EmojiId,
   EmojiServiceDescription,
   EmojiUpload,
-  ImageRepresentation,
   MediaApiToken,
   OptionalEmojiDescription,
+  MediaApiRepresentation,
 } from '../../types';
 
 import { isMediaRepresentation, isMediaEmoji } from '../../type-helpers';
 import { MediaApiData, MediaUploadEnd, MediaUploadError, MediaUploadStatusUpdate } from './media-types';
 import MediaEmojiCache from './MediaEmojiCache';
-import { denormaliseEmojiServiceResponse, emojiRequest } from '../EmojiUtils';
+import { denormaliseEmojiServiceResponse, emojiRequest, denormaliseServiceRepresentation, denormaliseServiceAltRepresentation } from '../EmojiUtils';
 import TokenManager from './TokenManager';
 
 import debug from '../../util/logger';
@@ -52,15 +52,15 @@ export default class SiteEmojiResource {
    * Will load media emoji, returning a new EmojiDescription if, for example,
    * the URL has changed.
    */
-  loadMediaEmoji(emoji: EmojiDescription): OptionalEmojiDescription | Promise<OptionalEmojiDescription> {
+  loadMediaEmoji(emoji: EmojiDescription, useAlt?: boolean): OptionalEmojiDescription | Promise<OptionalEmojiDescription> {
     if (!isMediaEmoji(emoji)) {
       throw new Error('Only supported for media emoji');
     }
-    return this.mediaEmojiCache.loadEmoji(emoji);
+    return this.mediaEmojiCache.loadEmoji(emoji, useAlt);
   }
 
-  optimisticRendering(emoji: EmojiDescription): boolean | Promise<boolean> {
-    const representation = emoji.representation;
+  optimisticRendering(emoji: EmojiDescription, useAlt?: boolean): boolean | Promise<boolean> {
+    const representation = useAlt ? emoji.altRepresentation : emoji.representation;
     if (!isMediaRepresentation(representation)) {
       throw new Error('Only supported for media emoji');
     }
@@ -187,14 +187,12 @@ export default class SiteEmojiResource {
     return serviceUtils.requestService<EmojiUploadResponse>(this.siteServiceConfig, { requestInit }).then((response): EmojiDescription => {
       const { emojis } = response;
       if (emojis.length) {
-        const emoji = emojis[0];
-        const { imagePath, ...otherRepresentation } = emoji.representation as ImageRepresentation;
+        const { altRepresentations, ...emoji } = emojis[0];
+
         return {
           ...emoji,
-          representation: {
-            ...otherRepresentation,
-            mediaPath: imagePath,
-          },
+          representation: denormaliseServiceRepresentation(emoji.representation) as MediaApiRepresentation,
+          altRepresentation: denormaliseServiceAltRepresentation(altRepresentations) as MediaApiRepresentation,
         };
       }
       throw new Error('No emoji returns from upload. Upload failed.');

@@ -59,13 +59,17 @@ export const convertMediaToImageRepresentation = (rep: MediaApiRepresentation, n
   ({ imagePath: newImagePath || rep.mediaPath, height: rep.height, width: rep.width });
 
 
-export const convertMediaToImageEmoji = (emoji: EmojiDescription, newImagePath?: string): EmojiDescription => {
+export const convertMediaToImageEmoji = (emoji: EmojiDescription, newImagePath?: string, useAlt?: boolean): EmojiDescription => {
   const mediaRepresentation = emoji.representation;
-  if (!isMediaRepresentation(mediaRepresentation)) {
+  const mediaAltRepresentation = emoji.altRepresentation;
+  const imgPath = !useAlt ? newImagePath : undefined;
+  const altImgPath = useAlt ? newImagePath : undefined;
+
+  if (!isMediaRepresentation(mediaRepresentation) && !isMediaRepresentation(mediaAltRepresentation)) {
     return emoji;
   }
-  const representation = convertMediaToImageRepresentation(mediaRepresentation, newImagePath);
-  const altRepresentation = isMediaRepresentation(emoji.altRepresentation) ? convertMediaToImageRepresentation(emoji.altRepresentation) : undefined;
+  const representation = isMediaRepresentation(mediaRepresentation) ? convertMediaToImageRepresentation(mediaRepresentation, imgPath) : mediaRepresentation;
+  const altRepresentation = isMediaRepresentation(mediaAltRepresentation) ? convertMediaToImageRepresentation(mediaAltRepresentation, altImgPath) : mediaAltRepresentation;
   return {
     ...emoji,
     representation,

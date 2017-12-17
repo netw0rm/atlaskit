@@ -144,3 +144,9 @@ export const denormaliseEmojiServiceResponse = (emojiData: EmojiServiceResponse)
     mediaApiToken,
   };
 };
+
+
+const getHeight = (fitToHeight: number): number => getPixelRatio() > 1 ? fitToHeight * 2 : fitToHeight;
+
+export const shouldUseAltRepresentation = (emoji: EmojiDescription, fitToHeight?: number): boolean =>
+  (!!fitToHeight && !!emoji.altRepresentation && getHeight(fitToHeight) > emoji.representation!.height);

@@ -3,11 +3,11 @@ import * as React from 'react';
 import { MouseEvent, SyntheticEvent } from 'react';
 import Tooltip from '@atlaskit/tooltip';
 
-import { getPixelRatio } from '../../api/EmojiUtils';
 import * as styles from './styles';
 import { isImageRepresentation, isMediaRepresentation, isSpriteRepresentation, toEmojiId } from '../../type-helpers';
 import { EmojiDescription, OnEmojiEvent, SpriteRepresentation } from '../../types';
 import { leftClick } from '../../util/mouse';
+import { shouldUseAltRepresentation } from '../../api/EmojiUtils';
 
 export interface Props {
   /**
@@ -75,28 +75,16 @@ const handleMouseMove = (props: Props, event: MouseEvent<any>) => {
 };
 
 const handleImageError = (props: Props, event: SyntheticEvent<HTMLImageElement>) => {
-  const { emoji, onLoadError, fitToHeight } = props;
+  const { emoji, onLoadError } = props;
 
-  // Determine whether to request higher resolution image from service
-  const fittedEmoji = {
-    ...emoji,
-    representation: shouldUseAltRepresentation(emoji, fitToHeight) ? emoji.altRepresentation : emoji.representation,
-  };
-
-  // Hide error state (but keep space for it)\
+  // Hide error state (but keep space for it)
   if (event.target) {
     const target = event.target as HTMLElement;
     target.style.visibility = 'hidden';
   }
   if (onLoadError) {
-    onLoadError(toEmojiId(fittedEmoji), fittedEmoji, event);
+    onLoadError(toEmojiId(emoji), emoji, event);
   }
-};
-
-const getHeight = (fitToHeight: number): number => getPixelRatio() > 1 ? fitToHeight * 2 : fitToHeight;
-
-const shouldUseAltRepresentation = (emoji: EmojiDescription, fitToHeight?: number): boolean => {
-  return (!!emoji.representation && !!fitToHeight && !!emoji.altRepresentation && getHeight(fitToHeight) > emoji.representation.height);
 };
 
 // Pure functional components are used in favour of class based components, due to the performance!
@@ -174,7 +162,6 @@ const renderAsImage = (props: Props) => {
   let src;
 
   const representation = shouldUseAltRepresentation(emoji, fitToHeight) ? emoji.altRepresentation : emoji.representation;
-
   if (isImageRepresentation(representation)) {
     src = representation.imagePath;
     width = representation.width;

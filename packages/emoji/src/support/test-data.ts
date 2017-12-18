@@ -119,6 +119,16 @@ export const loadedMediaEmoji: EmojiDescriptionWithVariations = {
   altRepresentation: convertMediaToImageRepresentation(mediaEmoji.altRepresentation as MediaApiRepresentation),
 };
 
+export const loadedAltMediaEmoji: EmojiDescriptionWithVariations = {
+  ...mediaEmoji,
+  representation: convertMediaToImageRepresentation(mediaEmoji.representation as MediaApiRepresentation),
+  altRepresentation: {
+    imagePath: 'data:;base64,', // assumes an empty result is returned (e.g. via fetchMock for the mediaPath)
+    width: 48,
+    height: 48,
+  },
+};
+
 const missingMediaId = 'some-new-emoji';
 
 export const missingMediaEmojiId: EmojiId = {

@@ -8,16 +8,16 @@ import {
   EmojiUpload,
   MediaApiToken,
   OptionalEmojiDescription,
-  MediaApiRepresentation,
 } from '../../types';
 
-import { isMediaRepresentation, isMediaEmoji } from '../../type-helpers';
+import { isMediaRepresentation, isMediaEmoji, convertImageToMediaRepresentation } from '../../type-helpers';
 import { MediaApiData, MediaUploadEnd, MediaUploadError, MediaUploadStatusUpdate } from './media-types';
 import MediaEmojiCache from './MediaEmojiCache';
-import { denormaliseEmojiServiceResponse, emojiRequest, denormaliseServiceRepresentation, denormaliseServiceAltRepresentation } from '../EmojiUtils';
+import { denormaliseEmojiServiceResponse, emojiRequest, getAltRepresentation } from '../EmojiUtils';
 import TokenManager from './TokenManager';
 
 import debug from '../../util/logger';
+import { ImageRepresentation } from '../../../index';
 
 export interface EmojiUploadResponse {
   emojis: EmojiServiceDescription[];
@@ -189,10 +189,18 @@ export default class SiteEmojiResource {
       if (emojis.length) {
         const { altRepresentations, ...emoji } = emojis[0];
 
-        return {
+        const response = {
           ...emoji,
-          representation: denormaliseServiceRepresentation(emoji.representation) as MediaApiRepresentation,
-          altRepresentation: denormaliseServiceAltRepresentation(altRepresentations) as MediaApiRepresentation,
+          representation: convertImageToMediaRepresentation(emoji.representation as ImageRepresentation),
+        };
+        const altRepresentation = getAltRepresentation(altRepresentations || {});
+        // Prevent altRepresentation: undefined from being returned in json
+        if (!altRepresentation) {
+          return response;
+        }
+        return {
+          ...response,
+          altRepresentation: convertImageToMediaRepresentation(altRepresentation as ImageRepresentation),
         };
       }
       throw new Error('No emoji returns from upload. Upload failed.');

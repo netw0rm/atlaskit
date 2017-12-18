@@ -7,7 +7,7 @@ import { isPromise } from '../../../../src/type-helpers';
 import MediaEmojiCache, { BrowserCacheStrategy, EmojiCacheStrategy, MemoryCacheStrategy } from '../../../../src/api/media/MediaEmojiCache';
 import TokenManager from '../../../../src/api/media/TokenManager';
 
-import { createTokenManager, imageEmoji, loadedMediaEmoji, mediaEmoji, mediaEmojiImagePath } from '../../../../src/support/test-data';
+import { createTokenManager, imageEmoji, loadedMediaEmoji, mediaEmoji, mediaEmojiImagePath, loadedAltMediaEmoji } from '../../../../src/support/test-data';
 
 const restoreStub = (stub: any) => {
   if (stub.restore) {
@@ -327,6 +327,19 @@ describe('MemoryCacheStrategy', () => {
           const cachedError = memoryCacheStrategy.loadEmoji(mediaEmoji);
           expect(isPromise(cachedError), 'Cached, not a promise').to.equal(false);
           expect(cachedError, 'Cached error. Emoji is undefined on load error').to.equal(undefined);
+        });
+      }
+    });
+
+    it('returns dataURL for altRepresentation.imgPath when useAlt is passed in', () => {
+      const emojiPromise = memoryCacheStrategy.loadEmoji(mediaEmoji, true);
+      expect(isPromise(emojiPromise), 'Returns immediately').to.equal(true);
+      if (isPromise(emojiPromise)) {
+        return emojiPromise.then(emoji => {
+          expect(emoji, 'Same emoji returned').to.deep.equal(loadedAltMediaEmoji);
+          const cachedEmoji = memoryCacheStrategy.loadEmoji(mediaEmoji, true);
+          expect(isPromise(cachedEmoji), 'Cached, not a promise').to.deep.equal(false);
+          expect(cachedEmoji, 'Same emoji returned').to.deep.equal(loadedAltMediaEmoji);
         });
       }
     });

@@ -13,7 +13,7 @@ import {
   EmojiServiceResponse,
   SpriteServiceRepresentation,
 } from '../types';
-import { isImageRepresentation, isSpriteServiceRepresentation } from '../type-helpers';
+import { isImageRepresentation, isSpriteServiceRepresentation, convertImageToMediaRepresentation } from '../type-helpers';
 import debug from '../util/logger';
 
 export interface EmojiLoaderConfig extends ServiceConfig {
@@ -47,7 +47,7 @@ export const getPixelRatio = (): number => {
   return window.devicePixelRatio;
 };
 
-const getAltRepresentation = (reps: AltRepresentations): EmojiServiceRepresentation => {
+export const getAltRepresentation = (reps: AltRepresentations): EmojiServiceRepresentation => {
   // Invalid reps handled outside function - logic may change depending what the service returns
   return reps[calculateScale(getPixelRatio).altScale];
 };
@@ -73,12 +73,7 @@ export const denormaliseServiceRepresentation = (representation: EmojiServiceRep
   } else if (isImageRepresentation(representation)) {
     const { height, width, imagePath } = representation;
     if (isMediaApiUrl(imagePath, meta)) {
-      // Convert to MediaApiRepresentation
-      return {
-        height,
-        width,
-        mediaPath: imagePath,
-      };
+      return convertImageToMediaRepresentation(representation);
     }
     return {
       height,
@@ -133,8 +128,13 @@ export const denormaliseEmojiServiceResponse = (emojiData: EmojiServiceResponse)
       representation: newRepresentation,
       skinVariations: newSkinVariations
     };
-
-    return altRepresentation ? { ...response, altRepresentation } : response;
+    if (!altRepresentation) {
+      return response;
+    }
+    return {
+      ...response,
+      altRepresentation
+    };
   });
 
   const mediaApiToken = emojiData.meta && emojiData.meta.mediaApiToken;
@@ -149,4 +149,4 @@ export const denormaliseEmojiServiceResponse = (emojiData: EmojiServiceResponse)
 const getHeight = (fitToHeight: number): number => getPixelRatio() > 1 ? fitToHeight * 2 : fitToHeight;
 
 export const shouldUseAltRepresentation = (emoji: EmojiDescription, fitToHeight?: number): boolean =>
-  (!!fitToHeight && !!emoji.altRepresentation && getHeight(fitToHeight) > emoji.representation!.height);
+  !!(fitToHeight && emoji.altRepresentation && getHeight(fitToHeight) > emoji.representation!.height);

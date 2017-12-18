@@ -120,7 +120,7 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
    *   or updated with a new url to cached image data. Will return the original EmojiDescription
    *   if not a custom emoji.
    */
-loadMediaEmoji(emoji: EmojiDescription, useAlt?: boolean): OptionalEmojiDescription | Promise<OptionalEmojiDescription>;
+  loadMediaEmoji(emoji: EmojiDescription, useAlt?: boolean): OptionalEmojiDescription | Promise<OptionalEmojiDescription>;
 
   /**
    * Indicates if media emoji should be rendered optimistically,
@@ -480,6 +480,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
       try {
         window.localStorage.setItem(selectedToneStorageKey, tone ? tone.toString() : '');
       } catch (e) {
+        // tslint:disable-next-line:no-console
         console.error('failed to store selected emoji skin tone', e);
       }
     }

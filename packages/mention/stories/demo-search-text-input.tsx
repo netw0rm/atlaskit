@@ -28,7 +28,7 @@ export interface Props {
   onUp?: OnAction;
 }
 
-class SearchTextInput extends Component<Props, undefined> {
+class SearchTextInput extends Component<Props, {}> {
 
   constructor(props) {
     super(props);

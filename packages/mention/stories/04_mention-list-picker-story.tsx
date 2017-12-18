@@ -5,16 +5,16 @@ import { name } from '../package.json';
 import MentionTextInput from './demo-mention-text-input';
 import { resourceProvider, resourceProviderWithInfoHints, slowResourceProvider, MockPresenceProvider } from '../src/support/story-data';
 
-const bottomStyle = {
+const bottomStyle: React.CSSProperties = {
   position: 'absolute',
   bottom: '30px',
 };
 
-const tallPageStyle = {
+const tallPageStyle: React.CSSProperties = {
   height: '2000px',
 };
 
-const downPage = {
+const downPage: React.CSSProperties = {
   position: 'absolute',
   top: '400px',
 };

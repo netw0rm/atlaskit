@@ -105,7 +105,7 @@ export interface Props {
   onSelection?: OnMentionEvent;
 }
 
-export default class MentionItem extends PureComponent<Props, undefined> {
+export default class MentionItem extends PureComponent<Props, {}> {
   // internal, used for callbacks
   private onMentionSelected = (event: MouseEvent<any>) => {
     if (leftClick(event) && this.props.onSelection) {

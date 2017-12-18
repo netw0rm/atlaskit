@@ -7,7 +7,7 @@ export interface Props {
   children?: ReactNode | ReactNode[];
 }
 
-export default class Scrollable extends PureComponent<Props, undefined> {
+export default class Scrollable extends PureComponent<Props, {}> {
   private scrollableDiv: Element;
 
   // API

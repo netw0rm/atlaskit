@@ -117,9 +117,16 @@ describe('SiteEmojiResource', () => {
             width: 20,
             height: 30,
           },
+          altRepresentations: {
+            XHDPI: {
+              imagePath: 'http://media/456.png',
+              width: 40,
+              height: 60,
+            }
+          },
           searchable: true
         }
-      ]
+      ],
     };
 
     it('successful upload', () => {
@@ -138,13 +145,19 @@ describe('SiteEmojiResource', () => {
       tokenManagerStub.getToken.returns(Promise.resolve(defaultMediaApiToken()));
 
       const uploadPromise = siteEmojiResource.uploadEmoji(upload).then(emoji => {
+        const { altRepresentations, ...serviceEmoji } = serviceResponse.emojis[0];
         expect(emoji).to.deep.equal({
-          ...serviceResponse.emojis[0],
+          ...serviceEmoji,
           representation: {
             mediaPath: 'http://media/123.png',
             width: 20,
             height: 30,
-          }
+          },
+          altRepresentation: {
+            mediaPath: 'http://media/456.png',
+            width: 40,
+            height: 60,
+          },
         });
 
         const mediaUploads = mockMediaPicker.getUploads();

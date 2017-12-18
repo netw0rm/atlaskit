@@ -1,4 +1,4 @@
-import { EmojiDescription, OptionalEmojiDescription } from '../../types';
+import { EmojiDescription, OptionalEmojiDescription, EmojiRepresentation } from '../../types';
 import { convertMediaToImageEmoji, isMediaRepresentation, isPromise } from '../../type-helpers';
 import MediaImageLoader from './MediaImageLoader';
 import debug from '../../util/logger';
@@ -6,8 +6,10 @@ import TokenManager from './TokenManager';
 
 import { LRUCache } from 'lru-fast';
 
+const getRequiredRepresentation = (emoji: EmojiDescription, useAlt?: boolean): EmojiRepresentation => useAlt ? emoji.altRepresentation : emoji.representation;
+
 export interface EmojiCacheStrategy {
-  loadEmoji(emoji: EmojiDescription): OptionalEmojiDescription | Promise<OptionalEmojiDescription>;
+  loadEmoji(emoji: EmojiDescription, useAlt?: boolean): OptionalEmojiDescription | Promise<OptionalEmojiDescription>;
   optimisticRendering(): boolean;
 }
 
@@ -25,8 +27,8 @@ export class BrowserCacheStrategy implements EmojiCacheStrategy {
     this.mediaImageLoader = mediaImageLoader;
   }
 
-  loadEmoji(emoji: EmojiDescription): OptionalEmojiDescription | Promise<OptionalEmojiDescription> {
-    const { representation } = emoji;
+  loadEmoji(emoji: EmojiDescription, useAlt?: boolean): OptionalEmojiDescription | Promise<OptionalEmojiDescription> {
+    const representation = getRequiredRepresentation(emoji, useAlt);
 
     if (!isMediaRepresentation(representation)) {
       return emoji;
@@ -101,8 +103,8 @@ export class MemoryCacheStrategy implements EmojiCacheStrategy {
     this.dataURLCache = new LRUCache<string,EmojiDescription>(maxImageCached);
   }
 
-  loadEmoji(emoji: EmojiDescription): OptionalEmojiDescription | Promise<OptionalEmojiDescription> {
-    const { representation } = emoji;
+  loadEmoji(emoji: EmojiDescription, useAlt?: boolean): OptionalEmojiDescription | Promise<OptionalEmojiDescription> {
+    const representation = getRequiredRepresentation(emoji, useAlt);
 
     if (!isMediaRepresentation(representation)) {
       return emoji;
@@ -122,7 +124,7 @@ export class MemoryCacheStrategy implements EmojiCacheStrategy {
 
     // Not cached, load
     return this.mediaImageLoader.loadMediaImage(mediaPath).then(dataURL => {
-      const loadedEmoji = convertMediaToImageEmoji(emoji, dataURL);
+      const loadedEmoji = convertMediaToImageEmoji(emoji, dataURL, useAlt);
       if (dataURL.length <= maxImageSize) {
         // Only cache if not large than max size
         this.dataURLCache.put(mediaPath, loadedEmoji);
@@ -159,8 +161,8 @@ export default class MediaEmojiCache {
     this.mediaImageLoader = new MediaImageLoader(tokenManager);
   }
 
-  loadEmoji(emoji: EmojiDescription): OptionalEmojiDescription | Promise<OptionalEmojiDescription> {
-    const representation = emoji.representation;
+  loadEmoji(emoji: EmojiDescription, useAlt?: boolean): OptionalEmojiDescription | Promise<OptionalEmojiDescription> {
+    const representation = getRequiredRepresentation(emoji, useAlt);
     if (!isMediaRepresentation(representation)) {
       return emoji;
     }
@@ -171,11 +173,11 @@ export default class MediaEmojiCache {
     if (isPromise(emojiCache)) {
       // Promise based
       return emojiCache
-        .then(cache => cache.loadEmoji(emoji))
+        .then(cache => cache.loadEmoji(emoji, useAlt))
         .catch(() => undefined);
     }
 
-    return emojiCache.loadEmoji(emoji);
+    return emojiCache.loadEmoji(emoji, useAlt);
   }
 
   optimisticRendering(url: string): boolean | Promise<boolean> {

@@ -48,7 +48,7 @@ export default class ResourcedEmoji extends LoadingEmojiCompoent<Props, State> {
 
 class ResourcedEmojiComponent extends PureComponent<ComponentProps, State> {
   static childContextTypes = {
-      emoji: PropTypes.object
+    emoji: PropTypes.object
   };
 
   private ready = false;

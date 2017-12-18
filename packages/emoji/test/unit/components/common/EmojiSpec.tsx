@@ -1,8 +1,6 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
-import { SyntheticEvent } from 'react';
 import { expect } from 'chai';
-import * as sinon from 'sinon';
 import Tooltip from '@atlaskit/tooltip';
 
 import * as styles from '../../../../src/components/common/styles';
@@ -86,23 +84,6 @@ describe('<Emoji />', () => {
 
       const image = wrapper.find(`.${styles.emoji} img`);
       expect((image.prop('src') || {})).to.equal('https://alt-path-to-image.png');
-    });
-
-    it('should call onError handler with emoji using altRepresentation', () => {
-      const spy = sinon.spy();
-      const wrapper = shallow(<Emoji
-        emoji={imageEmoji}
-        fitToHeight={26}
-        onLoadError={spy}
-      />);
-      const fittedEmoji = {
-        ...imageEmoji,
-        representation: imageEmoji.altRepresentation,
-      };
-      const image = wrapper.find(`.${styles.emoji} img`);
-      image.prop('onError')!({} as SyntheticEvent<HTMLElement>);
-      expect(spy.callCount).to.equal(1);
-      expect(spy.args[0][1]).to.deep.equal(fittedEmoji);
     });
 
     it('should be selected', () => {

@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 
 import { customCategory } from '../../../src/constants';
-import { EmojiServiceResponse, EmojiServiceDescription, EmojiServiceDescriptionWithVariations, ImageRepresentation, SpriteRepresentation } from '../../../src/types';
-import { denormaliseEmojiServiceResponse } from '../../../src/api/EmojiUtils';
+import { EmojiDescription, EmojiDescriptionWithVariations, EmojiServiceResponse, EmojiServiceDescription, EmojiServiceDescriptionWithVariations, ImageRepresentation, SpriteRepresentation } from '../../../src/types';
+import { denormaliseEmojiServiceResponse, shouldUseAltRepresentation, buildEmojiDescriptionWithAltRepresentation } from '../../../src/api/EmojiUtils';
 import { isEmojiVariationDescription } from '../../../src/type-helpers';
 
 import { defaultMediaApiToken, mediaEmoji, mediaServiceEmoji } from '../../../src/support/test-data';
@@ -350,6 +350,90 @@ describe('EmojiUtils', () => {
         width: 128,
       });
     });
+  });
 
+  describe('#shouldUseAltRepresentation', () => {
+    const emoji: EmojiDescription = {
+      id: '13d29267-ff9e-4892-a484-1a1eef3b5ca3',
+      name: 'standup.png',
+      shortName: 'standup.png',
+      type: 'SITE',
+      category: customCategory,
+      order: -1,
+      representation: {
+        imagePath: 'https://something/something.png',
+        height: 64,
+        width: 64,
+      },
+      altRepresentation: {
+        imagePath: 'https://something/something3.png',
+        height: 128,
+        width: 128,
+      },
+      searchable: true
+    };
+
+    it('is true if fitToHeight is larger than representation.height', () => {
+      expect(shouldUseAltRepresentation(emoji, 96)).to.equal(true);
+    });
+
+    it('is false if no fitToHeight param', () => {
+      expect(shouldUseAltRepresentation(emoji)).to.equal(false);
+    });
+
+    it('is false if no altRepresentation', () => {
+      const { altRepresentation, ...lowRes } = emoji;
+      expect(shouldUseAltRepresentation(lowRes, 96)).to.equal(false);
+    });
+
+    it('is false if fitToHeight is less than representation.height', () => {
+      expect(shouldUseAltRepresentation(emoji, 48)).to.equal(false);
+    });
+  });
+
+  describe('#buildEmojiDescriptionWithAltRepresentation', () => {
+    const emoji: EmojiDescriptionWithVariations = {
+      id: '1f600',
+      name: 'grinning face',
+      shortName: ':grinning:',
+      type: 'STANDARD',
+      category: 'PEOPLE',
+      order: 1,
+      representation: {
+        imagePath: 'https://something/something.png',
+        height: 64,
+        width: 64,
+      },
+      skinVariations: [
+        {
+          id: '1f600-1f3fb',
+          name: 'grinning face',
+          shortName: ':grinning::skin-tone-2',
+          type: 'STANDARD',
+          category: 'PEOPLE',
+          order: 1,
+          representation: {
+            imagePath: 'https://something/something2.png',
+            height: 64,
+            width: 64,
+          },
+          searchable: true
+        },
+      ],
+      searchable: true
+    };
+
+    it('does not contain altRepresentation in the returned EmojiDescription if undefined', () => {
+      expect(buildEmojiDescriptionWithAltRepresentation(emoji, undefined)).to.deep.equal(emoji);
+    });
+
+    it('adds altRepresentation to the EmojiDescription if is defined representation', () => {
+      const altRepresentation = {
+        imagePath: 'https://something/something3.png',
+        height: 128,
+        width: 128,
+      };
+      expect(buildEmojiDescriptionWithAltRepresentation(emoji, altRepresentation)).to.deep.equal({ ...emoji, altRepresentation });
+    });
   });
 });

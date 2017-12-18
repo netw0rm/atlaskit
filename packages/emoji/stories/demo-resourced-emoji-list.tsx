@@ -13,11 +13,12 @@ export interface EmojiFilter {
 export interface Props {
   emojiIds: EmojiId[];
   emojiProvider: Promise<EmojiProvider>;
+  fitToHeight?: number;
 }
 
 export class ResourcedEmojiList extends PureComponent<Props, {}> {
   render() {
-    const { emojiIds, emojiProvider } = this.props;
+    const { emojiIds, emojiProvider, fitToHeight } = this.props;
 
     return (
       <p style={{ padding: '10px', lineHeight: '24px' }} >
@@ -26,6 +27,7 @@ export class ResourcedEmojiList extends PureComponent<Props, {}> {
             key={emojiId.id}
             emojiProvider={emojiProvider}
             emojiId={emojiId}
+            fitToHeight={fitToHeight}
           />
         ))}
       </p>
@@ -36,6 +38,7 @@ export class ResourcedEmojiList extends PureComponent<Props, {}> {
 export interface FilteredProps {
   emojiProvider: Promise<EmojiProvider>;
   filter: EmojiFilter;
+  fitToHeight?: number;
 }
 
 export interface FilteredState {
@@ -103,7 +106,7 @@ export class ResourcedFilteredEmojiList extends PureComponent<FilteredProps, Fil
 
   render() {
     const { emojis } = this.state;
-    const { emojiProvider } = this.props;
+    const { emojiProvider, fitToHeight } = this.props;
 
     return (
       <p style={{ padding: '10px', lineHeight: '24px' }} >
@@ -112,6 +115,7 @@ export class ResourcedFilteredEmojiList extends PureComponent<FilteredProps, Fil
             key={emoji.id || `${emoji.shortName}-${emoji.category}`}
             emojiProvider={emojiProvider}
             emojiId={toEmojiId(emoji)}
+            fitToHeight={fitToHeight}
           />
         ))}
       </p>

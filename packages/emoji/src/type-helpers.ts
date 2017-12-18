@@ -9,6 +9,7 @@ import {
   SpriteRepresentation,
   SpriteServiceRepresentation,
 } from './types';
+import { buildEmojiDescriptionWithAltRepresentation } from './api/EmojiUtils';
 
 export const isSpriteServiceRepresentation = (rep): rep is SpriteServiceRepresentation => !!(rep && (<SpriteServiceRepresentation> rep).spriteRef);
 export const isSpriteRepresentation = (rep): rep is SpriteRepresentation => !!(rep && (<SpriteRepresentation> rep).sprite);
@@ -55,20 +56,27 @@ export const containsEmojiId = (emojis: EmojiDescription[], emojiId: EmojiId | u
   return false;
 };
 
+
+export const convertImageToMediaRepresentation = (rep: ImageRepresentation): MediaApiRepresentation =>
+  ({ mediaPath: rep.imagePath, height: rep.height, width: rep.width });
+
 export const convertMediaToImageRepresentation = (rep: MediaApiRepresentation, newImagePath?: string): ImageRepresentation =>
   ({ imagePath: newImagePath || rep.mediaPath, height: rep.height, width: rep.width });
 
-
-export const convertMediaToImageEmoji = (emoji: EmojiDescription, newImagePath?: string): EmojiDescription => {
+export const convertMediaToImageEmoji = (emoji: EmojiDescription, newImagePath?: string, useAlt?: boolean): EmojiDescription => {
   const mediaRepresentation = emoji.representation;
-  if (!isMediaRepresentation(mediaRepresentation)) {
+  const mediaAltRepresentation = emoji.altRepresentation;
+  const imgPath = !useAlt ? newImagePath : undefined;
+  const altImgPath = useAlt ? newImagePath : undefined;
+
+  if (!isMediaRepresentation(mediaRepresentation) && !isMediaRepresentation(mediaAltRepresentation)) {
     return emoji;
   }
-  const representation = convertMediaToImageRepresentation(mediaRepresentation, newImagePath);
-  const altRepresentation = isMediaRepresentation(emoji.altRepresentation) ? convertMediaToImageRepresentation(emoji.altRepresentation) : undefined;
-  return {
+  const representation = isMediaRepresentation(mediaRepresentation) ? convertMediaToImageRepresentation(mediaRepresentation, imgPath) : mediaRepresentation;
+  const altRepresentation = isMediaRepresentation(mediaAltRepresentation) ? convertMediaToImageRepresentation(mediaAltRepresentation, altImgPath) : mediaAltRepresentation;
+  const baseEmoji = {
     ...emoji,
-    representation,
-    altRepresentation,
+    representation
   };
+  return buildEmojiDescriptionWithAltRepresentation(baseEmoji, altRepresentation);
 };

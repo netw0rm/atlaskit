@@ -8,6 +8,8 @@ import debug from '../../util/logger';
 import { EmojiContext } from './internal-types';
 import Emoji, { Props as EmojiProps } from './Emoji';
 import EmojiPlaceholder from './EmojiPlaceholder';
+import { shouldUseAltRepresentation } from '../../api/EmojiUtils';
+
 
 export interface State {
   cachedEmoji?: EmojiDescription;
@@ -78,16 +80,17 @@ export class CachingMediaEmoji extends PureComponent<CachingEmojiProps,State> {
     if (!emojiProvider) {
       return undefined;
     }
+    const { fitToHeight } = this.props;
+    const useAlt = shouldUseAltRepresentation(emoji, fitToHeight);
 
-    const optimisticRendering = emojiProvider.optimisticMediaRendering(emoji);
+    const optimisticRendering = emojiProvider.optimisticMediaRendering(emoji, useAlt);
 
     if (optimisticRendering && !forceLoad) {
       debug('Optimistic rendering', emoji.shortName);
       return emoji;
     }
     debug('Loading image via media cache', emoji.shortName);
-
-    const loadedEmoji = emojiProvider.loadMediaEmoji(emoji);
+    const loadedEmoji = emojiProvider.loadMediaEmoji(emoji, useAlt);
 
     if (isPromise(loadedEmoji)) {
       loadedEmoji.then(cachedEmoji => {

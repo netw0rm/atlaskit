@@ -55,6 +55,8 @@ export const emojiContainer = style({
 export const placeholder = 'emoji-common-placeholder';
 
 export const placeholderContainer = style({
+  // Ensure no vertical reflow
+  margin: '-1px 0',
   display: 'inline-block',
   background: '#f7f7f7',
   borderRadius: '20%',

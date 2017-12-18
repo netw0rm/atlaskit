@@ -6,18 +6,18 @@ import {
   EmojiId,
   EmojiServiceDescription,
   EmojiUpload,
-  ImageRepresentation,
   MediaApiToken,
   OptionalEmojiDescription,
 } from '../../types';
 
-import { isMediaRepresentation, isMediaEmoji } from '../../type-helpers';
+import { isMediaRepresentation, isMediaEmoji, convertImageToMediaRepresentation } from '../../type-helpers';
 import { MediaApiData, MediaUploadEnd, MediaUploadError, MediaUploadStatusUpdate } from './media-types';
 import MediaEmojiCache from './MediaEmojiCache';
-import { denormaliseEmojiServiceResponse, emojiRequest } from '../EmojiUtils';
+import { denormaliseEmojiServiceResponse, emojiRequest, getAltRepresentation, buildEmojiDescriptionWithAltRepresentation } from '../EmojiUtils';
 import TokenManager from './TokenManager';
 
 import debug from '../../util/logger';
+import { ImageRepresentation } from '../../../index';
 
 export interface EmojiUploadResponse {
   emojis: EmojiServiceDescription[];
@@ -52,15 +52,15 @@ export default class SiteEmojiResource {
    * Will load media emoji, returning a new EmojiDescription if, for example,
    * the URL has changed.
    */
-  loadMediaEmoji(emoji: EmojiDescription): OptionalEmojiDescription | Promise<OptionalEmojiDescription> {
+  loadMediaEmoji(emoji: EmojiDescription, useAlt?: boolean): OptionalEmojiDescription | Promise<OptionalEmojiDescription> {
     if (!isMediaEmoji(emoji)) {
       throw new Error('Only supported for media emoji');
     }
-    return this.mediaEmojiCache.loadEmoji(emoji);
+    return this.mediaEmojiCache.loadEmoji(emoji, useAlt);
   }
 
-  optimisticRendering(emoji: EmojiDescription): boolean | Promise<boolean> {
-    const representation = emoji.representation;
+  optimisticRendering(emoji: EmojiDescription, useAlt?: boolean): boolean | Promise<boolean> {
+    const representation = useAlt ? emoji.altRepresentation : emoji.representation;
     if (!isMediaRepresentation(representation)) {
       throw new Error('Only supported for media emoji');
     }
@@ -187,15 +187,16 @@ export default class SiteEmojiResource {
     return serviceUtils.requestService<EmojiUploadResponse>(this.siteServiceConfig, { requestInit }).then((response): EmojiDescription => {
       const { emojis } = response;
       if (emojis.length) {
-        const emoji = emojis[0];
-        const { imagePath, ...otherRepresentation } = emoji.representation as ImageRepresentation;
-        return {
+        const { altRepresentations, ...emoji } = emojis[0];
+
+        const response = {
           ...emoji,
-          representation: {
-            ...otherRepresentation,
-            mediaPath: imagePath,
-          },
+          representation: convertImageToMediaRepresentation(emoji.representation as ImageRepresentation),
         };
+        const altRepresentation = getAltRepresentation(altRepresentations || {});
+        const imgAltRepresentation = altRepresentation ? convertImageToMediaRepresentation(altRepresentation as ImageRepresentation) : undefined;
+
+        return buildEmojiDescriptionWithAltRepresentation(response, imgAltRepresentation);
       }
       throw new Error('No emoji returns from upload. Upload failed.');
     });

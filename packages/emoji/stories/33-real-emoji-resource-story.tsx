@@ -66,4 +66,20 @@ storiesOf(`${name}/real-emoji-resource`, module)
         children={emojiList}
       />
     );
+  })
+  .add('Big ResourcedEmoji', () => {
+    const filter = (emoji: EmojiDescription) => (emoji.category === customCategory);
+    const emojiList = (
+      <ResourcedFilteredEmojiList
+        filter={filter}
+        emojiProvider={defaultEmojiProvider}
+        fitToHeight={72}
+      />
+    );
+    return (
+      <ResourcedEmojiControl
+        emojiConfig={getEmojiConfig()}
+        children={emojiList}
+      />
+    );
   });

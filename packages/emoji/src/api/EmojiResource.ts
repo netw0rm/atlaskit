@@ -114,18 +114,22 @@ export interface EmojiProvider extends Provider<string, EmojiSearchResult, any, 
    *
    * Acts as a no-op if not a media emoji.
    *
+   * Downloads and caches the altRepresentation image if useAlt is passed in
+   *
    * @return an OptionalEmojiDescription or a promise for one, may be the same as the input,
    *   or updated with a new url to cached image data. Will return the original EmojiDescription
    *   if not a custom emoji.
    */
-  loadMediaEmoji(emoji: EmojiDescription): OptionalEmojiDescription | Promise<OptionalEmojiDescription>;
+  loadMediaEmoji(emoji: EmojiDescription, useAlt?: boolean): OptionalEmojiDescription | Promise<OptionalEmojiDescription>;
 
   /**
    * Indicates if media emoji should be rendered optimistically,
    * i.e. assume the url can be rendered directly from the URL, and
    * only explicitly loaded via loadEmojiImageData if it fails to load.
+   *
+   * If useAlt is provided, the altRepresentation image URL is used
    */
-  optimisticMediaRendering(emoji: EmojiDescription): boolean;
+  optimisticMediaRendering(emoji: EmojiDescription, useAlt?: boolean): boolean;
 
   /**
    * Used by the picker and typeahead to obtain a skin tone preference
@@ -316,14 +320,14 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
     }
   }
 
-  loadMediaEmoji(emoji: EmojiDescription): OptionalEmojiDescription | Promise<OptionalEmojiDescription> {
+  loadMediaEmoji(emoji: EmojiDescription, useAlt?: boolean): OptionalEmojiDescription | Promise<OptionalEmojiDescription> {
     if (!this.siteEmojiResource || !isMediaEmoji(emoji)) {
       return emoji;
     }
-    return this.siteEmojiResource.loadMediaEmoji(emoji);
+    return this.siteEmojiResource.loadMediaEmoji(emoji, useAlt);
   }
 
-  optimisticMediaRendering(emoji: EmojiDescription): boolean {
+  optimisticMediaRendering(emoji: EmojiDescription, useAlt?: boolean): boolean {
     if (!isMediaEmoji(emoji)) {
       return true;
     }
@@ -331,7 +335,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
       // Shouldn't have a media emoji without a siteEmojiResouce, but anyway ;)
       return false;
     }
-    const optimistic = this.siteEmojiResource.optimisticRendering(emoji);
+    const optimistic = this.siteEmojiResource.optimisticRendering(emoji, useAlt);
 
     if (isPromise(optimistic)) {
       // Not sure yet, so lets say no for now (this should normally be primed in most/all cases)
@@ -476,6 +480,7 @@ export class EmojiResource extends AbstractResource<string, EmojiSearchResult, a
       try {
         window.localStorage.setItem(selectedToneStorageKey, tone ? tone.toString() : '');
       } catch (e) {
+        // tslint:disable-next-line:no-console
         console.error('failed to store selected emoji skin tone', e);
       }
     }

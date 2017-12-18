@@ -1,5 +1,8 @@
 # @atlaskit/mention
 
+## 8.3.2 (2017-12-18)
+
+* bug fix; fS-1587 fix TS errors in mention (issues closed: fs-1587) ([8dd4b86](https://bitbucket.org/atlassian/atlaskit/commits/8dd4b86))
 ## 8.3.1 (2017-12-15)
 
 * bug fix; analytics now correctly a dep of the mention component ([da6cd5d](https://bitbucket.org/atlassian/atlaskit/commits/da6cd5d))

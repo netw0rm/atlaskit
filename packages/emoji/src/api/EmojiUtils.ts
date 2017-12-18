@@ -123,18 +123,12 @@ export const denormaliseEmojiServiceResponse = (emojiData: EmojiServiceResponse)
     // create trimmedServiceDesc which is emoji with no representations or skinVariations
     const { representation, skinVariations, altRepresentations, ...trimmedServiceDesc } = emoji;
 
-    const response = {
+    const response: EmojiDescriptionWithVariations = {
       ...trimmedServiceDesc,
       representation: newRepresentation,
       skinVariations: newSkinVariations
     };
-    if (!altRepresentation) {
-      return response;
-    }
-    return {
-      ...response,
-      altRepresentation
-    };
+    return buildEmojiDescriptionWithAltRepresentation(response, altRepresentation);
   });
 
   const mediaApiToken = emojiData.meta && emojiData.meta.mediaApiToken;
@@ -145,6 +139,16 @@ export const denormaliseEmojiServiceResponse = (emojiData: EmojiServiceResponse)
   };
 };
 
+// Prevent altRepresentation: undefined from being returned in EmojiDescription
+export const buildEmojiDescriptionWithAltRepresentation = (emoji: EmojiDescriptionWithVariations, altRepresentation?: EmojiRepresentation): EmojiDescriptionWithVariations => {
+  if (!altRepresentation) {
+    return emoji;
+  }
+  return {
+    ...emoji,
+    altRepresentation,
+  };
+};
 
 const getHeight = (fitToHeight: number): number => getPixelRatio() > 1 ? fitToHeight * 2 : fitToHeight;
 

@@ -332,12 +332,15 @@ describe('MemoryCacheStrategy', () => {
     });
 
     it('returns dataURL for altRepresentation.imgPath when useAlt is passed in', () => {
-      const emojiPromise = memoryCacheStrategy.loadEmoji(mediaEmoji, true);
+      const useAlt = true;
+      const emojiPromise = memoryCacheStrategy.loadEmoji(mediaEmoji, useAlt);
       expect(isPromise(emojiPromise), 'Returns immediately').to.equal(true);
       if (isPromise(emojiPromise)) {
         return emojiPromise.then(emoji => {
+          // loadedAltMediaEmoji has dataURL generated for and set in
+          // altRepresentation.imgPath rather than representation.imgPath
           expect(emoji, 'Same emoji returned').to.deep.equal(loadedAltMediaEmoji);
-          const cachedEmoji = memoryCacheStrategy.loadEmoji(mediaEmoji, true);
+          const cachedEmoji = memoryCacheStrategy.loadEmoji(mediaEmoji, useAlt);
           expect(isPromise(cachedEmoji), 'Cached, not a promise').to.deep.equal(false);
           expect(cachedEmoji, 'Same emoji returned').to.deep.equal(loadedAltMediaEmoji);
         });

@@ -9,6 +9,7 @@ import {
   SpriteRepresentation,
   SpriteServiceRepresentation,
 } from './types';
+import { buildEmojiDescriptionWithAltRepresentation } from './api/EmojiUtils';
 
 export const isSpriteServiceRepresentation = (rep): rep is SpriteServiceRepresentation => !!(rep && (<SpriteServiceRepresentation> rep).spriteRef);
 export const isSpriteRepresentation = (rep): rep is SpriteRepresentation => !!(rep && (<SpriteRepresentation> rep).sprite);
@@ -72,16 +73,10 @@ export const convertMediaToImageEmoji = (emoji: EmojiDescription, newImagePath?:
     return emoji;
   }
   const representation = isMediaRepresentation(mediaRepresentation) ? convertMediaToImageRepresentation(mediaRepresentation, imgPath) : mediaRepresentation;
-  if (!mediaAltRepresentation) {
-    return {
-      ...emoji,
-      representation,
-    };
-  }
   const altRepresentation = isMediaRepresentation(mediaAltRepresentation) ? convertMediaToImageRepresentation(mediaAltRepresentation, altImgPath) : mediaAltRepresentation;
-  return {
+  const baseEmoji = {
     ...emoji,
-    representation,
-    altRepresentation,
+    representation
   };
+  return buildEmojiDescriptionWithAltRepresentation(baseEmoji, altRepresentation);
 };

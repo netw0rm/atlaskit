@@ -13,7 +13,7 @@ import {
 import { isMediaRepresentation, isMediaEmoji, convertImageToMediaRepresentation } from '../../type-helpers';
 import { MediaApiData, MediaUploadEnd, MediaUploadError, MediaUploadStatusUpdate } from './media-types';
 import MediaEmojiCache from './MediaEmojiCache';
-import { denormaliseEmojiServiceResponse, emojiRequest, getAltRepresentation } from '../EmojiUtils';
+import { denormaliseEmojiServiceResponse, emojiRequest, getAltRepresentation, buildEmojiDescriptionWithAltRepresentation } from '../EmojiUtils';
 import TokenManager from './TokenManager';
 
 import debug from '../../util/logger';
@@ -194,14 +194,9 @@ export default class SiteEmojiResource {
           representation: convertImageToMediaRepresentation(emoji.representation as ImageRepresentation),
         };
         const altRepresentation = getAltRepresentation(altRepresentations || {});
-        // Prevent altRepresentation: undefined from being returned in json
-        if (!altRepresentation) {
-          return response;
-        }
-        return {
-          ...response,
-          altRepresentation: convertImageToMediaRepresentation(altRepresentation as ImageRepresentation),
-        };
+        const imgAltRepresentation = altRepresentation ? convertImageToMediaRepresentation(altRepresentation as ImageRepresentation) : undefined;
+
+        return buildEmojiDescriptionWithAltRepresentation(response, imgAltRepresentation);
       }
       throw new Error('No emoji returns from upload. Upload failed.');
     });

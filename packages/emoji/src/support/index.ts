@@ -10,11 +10,11 @@
  *
  * or
  *
- * ```import { ... } from '@atlaskit/emoji/dist/es5/support';```
+ * ```import { ... } from '@atlaskit/emoji/dist/es5/src/support';```
  *
  * or
  *
- * ```import { ... } from '@atlaskit/emoji/dist/es2015/support';```
+ * ```import { ... } from '@atlaskit/emoji/dist/es2015/src/support';```
  */
 
 export * from './support-types';

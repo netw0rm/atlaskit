@@ -1,5 +1,8 @@
 # @atlaskit/emoji
 
+## 31.0.2 (2017-12-19)
+
+* bug fix; fix publishing of emoji component (issues closed: fs-1591) ([676cb72](https://bitbucket.org/atlassian/atlaskit/commits/676cb72))
 ## 31.0.1 (2017-12-19)
 
 

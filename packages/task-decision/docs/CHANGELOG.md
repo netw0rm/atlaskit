@@ -1,5 +1,9 @@
 # @atlaskit/task-decision
 
+## 4.6.1 (2017-12-19)
+
+* bug fix; bump packages to fixed version of analytics ([615e41c](https://bitbucket.org/atlassian/atlaskit/commits/615e41c))
+* bug fix; explicit bump of analytics in task-decision ([dd94543](https://bitbucket.org/atlassian/atlaskit/commits/dd94543))
 ## 4.6.0 (2017-12-11)
 
 * bug fix; use onChange prop in ResourcedTaskItem ([e56bc38](https://bitbucket.org/atlassian/atlaskit/commits/e56bc38))

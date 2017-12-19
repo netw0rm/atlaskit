@@ -1,5 +1,9 @@
 # @atlaskit/mention
 
+## 8.3.4 (2017-12-19)
+
+* bug fix; bump packages to fixed version of analytics ([615e41c](https://bitbucket.org/atlassian/atlaskit/commits/615e41c))
+* bug fix; explicit analytics bump in mentions ([688ed80](https://bitbucket.org/atlassian/atlaskit/commits/688ed80))
 ## 8.3.3 (2017-12-19)
 
 * bug fix; reduce mention bundle size by referencing avatar directly from dist/esm folder ([2a88ef0](https://bitbucket.org/atlassian/atlaskit/commits/2a88ef0))

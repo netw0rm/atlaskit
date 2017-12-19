@@ -15,6 +15,10 @@ XRegExpUnicodeCategories(XRegExp);
 const tokenizerRegex = XRegExp.cache('\\p{Han}|\\p{L}+[\\p{Mn}|\']*\\p{L}*', 'gi');
 const nonSpacingMarkRegex = XRegExp.cache('\\p{Mn}', 'gi');
 
+// Order by increasing weight, using a big enough number to put item without an explicit weight
+// at the end
+const DEFAULT_WEIGHT = 100000;
+
 export type Token = {
   token: string;
   start: number;
@@ -69,8 +73,8 @@ export function compareMentionDescription(a: MentionDescription, b: MentionDescr
     return 1;
   }
 
-  const aWeight = a.weight !== undefined ? a.weight : Number.MAX_VALUE;
-  const bWeight = b.weight !== undefined ? b.weight : Number.MAX_VALUE;
+  const aWeight = a.weight !== undefined ? a.weight : DEFAULT_WEIGHT;
+  const bWeight = b.weight !== undefined ? b.weight : DEFAULT_WEIGHT;
   return aWeight - bWeight;
 }
 

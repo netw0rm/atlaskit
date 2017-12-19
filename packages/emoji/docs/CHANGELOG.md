@@ -1,5 +1,10 @@
 # @atlaskit/emoji
 
+## 31.0.1 (2017-12-19)
+
+
+
+* bug fix; fS-1584 fix high res emoji rendering in firefox and edge (issues closed: fs-1584) ([7ec1e3b](https://bitbucket.org/atlassian/atlaskit/commits/7ec1e3b))
 ## 31.0.0 (2017-12-14)
 
 * breaking; property fitHeight removed in favor of size property in EmojiPlaceholder ([fedf004](https://bitbucket.org/atlassian/atlaskit/commits/fedf004))

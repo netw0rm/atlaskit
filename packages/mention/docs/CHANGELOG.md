@@ -1,5 +1,8 @@
 # @atlaskit/mention
 
+## 8.3.3 (2017-12-19)
+
+* bug fix; reduce mention bundle size by referencing avatar directly from dist/esm folder ([2a88ef0](https://bitbucket.org/atlassian/atlaskit/commits/2a88ef0))
 ## 8.3.2 (2017-12-18)
 
 * bug fix; fS-1587 fix TS errors in mention (issues closed: fs-1587) ([8dd4b86](https://bitbucket.org/atlassian/atlaskit/commits/8dd4b86))

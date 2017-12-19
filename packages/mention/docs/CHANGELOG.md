@@ -1,5 +1,11 @@
 # @atlaskit/mention
 
+## 8.4.0 (2017-12-19)
+
+* feature; fS-1063 Code review remark ([93ff21e](https://bitbucket.org/atlassian/atlaskit/commits/93ff21e))
+* bug fix; make sure root does not change whatever import we use ([085d483](https://bitbucket.org/atlassian/atlaskit/commits/085d483))
+* feature; fS-1063 Fix code review remarks ([a247fa6](https://bitbucket.org/atlassian/atlaskit/commits/a247fa6))
+* feature; fS-1063 When searching for mentionable users in a public room, I want users current ([b5310c7](https://bitbucket.org/atlassian/atlaskit/commits/b5310c7))
 ## 8.3.4 (2017-12-19)
 
 * bug fix; bump packages to fixed version of analytics ([615e41c](https://bitbucket.org/atlassian/atlaskit/commits/615e41c))

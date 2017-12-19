@@ -170,7 +170,7 @@ export class SearchIndex {
 
   private updateCachedMention(mention: MentionDescription, index: number) {
     const indexedMention = this.mentionCache.get(mention.id);
-    let newMention = {...indexedMention, ...mention, weight: mention.weight ? mention.weight : index };
+    let newMention = {...indexedMention, ...mention, weight: mention.weight !== undefined ? mention.weight : index };
     this.mentionCache.set(mention.id, newMention);
     return newMention;
   }

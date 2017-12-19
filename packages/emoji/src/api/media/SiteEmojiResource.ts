@@ -6,6 +6,7 @@ import {
   EmojiId,
   EmojiServiceDescription,
   EmojiUpload,
+  ImageRepresentation,
   MediaApiToken,
   OptionalEmojiDescription,
 } from '../../types';
@@ -17,7 +18,6 @@ import { denormaliseEmojiServiceResponse, emojiRequest, getAltRepresentation, bu
 import TokenManager from './TokenManager';
 
 import debug from '../../util/logger';
-import { ImageRepresentation } from '../../../index';
 
 export interface EmojiUploadResponse {
   emojis: EmojiServiceDescription[];

@@ -27,6 +27,7 @@ export interface MentionDescription {
   presence?: Presence;
   accessLevel?: string;
   weight?: number;
+  inContext?: boolean;
   userType?: string;
 }
 

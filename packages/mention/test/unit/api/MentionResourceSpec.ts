@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 
 import { MentionDescription } from '../../../src/types';
 import MentionResource, { HttpError, MentionResourceConfig, SecurityOptions } from '../../../src/api/MentionResource';
-import { resultC, resultCraig, resultPolly } from '../_mention-search-results';
+import { resultC, resultCr, resultCraig, resultPolly } from '../_mention-search-results';
 
 const baseUrl = 'https://bogus/mentions';
 
@@ -57,17 +57,22 @@ describe('MentionResource', () => {
           mentions: resultPolly,
         },
       })
-      .mock(/\/mentions\/search\?.*query=delay(&|$)/, new Promise((resolve) => {
+      .mock(/\/mentions\/search\?.*query=cr(&|$)/, new Promise((resolve) => {
         setTimeout(() => {
           resolve({
-            // "delay" is like "c", but delayed
+            // delayed results
             body: {
-              mentions: resultC,
+              mentions: resultCr,
             },
           });
         }, 100);
       }))
       .mock(/\/mentions\/search\?.*query=broken(&|$)/, 500)
+      .mock(/\/mentions\/search\?.*query=.*(&|$)/, {
+        body: {
+          mentions: []
+        }
+      })
       .mock(/\/mentions\/record\?selectedUserId=\d+$/, {
         body: '',
       }, { name: 'record' });
@@ -127,14 +132,15 @@ describe('MentionResource', () => {
     it('in order responses', (done) => {
       const resource = new MentionResource(apiConfig);
       const results: MentionDescription[][] = [];
-      const expected = [resultC, [], resultCraig];
+      const expected = [[], resultC, [], resultCraig];
       resource.subscribe('test1', (mentions) => {
         results.push(mentions);
-        // 1st: remote search for 'c'
-        // 2nd: local index for 'craig'  => no results
-        // 3rd: remote search for 'craig'
+        // 1st: local index for 'c'
+        // 2nd: remote search for 'c'
+        // 3rd: local index for 'craig'  => no results
+        // 4th: remote search for 'craig'
 
-        if (results.length === 3) {
+        if (results.length === 4) {
           checkOrder(expected, results);
           done();
         }
@@ -148,16 +154,16 @@ describe('MentionResource', () => {
     it('all results callback should receive all results', (done) => {
       const resource = new MentionResource(apiConfig);
       const results: MentionDescription[][] = [];
-      const expected = [resultCraig, resultC];
+      const expected = [[], [], resultCraig, resultCr];
       resource.subscribe('test1', undefined, undefined, undefined, (mentions) => {
         results.push(mentions);
 
-        if (results.length === 2) {
+        if (results.length === 4) {
           checkOrder(expected, results);
           done();
         }
       });
-      resource.filter('delay');
+      resource.filter('cr');
       resource.filter('craig');
     });
 
@@ -201,6 +207,50 @@ describe('MentionResource', () => {
         done();
       });
       resource.filter('polly');
+    });
+
+    it('should use users in context', (done) => {
+      const homer = {id: 'id', name: 'Homer Simpson', nickname: 'homer'};
+      const resource = new MentionResource({...apiConfig,
+        getUsersInContext: () => Promise.resolve([
+          homer
+        ])
+      });
+      const expected = [[homer]];
+
+      const results: MentionDescription[][] = [];
+      resource.subscribe('test1', undefined, undefined, undefined, (mentions) => {
+        results.push(mentions);
+
+        if (results.length === 1) {
+          checkOrder(expected, results);
+          done();
+        }
+      });
+
+      resource.filter('h');
+    });
+
+    it('should add server results to context users', (done) => {
+      const carl = {id: 'id', name: 'Carl Carlson', nickname: 'carl'};
+      const resource = new MentionResource({...apiConfig,
+        getUsersInContext: () => Promise.resolve([
+          carl
+        ])
+      });
+      const expected = [[carl], [carl, ...resultC]];
+
+      const results: MentionDescription[][] = [];
+      resource.subscribe('test1', undefined, undefined, undefined, (mentions) => {
+        results.push(mentions);
+
+        if (results.length === 2) {
+          checkOrder(expected, results);
+          done();
+        }
+      });
+
+      resource.filter('c');
     });
   });
 

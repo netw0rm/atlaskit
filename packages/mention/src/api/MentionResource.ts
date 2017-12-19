@@ -2,7 +2,7 @@ import * as URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chro
 
 import { MentionDescription, isAppMention } from '../types';
 import debug from '../util/logger';
-import {SearchIndex} from '../util/searchIndex';
+import { SearchIndex, compareMentionDescription } from '../util/searchIndex';
 
 const MAX_QUERY_ITEMS = 100;
 const MAX_NOTIFIED_ITEMS = 20;
@@ -56,6 +56,15 @@ export interface MentionResourceConfig {
   productId?: string;
   refreshedSecurityProvider?: RefreshSecurityProvider;
   shouldHighlightMention?: (mention: MentionDescription) => boolean;
+
+  /**
+   * Hook for consumers to provide a list of users in the current context.
+   * Users provided here will be searched when mentioning and
+   * will appear first.
+   *
+   * @returns {Promise<MentionDescription[]>}
+   */
+  getUsersInContext?: () => Promise<MentionDescription[]>;
 }
 
 export interface ResourceProvider<Result> {
@@ -355,6 +364,35 @@ class MentionResource extends AbstractMentionResource {
     return this.activeSearches.has(query);
   }
 
+  private initialState(): Promise<MentionsResult> {
+    return this.initialStateFromContext()
+      .then(inContextMentions =>  {
+        const inContextResultMap = inContextMentions.reduce((acc, value) => acc.set(value.id, value), new Map());
+        return this.remoteInitialState().then((results) => {
+          results.mentions = results.mentions.map(result => ({...result, inContext: inContextResultMap.has(result.id)}));
+          results.mentions.sort(compareMentionDescription);
+
+          return results;
+        });
+      });
+  }
+
+  private initialStateFromContext(): Promise<MentionDescription[]> {
+    this.searchIndex.reset();
+    if (this.config.getUsersInContext) {
+      return this.config.getUsersInContext().then((users) => {
+        const usersInContext = users.map((user) => {
+          return {...user, inContext: true};
+        });
+
+        this.searchIndex.indexResults(usersInContext);
+        return usersInContext;
+      });
+    }
+
+    return Promise.resolve([]);
+  }
+
   /**
    * Returns the initial mention display list before a search is performed for the specified
    * container.
@@ -362,7 +400,7 @@ class MentionResource extends AbstractMentionResource {
    * @param containerId
    * @returns Promise
    */
-  private initialState(): Promise<MentionsResult> {
+  private remoteInitialState(): Promise<MentionsResult> {
     const secOptions = this.config.securityProvider ? this.config.securityProvider() : emptySecurityProvider();
     const refreshedSecurityProvider = this.config.refreshedSecurityProvider;
     const data: KeyValues = {};
@@ -379,33 +417,33 @@ class MentionResource extends AbstractMentionResource {
     return requestService(this.config.url, 'bootstrap', data, options, secOptions, refreshedSecurityProvider)
       .then(result => this.transformServiceResponse(result))
       .then((result) => {
-        this.searchIndex.reset();
         this.searchIndex.indexResults(result.mentions);
         return result;
       });
   }
 
   private search(query: string): Promise<MentionsResult> {
-    if (this.searchIndex.hasDocuments()) {
-      return this.searchIndex.search(query).then(result => {
+      return this.localSearch(query).then(localResults => {
         const searchTime = Date.now() + 1; // Ensure that search time is different than the local search time
         this.remoteSearch(query).then(result => {
           this.activeSearches.delete(query);
-          this.notify(searchTime, result, query);
           this.searchIndex.indexResults(result.mentions);
-        },
+          return this.localSearch(query);
+        }).then(result => this.notify(searchTime, result, query),
         err => {
           this._notifyErrorListeners(err);
         });
 
-        return result;
+        return localResults;
       });
-    }
+  }
 
-    return this.remoteSearch(query).then(result => {
-      this.searchIndex.indexResults(result.mentions);
-      return result;
-    });
+  private localSearch(query: string) {
+    if (this.searchIndex.hasDocuments()) {
+      return this.searchIndex.search(query);
+    } else {
+      return this.initialStateFromContext().then(() => this.searchIndex.search(query));
+    }
   }
 
   private remoteSearch(query: string): Promise<MentionsResult> {

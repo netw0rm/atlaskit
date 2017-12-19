@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import {Highlighter, SearchIndex} from '../../../src/util/searchIndex';
+import { Highlighter, SearchIndex, compareMentionDescription } from '../../../src/util/searchIndex';
 
 describe('SearchIndex', () => {
 
@@ -106,6 +106,73 @@ describe('SearchIndex', () => {
       expect(result.mentions).to.have.lengthOf(1);
       done();
     });
+  });
+
+  it('should sort results', (done) => {
+    searchIndex.indexResults([
+      { id: 'id1', name: 'Homer Simpson', mentionName: 'homer' },
+      { id: 'id2', name: 'Marge Simpson', mentionName: 'marge', inContext: true }
+    ]);
+
+    searchIndex.search('simpson').then(result => {
+      expect(result.mentions).to.have.lengthOf(2);
+      expect(result.mentions[0].mentionName).to.equal('marge');
+      expect(result.mentions[1].mentionName).to.equal('homer');
+      done();
+    });
+  });
+
+  describe('#indexResults', () => {
+    it('should augment cached data', (done) => {
+      searchIndex.indexResults([
+        { id: 'id', name: 'Homer Simpson', mentionName: 'mentionName', inContext: true }
+      ]);
+
+      searchIndex.indexResults([
+        { id: 'id', name: 'Homer Simpson', mentionName: 'mentionName', accessLevel: 'CONTAINER' }
+      ]);
+
+      searchIndex.search('mentionName').then(result => {
+        expect(result.mentions).to.have.lengthOf(1);
+        expect(result.mentions[0].inContext).to.equal(true);
+        expect(result.mentions[0].accessLevel).to.equal('CONTAINER');
+        done();
+      });
+    });
+  });
+});
+
+describe('compareMentionDescription', () => {
+  it('should put in context mention first', () => {
+    const result = compareMentionDescription(
+      { id: 'id1', inContext: true },
+      { id: 'id2', inContext: false });
+
+    expect(result).to.be.below(0);
+  });
+
+  it('should use weight as a second sort criteria', () => {
+    const result = compareMentionDescription(
+      { id: 'id1', inContext: true, weight: 0 },
+      { id: 'id2', inContext: true, weight: 1 });
+
+    expect(result).to.be.below(0);
+  });
+
+  it('should put mention without weight second', () => {
+    const result = compareMentionDescription(
+      { id: 'id1', inContext: true, weight: 5 },
+      { id: 'id2', inContext: true });
+
+    expect(result).to.be.below(0);
+  });
+
+  it('should put special mention first', () => {
+    const result = compareMentionDescription(
+      { id: 'id1', userType: 'SPECIAL' },
+      { id: 'id2' });
+
+    expect(result).to.be.below(0);
   });
 });
 

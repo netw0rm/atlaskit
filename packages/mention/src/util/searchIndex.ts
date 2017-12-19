@@ -42,6 +42,38 @@ export class Tokenizer implements ITokenizer {
   }
 }
 
+/**
+ * MentionDescription compare function.
+ * Order mention descriptions by: context, weight
+ *
+ * @param {MentionDescription} a
+ * @param {MentionDescription} b
+ * @returns {number}
+ */
+export function compareMentionDescription(a: MentionDescription, b: MentionDescription) {
+  let aIsSpecialMention = isSpecialMention(a);
+  let bIsSpecialMention = isSpecialMention(b);
+  if (aIsSpecialMention && !bIsSpecialMention) {
+    return -1;
+  }
+
+  if (bIsSpecialMention && !aIsSpecialMention) {
+    return 1;
+  }
+
+  if (a.inContext && !b.inContext) {
+    return -1;
+  }
+
+  if (b.inContext && !a.inContext) {
+    return 1;
+  }
+
+  const aWeight = a.weight !== undefined ? a.weight : Number.MAX_VALUE;
+  const bWeight = b.weight !== undefined ? b.weight : Number.MAX_VALUE;
+  return aWeight - bWeight;
+}
+
 export class Highlighter {
   public static find(field: string, query: string): HighlightDetail[] {
     const highlights: HighlightDetail[] = [];
@@ -88,8 +120,13 @@ export class Highlighter {
 
 export class SearchIndex {
   private index: Search | null;
+  private mentionCache: Map<string, MentionDescription>;
 
-  public search(query: string): Promise<MentionsResult> {
+  constructor() {
+    this.reset();
+  }
+
+  public search(query: string = ''): Promise<MentionsResult> {
     return new Promise((resolve) => {
       const localResults = this.index.search(query).map(mention => {
         return {...mention, highlight: {
@@ -105,7 +142,7 @@ export class SearchIndex {
         return true;
       });
 
-      localResults.sort((a, b) => a.weight - b.weight || 0);
+      localResults.sort(compareMentionDescription);
 
       resolve({
         mentions: localResults,
@@ -115,33 +152,36 @@ export class SearchIndex {
   }
 
   public hasDocuments() {
-    return !!this.index;
+    return this.mentionCache.size > 0;
   }
 
   public reset() {
-    this.index = null;
+    this.index = SearchIndex.createIndex();
+    this.mentionCache = new Map();
   }
 
   public indexResults(mentions: MentionDescription[]) {
-    if (!this.index) {
-      this.index = new Search('id');
+    this.index.addDocuments(mentions.map((mention, index) => this.updateCachedMention(mention, index)));
+  }
 
-      this.index.searchIndex = new UnorderedSearchIndex();
-      this.index.tokenizer = Tokenizer;
+  private updateCachedMention(mention: MentionDescription, index: number) {
+    const indexedMention = this.mentionCache.get(mention.id);
+    let newMention = {...indexedMention, ...mention, weight: mention.weight ? mention.weight : index };
+    this.mentionCache.set(mention.id, newMention);
+    return newMention;
+  }
 
-      this.index.addIndex('name');
-      this.index.addIndex('mentionName');
-      this.index.addIndex('nickname');
-    }
+  private static createIndex(): Search {
+    const index = new Search('id');
 
-    this.index.addDocuments(mentions
-    .map((mention, index) => {
-      if (mention.weight !== undefined) {
-        return mention;
-      }
+    index.searchIndex = new UnorderedSearchIndex();
+    index.tokenizer = Tokenizer;
 
-      return {...mention, weight: index};
-    }));
+    index.addIndex('name');
+    index.addIndex('mentionName');
+    index.addIndex('nickname');
+
+    return index;
   }
 
 }

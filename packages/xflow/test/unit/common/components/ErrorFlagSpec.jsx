@@ -1,7 +1,8 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import Flag, { FlagGroup } from '@atlaskit/flag';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
+import { Portal } from '@atlaskit/layer-manager';
 
 import ErrorFlag from '../../../../src/common/components/ErrorFlag';
 
@@ -38,8 +39,11 @@ describe('<ErrorFlag> Component', () => {
 
     it('should render the flag when showFlag is true', () => {
       const wrapper = mount(<ErrorFlag {...mockProps} showFlag />);
-
-      const flag = wrapper.find(Flag);
+      // finding the portal
+      // please refer: https://github.com/airbnb/enzyme/issues/536#issuecomment-239311682
+      const portal = wrapper.find(Portal);
+      const portalWrapper = new ReactWrapper(portal.node.props.children);
+      const flag = portalWrapper.find(Flag);
       expect(flag.exists()).toBeTruthy();
       expect(flag.props().title).toBe(mockProps.title);
       expect(flag.props().description).toBe(mockProps.description);

@@ -1,9 +1,11 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import sinon from 'sinon';
 import fetchMock from 'fetch-mock';
 import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
+import Flag from '@atlaskit/flag';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
+import { Portal } from '@atlaskit/layer-manager';
 
 import waitUntil from '../../util/wait-until';
 import clickOnText from '../../util/click-on-text';
@@ -100,9 +102,14 @@ describe('RequestOrStartTrial', () => {
       await waitUntil(() => xflow.find(RequestTrialNote).length === 1);
       clickOnText(xflow.find(RequestTrialNote), 'Send note');
       await waitUntil(() => xflow.find(SuccessFlag).length === 1);
-      expect(xflow.find(CheckCircleIcon).props().label).toMatch('Success icon');
-      expect(xflow.find(SuccessFlag).text()).toMatch('That\'s sent!');
-      expect(xflow.find(SuccessFlag).text()).toMatch('We\'ll let your admin know right away.');
+      // finding the portal
+      // please refer: https://github.com/airbnb/enzyme/issues/536#issuecomment-239311682
+      const portal = xflow.find(SuccessFlag).find(Portal);
+      const portalWrapper = new ReactWrapper(portal.node.props.children);
+      const flag = portalWrapper.find(Flag);
+      expect(flag.find(CheckCircleIcon).props().label).toMatch('Success icon');
+      expect(flag.text()).toMatch('That\'s sent!');
+      expect(flag.text()).toMatch('We\'ll let your admin know right away.');
       sinon.assert.calledWith(defaultProps.requestTrialWithNote, 'Hi! I\'d like to try Confluence. It helps give the team more context on anything happening in Jira - and there\'s a free 30 day trial.');
     });
 
@@ -115,9 +122,14 @@ describe('RequestOrStartTrial', () => {
       xflow.find('textarea').node.value = 'Hey, look a custom note';
       clickOnText(xflow.find(RequestTrialNote), 'Send note');
       await waitUntil(() => xflow.find(SuccessFlag).length === 1);
-      expect(xflow.find(CheckCircleIcon).props().label).toMatch('Success icon');
-      expect(xflow.find(SuccessFlag).text()).toMatch('That\'s sent!');
-      expect(xflow.find(SuccessFlag).text()).toMatch('We\'ll let your admin know right away.');
+      // finding the portal
+      // please refer: https://github.com/airbnb/enzyme/issues/536#issuecomment-239311682
+      const portal = xflow.find(SuccessFlag).find(Portal);
+      const portalWrapper = new ReactWrapper(portal.node.props.children);
+      const flag = portalWrapper.find(Flag);
+      expect(flag.find(CheckCircleIcon).props().label).toMatch('Success icon');
+      expect(flag.text()).toMatch('That\'s sent!');
+      expect(flag.text()).toMatch('We\'ll let your admin know right away.');
       sinon.assert.calledWith(defaultProps.requestTrialWithNote, 'Hey, look a custom note');
     });
 
@@ -129,9 +141,14 @@ describe('RequestOrStartTrial', () => {
       await waitUntil(() => xflow.find(RequestTrialNote).length === 1);
       clickOnText(xflow.find(RequestTrialNote), 'Skip');
       await waitUntil(() => xflow.find(SuccessFlag).length === 1);
-      expect(xflow.find(CheckCircleIcon).props().label).toMatch('Success icon');
-      expect(xflow.find(SuccessFlag).text()).toMatch('That\'s sent!');
-      expect(xflow.find(SuccessFlag).text()).toMatch('We\'ll let your admin know right away.');
+      // finding the portal
+      // please refer: https://github.com/airbnb/enzyme/issues/536#issuecomment-239311682
+      const portal = xflow.find(SuccessFlag).find(Portal);
+      const portalWrapper = new ReactWrapper(portal.node.props.children);
+      const flag = portalWrapper.find(Flag);
+      expect(flag.find(CheckCircleIcon).props().label).toMatch('Success icon');
+      expect(flag.text()).toMatch('That\'s sent!');
+      expect(flag.text()).toMatch('We\'ll let your admin know right away.');
       sinon.assert.calledWith(defaultProps.requestTrialWithNote, 'Hi! I\'d like to try Confluence.');
     });
   });
@@ -168,9 +185,14 @@ describe('RequestOrStartTrial', () => {
       await waitUntil(() => xflow.find(RequestTrialNote).length === 1);
       clickOnText(xflow.find(RequestTrialNote), 'Send note');
       await waitUntil(() => xflow.find(ErrorFlag).length === 1);
-      expect(xflow.find(ErrorIcon).props().label).toMatch('Error icon');
-      expect(xflow.find(ErrorFlag).text()).toMatch('Uh oh. That didn\'t work');
-      expect(xflow.find(ErrorFlag).text()).toMatch('Your trial request wasn\'t sent.');
+      // finding the portal
+      // please refer: https://github.com/airbnb/enzyme/issues/536#issuecomment-239311682
+      const portal = xflow.find(ErrorFlag).find(Portal);
+      const portalWrapper = new ReactWrapper(portal.node.props.children);
+      const flag = portalWrapper.find(Flag);
+      expect(flag.find(ErrorIcon).props().label).toMatch('Error icon');
+      expect(flag.text()).toMatch('Uh oh. That didn\'t work');
+      expect(flag.text()).toMatch('Your trial request wasn\'t sent.');
     });
   });
 

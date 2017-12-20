@@ -1,5 +1,8 @@
 # @atlaskit/emoji
 
+## 31.0.3 (2017-12-20)
+
+* bug fix; fS-1588 force edge to use memorycachestrategy (issues closed: fs-1588) ([8b2224c](https://bitbucket.org/atlassian/atlaskit/commits/8b2224c))
 ## 31.0.2 (2017-12-19)
 
 * bug fix; fix publishing of emoji component (issues closed: fs-1591) ([676cb72](https://bitbucket.org/atlassian/atlaskit/commits/676cb72))

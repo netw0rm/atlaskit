@@ -57,12 +57,12 @@ pipelines:
           # we have to run this after `yarn` to have access to child-process-promise
           - ./build/bin/generate.changed.packages.file.pr.sh
           # if you find yourself running into out of memory errors, we can move more steps out of this parallel step
-          - run-p -ln "validate/package.json" "validate/typescript"
-          - run-p -ln "validate/tslint" "validate/eslint"
+          # - run-p -ln "validate/package.json" "validate/typescript"
+          # - run-p -ln "validate/tslint" "validate/eslint"
           # --runInBand is used to make jest run in serial rather than parallel to prevent OOM
           # --bail is used to make jest fail fast when it finds a test failure
-          - npm run test:unit -- --runInBand --bail
-          - npm run test:base
+          # - npm run test:unit -- --runInBand --bail
+          # - npm run test:base
           - yarn run "pr/storybook"
         # caches:
           # - node

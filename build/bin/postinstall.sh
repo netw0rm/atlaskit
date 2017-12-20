@@ -30,13 +30,6 @@ else
     npm install > /dev/null
   popd
 
-  # Also need to bootstrap icons because bootstrap/single/with-deps wont pick it up
-  $CHALK --no-stdin -t "{blue Bootstrapping @atlaskit/icon...}"
-  pushd packages/icon
-    npm install > /dev/null
-  popd
-
-
   $CHALK --no-stdin -t "{green ~~~~~~~~~~~~~~~~~~~~~~~~~~~~}"
   $CHALK --no-stdin -t "{green ~~ SUCCESSFULLY INSTALLED ~~}"
   $CHALK --no-stdin -t "{green ~~~~~~~~~~~~~~~~~~~~~~~~~~~~}"

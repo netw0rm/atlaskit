@@ -1,5 +1,8 @@
 # @atlaskit/mention
 
+## 8.4.1 (2017-12-20)
+
+* bug fix; added minimum avatar dependency that has dist/esm folder for mention ([c90fbfa](https://bitbucket.org/atlassian/atlaskit/commits/c90fbfa))
 ## 8.4.0 (2017-12-19)
 
 * feature; fS-1063 Code review remark ([93ff21e](https://bitbucket.org/atlassian/atlaskit/commits/93ff21e))

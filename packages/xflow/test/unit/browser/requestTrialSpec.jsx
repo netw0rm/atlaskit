@@ -3,6 +3,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import sinon from 'sinon';
 import fetchMock from 'fetch-mock';
 import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
+import Flag from '@atlaskit/flag';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
 import { Portal } from '@atlaskit/layer-manager';
 
@@ -105,9 +106,10 @@ describe('RequestOrStartTrial', () => {
       // please refer: https://github.com/airbnb/enzyme/issues/536#issuecomment-239311682
       const portal = xflow.find(SuccessFlag).find(Portal);
       const portalWrapper = new ReactWrapper(portal.node.props.children);
-      expect(portalWrapper.find(CheckCircleIcon).props().label).toMatch('Success icon');
-      expect(portalWrapper.text()).toMatch('That\'s sent!');
-      expect(portalWrapper.text()).toMatch('We\'ll let your admin know right away.');
+      const flag = portalWrapper.find(Flag);
+      expect(flag.find(CheckCircleIcon).props().label).toMatch('Success icon');
+      expect(flag.text()).toMatch('That\'s sent!');
+      expect(flag.text()).toMatch('We\'ll let your admin know right away.');
       sinon.assert.calledWith(defaultProps.requestTrialWithNote, 'Hi! I\'d like to try Confluence. It helps give the team more context on anything happening in Jira - and there\'s a free 30 day trial.');
     });
 
@@ -124,9 +126,10 @@ describe('RequestOrStartTrial', () => {
       // please refer: https://github.com/airbnb/enzyme/issues/536#issuecomment-239311682
       const portal = xflow.find(SuccessFlag).find(Portal);
       const portalWrapper = new ReactWrapper(portal.node.props.children);
-      expect(portalWrapper.find(CheckCircleIcon).props().label).toMatch('Success icon');
-      expect(portalWrapper.text()).toMatch('That\'s sent!');
-      expect(portalWrapper.text()).toMatch('We\'ll let your admin know right away.');
+      const flag = portalWrapper.find(Flag);
+      expect(flag.find(CheckCircleIcon).props().label).toMatch('Success icon');
+      expect(flag.text()).toMatch('That\'s sent!');
+      expect(flag.text()).toMatch('We\'ll let your admin know right away.');
       sinon.assert.calledWith(defaultProps.requestTrialWithNote, 'Hey, look a custom note');
     });
 
@@ -142,9 +145,10 @@ describe('RequestOrStartTrial', () => {
       // please refer: https://github.com/airbnb/enzyme/issues/536#issuecomment-239311682
       const portal = xflow.find(SuccessFlag).find(Portal);
       const portalWrapper = new ReactWrapper(portal.node.props.children);
-      expect(portalWrapper.find(CheckCircleIcon).props().label).toMatch('Success icon');
-      expect(portalWrapper.text()).toMatch('That\'s sent!');
-      expect(portalWrapper.text()).toMatch('We\'ll let your admin know right away.');
+      const flag = portalWrapper.find(Flag);
+      expect(flag.find(CheckCircleIcon).props().label).toMatch('Success icon');
+      expect(flag.text()).toMatch('That\'s sent!');
+      expect(flag.text()).toMatch('We\'ll let your admin know right away.');
       sinon.assert.calledWith(defaultProps.requestTrialWithNote, 'Hi! I\'d like to try Confluence.');
     });
   });
@@ -185,9 +189,10 @@ describe('RequestOrStartTrial', () => {
       // please refer: https://github.com/airbnb/enzyme/issues/536#issuecomment-239311682
       const portal = xflow.find(ErrorFlag).find(Portal);
       const portalWrapper = new ReactWrapper(portal.node.props.children);
-      expect(portalWrapper.find(ErrorIcon).props().label).toMatch('Error icon');
-      expect(portalWrapper.text()).toMatch('Uh oh. That didn\'t work');
-      expect(portalWrapper.text()).toMatch('Your trial request wasn\'t sent.');
+      const flag = portalWrapper.find(Flag);
+      expect(flag.find(ErrorIcon).props().label).toMatch('Error icon');
+      expect(flag.text()).toMatch('Uh oh. That didn\'t work');
+      expect(flag.text()).toMatch('Your trial request wasn\'t sent.');
     });
   });
 

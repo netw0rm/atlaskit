@@ -1,5 +1,6 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
+import Flag from '@atlaskit/flag';
 import fetchMock from 'fetch-mock';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
 import { Portal } from '@atlaskit/layer-manager';
@@ -442,10 +443,11 @@ describe('@atlaskit/xflow', () => {
       // please refer: https://github.com/airbnb/enzyme/issues/536#issuecomment-239311682
       const portal = xflow.find(Portal);
       const portalWrapper = new ReactWrapper(portal.node.props.children);
-      expect(portalWrapper.find(ErrorIcon).props().label).toMatch('Error icon');
-      expect(portalWrapper.text()).toMatch('Oops... Something went wrong');
-      expect(portalWrapper.text()).toMatch('Let\'s try again.');
-      expect(portalWrapper.text()).toMatch('Retry');
+      const flag = portalWrapper.find(Flag);
+      expect(flag.find(ErrorIcon).props().label).toMatch('Error icon');
+      expect(flag.text()).toMatch('Oops... Something went wrong');
+      expect(flag.text()).toMatch('Let\'s try again.');
+      expect(flag.text()).toMatch('Retry');
     });
   });
 });

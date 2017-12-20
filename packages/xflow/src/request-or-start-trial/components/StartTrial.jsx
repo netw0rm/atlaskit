@@ -57,4 +57,4 @@ class StartTrial extends Component {
 
 export const StartTrialBase = withAnalytics(StartTrial);
 
-export default withXFlowProvider(StartTrialBase, () => ({}));
+export default withXFlowProvider(StartTrialBase);

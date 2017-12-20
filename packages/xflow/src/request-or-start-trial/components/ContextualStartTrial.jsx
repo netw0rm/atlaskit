@@ -64,6 +64,6 @@ class ContextualStartTrial extends Component {
   }
 }
 
-export const StartTrialBase = withAnalytics(ContextualStartTrial);
+export const ContextualStartTrialBase = withAnalytics(ContextualStartTrial);
 
-export default withXFlowProvider(StartTrialBase, () => ({}));
+export default withXFlowProvider(ContextualStartTrialBase);

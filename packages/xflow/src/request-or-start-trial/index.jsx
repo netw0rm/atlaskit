@@ -16,7 +16,6 @@ import { ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN } from '../common/pr
 
 export const Screens = {
   INITIALIZING: 'INITIALIZING',
-  CANNOT_ADD: 'CANNOT_ADD',
   ALREADY_STARTED: 'ALREADY_STARTED',
   REQUEST_TRIAL: 'REQUEST_TRIAL',
   START_TRIAL: 'START_TRIAL',
@@ -233,12 +232,14 @@ class RequestOrStartTrial extends Component {
               return <AlreadyStarted onComplete={onComplete} />;
             }
             case Screens.REQUEST_TRIAL: {
-              return (<RequestTrial
-                alreadyRequested={alreadyRequested}
-                onComplete={onComplete}
-                onTrialRequested={onTrialRequested}
-                contextInfo={contextInfo}
-              />);
+              return (
+                <RequestTrial
+                  alreadyRequested={alreadyRequested}
+                  contextInfo={contextInfo}
+                  onComplete={onComplete}
+                  onTrialRequested={onTrialRequested}
+                />
+              );
             }
             default: {
               return <InitializingScreen />;

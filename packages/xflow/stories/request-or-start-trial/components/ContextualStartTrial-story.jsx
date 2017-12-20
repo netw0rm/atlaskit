@@ -1,7 +1,7 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 
-import { RequestTrialBase } from '../../../src/request-or-start-trial/components/RequestTrial';
+import { ContextualStartTrialBase } from '../../../src/request-or-start-trial/components/ContextualStartTrial';
 import JiraToConfluenceXFlowProvider from '../../../src/product-xflow-providers/JiraToConfluenceXFlowProvider';
 import JiraToJSDXFlowProvider from '../../../src/product-xflow-providers/JiraToJSDXFlowProvider';
 import JiraToJSWXFlowProvider from '../../../src/product-xflow-providers/JiraToJSWXFlowProvider';
@@ -30,8 +30,18 @@ const XFLOW_PROVIDERS = [
 ];
 
 const defaultProps = {
+  showGrantAccess: false,
+
+  contextInfo: {
+    contextualImage: 'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/kEL9zW2kcU8_U4Y_Rc1p3Zmm8J8Jq_JR0ikTg6cEWe8/Multi-Document.svg',
+    contextualHeading: 'Heading Lorem ipsum',
+    contextualMessage: 'Message Lorem Ipsum..',
+    reactivateCTA: 'Reactivate X',
+    trialCTA: 'Try X free for 30 days',
+  },
+
   onComplete: action('onComplete'),
-  onTrialRequested: action('onTrialRequested'),
+  onTrialActivating: action('onTrialActivating'),
 };
 
 XFLOW_PROVIDERS.reduce(
@@ -40,21 +50,15 @@ XFLOW_PROVIDERS.reduce(
 
     return stories
       .add(`Jira to ${targetProductName}`, () => (
-        <MockXFlowProvider requestTrialWithNote={action('callback: requestTrialWithNote')}>
-          <RequestTrialBase
+        <MockXFlowProvider
+          cancelStartProductTrial={action('cancelStartProductTrial')}
+        >
+          <ContextualStartTrialBase
             {...defaultProps}
-          />
-        </MockXFlowProvider>
-        ))
-      .add(`Jira to ${targetProductName} - already requested`, () => (
-        <MockXFlowProvider requestTrialWithNote={action('callback: requestTrialWithNote')}>
-          <RequestTrialBase
-            {...defaultProps}
-            alreadyRequested
           />
         </MockXFlowProvider>
         ));
   },
-  storiesOf('request-or-start-trial/[internal path 4] RequestTrial', module)
+  storiesOf('request-or-start-trial/[internal path 2] ContextualStartTrialBase', module)
   .addDecorator(story => setupStorybookAnalytics(story()))
 );

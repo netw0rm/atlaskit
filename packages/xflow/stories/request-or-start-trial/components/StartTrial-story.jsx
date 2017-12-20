@@ -1,7 +1,7 @@
 import { storiesOf, action } from '@kadira/storybook';
 import React from 'react';
 
-import { RequestTrialBase } from '../../../src/request-or-start-trial/components/RequestTrial';
+import { StartTrialBase } from '../../../src/request-or-start-trial/components/StartTrial';
 import JiraToConfluenceXFlowProvider from '../../../src/product-xflow-providers/JiraToConfluenceXFlowProvider';
 import JiraToJSDXFlowProvider from '../../../src/product-xflow-providers/JiraToJSDXFlowProvider';
 import JiraToJSWXFlowProvider from '../../../src/product-xflow-providers/JiraToJSWXFlowProvider';
@@ -30,8 +30,9 @@ const XFLOW_PROVIDERS = [
 ];
 
 const defaultProps = {
+  showGrantAccess: false,
   onComplete: action('onComplete'),
-  onTrialRequested: action('onTrialRequested'),
+  onTrialActivating: action('onTrialActivating'),
 };
 
 XFLOW_PROVIDERS.reduce(
@@ -40,21 +41,15 @@ XFLOW_PROVIDERS.reduce(
 
     return stories
       .add(`Jira to ${targetProductName}`, () => (
-        <MockXFlowProvider requestTrialWithNote={action('callback: requestTrialWithNote')}>
-          <RequestTrialBase
+        <MockXFlowProvider
+          cancelStartProductTrial={action('cancelStartProductTrial')}
+        >
+          <StartTrialBase
             {...defaultProps}
-          />
-        </MockXFlowProvider>
-        ))
-      .add(`Jira to ${targetProductName} - already requested`, () => (
-        <MockXFlowProvider requestTrialWithNote={action('callback: requestTrialWithNote')}>
-          <RequestTrialBase
-            {...defaultProps}
-            alreadyRequested
           />
         </MockXFlowProvider>
         ));
   },
-  storiesOf('request-or-start-trial/[internal path 4] RequestTrial', module)
+  storiesOf('request-or-start-trial/[internal path 1] StartTrial', module)
   .addDecorator(story => setupStorybookAnalytics(story()))
 );

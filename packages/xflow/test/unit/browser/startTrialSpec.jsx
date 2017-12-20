@@ -1,7 +1,8 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import fetchMock from 'fetch-mock';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
+import { Portal } from '@atlaskit/layer-manager';
 
 import waitUntil from '../../util/wait-until';
 import clickOnText from '../../util/click-on-text';
@@ -437,12 +438,14 @@ describe('@atlaskit/xflow', () => {
     it('should render an error flag', async () => {
       // eventually render to error flag
       await waitUntil(() => xflow.find(ErrorFlag).length === 1);
-      // should render error messages
-      expect(xflow.find(ErrorIcon).props().label).toMatch('Error icon');
-      expect(xflow.find(ErrorFlag).text()).toMatch('Oops... Something went wrong');
-      expect(xflow.find(ErrorFlag).text()).toMatch('Dismiss flag');
-      expect(xflow.find(ErrorFlag).text()).toMatch("Let's try again.");
-      expect(xflow.find(ErrorFlag).text()).toMatch('Retry');
+      // finding the portal
+      // please refer: https://github.com/airbnb/enzyme/issues/536#issuecomment-239311682
+      const portal = xflow.find(Portal);
+      const portalWrapper = new ReactWrapper(portal.node.props.children);
+      expect(portalWrapper.find(ErrorIcon).props().label).toMatch('Error icon');
+      expect(portalWrapper.text()).toMatch('Oops... Something went wrong');
+      expect(portalWrapper.text()).toMatch('Let\'s try again.');
+      expect(portalWrapper.text()).toMatch('Retry');
     });
   });
 });

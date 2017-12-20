@@ -1,6 +1,7 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import Flag, { FlagGroup } from '@atlaskit/flag';
+import { Portal } from '@atlaskit/layer-manager';
 import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
 
 import SuccessFlag from '../../../../src/common/components/SuccessFlag';
@@ -38,9 +39,11 @@ describe('<SuccessFlag> Component', () => {
 
     it('should render the flag when showFlag is true', () => {
       const wrapper = mount(<SuccessFlag {...mockProps} showFlag />);
-
-      const flag = wrapper.find(Flag);
-      expect(flag.exists()).toBeTruthy();
+      // finding the portal
+      // please refer: https://github.com/airbnb/enzyme/issues/536#issuecomment-239311682
+      const portal = wrapper.find(Portal);
+      const portalWrapper = new ReactWrapper(portal.node.props.children);
+      const flag = portalWrapper.find(Flag);
       expect(flag.props().title).toBe(mockProps.title);
       expect(flag.props().description).toBe(mockProps.description);
       expect(flag.props().actions).toBe(mockProps.flagActions);

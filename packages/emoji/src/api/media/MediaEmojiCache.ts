@@ -5,6 +5,7 @@ import debug from '../../util/logger';
 import TokenManager from './TokenManager';
 
 import { LRUCache } from 'lru-fast';
+import { UAParser } from 'ua-parser-js';
 
 const getRequiredRepresentation = (emoji: EmojiDescription, useAlt?: boolean): EmojiRepresentation => useAlt ? emoji.altRepresentation : emoji.representation;
 
@@ -21,6 +22,7 @@ export class BrowserCacheStrategy implements EmojiCacheStrategy {
   private cachedImageUrls: Map<string,EmojiDescription> = new Map<string,EmojiDescription>();
   private invalidImageUrls: Set<string> = new Set<string>();
   private mediaImageLoader: MediaImageLoader;
+  private static browser: string = (new UAParser()).getBrowser().name.toLowerCase();
 
   constructor(mediaImageLoader: MediaImageLoader) {
     debug('BrowserCacheStrategy');
@@ -60,6 +62,12 @@ export class BrowserCacheStrategy implements EmojiCacheStrategy {
   }
 
   static supported(mediaPath: string, mediaImageLoader: MediaImageLoader): Promise<boolean> {
+    // Edge uses memory cache strategy else images can fail to load
+    // from a clean cache/if they are downloaded from the service
+    if (this.browser === 'edge') {
+      return Promise.resolve(false);
+    }
+
     return mediaImageLoader.loadMediaImage(mediaPath).then(() =>
       // Image should be cached in browser, if supported it should be accessible from the cache by an <img/>
       // Try to load without via image to confirm this support (this fails in Firefox)

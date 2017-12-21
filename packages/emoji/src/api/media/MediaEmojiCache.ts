@@ -8,6 +8,10 @@ import { LRUCache } from 'lru-fast';
 import { UAParser } from 'ua-parser-js';
 
 const getRequiredRepresentation = (emoji: EmojiDescription, useAlt?: boolean): EmojiRepresentation => useAlt ? emoji.altRepresentation : emoji.representation;
+const isUnsupportedBrowser = (browser: string) => {
+  const lowerCaseBrowser = browser.toLowerCase();
+  return lowerCaseBrowser === 'ie' || lowerCaseBrowser === 'edge';
+};
 
 export interface EmojiCacheStrategy {
   loadEmoji(emoji: EmojiDescription, useAlt?: boolean): OptionalEmojiDescription | Promise<OptionalEmojiDescription>;
@@ -62,9 +66,10 @@ export class BrowserCacheStrategy implements EmojiCacheStrategy {
   }
 
   static supported(mediaPath: string, mediaImageLoader: MediaImageLoader): Promise<boolean> {
-    // Edge uses memory cache strategy else images can fail to load
+    // IE/Edge uses memory cache strategy else images can fail to load
     // from a clean cache/if they are downloaded from the service
-    if (this.browser === 'edge') {
+    // TODO: fix as a part of FS-1592
+    if (isUnsupportedBrowser(this.browser)) {
       return Promise.resolve(false);
     }
 

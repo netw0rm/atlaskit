@@ -26,7 +26,7 @@ function getNpmMetadata(name) {
 
 function getStorybooksMetadata(name, versions) {
   function storybookValid(version) {
-    const url = `https://aui-cdn.atlassian.com/atlaskit/stories/${name}/${version}/`;
+    const url = `https://s3.ap-southeast-2.amazonaws.com/atlaskit-storybooks/${name}/${version}/index.html`;
 
     return axios.get(url)
       .then(() => ({ version, valid: true }))

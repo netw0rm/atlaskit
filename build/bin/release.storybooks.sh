@@ -4,7 +4,6 @@ set -e
 BIN_PATH=$(yarn bin)
 LERNA="$BIN_PATH/lerna"
 CHALK="$BIN_PATH/chalk"
-CDN_PREFIX="stories"
 BASEDIR=$(dirname $0)
 . $BASEDIR/_build_status.sh
 . $BASEDIR/_cf_invalidate.sh
@@ -35,8 +34,7 @@ storybooks_build_status "INPROGRESS"
 build_storybooks
 
 if [ -d "stories" ]; then
-    cdn_publish_folder "./stories" "$CDN_PREFIX"
-    cf_invalidate "/atlaskit/stories/*"
+    cdn_publish_folder "./stories" ""
 else
     $CHALK --no-stdin -t "{blue Skipping storybook publishing since no stories/ dir}"
 fi

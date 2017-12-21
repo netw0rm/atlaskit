@@ -6,7 +6,7 @@ import TogglingBlanketDemo from './TogglingBlanketDemo';
 import { name } from '../package.json';
 
 function doSomethingOnClick() {
-  action('the "onBlanketClicked" handler is fired')();
+  action('the "onBlanketClicked" handler is fired!')();
 }
 
 storiesOf(name, module)

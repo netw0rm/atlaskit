@@ -1,5 +1,9 @@
 # @atlaskit/emoji
 
+## 31.0.4 (2017-12-21)
+
+
+* bug fix; use memorycachestrategy for ie ([2801cfd](https://bitbucket.org/atlassian/atlaskit/commits/2801cfd))
 ## 31.0.3 (2017-12-20)
 
 * bug fix; fS-1588 force edge to use memorycachestrategy (issues closed: fs-1588) ([8b2224c](https://bitbucket.org/atlassian/atlaskit/commits/8b2224c))

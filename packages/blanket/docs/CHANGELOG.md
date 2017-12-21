@@ -1,5 +1,8 @@
 # @atlaskit/blanket
 
+## 4.0.3 (2017-12-21)
+
+* bug fix; Minor change to storybook to test new s3 bucket ([97cbb7d](https://bitbucket.org/atlassian/atlaskit/commits/97cbb7d))
 ## 4.0.2 (2017-11-27)
 
 * bug fix; bump theme dependency to 2.2.0 (issues closed: nav-27) ([2b71345](https://bitbucket.org/atlassian/atlaskit/commits/2b71345))

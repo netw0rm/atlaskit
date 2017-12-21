@@ -2,5 +2,5 @@
 
 export function getStorybookURL(component, version) {
   const v = version || component.version;
-  return `https://aui-cdn.atlassian.com/atlaskit/stories/${component.packageName}/${v}/`;
+  return `https://s3.ap-southeast-2.amazonaws.com/atlaskit-storybooks/${component.packageName}/${v}/index.html`;
 }

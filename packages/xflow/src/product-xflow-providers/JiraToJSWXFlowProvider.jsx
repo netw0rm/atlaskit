@@ -168,7 +168,7 @@ export const defaultProps = intl => ({
   grantAccessToUsers: grantAccessToUsers('jira-software-users', 'Jira Software', 'Grants access to Jira Software'),
   retrieveUsers: retrieveUserManagementUsers(VALID_GROUPS),
   goToProduct: () => {
-    window.top.location.href = '/secure/LandingPage.jspa?product=jira-software';
+    window.top.location.href = '/onboarding/software';
   },
   closeLoadingDialog: async () => {},
   closeAlreadyStartedDialog: async () => {},

@@ -101,7 +101,7 @@ class RequestTrialNote extends Component {
     });
   }
 
-  handleSendRequest = withNote => () => {
+  handleSendRequest = withNote => {
     const {
       firePrivateAnalyticsEvent,
       placeholderShort,
@@ -175,13 +175,13 @@ class RequestTrialNote extends Component {
           }
           footer={
             <RequestTrialFooter>
-              <Button appearance="primary" onClick={this.handleSendRequest(true)}>
+              <Button appearance="primary" onClick={() => this.handleSendRequest(true)}>
                 <FormattedMessage
                   id="xflow.generic.request-trial-note.request-button"
                   defaultMessage="Send note"
                 />
               </Button>
-              <Button appearance="subtle-link" onClick={this.handleSendRequest(false)}>
+              <Button appearance="subtle-link" onClick={() => this.handleSendRequest(false)}>
                 <FormattedMessage
                   id="xflow.generic.request-trial-note.skip-button"
                   defaultMessage="Skip"

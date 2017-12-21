@@ -8,7 +8,10 @@ import { LRUCache } from 'lru-fast';
 import { UAParser } from 'ua-parser-js';
 
 const getRequiredRepresentation = (emoji: EmojiDescription, useAlt?: boolean): EmojiRepresentation => useAlt ? emoji.altRepresentation : emoji.representation;
-const isUnsupportedBrowser = (browser: string) => browser.toLowerCase() === 'ie' || browser.toLowerCase() === 'edge';
+const isUnsupportedBrowser = (browser: string) => {
+  const lowerCaseBrowser = browser.toLowerCase();
+  return lowerCaseBrowser === 'ie' || lowerCaseBrowser === 'edge';
+};
 
 export interface EmojiCacheStrategy {
   loadEmoji(emoji: EmojiDescription, useAlt?: boolean): OptionalEmojiDescription | Promise<OptionalEmojiDescription>;

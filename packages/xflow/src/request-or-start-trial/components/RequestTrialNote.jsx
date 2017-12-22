@@ -54,7 +54,6 @@ class RequestTrialNote extends Component {
   };
 
   static defaultProps = {
-    onRequestTrialClick: () => {},
     requestTrialWithNote: () => {},
   };
 

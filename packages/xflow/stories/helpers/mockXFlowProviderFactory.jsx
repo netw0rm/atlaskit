@@ -1,37 +1,42 @@
 import React from 'react';
+import { action } from '@kadira/storybook';
 
 import mockProductStatusChecker from './mockProductStatusChecker';
 import { INACTIVE } from '../../src/common/productProvisioningStates';
 
-const notImplemented = () => {
-  throw new Error('Not implemented.');
+const notImplemented = actionName => () => {
+  action(`${actionName}`)();
+  throw new Error(`Not implemented: callback ${actionName}`);
 };
 
 const overrideImplementations = {
-  canCurrentUserAddProduct: notImplemented,
-  canCurrentUserGrantAccessToProducts: notImplemented,
+  canCurrentUserAddProduct: notImplemented('canCurrentUserAddProduct'),
+  canCurrentUserGrantAccessToProducts: notImplemented('canCurrentUserGrantAccessToProducts'),
 
-  requestTrialWithNote: notImplemented,
-  cancelRequestTrial: notImplemented,
+  startProductTrial: () => {
+    action('startProductTrial')();
+    return new Promise(resolve => setTimeout(resolve, 1000));
+  },
+  requestTrialWithNote: action('requestTrialWithNote'),
+  cancelRequestTrial: action('cancelRequestTrial'),
 
-  waitForActivation: notImplemented,
-  cancelStartProductTrial: notImplemented,
-  grantAccessToUsers: notImplemented,
-  retrieveUsers: notImplemented,
-  goToProduct: notImplemented,
-  closeLoadingDialog: notImplemented,
-  checkProductRequestFlag: notImplemented,
-  closeAlreadyStartedDialog: notImplemented,
+  waitForActivation: notImplemented('waitForActivation'),
+  cancelStartProductTrial: action('cancelStartProductTrial'),
+  grantAccessToUsers: notImplemented('grantAccessToUsers'),
+  retrieveUsers: notImplemented('retrieveUsers'),
+  goToProduct: action('goToProduct'),
+  closeLoadingDialog: notImplemented('closeLoadingDialog'),
+  checkProductRequestFlag: notImplemented('checkProductRequestFlag'),
+  closeAlreadyStartedDialog: notImplemented('closeAlreadyStartedDialog'),
 
-  optOutRequestTrialFeature: notImplemented,
-  cancelOptOut: notImplemented,
+  optOutRequestTrialFeature: notImplemented('optOutRequestTrialFeature'),
+  cancelOptOut: action('cancelOptOut'),
 };
 
 export default (BaseProvider) => class MockJSDXFlowProvider extends BaseProvider {
   render() {
     const props = {
       ...overrideImplementations,
-      startProductTrial: () => new Promise(resolve => setTimeout(resolve, 1000)),
       productStatusChecker: mockProductStatusChecker(INACTIVE),
       ...this.state,
       ...this.props,

@@ -25,9 +25,10 @@ storiesOf('request-or-start-trial/RequestTrialNote', module)
     <RequestTrialNoteBase
       {...defaultProps}
       requestTrialWithNote={
-          () => new Promise((_, reject) =>
-            setTimeout(() =>
-              reject(new Error('It\'s borked')), 100))
+          (txt) => new Promise((_, reject) => {
+            action('requestTrialWithNote')(txt);
+            setTimeout(() => reject(new Error('It\'s borked')), 100);
+          })
         }
     />
   );

@@ -75,7 +75,7 @@ class RequestTrialNote extends Component {
       setProductRequestFlag,
     } = this.props;
 
-    Promise.resolve(requestTrialWithNote(this.state.noteText))
+    return Promise.resolve(requestTrialWithNote(this.state.noteText))
       .then(() => {
         firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.successful');
         this.setState({ requestTrialSendNoteStatus: 'successful' });
@@ -137,8 +137,7 @@ class RequestTrialNote extends Component {
   handleErrorFlagResendRequest = () => {
     const { firePrivateAnalyticsEvent } = this.props;
     firePrivateAnalyticsEvent('xflow.request-trial-note.error-flag.resend-request');
-    this.setState({ requestTrialSendNoteStatus: null });
-    this.sendTrialRequest();
+    this.setState({ requestTrialSendNoteStatus: null }, this.sendTrialRequest);
   };
 
   handleSuccessFlagDismiss = () => {

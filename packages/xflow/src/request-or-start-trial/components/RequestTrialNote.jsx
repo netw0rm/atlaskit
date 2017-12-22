@@ -68,7 +68,7 @@ class RequestTrialNote extends Component {
     firePrivateAnalyticsEvent('xflow.request-trial-note.displayed');
   }
 
-  handleSendingNote = () => {
+  sendTrialRequest = () => {
     const {
       firePrivateAnalyticsEvent,
       requestTrialWithNote,
@@ -117,13 +117,13 @@ class RequestTrialNote extends Component {
         firePrivateAnalyticsEvent('xflow.request-trial-note.custom-note.included', {
           noteLength,
         });
-        this.setState({ noteText: noteTextValue }, this.handleSendingNote);
+        this.setState({ noteText: noteTextValue }, this.sendTrialRequest);
       } else {
-        this.handleSendingNote();
+        this.sendTrialRequest();
       }
     } else {
       firePrivateAnalyticsEvent('xflow.request-trial-note.skip-button.clicked');
-      this.setState({ noteText: placeholderShort }, this.handleSendingNote);
+      this.setState({ noteText: placeholderShort }, this.sendTrialRequest);
     }
   }
 
@@ -144,7 +144,7 @@ class RequestTrialNote extends Component {
     this.setState({
       requestTrialSendNoteStatus: null,
     });
-    this.handleSendingNote();
+    this.sendTrialRequest();
   };
 
   handleSuccessFlagDismiss = () => {

@@ -131,10 +131,6 @@ const messages = defineMessages({
     defaultMessage:
       "Hi! I'd like to try Confluence. It helps give the team more context on anything happening in Jira - and there's a free 30 day trial.",
   },
-  notePlaceholderShort: {
-    id: 'xflow.j2c.request-trial.note.placeholder.short',
-    defaultMessage: "Hi! I'd like to try Confluence.",
-  },
 });
 
 export const defaultProps = intl => ({
@@ -150,7 +146,6 @@ export const defaultProps = intl => ({
       accessLearnMoreLink: 'https://www.atlassian.com/software/confluence',
       notePrompt: intl.formatMessage(messages.notePrompt),
       notePlaceholder: intl.formatMessage(messages.notePlaceholder),
-      notePlaceholderShort: intl.formatMessage(messages.notePlaceholderShort),
     },
     contextualStartTrial: {
       contextualStartTrialHeader:

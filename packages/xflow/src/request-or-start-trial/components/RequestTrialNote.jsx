@@ -43,7 +43,6 @@ class RequestTrialNote extends Component {
   static propTypes = {
     prompt: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
-    placeholderShort: PropTypes.string.isRequired,
 
     onComplete: PropTypes.func.isRequired,
     requestTrialWithNote: PropTypes.func,
@@ -98,32 +97,24 @@ class RequestTrialNote extends Component {
       });
   }
 
-  handleSendRequest = withNote => {
-    const {
-      firePrivateAnalyticsEvent,
-      placeholderShort,
-    } = this.props;
+  handleSendRequest = () => {
+    const { firePrivateAnalyticsEvent } = this.props;
 
     this.setState({
       requestTrialSendNoteStatus: null,
       awaitingRequest: true,
     });
 
-    if (withNote) {
-      firePrivateAnalyticsEvent('xflow.request-trial-note.send-button.clicked');
-      const noteTextValue = this.noteText.value;
-      const noteLength = this.noteText.value.length;
-      if (noteTextValue) {
-        firePrivateAnalyticsEvent('xflow.request-trial-note.custom-note.included', {
-          noteLength,
-        });
-        this.setState({ noteText: noteTextValue }, this.sendTrialRequest);
-      } else {
-        this.sendTrialRequest();
-      }
+    firePrivateAnalyticsEvent('xflow.request-trial-note.send-button.clicked');
+
+    const noteText = this.noteText.value;
+    if (noteText) {
+      firePrivateAnalyticsEvent('xflow.request-trial-note.custom-note.included', {
+        noteLength: noteText.length,
+      });
+      this.setState({ noteText }, this.sendTrialRequest);
     } else {
-      firePrivateAnalyticsEvent('xflow.request-trial-note.skip-button.clicked');
-      this.setState({ noteText: placeholderShort }, this.sendTrialRequest);
+      this.sendTrialRequest();
     }
   }
 
@@ -165,16 +156,10 @@ class RequestTrialNote extends Component {
           }
           footer={
             <RequestTrialFooter>
-              <Button appearance="primary" onClick={() => this.handleSendRequest(true)}>
+              <Button appearance="primary" onClick={() => this.handleSendRequest()}>
                 <FormattedMessage
                   id="xflow.generic.request-trial-note.request-button"
                   defaultMessage="Send note"
-                />
-              </Button>
-              <Button appearance="subtle-link" onClick={() => this.handleSendRequest(false)}>
-                <FormattedMessage
-                  id="xflow.generic.request-trial-note.skip-button"
-                  defaultMessage="Skip"
                 />
               </Button>
             </RequestTrialFooter>
@@ -232,7 +217,6 @@ export default withXFlowProvider(
     productLogo,
     prompt: requestTrial.notePrompt,
     placeholder: requestTrial.notePlaceholder,
-    placeholderShort: requestTrial.notePlaceholderShort,
     requestTrialWithNote,
     setProductRequestFlag,
   })

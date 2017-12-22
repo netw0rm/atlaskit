@@ -85,10 +85,6 @@ const messages = defineMessages({
     id: 'xflow.j2jc.request-trial.note.placeholder',
     defaultMessage: 'I’d like us to give Jira Core a try - it’s simple, powerful project management for any type of team, and it’s free for 30 days!',
   },
-  notePlaceholderShort: {
-    id: 'xflow.j2jc.request-trial.note.placeholder.short',
-    defaultMessage: "Hi! I'd like to try Jira Core.",
-  },
 });
 
 export const defaultProps = intl => ({
@@ -104,7 +100,6 @@ export const defaultProps = intl => ({
       accessLearnMoreLink: 'https://www.atlassian.com/software/jira/core',
       notePrompt: intl.formatMessage(messages.notePrompt),
       notePlaceholder: intl.formatMessage(messages.notePlaceholder),
-      notePlaceholderShort: intl.formatMessage(messages.notePlaceholderShort),
     },
     contextualStartTrial: {
       contextualStartTrialHeader:

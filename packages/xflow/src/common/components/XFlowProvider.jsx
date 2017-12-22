@@ -19,7 +19,6 @@ export const xFlowShape = PropTypes.shape({
       accessMessage: PropTypes.node,
       notePrompt: PropTypes.node,
       notePlaceholder: PropTypes.string,
-      notePlaceholderShort: PropTypes.string,
     }),
     contextualStartTrial: PropTypes.shape({
       contextualStartTrialHeader: PropTypes.string,

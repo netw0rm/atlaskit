@@ -24,7 +24,8 @@
   ],
   "dependencies": {
     "tslib": "^1.2.0",
-    "url": "^0.11.0"
+    "url": "^0.11.0",
+    "url-search-params": "^0.10.0"
   },
   "author": "Atlassian Pty. Ltd",
   "maintainers": [],
@@ -34,7 +35,6 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
-    "@atlaskit/util-common-test": "^2.0.0",
     "fetch-mock": "^5.8.0"
   },
   "keywords": [

@@ -35,7 +35,7 @@ class StandardNav extends Component {
 
   render() {
     const backIcon = <ArrowLeft label="Back icon" />;
-    const globalPrimaryIcon = <AtlassianIcon label="Atlassian icon" size="xlarge" />;
+    const globalPrimaryIcon = <AtlassianIcon label="Atlassian icon" size="large" />;
     return (
       <Navigation
         containerHeaderComponent={Header}

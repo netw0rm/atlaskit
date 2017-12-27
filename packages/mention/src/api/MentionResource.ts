@@ -1,4 +1,4 @@
-import * as URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
+import { ServiceConfig, KeyValues, utils as serviceUtils } from '@atlaskit/util-service-support';
 
 import { MentionDescription, isAppMention } from '../types';
 import debug from '../util/logger';
@@ -7,29 +7,6 @@ import { SearchIndex, compareMentionDescription } from '../util/searchIndex';
 const MAX_QUERY_ITEMS = 100;
 const MAX_NOTIFIED_ITEMS = 20;
 
-export interface KeyValues {
-  [index: string]: any;
-}
-
-export interface SecurityOptions {
-  params?: KeyValues;
-  headers?: KeyValues;
-}
-
-/**
- * Returns the current SecurityOptions for the mentions service.
- */
-export interface SecurityProvider {
-  (): SecurityOptions;
-}
-
-/**
- * Returns a promise to a SecurityOptions that has just been forcibly refreshed with a
- * new token. Will be used for single retry per request if a 401 is returned.
- */
-export interface RefreshSecurityProvider {
-  (): Promise<SecurityOptions>;
-}
 
 export interface ResultCallback<T> {
   (result: T, query?: string): void;
@@ -48,13 +25,9 @@ export interface MentionsResult {
   query: string;
 }
 
-export interface MentionResourceConfig {
-  /** the base url of the mentions service */
-  url: string;
-  securityProvider?: SecurityProvider;
+export interface MentionResourceConfig extends ServiceConfig {
   containerId?: string;
   productId?: string;
-  refreshedSecurityProvider?: RefreshSecurityProvider;
   shouldHighlightMention?: (mention: MentionDescription) => boolean;
 
   /**
@@ -102,82 +75,6 @@ const emptySecurityProvider = () => {
     params: {},
     headers: {},
   };
-};
-
-const buildUrl = (baseUrl: string, path: string | undefined, data: KeyValues, secOptions: SecurityOptions) => {
-  const searchParam = new URLSearchParams();
-  for (const key in data) { // eslint-disable-line no-restricted-syntax
-    if ({}.hasOwnProperty.call(data, key)) {
-      searchParam.append(key, data[key]);
-    }
-  }
-  if (secOptions && secOptions.params) {
-    for (const key in secOptions.params) { // eslint-disable-line no-restricted-syntax
-      if ({}.hasOwnProperty.call(secOptions.params, key)) {
-        const values = secOptions.params[key];
-        if (Array.isArray(values)) {
-          for (let i = 0; i < values.length; i++) {
-            searchParam.append(key, values[i]);
-          }
-        } else {
-          searchParam.append(key, values);
-        }
-      }
-    }
-  }
-  let seperator = '';
-  if (baseUrl.substr(-1) !== '/') {
-    seperator = '/';
-  }
-  return `${baseUrl}${seperator}${path}?${searchParam.toString()}`;
-};
-
-const buildHeaders = (secOptions: SecurityOptions) => {
-  const headers = new Headers();
-  if (secOptions && secOptions.headers) {
-    for (const key in secOptions.headers) { // eslint-disable-line no-restricted-syntax
-      if ({}.hasOwnProperty.call(secOptions.headers, key)) {
-        const values = secOptions.headers[key];
-        if (Array.isArray(values)) {
-          for (let i = 0; i < values.length; i++) {
-            headers.append(key, values[i]);
-          }
-        } else {
-          headers.append(key, values);
-        }
-      }
-    }
-  }
-
-  return headers;
-};
-
-/**
- * @returns Promise containing the json response
- */
-const requestService = (baseUrl: string, path: string | undefined, data: KeyValues, opts: KeyValues,
-                        secOptions: SecurityOptions, refreshedSecurityProvider?: RefreshSecurityProvider) => {
-  const url = buildUrl(baseUrl, path, data, secOptions);
-  const headers = buildHeaders(secOptions);
-  const options = {
-    ...opts,
-    ...{ headers },
-    credentials: 'include' as 'include',
-  };
-  return fetch(new Request(url, options))
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      } else if (response.status === 401 && refreshedSecurityProvider) {
-        // auth issue - try once
-        debug('401 attempting a forced refresh from securityProvider');
-        return refreshedSecurityProvider().then(newSecOptions => (
-          requestService(baseUrl, path, data, opts, newSecOptions)
-        ));
-      }
-
-      return Promise.reject(new HttpError(response.status, response.statusText));
-    });
 };
 
 class AbstractResource<Result> implements ResourceProvider<Result> {
@@ -310,6 +207,9 @@ class MentionResource extends AbstractMentionResource {
     if (!config.url) {
       throw new Error('config.url is a required parameter');
     }
+    if (!config.securityProvider) {
+      config['securityProvider'] = emptySecurityProvider;
+    }
 
     this.config = config;
     this.lastReturnedSearch = 0;
@@ -401,20 +301,22 @@ class MentionResource extends AbstractMentionResource {
    * @returns Promise
    */
   private remoteInitialState(): Promise<MentionsResult> {
-    const secOptions = this.config.securityProvider ? this.config.securityProvider() : emptySecurityProvider();
-    const refreshedSecurityProvider = this.config.refreshedSecurityProvider;
-    const data: KeyValues = {};
-    const options: KeyValues = {};
+    const queryParams: KeyValues = {};
 
     if (this.config.containerId) {
-      data['containerId'] = this.config.containerId;
+      queryParams['containerId'] = this.config.containerId;
     }
 
     if (this.config.productId) {
-      data['productIdentifier'] = this.config.productId;
+      queryParams['productIdentifier'] = this.config.productId;
     }
 
-    return requestService(this.config.url, 'bootstrap', data, options, secOptions, refreshedSecurityProvider)
+    const options = {
+      path: 'bootstrap',
+      queryParams,
+    };
+
+    return serviceUtils.requestService<MentionsResult>(this.config, options)
       .then(result => this.transformServiceResponse(result))
       .then((result) => {
         this.searchIndex.indexResults(result.mentions);
@@ -447,22 +349,23 @@ class MentionResource extends AbstractMentionResource {
   }
 
   private remoteSearch(query: string): Promise<MentionsResult> {
-    const secOptions = this.config.securityProvider ? this.config.securityProvider() : emptySecurityProvider();
-    const refreshedSecurityProvider = this.config.refreshedSecurityProvider;
-    const data = {
+    const queryParams = {
       query,
       limit: MAX_QUERY_ITEMS
     };
-    const options = {};
     if (this.config.containerId) {
-      data['containerId'] = this.config.containerId;
+      queryParams['containerId'] = this.config.containerId;
     }
-
     if (this.config.productId) {
-      data['productIdentifier'] = this.config.productId;
+      queryParams['productIdentifier'] = this.config.productId;
     }
 
-    return requestService(this.config.url, 'search', data, options, secOptions, refreshedSecurityProvider)
+    const options = {
+      path: 'search',
+      queryParams,
+    };
+
+    return serviceUtils.requestService<MentionsResult>(this.config, options)
       .then(result => this.transformServiceResponse(result));
   }
 
@@ -480,20 +383,23 @@ class MentionResource extends AbstractMentionResource {
   }
 
   private recordSelection(mention: MentionDescription): Promise<void> {
-    const secOptions = this.config.securityProvider ? this.config.securityProvider() : emptySecurityProvider();
-    const refreshedSecurityProvider = this.config.refreshedSecurityProvider;
-    const data = {
+    const queryParams = {
       selectedUserId: mention.id,
-    };
-    const options = {
-      method: 'POST',
     };
 
     if (this.config.productId) {
-      data['productIdentifier'] = this.config.productId;
+      queryParams['productIdentifier'] = this.config.productId;
     }
 
-    return requestService(this.config.url, 'record', data, options, secOptions, refreshedSecurityProvider);
+    const options = {
+      path: 'record',
+      queryParams,
+      requestInit: {
+        method: 'POST',
+      },
+    };
+
+    return serviceUtils.requestService<void>(this.config, options);
   }
 }
 

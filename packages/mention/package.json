@@ -36,6 +36,7 @@
     "@atlaskit/lozenge": "^3.4.2",
     "@atlaskit/tooltip": "^8.0.0",
     "@atlaskit/util-common": "^1.5.2",
+    "@atlaskit/util-service-support": "^2.0.3",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "babel-runtime": "^6.11.6",
     "js-search": "^1.4.2",

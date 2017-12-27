@@ -1,9 +1,10 @@
 import * as fetchMock from 'fetch-mock/src/client';
 import { assert, expect } from 'chai';
 import * as sinon from 'sinon';
+import { SecurityOptions } from '@atlaskit/util-service-support';
 
 import { MentionDescription } from '../../../src/types';
-import MentionResource, { HttpError, MentionResourceConfig, SecurityOptions } from '../../../src/api/MentionResource';
+import MentionResource, { HttpError, MentionResourceConfig } from '../../../src/api/MentionResource';
 import { resultC, resultCr, resultCraig, resultPolly } from '../_mention-search-results';
 
 const baseUrl = 'https://bogus/mentions';

@@ -3,11 +3,20 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
+import packages from '../../data';
+import { NEW_WEBSITE_LOCATION } from '../../../constants';
+
 export default class SearchResults extends PureComponent {
   static propTypes = {
     matchingComponents: PropTypes.arrayOf(PropTypes.object),
     onResultClicked: PropTypes.func.isRequired,
   }
+
+  getLink = (component) => (
+    packages[component].packageHasBeenMoved
+    ? `${NEW_WEBSITE_LOCATION}/packages/elements/${component}`
+    : `/components/${component}`
+  );
 
   render() {
     if (!this.props.matchingComponents.length) {
@@ -15,13 +24,12 @@ export default class SearchResults extends PureComponent {
         <p>Nothing found, keep on searching!</p>
       );
     }
-
     return (
       <List>
         {this.props.matchingComponents.map(component => (
           <li key={component.name} style={{ padding: 8 }}>
             <Link
-              to={`/components/${component.key}`}
+              to={this.getLink(component.key)}
               onClick={this.props.onResultClicked}
             >
               {component.name}

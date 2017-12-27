@@ -18,7 +18,6 @@ export default class SearchResults extends PureComponent {
         <p>Nothing found, keep on searching!</p>
       );
     }
-    // console.log(packages.analytics);
     return (
       <List>
         {this.props.matchingComponents.map(component => (

@@ -12,6 +12,12 @@ export default class SearchResults extends PureComponent {
     onResultClicked: PropTypes.func.isRequired,
   }
 
+  link = (component) => (
+    packages[component].packageHasBeenMoved
+    ? `${NEW_WEBSITE_LOCATION}/packages/elements/${component}`
+    : `/components/${component}`
+  );
+
   render() {
     if (!this.props.matchingComponents.length) {
       return (
@@ -23,9 +29,7 @@ export default class SearchResults extends PureComponent {
         {this.props.matchingComponents.map(component => (
           <li key={component.name} style={{ padding: 8 }}>
             <Link
-              to={packages[component.key].packageHasBeenMoved
-              ? `${NEW_WEBSITE_LOCATION}/packages/elements/${component.key}`
-              : `/components/${component.key}`}
+              to={this.link(component.key)}
               onClick={this.props.onResultClicked}
             >
               {component.name}

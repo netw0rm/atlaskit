@@ -12,7 +12,7 @@ export default class SearchResults extends PureComponent {
     onResultClicked: PropTypes.func.isRequired,
   }
 
-  link = (component) => (
+  getLink = (component) => (
     packages[component].packageHasBeenMoved
     ? `${NEW_WEBSITE_LOCATION}/packages/elements/${component}`
     : `/components/${component}`
@@ -29,7 +29,7 @@ export default class SearchResults extends PureComponent {
         {this.props.matchingComponents.map(component => (
           <li key={component.name} style={{ padding: 8 }}>
             <Link
-              to={this.link(component.key)}
+              to={this.getLink(component.key)}
               onClick={this.props.onResultClicked}
             >
               {component.name}

@@ -80,18 +80,26 @@ storiesOf(name, module)
     <HtmlPage>
       <BasicNavigation
         globalSecondaryActions={[
-          <AkGlobalItem>
-            <SettingsIcon label="Settings" secondaryColor="inherit" />
-          </AkGlobalItem>,
-          <AkGlobalItem>
-            <ListIcon label="Some super cool list" secondaryColor="inherit" />
-          </AkGlobalItem>,
-          <AkGlobalItem>
-            <QuestionCircleIcon label="Help icon" secondaryColor="inherit" />
-          </AkGlobalItem>,
-          <AkGlobalItem>
-            <AkAvatar size="small" src={emmaAvatar} borderColor="transparent" />
-          </AkGlobalItem>,
+          <Tooltip position="right" content="Settings">
+            <AkGlobalItem>
+              <SettingsIcon label="Settings" secondaryColor="inherit" />
+            </AkGlobalItem>
+          </Tooltip>,
+          <Tooltip position="right" content="Menu">
+            <AkGlobalItem>
+              <ListIcon label="Some super cool list" secondaryColor="inherit" />
+            </AkGlobalItem>
+          </Tooltip>,
+          <Tooltip position="right" content="Help">
+            <AkGlobalItem>
+              <QuestionCircleIcon label="Help icon" secondaryColor="inherit" />
+            </AkGlobalItem>
+          </Tooltip>,
+          <Tooltip position="right" content="User profile">
+            <AkGlobalItem>
+              <AkAvatar size="small" src={emmaAvatar} borderColor="transparent" />
+            </AkGlobalItem>
+          </Tooltip>,
         ]}
       />
     </HtmlPage>
@@ -125,16 +133,22 @@ storiesOf(name, module)
       <HtmlPage content={content}>
         <BasicNavigation
           globalSecondaryActions={[
-            <AkGlobalItem>
-              <SettingsIcon label="Settings" secondaryColor="inherit" />
-            </AkGlobalItem>,
+            <Tooltip position="right" content="Settings">
+              <AkGlobalItem>
+                <SettingsIcon label="Settings" secondaryColor="inherit" />
+              </AkGlobalItem>
+            </Tooltip>,
             <AkAppSwitcher {...appswitcherProps} />,
-            <AkGlobalItem>
-              <QuestionCircleIcon label="Help icon" secondaryColor="inherit" />
-            </AkGlobalItem>,
-            <AkGlobalItem>
-              <AkAvatar size="small" src={emmaAvatar} borderColor="transparent" />
-            </AkGlobalItem>,
+            <Tooltip position="right" content="Help">
+              <AkGlobalItem>
+                <QuestionCircleIcon label="Help icon" secondaryColor="inherit" />
+              </AkGlobalItem>
+            </Tooltip>,
+            <Tooltip position="right" content="User profile">
+              <AkGlobalItem>
+                <AkAvatar size="small" src={emmaAvatar} borderColor="transparent" />
+              </AkGlobalItem>
+            </Tooltip>,
           ]}
         />
       </HtmlPage>

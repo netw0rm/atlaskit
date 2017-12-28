@@ -181,13 +181,15 @@ export default class JIRAExample extends PureComponent {
         ]}
         position="right bottom"
       >{isOpen => (
-        <AkGlobalItem href="" isSelected={isOpen}>
-          <QuestionCircleIcon
-            label="Help icon"
-            secondaryColor="inherit"
-            size="medium"
-          />
-        </AkGlobalItem>
+        <Tooltip position="right" content="Help">
+          <AkGlobalItem href="" isSelected={isOpen}>
+            <QuestionCircleIcon
+              label="Help icon"
+              secondaryColor="inherit"
+              size="medium"
+            />
+          </AkGlobalItem>
+        </Tooltip>
       )}</SelectableDropdownMenu>
     );
 
@@ -208,10 +210,13 @@ export default class JIRAExample extends PureComponent {
           },
         ]}
       >
-        <AkGlobalItem href="">
-          <Avatar size="small" src={emmaAvatar} borderColor="transparent" />
-        </AkGlobalItem>
+        <Tooltip position="right" content="User profile">
+          <AkGlobalItem href="">
+            <Avatar size="small" src={emmaAvatar} borderColor="transparent" />
+          </AkGlobalItem>
+        </Tooltip>
       </AkDropdownMenu>
+
       );
 
     const searchDrawer = (

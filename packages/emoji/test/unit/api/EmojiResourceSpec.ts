@@ -1,4 +1,3 @@
-import * as URLSearchParams from 'url-search-params';
 import * as fetchMock from 'fetch-mock/src/client';
 import { expect } from 'chai';
 import * as sinon from 'sinon';
@@ -41,9 +40,8 @@ import {
 import { alwaysPromise } from '../_test-util';
 import { convertMediaToImageRepresentation } from '../../../src/type-helpers';
 
-// patch URLSearchParams API for jsdom tests
+// used to access window.localStorage in tests below
 declare var global: any;
-global.URLSearchParams = URLSearchParams;
 
 const baseUrl = 'https://bogus/';
 const p1Url = 'https://p1/';

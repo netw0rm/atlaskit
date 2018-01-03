@@ -1,5 +1,9 @@
 # @atlaskit/emoji
 
+## 31.0.5 (2018-01-02)
+
+
+* bug fix; update util-service-support dependency to 2.0.3 (issues closed: fs-1091) ([593da96](https://bitbucket.org/atlassian/atlaskit/commits/593da96))
 ## 31.0.4 (2017-12-21)
 
 

@@ -95,15 +95,12 @@ class ResourcedEmojiComponent extends PureComponent<ComponentProps, State> {
   }
 
   componentWillMount() {
+    this.ready = true;
     if (!this.state.emoji) {
       // using componentWillMount instead of componentDidMount to avoid needless
       // rerendering.
       this.refreshEmoji(this.props.emojiProvider, this.props.emojiId);
     }
-  }
-
-  componentDidMount() {
-    this.ready = true;
   }
 
   componentWillUnmount() {

@@ -1,3 +1,4 @@
+import * as sinon from 'sinon';
 import { getFormattedDate, getStartOfDate, isSameDate } from '../../../src/util/date';
 import { setHours, subDays, subWeeks, subYears } from 'date-fns';
 
@@ -17,6 +18,15 @@ const months = [
 ];
 
 describe('util/date', () => {
+  let clock;
+  beforeEach(function () {
+    clock = sinon.useFakeTimers(new Date(1985, 9, 24, 13, 0).valueOf());
+  });
+
+  afterEach(function () {
+    clock.restore();
+  });
+
   describe('getFormattedDate', () => {
     it('Today', () => {
       expect(getFormattedDate(new Date())).toBe('Today');

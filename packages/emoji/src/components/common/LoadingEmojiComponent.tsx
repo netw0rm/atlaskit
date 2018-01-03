@@ -24,7 +24,9 @@ export default abstract class LoadingEmojiComponent<P extends Props,S extends St
     this.state = state;
   }
 
-  componentDidMount() {
+  componentWillMount() {
+    // using componentWillMount instead of componentDidMount to avoid needless
+    // rerendering if emojiProvider resolves immediately.
     this.loadEmojiProvider(this.props.emojiProvider);
   }
 

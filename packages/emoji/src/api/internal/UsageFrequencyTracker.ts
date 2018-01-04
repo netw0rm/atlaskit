@@ -16,7 +16,7 @@ import StoredDuplicateLimitedQueue from '../../StoredDuplicateLimitedQueue';
 export class UsageFrequencyTracker {
 
   private static readonly queueOptions = {
-      storage: window.localStorage,
+      storage: typeof window !== 'undefined' && window.localStorage,
       storagePrefix: localStoragePrefix,
       maxDuplicates: 25,
       minUniqueItems: 5
@@ -28,7 +28,12 @@ export class UsageFrequencyTracker {
   constructor() {
     const options = UsageFrequencyTracker.queueOptions;
     if (options.storage) {
-      this.queue = new StoredDuplicateLimitedQueue<string>(options);
+      const queueOptions = {
+        ...options,
+        storage: options.storage as Storage
+      };
+
+      this.queue = new StoredDuplicateLimitedQueue<string>(queueOptions);
     } else {
       this.queue = new DuplicateLimitedQueue<string>(options);
     }

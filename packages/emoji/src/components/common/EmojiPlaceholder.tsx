@@ -43,7 +43,7 @@ const EmojiPlaceholder = (props: Props) => {
 
   return (
     showTooltip ?
-      <Tooltip>{placeholderNode}</Tooltip> :
+      <Tooltip tag="span" content={shortName}>{placeholderNode}</Tooltip> :
       placeholderNode
   );
 };

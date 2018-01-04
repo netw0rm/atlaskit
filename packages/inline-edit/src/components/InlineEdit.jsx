@@ -10,10 +10,16 @@ export default class extends PureComponent {
     /** Function passed to stateless component, isEditing will be set to false
     before the passed function is called. */
     onCancel: PropTypes.func.isRequired,
+    /** Initial value for editing state */
+    isEditing: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    isEditing: false,
   }
 
   state = {
-    isEditing: false,
+    isEditing: this.props.isEditing,
   }
 
   onConfirm = () => {
@@ -36,8 +42,8 @@ export default class extends PureComponent {
   render() {
     return (
       <InlineEditStateless
-        isEditing={this.state.isEditing}
         {...this.props}
+        isEditing={this.state.isEditing}
         onEditRequested={this.enterEditingMode}
         onConfirm={this.onConfirm}
         onCancel={this.onCancel}

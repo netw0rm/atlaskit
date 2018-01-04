@@ -1,5 +1,9 @@
 # @atlaskit/emoji
 
+## 31.0.6 (2018-01-04)
+
+* bug fix; fS-1600 Code review remark ([458577d](https://bitbucket.org/atlassian/atlaskit/commits/458577d))
+* bug fix; fS-1600 Change lifecycle methods used to avoid rerender when possible ([51f14a1](https://bitbucket.org/atlassian/atlaskit/commits/51f14a1))
 ## 31.0.5 (2018-01-02)
 
 

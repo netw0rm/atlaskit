@@ -132,25 +132,6 @@ describe('RequestOrStartTrial', () => {
       expect(flag.text()).toMatch('We\'ll let your admin know right away.');
       sinon.assert.calledWith(defaultProps.requestTrialWithNote, 'Hey, look a custom note');
     });
-
-    it('should render Success Flag with no note', async () => {
-      // eventually render to request trial screen
-      await waitUntil(() => xflow.find(ConfirmRequest).length === 1);
-      clickOnText(xflow.find(ConfirmRequest), 'Request a trial');
-
-      await waitUntil(() => xflow.find(RequestTrialNote).length === 1);
-      clickOnText(xflow.find(RequestTrialNote), 'Skip');
-      await waitUntil(() => xflow.find(SuccessFlag).length === 1);
-      // finding the portal
-      // please refer: https://github.com/airbnb/enzyme/issues/536#issuecomment-239311682
-      const portal = xflow.find(SuccessFlag).find(Portal);
-      const portalWrapper = new ReactWrapper(portal.node.props.children);
-      const flag = portalWrapper.find(Flag);
-      expect(flag.find(CheckCircleIcon).props().label).toMatch('Success icon');
-      expect(flag.text()).toMatch('That\'s sent!');
-      expect(flag.text()).toMatch('We\'ll let your admin know right away.');
-      sinon.assert.calledWith(defaultProps.requestTrialWithNote, 'Hi! I\'d like to try Confluence.');
-    });
   });
 
   describe('error activating confluence', () => {

@@ -43,7 +43,6 @@ class RequestTrialNote extends Component {
   static propTypes = {
     prompt: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
-    placeholderShort: PropTypes.string.isRequired,
 
     onComplete: PropTypes.func.isRequired,
     requestTrialWithNote: PropTypes.func,
@@ -54,7 +53,6 @@ class RequestTrialNote extends Component {
   };
 
   static defaultProps = {
-    onRequestTrialClick: () => {},
     requestTrialWithNote: () => {},
   };
 
@@ -69,91 +67,74 @@ class RequestTrialNote extends Component {
     firePrivateAnalyticsEvent('xflow.request-trial-note.displayed');
   }
 
-  handleSendingNote = () => {
+  sendTrialRequest = () => {
     const {
       firePrivateAnalyticsEvent,
       requestTrialWithNote,
       setProductRequestFlag,
     } = this.props;
-    Promise.resolve(requestTrialWithNote(this.state.noteText))
-    .then(() => {
-      firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.successful');
-      this.setState({
-        requestTrialSendNoteStatus: 'successful',
-      });
-      return Promise.resolve(setProductRequestFlag())
-        .then(() => {
-          firePrivateAnalyticsEvent('xflow.request-trial-note.set-requested-flag.successful');
-        })
-        .catch(e => {
-          firePrivateAnalyticsEvent('xflow.request-trial-note.set-requested-flag.failed', {
-            errorMessage: e.message,
+
+    return Promise.resolve(requestTrialWithNote(this.state.noteText))
+      .then(() => {
+        firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.successful');
+        this.setState({ requestTrialSendNoteStatus: 'successful' });
+
+        return Promise.resolve(setProductRequestFlag())
+          .then(() => {
+            firePrivateAnalyticsEvent('xflow.request-trial-note.set-requested-flag.successful');
+          })
+          .catch(e => {
+            firePrivateAnalyticsEvent('xflow.request-trial-note.set-requested-flag.failed', {
+              errorMessage: e.message,
+            });
           });
+      })
+      .catch(e => {
+        firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.failed', {
+          errorMessage: e.message,
         });
-    })
-    .catch(e => {
-      firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.failed', {
-        errorMessage: e.message,
+        this.setState({ requestTrialSendNoteStatus: 'failed' });
       });
-      this.setState({
-        requestTrialSendNoteStatus: 'failed',
-      });
-    });
   }
 
-  handleSendRequest = withNote => () => {
-    const {
-      firePrivateAnalyticsEvent,
-      placeholderShort,
-    } = this.props;
+  handleSendRequest = () => {
+    const { firePrivateAnalyticsEvent } = this.props;
+
     this.setState({
       requestTrialSendNoteStatus: null,
       awaitingRequest: true,
     });
-    if (withNote) {
-      firePrivateAnalyticsEvent('xflow.request-trial-note.send-button.clicked');
-      const noteTextValue = this.noteText.value;
-      const noteLength = this.noteText.value.length;
-      if (noteTextValue) {
-        firePrivateAnalyticsEvent('xflow.request-trial-note.custom-note.included', {
-          noteLength,
-        });
-        this.setState({ noteText: noteTextValue }, this.handleSendingNote);
-      } else {
-        this.handleSendingNote();
-      }
+
+    firePrivateAnalyticsEvent('xflow.request-trial-note.send-button.clicked');
+
+    const noteText = this.noteText.value;
+    if (noteText) {
+      firePrivateAnalyticsEvent('xflow.request-trial-note.custom-note.included', {
+        noteLength: noteText.length,
+      });
+      this.setState({ noteText }, this.sendTrialRequest);
     } else {
-      firePrivateAnalyticsEvent('xflow.request-trial-note.skip-button.clicked');
-      this.setState({ noteText: placeholderShort }, this.handleSendingNote);
+      this.sendTrialRequest();
     }
   }
 
   handleErrorFlagDismiss = () => {
     const { firePrivateAnalyticsEvent, onComplete } = this.props;
     firePrivateAnalyticsEvent('xflow.request-trial-note.error-flag.dismissed');
-    this.setState({
-      requestTrialSendNoteStatus: null,
-    });
+    this.setState({ requestTrialSendNoteStatus: null });
     setTimeout(onComplete, 1000);
   };
 
   handleErrorFlagResendRequest = () => {
-    const {
-      firePrivateAnalyticsEvent,
-    } = this.props;
+    const { firePrivateAnalyticsEvent } = this.props;
     firePrivateAnalyticsEvent('xflow.request-trial-note.error-flag.resend-request');
-    this.setState({
-      requestTrialSendNoteStatus: null,
-    });
-    this.handleSendingNote();
+    this.setState({ requestTrialSendNoteStatus: null }, this.sendTrialRequest);
   };
 
   handleSuccessFlagDismiss = () => {
     const { firePrivateAnalyticsEvent, onComplete } = this.props;
     firePrivateAnalyticsEvent('xflow.request-trial-note.success-flag.dismissed');
-    this.setState({
-      requestTrialSendNoteStatus: null,
-    });
+    this.setState({ requestTrialSendNoteStatus: null });
     setTimeout(onComplete, 1000);
   };
 
@@ -175,16 +156,10 @@ class RequestTrialNote extends Component {
           }
           footer={
             <RequestTrialFooter>
-              <Button appearance="primary" onClick={this.handleSendRequest(true)}>
+              <Button appearance="primary" onClick={() => this.handleSendRequest()}>
                 <FormattedMessage
                   id="xflow.generic.request-trial-note.request-button"
                   defaultMessage="Send note"
-                />
-              </Button>
-              <Button appearance="subtle-link" onClick={this.handleSendRequest(false)}>
-                <FormattedMessage
-                  id="xflow.generic.request-trial-note.skip-button"
-                  defaultMessage="Skip"
                 />
               </Button>
             </RequestTrialFooter>
@@ -201,6 +176,7 @@ class RequestTrialNote extends Component {
             />
           </div>
         </ModalDialog>
+
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}
           description={intl.formatMessage(messages.errorFlagDescription)}
@@ -214,6 +190,7 @@ class RequestTrialNote extends Component {
               onClick: this.handleErrorFlagDismiss },
           ]}
         />
+
         <SuccessFlag
           title={intl.formatMessage(messages.successFlagTitle)}
           description={intl.formatMessage(messages.successFlagDescription)}
@@ -240,7 +217,6 @@ export default withXFlowProvider(
     productLogo,
     prompt: requestTrial.notePrompt,
     placeholder: requestTrial.notePlaceholder,
-    placeholderShort: requestTrial.notePlaceholderShort,
     requestTrialWithNote,
     setProductRequestFlag,
   })

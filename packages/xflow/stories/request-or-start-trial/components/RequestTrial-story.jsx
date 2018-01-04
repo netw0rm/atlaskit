@@ -40,14 +40,14 @@ XFLOW_PROVIDERS.reduce(
 
     return stories
       .add(`Jira to ${targetProductName}`, () => (
-        <MockXFlowProvider requestTrialWithNote={action('callback: requestTrialWithNote')}>
+        <MockXFlowProvider>
           <RequestTrialBase
             {...defaultProps}
           />
         </MockXFlowProvider>
         ))
       .add(`Jira to ${targetProductName} - already requested`, () => (
-        <MockXFlowProvider requestTrialWithNote={action('callback: requestTrialWithNote')}>
+        <MockXFlowProvider>
           <RequestTrialBase
             {...defaultProps}
             alreadyRequested

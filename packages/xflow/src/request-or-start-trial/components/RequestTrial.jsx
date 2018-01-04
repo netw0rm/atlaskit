@@ -41,6 +41,7 @@ class RequestTrial extends Component {
       onComplete,
       onTrialRequested,
     } = this.props;
+
     return (
       <MultiStep onComplete={onComplete}>
         <Step
@@ -49,13 +50,17 @@ class RequestTrial extends Component {
               alreadyRequested={alreadyRequested}
               contextInfo={contextInfo}
               onComplete={async () => {
-                await onTrialRequested();
                 if (alreadyRequested) {
                   firePrivateAnalyticsEvent('xflow.request-trial.already-requested.true');
+                  // If the trial was already requested, then the CTA which made us arrive here
+                  // was not a CTA to request a trial.
+                  // Skip the next step.
+                  nextStep(2);
                 } else {
                   firePrivateAnalyticsEvent('xflow.request-trial.already-requested.false');
+                  await onTrialRequested();
+                  nextStep();
                 }
-                nextStep();
               }}
               onCancel={cancel}
             />}

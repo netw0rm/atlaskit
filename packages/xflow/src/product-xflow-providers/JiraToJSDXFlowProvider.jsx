@@ -121,10 +121,6 @@ const messages = defineMessages({
     id: 'xflow.j2jsd.request-trial.note.placeholder',
     defaultMessage: 'I’d like us to give Jira Service Desk a try - it gives dev and IT one platform to work on, and it’s free for 30 days!',
   },
-  notePlaceholderShort: {
-    id: 'xflow.j2c.request-trial.note.placeholder.short',
-    defaultMessage: "Hi! I'd like to try Jira Service Desk.",
-  },
 });
 
 export const defaultProps = intl => ({
@@ -140,7 +136,6 @@ export const defaultProps = intl => ({
       accessLearnMoreLink: 'https://www.atlassian.com/software/jira/service-desk',
       notePrompt: intl.formatMessage(messages.notePrompt),
       notePlaceholder: intl.formatMessage(messages.notePlaceholder),
-      notePlaceholderShort: intl.formatMessage(messages.notePlaceholderShort),
     },
     contextualStartTrial: {
       contextualStartTrialHeader:

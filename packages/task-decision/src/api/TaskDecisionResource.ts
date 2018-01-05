@@ -1,5 +1,5 @@
 import * as uid from 'uid';
-import { RequestServiceOptions, ServiceConfig, utils } from '@atlaskit/util-service-support';
+import { RequestServiceOptions, utils } from '@atlaskit/util-service-support';
 import { defaultLimit } from '../constants';
 
 import {
@@ -24,6 +24,7 @@ import {
   RecentUpdatesListener,
   ServiceTask,
   TaskDecisionProvider,
+  TaskDecisionResourceConfig,
   TaskResponse,
   TaskState,
 } from '../types';
@@ -86,13 +87,13 @@ export class RecentUpdates {
 export class ItemStateManager {
   private debouncedTaskStateQuery: number | null = null;
   private debouncedTaskToggle: Map<string,number> = new Map();
-  private serviceConfig: ServiceConfig;
+  private serviceConfig: TaskDecisionResourceConfig;
   private subscribers: Map<string, Handler[]> = new Map();
   private trackedObjectKeys: Map<string, ObjectKey> = new Map();
   private cachedItems: Map<string, BaseItem<TaskState | DecisionState>> = new Map();
   private batchedKeys: Map<string, ObjectKey> = new Map();
 
-  constructor(serviceConfig: ServiceConfig) {
+  constructor(serviceConfig: TaskDecisionResourceConfig) {
     this.serviceConfig = serviceConfig;
   }
 
@@ -224,6 +225,10 @@ export class ItemStateManager {
     });
   }
 
+  getCurrentUsername(): string | undefined {
+    return this.serviceConfig.username;
+  }
+
   private queueAllItems() {
     this.batchedKeys = new Map(this.trackedObjectKeys);
   }
@@ -264,11 +269,11 @@ export class ItemStateManager {
 }
 
 export default class TaskDecisionResource implements TaskDecisionProvider {
-  private serviceConfig: ServiceConfig;
+  private serviceConfig: TaskDecisionResourceConfig;
   private recentUpdates = new RecentUpdates();
   private itemStateManager: ItemStateManager;
 
-  constructor(serviceConfig: ServiceConfig) {
+  constructor(serviceConfig: TaskDecisionResourceConfig) {
     this.serviceConfig = serviceConfig;
     this.itemStateManager = new ItemStateManager(serviceConfig);
   }

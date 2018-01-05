@@ -258,6 +258,10 @@ export default class MockTaskDecisionResource implements TaskDecisionProvider {
     });
   }
 
+  getCurrentUsername(): string | undefined {
+    return 'Real Person';
+  }
+
   private queueItem(objectKey: ObjectKey) {
     const key = objectKeyToString(objectKey);
     if (this.batchedKeys.get(key)) {

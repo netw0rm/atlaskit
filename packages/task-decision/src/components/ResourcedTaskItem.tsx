@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import TaskItem from './TaskItem';
-import { Appearance, ContentRef, TaskDecisionProvider, TaskState, User } from '../types';
+import { Appearance, ContentRef, TaskDecisionProvider, TaskState, User, UserInfo } from '../types';
 
 export interface Props {
   taskId: string;
@@ -22,6 +22,7 @@ export interface Props {
 
 export interface State {
   isDone?: boolean;
+  lastUpdater?: UserInfo;
 }
 
 export default class ResourcedTaskItem extends PureComponent<Props, State> {
@@ -34,7 +35,8 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
     super(props);
 
     this.state = {
-      isDone: props.isDone
+      isDone: props.isDone,
+      lastUpdater: props.lastUpdater,
     };
   }
 
@@ -94,6 +96,11 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
           return;
         }
         provider.toggleTask({ localId: taskId, objectAri, containerAri }, isDone ? 'DONE' : 'TODO');
+        // No provider.getCurrentUsername defaults to current delayed behaviour
+        if (isDone && provider.getCurrentUsername) {
+          // Undefined username shows 'Created By'/does not update to prevent incorrect 'Completed By' message
+          this.setState({ lastUpdater: provider.getCurrentUsername() });
+        }
       });
     }
     if (onChange) {
@@ -102,8 +109,8 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
   }
 
   render() {
-    const { isDone } = this.state;
-    const { appearance, children, contentRef, creator, participants, showParticipants, showPlaceholder, taskId, lastUpdater } = this.props;
+    const { isDone, lastUpdater } = this.state;
+    const { appearance, children, contentRef, creator, participants, showParticipants, showPlaceholder, taskId } = this.props;
 
     return (
       <TaskItem

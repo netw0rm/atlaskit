@@ -6,7 +6,7 @@ import {
 } from '../styled/TaskItem';
 
 import Item from './Item';
-import { Appearance, ContentRef, User } from '../types';
+import { Appearance, ContentRef, User, UserInfo } from '../types';
 import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
 
 export interface Props {
@@ -20,7 +20,7 @@ export interface Props {
   participants?: User[];
   showParticipants?: boolean;
   creator?: User;
-  lastUpdater?: User;
+  lastUpdater?: UserInfo;
   fireAnalyticsEvent?: FireAnalyticsEvent;
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
 }
@@ -65,7 +65,8 @@ export class InternalTaskItem extends PureComponent<Props, {}> {
     const { creator, lastUpdater, isDone } = this.props;
 
     if (isDone && lastUpdater) {
-      return `Completed by ${lastUpdater.displayName}`;
+      const updaterName = typeof lastUpdater === 'string' ? lastUpdater : lastUpdater.displayName;
+      return `Completed by ${updaterName}`;
     }
 
     if (!creator || !creator.displayName) {

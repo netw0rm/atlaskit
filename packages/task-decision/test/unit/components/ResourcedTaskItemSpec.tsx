@@ -111,6 +111,28 @@ describe('<ResourcedTaskItem/>', () => {
     });
   });
 
+  it('should get lastUpdater name from provider if getCurrentUsername is defined', () => {
+    const username = 'Test User';
+    const provider2 = {
+      ...provider,
+      getCurrentUsername: jest.fn(() => username),
+    };
+    component = mount(
+      <ResourcedTaskItem
+        taskId="task-1"
+        objectAri="objectAri"
+        containerAri="containerAri"
+        taskDecisionProvider={Promise.resolve(provider2)}
+      >
+        Hello World
+      </ResourcedTaskItem>
+    );
+    component.find('input').simulate('change');
+    return waitUntil(() => provider.toggleTask.mock.calls.length).then(() => {
+      expect(component.find(TaskItem).prop('lastUpdater')).toEqual(username);
+    });
+  });
+
   describe('participants', () => {
     const participants = getParticipants(2);
 

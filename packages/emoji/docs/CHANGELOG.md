@@ -1,5 +1,8 @@
 # @atlaskit/emoji
 
+## 31.0.7 (2018-01-05)
+
+* bug fix; fix missing window when using emoji in node.js code ([136b0c5](https://bitbucket.org/atlassian/atlaskit/commits/136b0c5))
 ## 31.0.6 (2018-01-04)
 
 * bug fix; fS-1600 Code review remark ([458577d](https://bitbucket.org/atlassian/atlaskit/commits/458577d))

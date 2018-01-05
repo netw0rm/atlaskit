@@ -10,7 +10,7 @@ const baseUrl = 'https://bogus/mentions';
 
 const defaultSecurityHeader = 'X-Bogus';
 
-const header = (code: string | number, omitCredentials: boolean): SecurityOptions => ({
+const options = (code: string | number, omitCredentials: boolean): SecurityOptions => ({
   headers: {
     [defaultSecurityHeader]: code,
   },
@@ -24,14 +24,14 @@ const defaultSecurityCode = '10804';
 const apiConfig: MentionResourceConfig = {
   url: baseUrl,
   securityProvider() {
-    return header(defaultSecurityCode, false);
+    return options(defaultSecurityCode, false);
   },
 };
 
 const apiConfigWithoutCredentials: MentionResourceConfig = {
   url: baseUrl,
   securityProvider() {
-    return header(defaultSecurityCode, true);
+    return options(defaultSecurityCode, true);
   },
 };
 
@@ -54,7 +54,7 @@ describe('MentionResource', () => {
         body: {
           mentions: [],
         },
-      }, header(defaultSecurityCode, true)),
+      }, options(defaultSecurityCode, true)),
     fetchMock
       .mock(/\/mentions\/search\?.*query=craig(&|$)/, {
         body: {
@@ -304,7 +304,7 @@ describe('MentionResource', () => {
       });
 
       const refreshedSecurityProvider = sinon.stub();
-      refreshedSecurityProvider.returns(Promise.resolve(header('666')));
+      refreshedSecurityProvider.returns(Promise.resolve(options('666')));
 
       const retryConfig = {
         ...apiConfig,
@@ -340,7 +340,7 @@ describe('MentionResource', () => {
       fetchMock.mock({ ...matcher, response: 401 });
 
       const refreshedSecurityProvider = sinon.stub();
-      refreshedSecurityProvider.returns(Promise.resolve(header(666)));
+      refreshedSecurityProvider.returns(Promise.resolve(options(666)));
 
       const retryConfig = {
         ...apiConfig,
@@ -404,7 +404,6 @@ describe('MentionResource', () => {
       resource.recordMentionSelection({
         id: '666',
       }).then(() => {
-        console.log('# record - lastOpts: ', fetchMock.lastOptions());
         expect(fetchMock.called('record')).to.equal(true);
         done();
       });

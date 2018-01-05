@@ -1,5 +1,9 @@
 # @atlaskit/util-service-support
 
+## 2.0.3 (2017-12-26)
+
+* bug fix; remove @atlaskit/util-common-test from devDependencies ([e9faeab](https://bitbucket.org/atlassian/atlaskit/commits/e9faeab))
+* bug fix; add url-search-params as a dependency (issues closed: fs-1091) ([b33cdcf](https://bitbucket.org/atlassian/atlaskit/commits/b33cdcf))
 ## 2.0.2 (2017-09-12)
 
 * bug fix; requestService can handle 204 responses with no content ([edf13d5](https://bitbucket.org/atlassian/atlaskit/commits/edf13d5))

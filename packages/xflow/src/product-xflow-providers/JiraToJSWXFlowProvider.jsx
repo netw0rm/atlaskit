@@ -85,10 +85,6 @@ const messages = defineMessages({
     id: 'xflow.j2jsw.request-trial.note.placeholder',
     defaultMessage: 'I’d like us to give Jira Software a try - it’s built for every member of our team to plan, track, and release great software, and it’s free for 30 days!',
   },
-  notePlaceholderShort: {
-    id: 'xflow.j2jsw.request-trial.note.placeholder.short',
-    defaultMessage: "Hi! I'd like to try Jira Software.",
-  },
 });
 
 export const defaultProps = intl => ({
@@ -104,7 +100,6 @@ export const defaultProps = intl => ({
       accessLearnMoreLink: 'https://www.atlassian.com/software/jira',
       notePrompt: intl.formatMessage(messages.notePrompt),
       notePlaceholder: intl.formatMessage(messages.notePlaceholder),
-      notePlaceholderShort: intl.formatMessage(messages.notePlaceholderShort),
     },
     contextualStartTrial: {
       contextualStartTrialHeader:
@@ -168,7 +163,7 @@ export const defaultProps = intl => ({
   grantAccessToUsers: grantAccessToUsers('jira-software-users', 'Jira Software', 'Grants access to Jira Software'),
   retrieveUsers: retrieveUserManagementUsers(VALID_GROUPS),
   goToProduct: () => {
-    window.top.location.href = '/secure/LandingPage.jspa?product=jira-software';
+    window.top.location.href = '/onboarding/software';
   },
   closeLoadingDialog: async () => {},
   closeAlreadyStartedDialog: async () => {},

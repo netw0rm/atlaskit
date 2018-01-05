@@ -1,22 +1,22 @@
 {
-  "name": "@atlaskit/inline-message",
-  "version": "3.0.4",
+  "name": "@atlaskit/dynamic-table",
+  "version": "7.0.0",
   "config": {
     "access": "public"
   },
-  "description": "A React component for displaying a clickable message which triggers an inline dialog",
+  "description": "Table component with pagination and sorting functionality",
   "main": "dist/bundle.js",
   "webpack": "dist/bundle-cjs.js",
   "jsnext:experimental:main": "dist/es/index.js",
-  "ak:webpack:raw": "src/index.jsx",
+  "ak:webpack:raw": "src/index.js",
   "ak:component": {
-    "name": "Inline Message",
+    "name": "Dynamic Table",
     "dark": true
   },
   "scripts": {
     "eslint": "../../build/bin/lint.eslint.sh",
     "jest": "echo 'yarn run jest is deprecated and removed. please run yarn run test:unit instead.'",
-    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/inline-message; } || ../../node_modules/.bin/not-in-publish",
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/dynamic-table; } || ../../node_modules/.bin/not-in-publish",
     "storybook": "../../build/bin/storybook/run.local.js",
     "storybook:static": "../../build/bin/storybook/build.static.js",
     "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
@@ -25,18 +25,19 @@
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/button": "^5.4.2",
-    "@atlaskit/icon": "^10.1.0",
-    "@atlaskit/inline-dialog": "^5.0.0",
+    "@atlaskit/button": "^5.4.5",
+    "@atlaskit/pagination": "^3.1.0",
+    "@atlaskit/spinner": "^4.0.2",
     "@atlaskit/theme": "^2.0.0",
+    "@atlaskit/util-common": "^1.1.0",
+    "@atlaskit/util-shared-styles": "^2.10.5",
     "babel-runtime": "^6.11.6",
     "prop-types": "^15.5.10",
     "styled-components": "^1.4.6"
   },
   "devDependencies": {
-    "@atlaskit/inline-message": "*",
-    "@atlaskit/util-readme": "^1.0.0",
-    "react-router-dom": "^4.0.0"
+    "@atlaskit/dynamic-table": "*",
+    "@atlaskit/util-readme": "^1.0.0"
   },
   "peerDependencies": {
     "react": "^15.3.2 || ^16.0.0",
@@ -45,7 +46,7 @@
   "author": "Atlassian Pty Ltd",
   "maintainers": [
     {
-      "name": "Ben G"
+      "name": "Vitalii B"
     }
   ],
   "license": "Apache-2.0",

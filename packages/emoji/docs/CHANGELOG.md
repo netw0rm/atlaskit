@@ -1,5 +1,20 @@
 # @atlaskit/emoji
 
+## 31.0.7 (2018-01-05)
+
+* bug fix; fix missing window when using emoji in node.js code ([136b0c5](https://bitbucket.org/atlassian/atlaskit/commits/136b0c5))
+## 31.0.6 (2018-01-04)
+
+* bug fix; fS-1600 Code review remark ([458577d](https://bitbucket.org/atlassian/atlaskit/commits/458577d))
+* bug fix; fS-1600 Change lifecycle methods used to avoid rerender when possible ([51f14a1](https://bitbucket.org/atlassian/atlaskit/commits/51f14a1))
+## 31.0.5 (2018-01-02)
+
+
+* bug fix; update util-service-support dependency to 2.0.3 (issues closed: fs-1091) ([593da96](https://bitbucket.org/atlassian/atlaskit/commits/593da96))
+## 31.0.4 (2017-12-21)
+
+
+* bug fix; use memorycachestrategy for ie ([2801cfd](https://bitbucket.org/atlassian/atlaskit/commits/2801cfd))
 ## 31.0.3 (2017-12-20)
 
 * bug fix; fS-1588 force edge to use memorycachestrategy (issues closed: fs-1588) ([8b2224c](https://bitbucket.org/atlassian/atlaskit/commits/8b2224c))

@@ -86,7 +86,7 @@ export default class BasicNavigation extends PureComponent {
         </AkNavigationItemGroup>
       </div>),
     globalSecondaryActions: [
-      <Tooltip position="right" content="Back">
+      <Tooltip position="right" content="Help">
         <SelectableDropdownMenu
           appearance="tall"
           position="right bottom"

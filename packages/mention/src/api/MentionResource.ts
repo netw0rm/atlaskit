@@ -14,6 +14,7 @@ export interface KeyValues {
 export interface SecurityOptions {
   params?: KeyValues;
   headers?: KeyValues;
+  omitCredentials?: boolean;
 }
 
 /**
@@ -152,6 +153,10 @@ const buildHeaders = (secOptions: SecurityOptions) => {
   return headers;
 };
 
+const buildCredentials = (secOptions: SecurityOptions) => {
+  return secOptions && secOptions.omitCredentials ? 'omit' as 'omit' : 'include' as 'include';
+};
+
 /**
  * @returns Promise containing the json response
  */
@@ -159,10 +164,11 @@ const requestService = (baseUrl: string, path: string | undefined, data: KeyValu
                         secOptions: SecurityOptions, refreshedSecurityProvider?: RefreshSecurityProvider) => {
   const url = buildUrl(baseUrl, path, data, secOptions);
   const headers = buildHeaders(secOptions);
+  const credentials = buildCredentials(secOptions);
   const options = {
     ...opts,
     ...{ headers },
-    credentials: 'include' as 'include',
+    credentials,
   };
   return fetch(new Request(url, options))
     .then(response => {

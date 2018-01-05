@@ -10,10 +10,11 @@ const baseUrl = 'https://bogus/mentions';
 
 const defaultSecurityHeader = 'X-Bogus';
 
-const header = (code: string | number): SecurityOptions => ({
+const header = (code: string | number, omitCredentials: boolean): SecurityOptions => ({
   headers: {
     [defaultSecurityHeader]: code,
   },
+  omitCredentials,
 });
 
 const getSecurityHeader = call => call[0].headers.get(defaultSecurityHeader);
@@ -23,7 +24,14 @@ const defaultSecurityCode = '10804';
 const apiConfig: MentionResourceConfig = {
   url: baseUrl,
   securityProvider() {
-    return header(defaultSecurityCode);
+    return header(defaultSecurityCode, false);
+  },
+};
+
+const apiConfigWithoutCredentials: MentionResourceConfig = {
+  url: baseUrl,
+  securityProvider() {
+    return header(defaultSecurityCode, true);
   },
 };
 
@@ -41,6 +49,12 @@ function checkOrder(expected, actual) {
 
 describe('MentionResource', () => {
   beforeEach(() => {
+    fetchMock
+      .mock(/\/mentions\/search\?.*query=esoares(&|$)/, {
+        body: {
+          mentions: [],
+        },
+      }, header(defaultSecurityCode, true)),
     fetchMock
       .mock(/\/mentions\/search\?.*query=craig(&|$)/, {
         body: {
@@ -87,6 +101,10 @@ describe('MentionResource', () => {
       const resource = new MentionResource(apiConfig);
       resource.subscribe('test1', (mentions) => {
         expect(mentions.length).to.equal(resultCraig.length);
+
+        // note: should use fetchMock.lastOptions() but it does not work
+        const requestData = fetchMock.lastUrl();
+        expect(requestData.credentials).to.equal('include');
         done();
       });
       resource.filter('craig');
@@ -110,6 +128,19 @@ describe('MentionResource', () => {
         }
       });
       resource.filter('craig');
+    });
+
+    it('subscribe should receive updates with credentials omitted', (done) => {
+      const resource = new MentionResource(apiConfigWithoutCredentials);
+      // const resource = new MentionResource(apiConfig);
+      resource.subscribe('test3', (mentions) => {
+        expect(mentions.length).to.equal(0);
+
+        const requestData = fetchMock.lastUrl();
+        expect(requestData.credentials).to.equal('omit');
+        done();
+      });
+      resource.filter('esoares');
     });
   });
 
@@ -373,6 +404,7 @@ describe('MentionResource', () => {
       resource.recordMentionSelection({
         id: '666',
       }).then(() => {
+        console.log('# record - lastOpts: ', fetchMock.lastOptions());
         expect(fetchMock.called('record')).to.equal(true);
         done();
       });

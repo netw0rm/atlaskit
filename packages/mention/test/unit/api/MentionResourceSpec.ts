@@ -304,7 +304,7 @@ describe('MentionResource', () => {
       });
 
       const refreshedSecurityProvider = sinon.stub();
-      refreshedSecurityProvider.returns(Promise.resolve(options('666')));
+      refreshedSecurityProvider.returns(Promise.resolve(options('666', false)));
 
       const retryConfig = {
         ...apiConfig,
@@ -340,7 +340,7 @@ describe('MentionResource', () => {
       fetchMock.mock({ ...matcher, response: 401 });
 
       const refreshedSecurityProvider = sinon.stub();
-      refreshedSecurityProvider.returns(Promise.resolve(options(666)));
+      refreshedSecurityProvider.returns(Promise.resolve(options(666, false)));
 
       const retryConfig = {
         ...apiConfig,

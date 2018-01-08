@@ -141,7 +141,7 @@ export default (productKey,
       licenseReady = products.usages.some(usage => usage.productKey === productKey);
     }
 
-    return licenseReady && await checkSiteAvailable()
+    return licenseReady && await checkSiteAvailable().catch(() => false)
       ? ACTIVE
       : ACTIVATING;
   }

@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { Highlighter, SearchIndex, compareMentionDescription } from '../../../src/util/searchIndex';
 
 describe('SearchIndex', () => {
@@ -9,121 +8,101 @@ describe('SearchIndex', () => {
     searchIndex = new SearchIndex();
   });
 
-  it('should search by first name', (done) => {
+  it('should search by first name', async () => {
     searchIndex.indexResults([
       { id: 'id', name: 'Homer Simpson', mentionName: 'mentionName' }
     ]);
 
-    searchIndex.search('homer').then(result => {
-      expect(result.mentions).to.have.lengthOf(1);
-      done();
-    });
+    const result = await searchIndex.search('homer');
+    expect(result.mentions).toHaveLength(1);
   });
 
-  it('should search by last name', (done) => {
+  it('should search by last name', async () => {
     searchIndex.indexResults([
       { id: 'id', name: 'Homer Simpson', mentionName: 'mentionName' }
     ]);
 
-    searchIndex.search('simpson').then(result => {
-      expect(result.mentions).to.have.lengthOf(1);
-      done();
-    });
+    const result = await searchIndex.search('simpson');
+    expect(result.mentions).toHaveLength(1);
   });
 
-  it('should search by mention name', (done) => {
+  it('should search by mention name', async () => {
     searchIndex.indexResults([
       { id: 'id', name: 'Homer Simpson', mentionName: 'mentionName' }
     ]);
 
-    searchIndex.search('mention').then(result => {
-      expect(result.mentions).to.have.lengthOf(1);
-      done();
-    });
+    const result = await searchIndex.search('mention');
+    expect(result.mentions).toHaveLength(1);
   });
 
-  it('should search by nickname', (done) => {
+  it('should search by nickname', async () => {
     searchIndex.indexResults([
       { id: 'id', name: 'Homer Simpson', mentionName: 'mentionName', nickname: 'donut' }
     ]);
 
-    searchIndex.search('donut').then(result => {
-      expect(result.mentions).to.have.lengthOf(1);
-      done();
-    });
+    const result = await searchIndex.search('donut');
+    expect(result.mentions).toHaveLength(1);
   });
 
-  it('should search chinese characters', (done) => {
+  it('should search chinese characters', async () => {
     searchIndex.indexResults([
       { id: 'id', name: '我是法国人', mentionName: '法国人' }
     ]);
 
-    searchIndex.search('国').then(result => {
-      expect(result.mentions).to.have.lengthOf(1);
-      done();
-    });
+    const result = await searchIndex.search('国');
+    expect(result.mentions).toHaveLength(1);
   });
 
-  it('should search by token in name', (done) => {
+  it('should search by token in name', async () => {
     searchIndex.indexResults([
       { id: 'id', name: 'Homer Simpson [Atlassian]', mentionName: 'mentionName' }
     ]);
 
-    searchIndex.search('atlas').then(result => {
-      expect(result.mentions).to.have.lengthOf(1);
-      done();
-    });
+    const result = await searchIndex.search('atlas');
+    expect(result.mentions).toHaveLength(1);
   });
 
-  it('should search by multiple terms in name', (done) => {
+  it('should search by multiple terms in name', async () => {
     searchIndex.indexResults([
       { id: 'id', name: 'Homer Simpson', mentionName: 'mentionName' }
     ]);
 
-    searchIndex.search('h s').then(result => {
-      expect(result.mentions).to.have.lengthOf(1);
-      done();
-    });
+    const result = await searchIndex.search('h s');
+    expect(result.mentions).toHaveLength(1);
   });
 
-  it('should not search special mention on name', (done) => {
+  it('should not search special mention on name', async () => {
     searchIndex.indexResults([
       { id: 'all', name: 'All room members', mentionName: 'all', nickname: 'all', userType: 'SPECIAL' },
     ]);
 
-    searchIndex.search('m').then(result => {
-      expect(result.mentions).to.have.lengthOf(0);
-      done();
-    });
+    const result = await searchIndex.search('m');
+    expect(result.mentions).toHaveLength(0);
   });
 
-  it('should search special mention on nickname', (done) => {
+  it('should search special mention on nickname', async () => {
     searchIndex.indexResults([
       { id: 'all', name: 'All room members', mentionName: 'all', nickname: 'all', userType: 'SPECIAL' },
     ]);
 
-    searchIndex.search('a').then(result => {
-      expect(result.mentions).to.have.lengthOf(1);
-      done();
-    });
+    const result = await searchIndex.search('a');
+    expect(result.mentions).toHaveLength(1);
   });
 
-  it('should sort results', (done) => {
+  it('should sort results', async () => {
     searchIndex.indexResults([
       { id: 'id1', name: 'Homer Simpson', mentionName: 'homer' },
       { id: 'id2', name: 'Marge Simpson', mentionName: 'marge', inContext: true }
     ]);
 
-    searchIndex.search('simpson').then(result => {
-      expect(result.mentions).to.have.lengthOf(2);
-      expect(result.mentions[0].mentionName).to.equal('marge');
-      expect(result.mentions[1].mentionName).to.equal('homer');
-      done();
-    });
+    const result = await searchIndex.search('simpson');
+    expect(result.mentions).toHaveLength(2);
+    expect(result.mentions[0].mentionName).toEqual('marge');
+    expect(result.mentions[1].mentionName).toEqual('homer');
   });
 
   describe('#indexResults', () => {
-    it('should augment cached data', (done) => {
+    it('should augment cached data', async () => {
       searchIndex.indexResults([
         { id: 'id', name: 'Homer Simpson', mentionName: 'mentionName', inContext: true }
       ]);
@@ -132,12 +111,10 @@ describe('SearchIndex', () => {
         { id: 'id', name: 'Homer Simpson', mentionName: 'mentionName', accessLevel: 'CONTAINER' }
       ]);
 
-      searchIndex.search('mentionName').then(result => {
-        expect(result.mentions).to.have.lengthOf(1);
-        expect(result.mentions[0].inContext).to.equal(true);
-        expect(result.mentions[0].accessLevel).to.equal('CONTAINER');
-        done();
-      });
+      const result = await searchIndex.search('mentionName');
+      expect(result.mentions).toHaveLength(1);
+      expect(result.mentions[0].inContext).toBe(true);
+      expect(result.mentions[0].accessLevel).toEqual('CONTAINER');
     });
   });
 });
@@ -148,7 +125,7 @@ describe('compareMentionDescription', () => {
       { id: 'id1', inContext: true },
       { id: 'id2', inContext: false });
 
-    expect(result).to.be.below(0);
+    expect(result).toBeLessThan(0);
   });
 
   it('should use weight as a second sort criteria', () => {
@@ -156,7 +133,7 @@ describe('compareMentionDescription', () => {
       { id: 'id1', inContext: true, weight: 0 },
       { id: 'id2', inContext: true, weight: 1 });
 
-    expect(result).to.be.below(0);
+    expect(result).toBeLessThan(0);
   });
 
   it('should put mention without weight second', () => {
@@ -164,7 +141,7 @@ describe('compareMentionDescription', () => {
       { id: 'id1', inContext: true, weight: 5 },
       { id: 'id2', inContext: true });
 
-    expect(result).to.be.below(0);
+    expect(result).toBeLessThan(0);
   });
 
   it('should put special mention first', () => {
@@ -172,7 +149,7 @@ describe('compareMentionDescription', () => {
       { id: 'id1', userType: 'SPECIAL' },
       { id: 'id2' });
 
-    expect(result).to.be.below(0);
+    expect(result).toBeLessThan(0);
   });
 });
 
@@ -202,10 +179,10 @@ describe('Highlighter', () => {
       if (rules.hasOwnProperty(key)) {
         const rule = rules[key];
         const highlights = Highlighter.find(rule.value, rule.query);
-        expect(highlights).to.have.lengthOf(rule.results.length);
+        expect(highlights).toHaveLength(rule.results.length);
 
         for (let index = 0; index < rule.results.length; index++) {
-          expect(highlights).to.include(rule.results[index], 'Rule <' + rule.description + '> failed');
+          expect(highlights).toContainEqual(rule.results[index]);
         }
 
       }

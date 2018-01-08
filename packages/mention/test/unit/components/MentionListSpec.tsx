@@ -1,7 +1,6 @@
 import { waitUntil } from '@atlaskit/util-common-test';
 import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
-import { expect } from 'chai';
 
 import mentionData, { mentionDataSize } from '../../../src/support/mention-data';
 import MentionList, { Props, State } from '../../../src/components/MentionList';
@@ -64,7 +63,7 @@ describe('MentionList', () => {
     return waitUntil(defaultMentionItemsShow)
       .then(() => {
         const mentionList = component.instance() as MentionList;
-        expect(mentionList.mentionsCount()).to.equal(mentionDataSize);
+        expect(mentionList.mentionsCount()).toEqual(mentionDataSize);
       });
   });
 

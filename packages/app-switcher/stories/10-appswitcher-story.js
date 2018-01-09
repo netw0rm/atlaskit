@@ -7,15 +7,15 @@ import CustomIcon from '@atlaskit/icon/glyph/home-circle';
 import AppSwitcher from '../src';
 import { name } from '../package.json';
 
-import data from './data.json';
+import props from './data.json';
 
-data.analytics = action('analytics');
-data.trigger = isSelected => (<Button isSelected={isSelected}>...</Button>);
+props.analytics = action('analytics');
+props.trigger = isSelected => (<Button isSelected={isSelected}>...</Button>);
 
 storiesOf(name, module)
   .add('with all components', () => (
     <Chrome>
-      <AppSwitcher {...data} />
+      <AppSwitcher {...props} />
     </Chrome>
   ))
 
@@ -23,7 +23,7 @@ storiesOf(name, module)
     <Chrome>
       <AppSwitcher
         {...{
-          ...data,
+          ...props,
           recentContainers: [],
         }}
       />
@@ -34,7 +34,7 @@ storiesOf(name, module)
     <Chrome>
       <AppSwitcher
         {...{
-          ...data,
+          ...props,
         }}
       />
     </Chrome>
@@ -44,7 +44,7 @@ storiesOf(name, module)
     <Chrome>
       <AppSwitcher
         {...{
-          ...data,
+          ...props,
           recentContainers: [],
         }}
       />
@@ -55,7 +55,7 @@ storiesOf(name, module)
     <Chrome>
       <AppSwitcher
         {...{
-          ...data,
+          ...props,
           linkedApplications: {
             configureLink: 'https://www.atlassian.com',
             apps: [{
@@ -78,7 +78,7 @@ storiesOf(name, module)
     <Chrome>
       <AppSwitcher
         {...{
-          ...data,
+          ...props,
           linkedApplications: {
             configureLink: 'https://www.atlassian.com',
             apps: [],
@@ -101,7 +101,7 @@ storiesOf(name, module)
     <Chrome>
       <AppSwitcher
         {...{
-          ...data,
+          ...props,
           recentContainers: [],
           isAnonymousUser: true,
         }}
@@ -113,7 +113,7 @@ storiesOf(name, module)
     <Chrome>
       <AppSwitcher
         {...{
-          ...data,
+          ...props,
           isHomeLinkEnabled: false,
         }}
       />
@@ -123,7 +123,7 @@ storiesOf(name, module)
   .add('with custom Home link', () => (
     <Chrome>
       <AppSwitcher
-        {...data}
+        {...props}
         homeLink={{
           name: 'Atlassian Home',
           url: '/home/notifications',
@@ -137,7 +137,7 @@ storiesOf(name, module)
     <Chrome>
       <AppSwitcher
         {...{
-          ...data,
+          ...props,
           isSiteAdminLinkEnabled: true,
         }}
       />
@@ -148,7 +148,7 @@ storiesOf(name, module)
     <Chrome>
       <AppSwitcher
         {...{
-          ...data,
+          ...props,
           linkedApplications: {
             configureLink: 'https://www.atlassian.com',
             apps: [],
@@ -162,7 +162,7 @@ storiesOf(name, module)
     <Chrome>
       <AppSwitcher
         {...{
-          ...data,
+          ...props,
           isLoading: true,
         }}
       />

@@ -1,9 +1,8 @@
 import { expect } from 'chai';
 
-import { convertMediaToImageEmoji, convertMediaToImageRepresentation } from '../../src/type-helpers';
+import { buildEmojiDescriptionWithAltRepresentation, convertMediaToImageEmoji, convertMediaToImageRepresentation } from '../../src/type-helpers';
+import { EmojiDescriptionWithVariations, MediaApiRepresentation } from '../../src/types';
 import { evilburnsEmoji, mediaEmoji } from '../../src/support/test-data';
-import { MediaApiRepresentation } from '../../index';
-
 
 const newPath = 'http://new-path/';
 
@@ -50,5 +49,52 @@ describe('#convertMediaToImageEmoji', () => {
       representation: convertMediaToImageRepresentation(mediaEmoji.representation as MediaApiRepresentation),
       altRepresentation: newAltRepresentation,
     });
+  });
+});
+
+
+describe('#buildEmojiDescriptionWithAltRepresentation', () => {
+  const emoji: EmojiDescriptionWithVariations = {
+    id: '1f600',
+    name: 'grinning face',
+    shortName: ':grinning:',
+    type: 'STANDARD',
+    category: 'PEOPLE',
+    order: 1,
+    representation: {
+      imagePath: 'https://something/something.png',
+      height: 64,
+      width: 64,
+    },
+    skinVariations: [
+      {
+        id: '1f600-1f3fb',
+        name: 'grinning face',
+        shortName: ':grinning::skin-tone-2',
+        type: 'STANDARD',
+        category: 'PEOPLE',
+        order: 1,
+        representation: {
+          imagePath: 'https://something/something2.png',
+          height: 64,
+          width: 64,
+        },
+        searchable: true
+      },
+    ],
+    searchable: true
+  };
+
+  it('does not contain altRepresentation in the returned EmojiDescription if undefined', () => {
+    expect(buildEmojiDescriptionWithAltRepresentation(emoji, undefined)).to.deep.equal(emoji);
+  });
+
+  it('adds altRepresentation to the EmojiDescription if is defined representation', () => {
+    const altRepresentation = {
+      imagePath: 'https://something/something3.png',
+      height: 128,
+      width: 128,
+    };
+    expect(buildEmojiDescriptionWithAltRepresentation(emoji, altRepresentation)).to.deep.equal({ ...emoji, altRepresentation });
   });
 });

@@ -123,7 +123,9 @@ const renderAsSprite = (props: Props) => {
     <span
       className={styles.emojiSprite}
       style={style}
-    />
+    >
+      &nbsp;
+    </span>
   );
 
   return (

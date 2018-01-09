@@ -9,7 +9,7 @@ import { name } from '../package.json';
 
 import data from './data.json';
 
-data.analytics = (key, props) => console.log(key, props);
+data.analytics = action('analytics');
 data.trigger = isSelected => (<Button isSelected={isSelected}>...</Button>);
 
 storiesOf(name, module)

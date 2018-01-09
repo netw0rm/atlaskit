@@ -13,158 +13,140 @@ props.analytics = action('analytics');
 props.trigger = isSelected => (<Button isSelected={isSelected}>...</Button>);
 
 storiesOf(name, module)
-  .add('with all components', () => (
+  .addDecorator(story => (
     <Chrome>
-      <AppSwitcher {...props} />
+      {story()}
     </Chrome>
+  ))
+
+  .add('with all components', () => (
+    <AppSwitcher {...props} />
   ))
 
   .add('with no recent containers', () => (
-    <Chrome>
-      <AppSwitcher
-        {...{
-          ...props,
-          recentContainers: [],
-        }}
-      />
-    </Chrome>
+    <AppSwitcher
+      {...{
+        ...props,
+        recentContainers: [],
+      }}
+    />
   ))
 
   .add('with no suggested application', () => (
-    <Chrome>
-      <AppSwitcher
-        {...{
-          ...props,
-        }}
-      />
-    </Chrome>
+    <AppSwitcher
+      {...{
+        ...props,
+      }}
+    />
   ))
 
   .add('with only applications', () => (
-    <Chrome>
-      <AppSwitcher
-        {...{
-          ...props,
-          recentContainers: [],
-        }}
-      />
-    </Chrome>
+    <AppSwitcher
+      {...{
+        ...props,
+        recentContainers: [],
+      }}
+    />
   ))
 
   .add('with Confluence as suggested application', () => (
-    <Chrome>
-      <AppSwitcher
-        {...{
-          ...props,
-          linkedApplications: {
-            configureLink: 'https://www.atlassian.com',
-            apps: [{
-              name: 'JIRA',
-              url: 'https://www.atlassian.com/#4',
-              product: 'jira',
-            }],
-            suggested: [{
-              name: 'Confluence',
-              product: 'confluence',
-              onClick: () => { action('confluence.suggestion.clicked'); },
-            }],
-            error: false,
-          },
-        }}
-      />
-    </Chrome>
+    <AppSwitcher
+      {...{
+        ...props,
+        linkedApplications: {
+          configureLink: 'https://www.atlassian.com',
+          apps: [{
+            name: 'JIRA',
+            url: 'https://www.atlassian.com/#4',
+            product: 'jira',
+          }],
+          suggested: [{
+            name: 'Confluence',
+            product: 'confluence',
+            onClick: () => { action('confluence.suggestion.clicked'); },
+          }],
+          error: false,
+        },
+      }}
+    />
   ))
   .add('with JIRA & Confluence as suggested applications', () => (
-    <Chrome>
-      <AppSwitcher
-        {...{
-          ...props,
-          linkedApplications: {
-            configureLink: 'https://www.atlassian.com',
-            apps: [],
-            suggested: [{
-              name: 'JIRA',
-              product: 'jira',
-              onClick: () => { action('jira.suggestion.clicked'); },
-            }, {
-              name: 'Confluence',
-              product: 'confluence',
-              onClick: () => { action('confluence.suggestion.clicked'); },
-            }],
-            error: false,
-          },
-        }}
-      />
-    </Chrome>
+    <AppSwitcher
+      {...{
+        ...props,
+        linkedApplications: {
+          configureLink: 'https://www.atlassian.com',
+          apps: [],
+          suggested: [{
+            name: 'JIRA',
+            product: 'jira',
+            onClick: () => { action('jira.suggestion.clicked'); },
+          }, {
+            name: 'Confluence',
+            product: 'confluence',
+            onClick: () => { action('confluence.suggestion.clicked'); },
+          }],
+          error: false,
+        },
+      }}
+    />
   ))
   .add('with anonymous mode', () => (
-    <Chrome>
-      <AppSwitcher
-        {...{
-          ...props,
-          recentContainers: [],
-          isAnonymousUser: true,
-        }}
-      />
-    </Chrome>
+    <AppSwitcher
+      {...{
+        ...props,
+        recentContainers: [],
+        isAnonymousUser: true,
+      }}
+    />
   ))
 
   .add('with Home link disabled', () => (
-    <Chrome>
-      <AppSwitcher
-        {...{
-          ...props,
-          isHomeLinkEnabled: false,
-        }}
-      />
-    </Chrome>
+    <AppSwitcher
+      {...{
+        ...props,
+        isHomeLinkEnabled: false,
+      }}
+    />
   ))
 
   .add('with custom Home link', () => (
-    <Chrome>
-      <AppSwitcher
-        {...props}
-        homeLink={{
-          name: 'Atlassian Home',
-          url: '/home/notifications',
-          icon: <CustomIcon size="large" label="" />,
-        }}
-      />
-    </Chrome>
+    <AppSwitcher
+      {...props}
+      homeLink={{
+        name: 'Atlassian Home',
+        url: '/home/notifications',
+        icon: <CustomIcon size="large" label="" />,
+      }}
+    />
   ))
 
   .add('with Site Admin link', () => (
-    <Chrome>
-      <AppSwitcher
-        {...{
-          ...props,
-          isSiteAdminLinkEnabled: true,
-        }}
-      />
-    </Chrome>
+    <AppSwitcher
+      {...{
+        ...props,
+        isSiteAdminLinkEnabled: true,
+      }}
+    />
   ))
 
   .add('with applinks error', () => (
-    <Chrome>
-      <AppSwitcher
-        {...{
-          ...props,
-          linkedApplications: {
-            configureLink: 'https://www.atlassian.com',
-            apps: [],
-            error: true,
-          },
-        }}
-      />
-    </Chrome>
+    <AppSwitcher
+      {...{
+        ...props,
+        linkedApplications: {
+          configureLink: 'https://www.atlassian.com',
+          apps: [],
+          error: true,
+        },
+      }}
+    />
   ))
   .add('with loading state', () => (
-    <Chrome>
-      <AppSwitcher
-        {...{
-          ...props,
-          isLoading: true,
-        }}
-      />
-    </Chrome>
+    <AppSwitcher
+      {...{
+        ...props,
+        isLoading: true,
+      }}
+    />
   ));

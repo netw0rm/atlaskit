@@ -78,7 +78,7 @@ const mockCheckSiteAvailable = (requiredChecksToComplete) => {
   let count = requiredChecksToComplete;
   return async () => {
     count--;
-    return count < 1;
+    return count < 1 ? true : Promise.reject(new Error('everything went wrong'));
   };
 };
 

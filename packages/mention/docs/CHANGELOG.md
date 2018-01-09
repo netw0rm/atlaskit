@@ -1,5 +1,8 @@
 # @atlaskit/mention
 
+## 8.5.1 (2018-01-09)
+
+* bug fix; removed chai and sinon from tests (issues closed: fs-1606) ([f3a65cd](https://bitbucket.org/atlassian/atlaskit/commits/f3a65cd))
 ## 8.5.0 (2018-01-08)
 
 

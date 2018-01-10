@@ -80,6 +80,10 @@ class CategoryTracker {
 
   findNearestCategoryAbove(scrollTop: number, list: VirtualList): string | undefined {
     const rows = Array.from(this.rowToCategory.keys()).sort((a, b) => a - b);
+    // Return first category if list not yet rendered
+    if (!list) {
+      return this.rowToCategory.get(0);
+    }
 
     const firstOffset = list.getOffsetForRow({ index: rows[0] });
     if (firstOffset > scrollTop) {

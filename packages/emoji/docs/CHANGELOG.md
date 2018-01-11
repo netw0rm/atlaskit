@@ -1,5 +1,9 @@
 # @atlaskit/emoji
 
+## 31.0.8 (2018-01-10)
+
+* bug fix; added nbsp to emoji sprite spans to allow for selection at start of paragraph (issues closed: fs-1622) ([77d6ca0](https://bitbucket.org/atlassian/atlaskit/commits/77d6ca0))
+
 ## 31.0.7 (2018-01-05)
 
 * bug fix; fix missing window when using emoji in node.js code ([136b0c5](https://bitbucket.org/atlassian/atlaskit/commits/136b0c5))

@@ -63,15 +63,6 @@ class ConfirmTrial extends Component {
     );
   }
 
-  notifyDocumentOfConfirmClick = (status) => {
-    const confirmClickedEvent = new CustomEvent('xflow.confirmClicked', {
-      detail: {
-        status,
-      },
-    });
-    document.dispatchEvent(confirmClickedEvent);
-  };
-
   handleConfirmClick = () => {
     const { status, startProductTrial, onComplete, firePrivateAnalyticsEvent } = this.props;
     firePrivateAnalyticsEvent(
@@ -84,8 +75,6 @@ class ConfirmTrial extends Component {
       buttonsDisabled: true,
       productFailedToStart: false,
     });
-
-    this.notifyDocumentOfConfirmClick(status);
 
     return Promise.resolve(startProductTrial())
       .then(() => {
@@ -117,8 +106,7 @@ class ConfirmTrial extends Component {
         ? 'xflow.confirm-trial.cancel-button.clicked'
         : 'xflow.reactivate-trial.cancel-button.clicked'
     );
-    return Promise.resolve(cancelStartProductTrial())
-      .then(onCancel);
+    return Promise.resolve(cancelStartProductTrial()).then(onCancel);
   };
 
   handleErrorFlagDismiss = () => {
@@ -188,9 +176,7 @@ class ConfirmTrial extends Component {
           title={intl.formatMessage(messages.errorFlagTitle)}
           description={intl.formatMessage(messages.errorFlagDescription)}
           showFlag={this.state.productFailedToStart}
-          source={status === INACTIVE
-          ? 'confirm-trial'
-          : 'reactivate-trial'}
+          source={status === INACTIVE ? 'confirm-trial' : 'reactivate-trial'}
           onDismissed={this.handleErrorFlagDismiss}
         />
       </ModalDialog>

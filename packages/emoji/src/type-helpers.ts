@@ -8,8 +8,8 @@ import {
   OptionalEmojiDescription,
   SpriteRepresentation,
   SpriteServiceRepresentation,
+  EmojiRepresentation,
 } from './types';
-import { buildEmojiDescriptionWithAltRepresentation } from './api/EmojiUtils';
 
 export const isSpriteServiceRepresentation = (rep): rep is SpriteServiceRepresentation => !!(rep && (<SpriteServiceRepresentation> rep).spriteRef);
 export const isSpriteRepresentation = (rep): rep is SpriteRepresentation => !!(rep && (<SpriteRepresentation> rep).sprite);
@@ -79,4 +79,15 @@ export const convertMediaToImageEmoji = (emoji: EmojiDescription, newImagePath?:
     representation
   };
   return buildEmojiDescriptionWithAltRepresentation(baseEmoji, altRepresentation);
+};
+
+// Prevent altRepresentation: undefined from being returned in EmojiDescription
+export const buildEmojiDescriptionWithAltRepresentation = (emoji: EmojiDescriptionWithVariations, altRepresentation?: EmojiRepresentation): EmojiDescriptionWithVariations => {
+  if (!altRepresentation) {
+    return emoji;
+  }
+  return {
+    ...emoji,
+    altRepresentation,
+  };
 };

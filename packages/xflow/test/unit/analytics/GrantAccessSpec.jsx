@@ -1,6 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import fetchMock from 'fetch-mock';
+import { AkFieldRadioGroup } from '@atlaskit/field-radio-group';
 
 import { GrantAccessBase } from '../../../src/request-or-start-trial/components/GrantAccess';
 import { withAnalyticsSpy, waitFor } from '../../util';
@@ -240,7 +241,8 @@ describe('<GrantAccess> analytics', () => {
       withAnalyticsSpy(spy, <GrantAccessBase {...defaultProps} changeUsers />)
     );
     const mockResponse = { target: 'site-admins' };
-    const onRadioChange = mountWrapper.find('FieldRadioGroup').prop('onRadioChange');
+    const onRadioChange = mountWrapper.find(AkFieldRadioGroup).prop('onRadioChange');
+
     expect(spy).not.toHaveBeenCalledWith(
       'xflow.grant-access.radio-option.changed',
       expect.any(Object)

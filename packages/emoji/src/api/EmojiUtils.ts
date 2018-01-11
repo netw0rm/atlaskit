@@ -13,7 +13,7 @@ import {
   EmojiServiceResponse,
   SpriteServiceRepresentation,
 } from '../types';
-import { isImageRepresentation, isSpriteServiceRepresentation, convertImageToMediaRepresentation } from '../type-helpers';
+import { isImageRepresentation, isSpriteServiceRepresentation, convertImageToMediaRepresentation, buildEmojiDescriptionWithAltRepresentation } from '../type-helpers';
 import debug from '../util/logger';
 
 export interface EmojiLoaderConfig extends ServiceConfig {
@@ -136,17 +136,6 @@ export const denormaliseEmojiServiceResponse = (emojiData: EmojiServiceResponse)
   return {
     emojis,
     mediaApiToken,
-  };
-};
-
-// Prevent altRepresentation: undefined from being returned in EmojiDescription
-export const buildEmojiDescriptionWithAltRepresentation = (emoji: EmojiDescriptionWithVariations, altRepresentation?: EmojiRepresentation): EmojiDescriptionWithVariations => {
-  if (!altRepresentation) {
-    return emoji;
-  }
-  return {
-    ...emoji,
-    altRepresentation,
   };
 };
 

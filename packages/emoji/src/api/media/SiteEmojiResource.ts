@@ -11,10 +11,10 @@ import {
   OptionalEmojiDescription,
 } from '../../types';
 
-import { isMediaRepresentation, isMediaEmoji, convertImageToMediaRepresentation } from '../../type-helpers';
+import { buildEmojiDescriptionWithAltRepresentation, isMediaRepresentation, isMediaEmoji, convertImageToMediaRepresentation } from '../../type-helpers';
 import { MediaApiData, MediaUploadEnd, MediaUploadError, MediaUploadStatusUpdate } from './media-types';
 import MediaEmojiCache from './MediaEmojiCache';
-import { denormaliseEmojiServiceResponse, emojiRequest, getAltRepresentation, buildEmojiDescriptionWithAltRepresentation } from '../EmojiUtils';
+import { denormaliseEmojiServiceResponse, emojiRequest, getAltRepresentation } from '../EmojiUtils';
 import TokenManager from './TokenManager';
 
 import debug from '../../util/logger';

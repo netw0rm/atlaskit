@@ -106,7 +106,8 @@ class ConfirmTrial extends Component {
         ? 'xflow.confirm-trial.cancel-button.clicked'
         : 'xflow.reactivate-trial.cancel-button.clicked'
     );
-    return Promise.resolve(cancelStartProductTrial()).then(onCancel);
+    return Promise.resolve(cancelStartProductTrial())
+      .then(onCancel);
   };
 
   handleErrorFlagDismiss = () => {
@@ -176,7 +177,9 @@ class ConfirmTrial extends Component {
           title={intl.formatMessage(messages.errorFlagTitle)}
           description={intl.formatMessage(messages.errorFlagDescription)}
           showFlag={this.state.productFailedToStart}
-          source={status === INACTIVE ? 'confirm-trial' : 'reactivate-trial'}
+          source={status === INACTIVE
+          ? 'confirm-trial'
+          : 'reactivate-trial'}
           onDismissed={this.handleErrorFlagDismiss}
         />
       </ModalDialog>

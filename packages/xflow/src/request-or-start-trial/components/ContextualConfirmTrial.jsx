@@ -114,7 +114,8 @@ class ContextualConfirmTrial extends Component {
         ? 'xflow.confirm-trial.cancel-button.clicked'
         : 'xflow.reactivate-trial.cancel-button.clicked'
     );
-    return Promise.resolve(cancelStartProductTrial()).then(onCancel);
+    return Promise.resolve(cancelStartProductTrial())
+      .then(onCancel);
   };
 
   handleErrorFlagDismiss = () => {
@@ -129,19 +130,17 @@ class ContextualConfirmTrial extends Component {
     });
   };
 
-  renderHeader = (image, contextInfo) => (
-    <div id="xflow-contextual-confirm-header">
-      <CloseModalDialogButton
-        id="xflow-confirm-trial-cancel-button"
-        onClick={this.handleCancelClick}
-        isDisabled={this.state.buttonsDisabled}
-      >
-        <CrossIcon label="Close Modal" primaryColor="white" size="medium" />
-      </CloseModalDialogButton>
-      <ContextualConfirmTrialHeader />
-      <ContextualConfirmTrialImage src={contextInfo.contextualImage || image} alt="files" />
-    </div>
-  );
+  renderHeader = (image, contextInfo) => (<div id="xflow-contextual-confirm-header">
+    <CloseModalDialogButton id="xflow-confirm-trial-cancel-button" onClick={this.handleCancelClick} isDisabled={this.state.buttonsDisabled}>
+      <CrossIcon
+        label="Close Modal"
+        primaryColor="white"
+        size="medium"
+      />
+    </CloseModalDialogButton>
+    <ContextualConfirmTrialHeader />
+    <ContextualConfirmTrialImage src={contextInfo.contextualImage || image} alt="files" />
+  </div>);
 
   renderInactiveFooter = () => (
     <ContextualConfirmTrialFooter>
@@ -201,12 +200,11 @@ class ContextualConfirmTrial extends Component {
         href="/admin/billing/applications"
         target="_blank"
         rel="noopener noreferrer"
-        onClick={() =>
-          firePrivateAnalyticsEvent(
-            status === INACTIVE
-              ? 'xflow.confirm-trial.manage-subscriptions.clicked'
-              : 'xflow.reactivate-trial.manage-subscriptions.clicked'
-          )}
+        onClick={() => firePrivateAnalyticsEvent(
+          status === INACTIVE
+            ? 'xflow.confirm-trial.manage-subscriptions.clicked'
+            : 'xflow.reactivate-trial.manage-subscriptions.clicked'
+        )}
       >
         <FormattedMessage
           id="xflow.generic.confirm-trial.settings-info.manage-applications.link"
@@ -214,49 +212,57 @@ class ContextualConfirmTrial extends Component {
         />
       </a>
     );
-  };
+  }
 
-  renderFooter = status => {
-    if (status === INACTIVE) {
-      return this.renderInactiveFooter();
-    }
-    return this.renderReactivateFooter();
-  };
+  renderFooter = (status) => (status === INACTIVE
+    ? this.renderInactiveFooter()
+    : this.renderReactivateFooter());
 
-  renderContextualContent = (status, contextInfo) => (
-    <ContextualConfirmTrialContent id="xflow-confirm-trial">
-      <ContextualConfirmTrialHeading>{contextInfo.contextualHeading}</ContextualConfirmTrialHeading>
-      <p>{contextInfo.contextualMessage}</p>
-      <SpinnerDiv topMultiplier={2}>
-        <Spinner isCompleting={!this.state.spinnerActive} />
-      </SpinnerDiv>
-      <Button
-        id="xflow-confirm-trial-confirm-button"
-        onClick={this.handleConfirmClick}
-        appearance="primary"
-        isDisabled={this.state.buttonsDisabled}
-      >
-        {status === INACTIVE ? contextInfo.trialCTA : contextInfo.reactivateCTA}
-      </Button>
-    </ContextualConfirmTrialContent>
-  );
+  renderContextualContent = (status, contextInfo) => (<ContextualConfirmTrialContent id="xflow-confirm-trial">
+    <ContextualConfirmTrialHeading>
+      {contextInfo.contextualHeading}
+    </ContextualConfirmTrialHeading>
+    <p>{contextInfo.contextualMessage}</p>
+    <SpinnerDiv topMultiplier={2}>
+      <Spinner isCompleting={!this.state.spinnerActive} />
+    </SpinnerDiv>
+    <Button
+      id="xflow-confirm-trial-confirm-button"
+      onClick={this.handleConfirmClick}
+      appearance="primary"
+      isDisabled={this.state.buttonsDisabled}
+    >
+      {status === INACTIVE ? contextInfo.trialCTA : contextInfo.reactivateCTA}
+    </Button>
+  </ContextualConfirmTrialContent>);
 
   render() {
-    const { intl, status, image, contextInfo } = this.props;
+    const {
+      intl,
+      status,
+      image,
+      contextInfo,
+    } = this.props;
     return (
       <ModalDialog
         isOpen
         width="medium"
         height={'556px'}
-        header={this.renderHeader(image, contextInfo)}
-        footer={this.renderFooter(status)}
+        header={
+          this.renderHeader(image, contextInfo)
+        }
+        footer={
+          this.renderFooter(status)
+        }
       >
         {this.renderContextualContent(status, contextInfo)}
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}
           description={intl.formatMessage(messages.errorFlagDescription)}
           showFlag={this.state.productFailedToStart}
-          source={status === INACTIVE ? 'confirm-trial' : 'reactivate-trial'}
+          source={status === INACTIVE
+            ? 'confirm-trial'
+            : 'reactivate-trial'}
           onDismissed={this.handleErrorFlagDismiss}
         />
       </ModalDialog>
@@ -269,16 +275,20 @@ export const ContextualConfirmTrialBase = withAnalytics(injectIntl(ContextualCon
 export default withXFlowProvider(
   ContextualConfirmTrialBase,
   ({
-    xFlow: {
-      config: { contextualStartTrial: { contextualStartTrialHeader } },
-      status,
-      startProductTrial,
-      cancelStartProductTrial,
-    },
-  }) => ({
-    startProductTrial,
-    cancelStartProductTrial,
-    status,
-    image: contextualStartTrialHeader,
-  })
+     xFlow: {
+       config: {
+         contextualStartTrial: {
+           contextualStartTrialHeader,
+         },
+       },
+       status,
+       startProductTrial,
+       cancelStartProductTrial,
+     },
+   }) => ({
+     startProductTrial,
+     cancelStartProductTrial,
+     status,
+     image: contextualStartTrialHeader,
+   })
 );

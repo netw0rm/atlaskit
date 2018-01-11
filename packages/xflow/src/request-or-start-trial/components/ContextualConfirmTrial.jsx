@@ -216,8 +216,12 @@ class ContextualConfirmTrial extends Component {
     );
   };
 
-  renderFooter = status =>
-    status === INACTIVE ? this.renderInactiveFooter() : this.renderReactivateFooter();
+  renderFooter = status => {
+    if (status === INACTIVE) {
+      return this.renderInactiveFooter();
+    }
+    return this.renderReactivateFooter();
+  };
 
   renderContextualContent = (status, contextInfo) => (
     <ContextualConfirmTrialContent id="xflow-confirm-trial">

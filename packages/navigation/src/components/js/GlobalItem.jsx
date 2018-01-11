@@ -15,8 +15,8 @@ type Props = {|
   /** Causes the item to appear with a persistent selected background state. */
   isSelected?: boolean,
   /** Component to be used to create the link in the global item. A default
-  component is used if none is provided. */
-  linkComponent: ReactClass,
+   component is used if none is provided. */
+  linkComponent?: ReactClass,
   /** Standard onClick event */
   onClick?: (event: Event) => {},
   onMouseDown: (event: MouseEvent) => {},
@@ -30,7 +30,6 @@ type Props = {|
 
 export default class GlobalItem extends PureComponent {
   static defaultProps = {
-    linkComponent: DefaultLinkComponent,
     onMouseDown: () => {},
     size: 'small',
     appearance: 'round',
@@ -46,8 +45,9 @@ export default class GlobalItem extends PureComponent {
 
   render() {
     const {
+      children,
       href,
-      linkComponent: Link,
+      linkComponent: CustomComponent,
       isSelected,
       size,
       'aria-haspopup': ariaHasPopup, // eslint-disable-line react/prop-types
@@ -63,31 +63,49 @@ export default class GlobalItem extends PureComponent {
       role,
       onKeyDown: this.handleKeyDown,
     };
-    const ActualLink = styled(Link)`
-      ${globalItemStyles}
-      &:hover {
-        color: inherit;
-      }
-    `;
 
-    const onMouseDown = (e) => {
-      providedMouseDown(e);
-      e.preventDefault();
-    };
+    if (CustomComponent) {
+      const StyledComponent = styled(CustomComponent)`
+        ${globalItemStyles};
+      `;
+      return (
+        <StyledComponent
+          appearance={appearance}
+          href={href}
+          isSelected={isSelected}
+          onMouseDown={providedMouseDown}
+          size={size}
+          {...allyAndEventProps}
+        >
+          {children}
+        </StyledComponent>
+      );
+    }
 
     if (href) {
+      const StyledLink = styled(props => <DefaultLinkComponent {...props} />)`
+        ${globalItemStyles}
+        &:hover {
+          color: inherit;
+        }
+      `;
       return (
-        <ActualLink
+        <StyledLink
           href={href}
           size={size}
           onMouseDown={providedMouseDown}
           appearance={appearance}
           {...allyAndEventProps}
         >
-          {this.props.children}
-        </ActualLink>
+          {children}
+        </StyledLink>
       );
     }
+
+    const onMouseDown = (e) => {
+      providedMouseDown(e);
+      e.preventDefault();
+    };
 
     return (
       <GlobalItemInner
@@ -98,7 +116,7 @@ export default class GlobalItem extends PureComponent {
         appearance={appearance}
         {...allyAndEventProps}
       >
-        {this.props.children}
+        {children}
       </GlobalItemInner>
     );
   }

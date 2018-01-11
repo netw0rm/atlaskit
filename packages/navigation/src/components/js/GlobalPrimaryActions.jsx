@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import GlobalItem from './GlobalItem';
 import DrawerTrigger from './DrawerTrigger';
-import DefaultLinkComponent from './DefaultLinkComponent';
 import GlobalPrimaryActionsList from './GlobalPrimaryActionsList';
 import GlobalPrimaryActionsInner from '../styled/GlobalPrimaryActionsInner';
 import GlobalPrimaryActionsPrimaryItem from '../styled/GlobalPrimaryActionsPrimaryItem';
@@ -20,10 +19,6 @@ export default class GlobalPrimaryActions extends PureComponent {
     primaryItemHref: PropTypes.string,
     searchIcon: PropTypes.node,
   };
-
-  static defaultProps = {
-    linkComponent: DefaultLinkComponent,
-  }
 
   render() {
     const {

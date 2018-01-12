@@ -1,5 +1,11 @@
 # @atlaskit/navigation
 
+## 27.0.5 (2018-01-12)
+
+* bug fix; globalItem linkComponent is always used if provided. (issues closed: ak-4155) ([7d5e838](https://bitbucket.org/atlassian/atlaskit/commits/7d5e838))
+
+
+
 ## 27.0.4 (2017-12-13)
 
 * bug fix; use vh instead of percent ([e138d4b](https://bitbucket.org/atlassian/atlaskit/commits/e138d4b))

@@ -261,9 +261,9 @@ export default class MockTaskDecisionResource implements TaskDecisionProvider {
   }
 
   getCurrentUser(): User | undefined {
-    // Return a random user from the participants list
+    // Return a random user or undefined from the participants list
     const randomParticipant = Math.floor(Math.random() * participants.length);
-    return participants[randomParticipant];
+    return Math.random() < 0.75 ? participants[randomParticipant] : undefined;
   }
 
   private queueItem(objectKey: ObjectKey) {

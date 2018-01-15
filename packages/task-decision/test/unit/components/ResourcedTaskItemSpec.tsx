@@ -7,6 +7,7 @@ import TaskItem from '../../../src/components/TaskItem';
 import Participants from '../../../src/components/Participants';
 import { getParticipants } from '../../../src/support/test-data';
 import { Placeholder } from '../../../src/styled/Placeholder';
+import Item from '../../../src/components/Item';
 
 describe('<ResourcedTaskItem/>', () => {
 
@@ -130,6 +131,72 @@ describe('<ResourcedTaskItem/>', () => {
     component.find('input').simulate('change');
     return waitUntil(() => provider.toggleTask.mock.calls.length).then(() => {
       expect(component.find(TaskItem).prop('lastUpdater')).toEqual(user);
+    });
+  });
+
+  it('should update attribution text if getCurrentUser returns a user', () => {
+    const user = getParticipants(1)[0];
+    const provider2 = {
+      ...provider,
+      getCurrentUser: jest.fn(() => user),
+    };
+    component = mount(
+      <ResourcedTaskItem
+        taskId="task-1"
+        objectAri="objectAri"
+        containerAri="containerAri"
+        taskDecisionProvider={Promise.resolve(provider2)}
+      >
+        Hello World
+      </ResourcedTaskItem>
+    );
+    component.find('input').simulate('change');
+    return waitUntil(() => provider.toggleTask.mock.calls.length).then(() => {
+      expect(component.find(Item).prop('attribution')).toEqual(`Completed by ${user.displayName}`);
+    });
+  });
+
+  it('should show Added By when checked if provider.getCurrentUser returns undefined', () => {
+    const participants = getParticipants(2);
+    const creator = participants[1];
+    const provider2 = {
+      ...provider,
+      getCurrentUser: jest.fn(() => undefined),
+    };
+    component = mount(
+      <ResourcedTaskItem
+        taskId="task-1"
+        objectAri="objectAri"
+        containerAri="containerAri"
+        creator={creator}
+        taskDecisionProvider={Promise.resolve(provider2)}
+      >
+        Hello World
+      </ResourcedTaskItem>
+    );
+    component.find('input').simulate('change');
+    return waitUntil(() => provider.toggleTask.mock.calls.length).then(() => {
+      expect(component.find(Item).prop('attribution')).toEqual(`Added by ${creator.displayName}`);
+    });
+  });
+
+  it('should show Added By when checked if provider.getCurrentUser is undefined', () => {
+    const participants = getParticipants(2);
+    const creator = participants[1];
+    component = mount(
+      <ResourcedTaskItem
+        taskId="task-1"
+        objectAri="objectAri"
+        containerAri="containerAri"
+        creator={creator}
+        taskDecisionProvider={Promise.resolve(provider)}
+      >
+        Hello World
+      </ResourcedTaskItem>
+    );
+    component.find('input').simulate('change');
+    return waitUntil(() => provider.toggleTask.mock.calls.length).then(() => {
+      expect(component.find(Item).prop('attribution')).toEqual(`Added by ${creator.displayName}`);
     });
   });
 

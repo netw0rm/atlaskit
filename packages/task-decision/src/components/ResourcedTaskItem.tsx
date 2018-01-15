@@ -96,10 +96,10 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
           return;
         }
         provider.toggleTask({ localId: taskId, objectAri, containerAri }, isDone ? 'DONE' : 'TODO');
-        // No provider.getCurrentUser defaults to current delayed behaviour
-        if (isDone && provider.getCurrentUser) {
-          // Undefined currentUser shows 'Created By'/does not update to prevent incorrect 'Completed By' message
-          this.setState({ lastUpdater: provider.getCurrentUser() });
+        if (isDone) {
+          // Undefined provider.getCurrentUser or currentUser shows 'Created By'
+          // ie. does not update to prevent incorrect 'Completed By' message
+          this.setState({ lastUpdater: provider.getCurrentUser ? provider.getCurrentUser() : undefined });
         }
       });
     }

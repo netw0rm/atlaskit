@@ -102,14 +102,12 @@ export interface Query {
 export interface User {
   id: string;
   displayName: string;
-  nickname: string;
+  nickname?: string;
   avatarUrl: string;
 }
 
 // Kept for compatibility
 export type Participant = User;
-// Used by lastUpdater prop in TaskItem to avoid delay in 'Completed By' message
-export type UserInfo = User | string;
 
 export interface ServiceTask {
   containerAri: string;
@@ -172,7 +170,7 @@ export interface RecentUpdatesListener {
 }
 
 export interface TaskDecisionResourceConfig extends ServiceConfig {
-  username?: string;
+  currentUser?: User;
 }
 
 export interface TaskDecisionProvider {
@@ -187,7 +185,7 @@ export interface TaskDecisionProvider {
   toggleTask(objectKey: ObjectKey, state: TaskState): Promise<TaskState>;
   subscribe(objectKey: ObjectKey, handler: Handler): void;
   unsubscribe(objectKey: ObjectKey, handler: Handler): void;
-  getCurrentUsername?(): string | undefined;
+  getCurrentUser?(): User | undefined;
 }
 
 /**

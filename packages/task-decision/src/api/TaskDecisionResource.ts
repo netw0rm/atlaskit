@@ -27,6 +27,7 @@ import {
   TaskDecisionResourceConfig,
   TaskResponse,
   TaskState,
+  User,
 } from '../types';
 
 import { objectKeyToString, toggleTaskState } from '../type-helpers';
@@ -225,8 +226,8 @@ export class ItemStateManager {
     });
   }
 
-  getCurrentUsername(): string | undefined {
-    return this.serviceConfig.username;
+  getCurrentUser(): User | undefined {
+    return this.serviceConfig.currentUser;
   }
 
   private queueAllItems() {

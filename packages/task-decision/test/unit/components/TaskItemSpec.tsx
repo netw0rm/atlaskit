@@ -72,7 +72,6 @@ describe('<TaskItem/>', () => {
     const users = getParticipants(2);
     const user1 = users[0];
     const user2 = users[1];
-    const username = 'Test User';
 
     it('No creator or lastUpdater', () => {
       const component = mount(<TaskItem taskId="task-1" appearance="card" isDone={false} />);
@@ -106,20 +105,6 @@ describe('<TaskItem/>', () => {
       const attributionWrapper = component.find(AttributionWrapper);
       expect(attributionWrapper.length).toEqual(1);
       expect(attributionWrapper.at(0).text()).toEqual(`Completed by ${user2.displayName}`);
-    });
-
-    it('Last updater is string, done', () => {
-      const component = mount(<TaskItem taskId="task-1" appearance="card" creator={user1} lastUpdater={username} isDone={true} />);
-      const attributionWrapper = component.find(AttributionWrapper);
-      expect(attributionWrapper.length).toEqual(1);
-      expect(attributionWrapper.at(0).text()).toEqual(`Completed by ${username}`);
-    });
-
-    it('Last updater is string, not done', () => {
-      const component = mount(<TaskItem taskId="task-1" appearance="card" creator={user1} lastUpdater={username} isDone={false} />);
-      const attributionWrapper = component.find(AttributionWrapper);
-      expect(attributionWrapper.length).toEqual(1);
-      expect(attributionWrapper.at(0).text()).toEqual(`Added by ${user1.displayName}`);
     });
 
     it('Creator and lastUpdater, done, inline - no attribution', () => {

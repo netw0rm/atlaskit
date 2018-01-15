@@ -3,6 +3,7 @@ import {
   getServiceDecisionsResponse,
   getServiceItemsResponse,
   getServiceTasksResponse,
+  participants,
 } from './story-data';
 import {
   convertServiceDecisionResponseToDecisionResponse,
@@ -23,6 +24,7 @@ import {
   TaskDecisionProvider,
   TaskResponse,
   TaskState,
+  User,
 } from '../types';
 
 import { objectKeyToString, toggleTaskState } from '../type-helpers';
@@ -258,8 +260,10 @@ export default class MockTaskDecisionResource implements TaskDecisionProvider {
     });
   }
 
-  getCurrentUsername(): string | undefined {
-    return 'Real Person';
+  getCurrentUser(): User | undefined {
+    // Return a random user from the participants list
+    const randomParticipant = Math.floor(Math.random() * participants.length);
+    return participants[randomParticipant];
   }
 
   private queueItem(objectKey: ObjectKey) {

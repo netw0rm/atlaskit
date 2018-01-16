@@ -1,4 +1,6 @@
 
+import { ServiceConfig } from '@atlaskit/util-service-support';
+
 export type DecisionState = 'DECIDED';
 export type DecisionStatus = 'CREATED';
 export type TaskState = 'TODO' | 'DONE';
@@ -97,15 +99,15 @@ export interface Query {
   sortCriteria?: SortCriteria;
 }
 
-// Kept for compatibility
-export type Participant = User;
-
 export interface User {
   id: string;
   displayName: string;
-  nickname: string;
+  nickname?: string;
   avatarUrl: string;
 }
+
+// Kept for compatibility
+export type Participant = User;
 
 export interface ServiceTask {
   containerAri: string;
@@ -167,6 +169,10 @@ export interface RecentUpdatesListener {
   recentUpdates(updateContext: RecentUpdateContext);
 }
 
+export interface TaskDecisionResourceConfig extends ServiceConfig {
+  currentUser?: User;
+}
+
 export interface TaskDecisionProvider {
   getDecisions(query: Query, recentUpdatesListener?: RecentUpdatesListener): Promise<DecisionResponse>;
   getTasks(query: Query, recentUpdatesListener?: RecentUpdatesListener): Promise<TaskResponse>;
@@ -179,6 +185,7 @@ export interface TaskDecisionProvider {
   toggleTask(objectKey: ObjectKey, state: TaskState): Promise<TaskState>;
   subscribe(objectKey: ObjectKey, handler: Handler): void;
   unsubscribe(objectKey: ObjectKey, handler: Handler): void;
+  getCurrentUser?(): User | undefined;
 }
 
 /**

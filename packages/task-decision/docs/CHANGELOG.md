@@ -1,5 +1,12 @@
 # @atlaskit/task-decision
 
+## 4.7.0 (2018-01-16)
+
+
+
+* feature; product can pass username to resource to prevent delayed completed by message (issues closed: fs-1539) ([b85c8ac](https://bitbucket.org/atlassian/atlaskit/commits/b85c8ac))
+
+
 ## 4.6.1 (2017-12-19)
 
 * bug fix; bump packages to fixed version of analytics ([615e41c](https://bitbucket.org/atlassian/atlaskit/commits/615e41c))

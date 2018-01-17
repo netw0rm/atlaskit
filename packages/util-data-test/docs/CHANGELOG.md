@@ -1,5 +1,8 @@
 # @atlaskit/util-data-test
 
+## 7.2.0 (2018-01-17)
+
+* feature; move test json files from fabric packages ([a0dd818](https://bitbucket.org/atlassian/atlaskit/commits/a0dd818))
 ## 7.1.1 (2017-09-08)
 
 * bug fix; fix regex in mock-profile-client to match lower and uppercase error strings (issues closed: dir-376) ([e52930f](https://bitbucket.org/atlassian/atlaskit/commits/e52930f))

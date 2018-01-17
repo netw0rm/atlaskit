@@ -23,9 +23,8 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/emoji": "^31.0.8",
-    "@atlaskit/mention": "^8.5.1",
-    "@atlaskit/task-decision": "^4.7.0",
+    "@atlaskit/emoji": "^18.4.2",
+    "@atlaskit/mention": "^7.0.0",
     "lodash.sample": "^4.2.1",
     "tslib": "^1.2.0"
   },

@@ -7,7 +7,7 @@ const optOutMessages = defineMessages({
   },
   optOutMessage: {
     id: 'xflow.opt-out.message',
-    defaultMessage: 'This will disable suggestions about Atlassian products for all users of this site.',
+    defaultMessage: 'All users of Jira on this site will no longer see product suggestions.',
   },
   optOutMessageWarning: {
     id: 'xflow.opt-out.message-warning',

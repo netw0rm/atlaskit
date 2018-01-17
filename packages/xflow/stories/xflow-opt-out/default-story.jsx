@@ -24,7 +24,7 @@ storiesOf('xflow-opt-out/XFlowOptOut', module)
     <MockConfluenceXFlowProvider {...defaultProps}>
       <XFlowOptOut
         {...defaultOptOutProps}
-        optOutRequestTrialFeature={() =>
+        optOutFeature={() =>
             new Promise(resolve => setTimeout(resolve, 1000))
           }
       />
@@ -34,10 +34,21 @@ storiesOf('xflow-opt-out/XFlowOptOut', module)
     <MockConfluenceXFlowProvider {...defaultProps}>
       <XFlowOptOut
         {...defaultOptOutProps}
-        optOutRequestTrialFeature={() =>
+        optOutFeature={() =>
             new Promise((_, reject) =>
               setTimeout(() => reject({ message: 'Example failure' }), 1000))
           }
+      />
+    </MockConfluenceXFlowProvider>
+  )
+  .add('Opt Out, success flag after successful request', () =>
+    <MockConfluenceXFlowProvider {...defaultProps}>
+      <XFlowOptOut
+        {...defaultOptOutProps}
+        optOutFeature={() =>
+          new Promise((resolve) =>
+            setTimeout(() => resolve({ message: 'Example failure' }), 1000))
+        }
       />
     </MockConfluenceXFlowProvider>
   );

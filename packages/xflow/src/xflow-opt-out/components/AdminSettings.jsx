@@ -4,7 +4,6 @@ import { FormattedMessage, defineMessages, injectIntl, intlShape } from 'react-i
 import Button from '@atlaskit/button';
 import ModalDialog from '@atlaskit/modal-dialog';
 import Spinner from '@atlaskit/spinner';
-import { AkFieldRadioGroup } from '@atlaskit/field-radio-group';
 import { withAnalytics } from '@atlaskit/analytics';
 import { colors } from '@atlaskit/theme';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
@@ -41,11 +40,11 @@ const messages = defineMessages({
   },
   successFlagTitle: {
     id: 'xflow.generic.opt-out.success-flag.title',
-    defaultMessage: 'You have opted out',
+    defaultMessage: 'Product suggestions are off',
   },
   successFlagDescription: {
     id: 'xflow.generic.opt-out.success-flag.description',
-    defaultMessage: 'You will no longer receive product trial requests!',
+    defaultMessage: 'All users of this site will no longer see product suggestions.',
   },
 });
 
@@ -58,7 +57,7 @@ class AdminSettings extends Component {
     spinnerActive: PropTypes.bool,
     buttonsDisabled: PropTypes.bool,
 
-    optOutRequestTrialFeature: PropTypes.func,
+    optOutFeature: PropTypes.func,
     cancelOptOut: PropTypes.func,
     onComplete: PropTypes.func.isRequired,
 
@@ -69,7 +68,7 @@ class AdminSettings extends Component {
   static defaultProps = {
     spinnerActive: false,
     buttonsDisabled: false,
-    optOutRequestTrialFeature: () => {},
+    optOutFeature: () => {},
     cancelOptOut: () => {},
   };
 
@@ -77,7 +76,6 @@ class AdminSettings extends Component {
     isOpen: true,
     spinnerActive: this.props.spinnerActive,
     buttonsDisabled: this.props.buttonsDisabled,
-    selectedRadio: this.props.defaultSelectedRadio,
   };
 
   componentDidMount() {
@@ -86,11 +84,10 @@ class AdminSettings extends Component {
   }
 
   handleSendOptOutRequest = async () => {
-    const { firePrivateAnalyticsEvent, optOutRequestTrialFeature } = this.props;
-    const { selectedRadio } = this.state;
+    const { firePrivateAnalyticsEvent, optOutFeature } = this.props;
 
     try {
-      await optOutRequestTrialFeature(selectedRadio);
+      await optOutFeature();
       firePrivateAnalyticsEvent('xflow.opt-out.request.successful');
       this.setState({
         optOutRequestStatus: 'successful',
@@ -111,11 +108,9 @@ class AdminSettings extends Component {
 
   handleTurnOffClick= async () => {
     const { firePrivateAnalyticsEvent } = this.props;
-    const { selectedRadio } = this.state;
     const OptOutNoteTextValue = this.noteText.value;
 
     firePrivateAnalyticsEvent('xflow.opt-out.turn-off-button.clicked', {
-      selectedRadio,
       OptOutNoteText: OptOutNoteTextValue,
     });
     this.setState({
@@ -253,11 +248,11 @@ export default withXFlowProvider(
         optOutNotePlaceholder,
       },
       status,
-      optOutRequestTrialFeature,
+      optOutFeature,
       cancelOptOut,
     },
   }) => ({
-    optOutRequestTrialFeature,
+    optOutFeature,
     cancelOptOut,
     status,
     heading: optOutHeading,

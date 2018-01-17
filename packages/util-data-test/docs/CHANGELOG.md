@@ -1,5 +1,8 @@
 # @atlaskit/util-data-test
 
+## 7.2.1 (2018-01-17)
+
+* bug fix; missing json files are breaking mk-2 ([0e5e8db](https://bitbucket.org/atlassian/atlaskit/commits/0e5e8db))
 ## 7.2.0 (2018-01-17)
 
 * feature; move test json files from fabric packages ([a0dd818](https://bitbucket.org/atlassian/atlaskit/commits/a0dd818))

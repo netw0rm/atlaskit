@@ -1,5 +1,5 @@
 export { default as RequestOrStartTrial } from './request-or-start-trial';
-export { default as RequestProductTrialOptOut } from './request-trial-opt-out';
+export { default as XFlowOptOut } from './xflow-opt-out';
 
 export { default as JiraToConfluenceXFlowProvider } from './product-xflow-providers/JiraToConfluenceXFlowProvider';
 export { default as JiraToJCXFlowProvider } from './product-xflow-providers/JiraToJCXFlowProvider';

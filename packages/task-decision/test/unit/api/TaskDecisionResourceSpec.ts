@@ -26,6 +26,7 @@ import {
   objectKeyToString,
   toObjectKey,
 } from '../../../src/type-helpers';
+import { getParticipants } from '../../../src/support/story-data';
 
 // patch URLSearchParams API for jsdom tests
 declare var global: any;
@@ -562,5 +563,18 @@ describe('TaskDecisionResource', () => {
       });
     });
 
+  });
+
+  describe('getCurrentUser', () => {
+    it('can return the current user passed in from the service config', () => {
+      const user = getParticipants(1)[0];
+      const resource = new TaskDecisionResource({ url, currentUser: user });
+      expect(resource.getCurrentUser()).toEqual(user);
+    });
+
+    it('returns undefined when currentUser is undefined in the service config', () => {
+      const resource = new TaskDecisionResource({ url });
+      expect(resource.getCurrentUser()).toBeUndefined();
+    });
   });
 });

@@ -16,6 +16,7 @@ import ContextualConfirmTrialFooter from '../styled/ContextualConfirmTrialFooter
 import ContextualConfirmTrialHeading from '../styled/ContextualConfirmTrialHeading';
 import ConfirmTrialAdminInfo from '../styled/ConfirmTrialAdminInfo';
 import ConfirmTrialAdminInfoImage from '../styled/ConfirmTrialAdminInfoImage';
+import OptOutLinkButton from '../styled/OptOutLinkButton';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
 import { INACTIVE, DEACTIVATED } from '../../common/productProvisioningStates';
 
@@ -127,6 +128,21 @@ class ContextualConfirmTrial extends Component {
     );
     return Promise.resolve(cancelStartProductTrial())
       .then(onCancel);
+  };
+
+  handleOptOutClick = () => {
+    const { firePrivateAnalyticsEvent, status } = this.props;
+    firePrivateAnalyticsEvent(
+      status === INACTIVE
+        ? 'xflow.confirm-trial.opt-out-button.clicked'
+        : 'xflow.reactivate-trial.opt-out-button.clicked'
+    );
+    this.setState({
+      spinnerActive: true,
+      buttonsDisabled: true,
+    });
+    // Redirect to GAB, with opt-out parameter so the opt-out dialog opens
+    window.location.href = `${window.location.hostname}/admin/billing/addapplication?requestproductoptout=true`;
   };
 
   handleErrorFlagDismiss = () => {
@@ -245,6 +261,13 @@ class ContextualConfirmTrial extends Component {
     >
       {status === INACTIVE ? contextInfo.trialCTA : contextInfo.reactivateCTA}
     </Button>
+    <br />
+    <OptOutLinkButton
+      id="xflow-opt-out-button"
+      onClick={this.handleOptOutClick}
+    >
+      Turn off these messages
+    </OptOutLinkButton>
   </ContextualConfirmTrialContent>);
 
   render() {

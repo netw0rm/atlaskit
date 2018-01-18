@@ -226,10 +226,6 @@ export class ItemStateManager {
     });
   }
 
-  getCurrentUser(): User | undefined {
-    return this.serviceConfig.currentUser;
-  }
-
   private queueAllItems() {
     this.batchedKeys = new Map(this.trackedObjectKeys);
   }
@@ -355,5 +351,9 @@ export default class TaskDecisionResource implements TaskDecisionProvider {
    */
   destroy() {
     this.itemStateManager.destroy();
+  }
+
+  getCurrentUser(): User | undefined {
+    return this.serviceConfig.currentUser;
   }
 }

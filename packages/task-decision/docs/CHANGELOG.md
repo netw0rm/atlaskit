@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 4.7.1 (2018-01-18)
+
+* bug fix; move getCurrentUser to TaskDecisionResource ([222ef0e](https://bitbucket.org/atlassian/atlaskit/commits/222ef0e))
 ## 4.7.0 (2018-01-16)
 
 

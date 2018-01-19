@@ -13,7 +13,7 @@ import {
   QS_ANALYTICS_EV_SUBMIT,
 } from './constants';
 
-const noOp = () => {};
+const noOp = () => { };
 
 /** Flatten a AkNavigationItemGroups of results into a plain array of results */
 const flattenChildren = children => (
@@ -39,7 +39,7 @@ const getResultIdByIndex = (array, index) => (
  */
 const getResultById = (array, id) => (
   array && array.find(result => result.props && (result.props.resultId === id))
-  ) || null;
+) || null;
 
 /**
  * Get a result's index in the flatResults array by its ID
@@ -84,6 +84,8 @@ export class QuickSearch extends Component {
     onSearchInput: PropTypes.func.isRequired,
     /** onKeyDown callback for search input */
     onSearchKeyDown: PropTypes.func,
+    /** Called when the user submits the search form without selecting a result */
+    onSearchSubmit: PropTypes.func,
     /** Placeholder text for search input field */
     placeholder: PropTypes.string,
     /** Value of the search input field */
@@ -101,6 +103,7 @@ export class QuickSearch extends Component {
     isLoading: false,
     onSearchBlur: noOp,
     onSearchKeyDown: noOp,
+    onSearchSubmit: noOp,
     placeholder: 'Search',
     value: '',
   }
@@ -110,7 +113,7 @@ export class QuickSearch extends Component {
 
   /** Select first result by default if `selectedResultId` prop is not provider */
   state = {
-    selectedResultId: this.props.selectedResultId || getResultIdByIndex(this.flatResults, 0),
+    selectedResultId: this.props.selectedResultId || null,
   }
 
   componentDidMount() {
@@ -126,7 +129,7 @@ export class QuickSearch extends Component {
     if (nextProps.children) {
       this.flatResults = flattenChildren(nextProps.children);
       this.setState({
-        selectedResultId: nextProps.selectedResultId || getResultIdByIndex(this.flatResults, 0),
+        selectedResultId: nextProps.selectedResultId || null,
       });
     }
 
@@ -212,33 +215,37 @@ export class QuickSearch extends Component {
     } else if (event.key === 'ArrowDown') {
       event.preventDefault(); // Don't move cursor around in search input field
       this.selectNext();
-    } else if (event.key === 'Enter' && this.state.selectedResultId) {
-      event.preventDefault(); // Don't fire submit event from input
-      const result = getResultById(this.flatResults, this.state.selectedResultId);
+    } else if (event.key === 'Enter') {
+      if (this.state.selectedResultId) {
+        event.preventDefault(); // Don't fire submit event from input
+        const result = getResultById(this.flatResults, this.state.selectedResultId);
 
-      // Capture when users are using the keyboard to submit
-      if (typeof firePrivateAnalyticsEvent === 'function') {
-        firePrivateAnalyticsEvent(
-          QS_ANALYTICS_EV_SUBMIT,
-          {
-            index: this.flatResults.indexOf(result),
-            method: 'keyboard',
+        // Capture when users are using the keyboard to submit
+        if (typeof firePrivateAnalyticsEvent === 'function') {
+          firePrivateAnalyticsEvent(
+            QS_ANALYTICS_EV_SUBMIT,
+            {
+              index: this.flatResults.indexOf(result),
+              method: 'keyboard',
+              type: result.props.type,
+            }
+          );
+        }
+
+        if (!result.props) {
+          return;
+        }
+        if (result.props.onClick) {
+          result.props.onClick({
+            resultId: result.props.resultId,
             type: result.props.type,
-          }
-        );
-      }
-
-      if (!result.props) {
-        return;
-      }
-      if (result.props.onClick) {
-        result.props.onClick({
-          resultId: result.props.resultId,
-          type: result.props.type,
-        });
-      }
-      if (result.props.href) {
-        window.location.assign(result.props.href);
+          });
+        }
+        if (result.props.href) {
+          window.location.assign(result.props.href);
+        }
+      } else {
+        this.props.onSearchSubmit();
       }
     }
   };

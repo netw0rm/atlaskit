@@ -220,7 +220,7 @@ const mapResultsDataToComponents = resultData => {
             {...props}
             isSelected={false}
           />
-          ) : null;
+        ) : null;
       })}
     </AkNavigationItemGroup>
   ));
@@ -288,6 +288,7 @@ export default class BasicQuickSearch extends PureComponent {
         /* Search props */
         isLoading={this.state.isLoading}
         onSearchInput={({ target }) => { this.search(target.value); }}
+        onSearchSubmit={() => action('onSearchSubmit')(this.state.query)}
         value={this.state.query}
       >
         {mapResultsDataToComponents(this.state.results)}

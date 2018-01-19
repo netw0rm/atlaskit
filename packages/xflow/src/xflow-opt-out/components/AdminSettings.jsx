@@ -4,17 +4,18 @@ import { FormattedMessage, defineMessages, injectIntl, intlShape } from 'react-i
 import Button from '@atlaskit/button';
 import ModalDialog from '@atlaskit/modal-dialog';
 import Spinner from '@atlaskit/spinner';
-import { AkFieldRadioGroup } from '@atlaskit/field-radio-group';
 import { withAnalytics } from '@atlaskit/analytics';
+import { colors } from '@atlaskit/theme';
+import ErrorIcon from '@atlaskit/icon/glyph/error';
 
 import ErrorFlag from '../../common/components/ErrorFlag';
 import SuccessFlag from '../../common/components/SuccessFlag';
 
 import OptOutHeader from '../styled/OptOutHeader';
 import OptOutFooter from '../styled/OptOutFooter';
-import OptOutRadioDiv from '../styled/OptOutRadioDiv';
+import OptOutIcon from '../styled/OptOutIcon';
+import OptOutMessage from '../styled/OptOutMessage';
 import OptOutNoteDiv from '../styled/OptOutNoteDiv';
-import CustomLabel from '../styled/CustomLabel';
 import OptOutNoteText from '../styled/OptOutNoteText';
 import SpinnerDiv from '../../common/styled/SpinnerDiv';
 
@@ -39,11 +40,11 @@ const messages = defineMessages({
   },
   successFlagTitle: {
     id: 'xflow.generic.opt-out.success-flag.title',
-    defaultMessage: 'You have opted out',
+    defaultMessage: 'Product suggestions are off',
   },
   successFlagDescription: {
     id: 'xflow.generic.opt-out.success-flag.description',
-    defaultMessage: 'You will no longer receive product trial requests!',
+    defaultMessage: 'All users of this site will no longer see product suggestions.',
   },
 });
 
@@ -51,19 +52,12 @@ class AdminSettings extends Component {
   static propTypes = {
     heading: PropTypes.string.isRequired,
     message: PropTypes.string.isRequired,
+    messageWarning: PropTypes.string.isRequired,
     notePlaceholder: PropTypes.string.isRequired,
-    defaultSelectedRadio: PropTypes.string.isRequired,
-    optionItems: PropTypes.arrayOf(
-      PropTypes.shape({
-        value: PropTypes.string,
-        label: PropTypes.string,
-        note: PropTypes.string,
-      })
-    ).isRequired,
     spinnerActive: PropTypes.bool,
     buttonsDisabled: PropTypes.bool,
 
-    optOutRequestTrialFeature: PropTypes.func,
+    optOutFeature: PropTypes.func,
     cancelOptOut: PropTypes.func,
     onComplete: PropTypes.func.isRequired,
 
@@ -74,7 +68,7 @@ class AdminSettings extends Component {
   static defaultProps = {
     spinnerActive: false,
     buttonsDisabled: false,
-    optOutRequestTrialFeature: () => {},
+    optOutFeature: () => {},
     cancelOptOut: () => {},
   };
 
@@ -82,7 +76,6 @@ class AdminSettings extends Component {
     isOpen: true,
     spinnerActive: this.props.spinnerActive,
     buttonsDisabled: this.props.buttonsDisabled,
-    selectedRadio: this.props.defaultSelectedRadio,
   };
 
   componentDidMount() {
@@ -91,11 +84,10 @@ class AdminSettings extends Component {
   }
 
   handleSendOptOutRequest = async () => {
-    const { firePrivateAnalyticsEvent, optOutRequestTrialFeature } = this.props;
-    const { selectedRadio } = this.state;
+    const { firePrivateAnalyticsEvent, optOutFeature } = this.props;
 
     try {
-      await optOutRequestTrialFeature(selectedRadio);
+      await optOutFeature();
       firePrivateAnalyticsEvent('xflow.opt-out.request.successful');
       this.setState({
         optOutRequestStatus: 'successful',
@@ -114,13 +106,11 @@ class AdminSettings extends Component {
     }
   };
 
-  handleContinueClick = async () => {
+  handleTurnOffClick = async () => {
     const { firePrivateAnalyticsEvent } = this.props;
-    const { selectedRadio } = this.state;
     const OptOutNoteTextValue = this.noteText.value;
 
-    firePrivateAnalyticsEvent('xflow.opt-out.continue-button.clicked', {
-      selectedRadio,
+    firePrivateAnalyticsEvent('xflow.opt-out.turn-off-button.clicked', {
       OptOutNoteText: OptOutNoteTextValue,
     });
     this.setState({
@@ -138,16 +128,6 @@ class AdminSettings extends Component {
       isOpen: false,
     });
     await cancelOptOut();
-  };
-
-  handleRadioChange = evt => {
-    const { firePrivateAnalyticsEvent } = this.props;
-    firePrivateAnalyticsEvent('xflow.opt-out.radio-option.changed', {
-      selectedRadio: evt.target.value,
-    });
-    this.setState({
-      selectedRadio: evt.target.value,
-    });
   };
 
   handleErrorFlagResendRequest = () => {
@@ -178,7 +158,7 @@ class AdminSettings extends Component {
   };
 
   render() {
-    const { intl, heading, message, optionItems, notePlaceholder } = this.props;
+    const { intl, heading, message, messageWarning, notePlaceholder } = this.props;
     const { optOutRequestStatus } = this.state;
 
     return (
@@ -186,21 +166,21 @@ class AdminSettings extends Component {
         <ModalDialog
           isOpen={this.state.isOpen}
           width="small"
-          header={<OptOutHeader>{heading}</OptOutHeader>}
+          header={<OptOutHeader><OptOutIcon><ErrorIcon label="Error icon" primaryColor={colors.R400} /></OptOutIcon>{heading}</OptOutHeader>}
           footer={
             <OptOutFooter>
               <SpinnerDiv>
                 <Spinner isCompleting={!this.state.spinnerActive} />
               </SpinnerDiv>
               <Button
-                id="xflow-opt-out-continue-button"
-                onClick={this.handleContinueClick}
-                appearance="primary"
+                id="xflow-opt-out-turn-off-button"
+                onClick={this.handleTurnOffClick}
+                appearance="danger"
                 isDisabled={this.state.buttonsDisabled}
               >
                 <FormattedMessage
-                  id="xflow-generic.opt-out.continue-button"
-                  defaultMessage="Continue"
+                  id="xflow-generic.opt-out.turn-off-button"
+                  defaultMessage="Turn off"
                 />
               </Button>
               <Button
@@ -216,34 +196,17 @@ class AdminSettings extends Component {
             </OptOutFooter>
           }
         >
-          <OptOutRadioDiv>
-            <AkFieldRadioGroup
-              label={message}
-              onRadioChange={this.handleRadioChange}
-              items={optionItems.map(({ value, label, note }) => ({
-                value,
-                label: note ? (
-                  <CustomLabel>
-                    {label}
-                    <br />
-                    <small>{note}</small>
-                  </CustomLabel>
-                ) : (
-                  label
-                ),
-                isSelected: this.state.selectedRadio === value,
-              }))}
+          <OptOutMessage>{message}</OptOutMessage>
+          <OptOutMessage>{messageWarning}</OptOutMessage>
+          <OptOutNoteDiv>
+            <OptOutNoteText
+              innerRef={noteText => {
+                this.noteText = noteText;
+              }}
+              placeholder={notePlaceholder}
+              maxLength={300}
             />
-            <OptOutNoteDiv>
-              <OptOutNoteText
-                innerRef={noteText => {
-                  this.noteText = noteText;
-                }}
-                placeholder={notePlaceholder}
-                maxLength={300}
-              />
-            </OptOutNoteDiv>
-          </OptOutRadioDiv>
+          </OptOutNoteDiv>
         </ModalDialog>
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}
@@ -281,22 +244,20 @@ export default withXFlowProvider(
       optOut: {
         optOutHeading,
         optOutMessage,
-        optOutOptionItems,
-        optOutDefaultSelectedRadio,
+        optOutMessageWarning,
         optOutNotePlaceholder,
       },
       status,
-      optOutRequestTrialFeature,
+      optOutFeature,
       cancelOptOut,
     },
   }) => ({
-    optOutRequestTrialFeature,
+    optOutFeature,
     cancelOptOut,
     status,
     heading: optOutHeading,
     message: optOutMessage,
-    optionItems: optOutOptionItems,
-    defaultSelectedRadio: optOutDefaultSelectedRadio,
+    messageWarning: optOutMessageWarning,
     notePlaceholder: optOutNotePlaceholder,
   })
 );

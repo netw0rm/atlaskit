@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { injectIntl, intlShape } from 'react-intl';
 
 import { ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN } from '../productProvisioningStates';
-import optOutRequestTrialFeature from '../services/optOutRequestTrialFeature';
+import optOutFeature from '../services/optOutFeature';
 import cancelOptOut from '../services/cancelOptOut';
 import optOutMessagesDefaultProps from '../messages/OptOutMessages';
 
@@ -110,7 +110,7 @@ class XFlowProviderBase extends Component {
         getProductActivationState: this.getProductActivationState,
         startProductTrial: this.startProductTrial,
         waitForActivation: this.waitForActivation,
-        optOutRequestTrialFeature,
+        optOutFeature,
         cancelOptOut,
       },
     };

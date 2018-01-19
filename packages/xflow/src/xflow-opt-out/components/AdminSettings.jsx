@@ -106,7 +106,7 @@ class AdminSettings extends Component {
     }
   };
 
-  handleTurnOffClick= async () => {
+  handleTurnOffClick = async () => {
     const { firePrivateAnalyticsEvent } = this.props;
     const OptOutNoteTextValue = this.noteText.value;
 

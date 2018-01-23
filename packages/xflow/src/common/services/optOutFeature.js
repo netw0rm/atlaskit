@@ -1,11 +1,38 @@
 import 'es6-promise/auto';
 import 'whatwg-fetch';
+import { fetchCloudId } from './tenantContext';
+import { getEnvAPIUrl } from '../utils/envDetection';
 
-const xflowEnabledProperty = 'xflow.request.trial.enabled';
-export const optOutEndpoint = '/rest/growth/1/store/global';
+export const xflowNamespace = 'xflow.product-suggestions';
+export const xflowEnabledProperty = 'xflow.product.suggestions.enabled';
+export const xflowEnabledKey = 'isEnabled';
 
-export default async () => {
-  const response = await fetch(optOutEndpoint, {
+export const jiraPreferencesEndpoint = '/rest/api/2/application-properties';
+
+async function updateSiteAdminService() {
+  const cloudId = await fetchCloudId();
+  const siteAdminServiceEndpoint = `${getEnvAPIUrl()}/site/${cloudId}/setting/${xflowNamespace}/${xflowEnabledKey}`;
+
+  const response = await fetch(siteAdminServiceEndpoint, {
+    method: 'PUT',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      'xflow.product.suggestions.enabled': false,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Unable to set opt-out preferences in Site Admin Service. Status: ${response.status}`);
+  }
+
+  return true;
+}
+
+async function updateJiraPreferences() {
+  const response = await fetch(`${jiraPreferencesEndpoint}/${xflowEnabledProperty}`, {
     method: 'PUT',
     credentials: 'include',
     headers: {
@@ -18,8 +45,15 @@ export default async () => {
   });
 
   if (!response.ok) {
-    throw new Error(`Unable to complete opt-out request at this time. Status: ${response.status}`);
+    throw new Error(`Unable to set opt-out preferences in Jira preferences. Status: ${response.status}`);
   }
+
+  return true;
+}
+
+export default async () => {
+  await updateSiteAdminService();
+  await updateJiraPreferences();
 
   return true;
 };

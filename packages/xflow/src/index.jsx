@@ -9,3 +9,5 @@ export { default as JiraToJSWXFlowProvider } from './product-xflow-providers/Jir
 // To allow consumers not using @atlaskit/analytics
 // to delegate the analytics events to their own stack
 export { default as XFlowAnalyticsListener } from './common/components/XFlowAnalyticsListener';
+
+export { default as XFlow } from './XFlow';

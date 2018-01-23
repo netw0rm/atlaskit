@@ -1,15 +1,17 @@
 import 'es6-promise/auto';
 import 'whatwg-fetch';
 import { fetchCloudId } from './tenantContext';
+import { getEnvAPIUrl } from '../utils/envDetection';
 
 export const xflowNamespace = 'xflow.product-suggestions';
 export const xflowEnabledProperty = 'xflow.product.suggestions.enabled';
+export const xflowEnabledKey = 'isEnabled';
 
 export const jiraPreferencesEndpoint = '/rest/api/2/application-properties';
 
 async function updateSiteAdminService() {
   const cloudId = await fetchCloudId();
-  const siteAdminServiceEndpoint = `/site/${cloudId}/setting/${xflowNamespace}/${xflowEnabledProperty}`;
+  const siteAdminServiceEndpoint = `${getEnvAPIUrl()}/site/${cloudId}/setting/${xflowNamespace}/${xflowEnabledKey}`;
 
   const response = await fetch(siteAdminServiceEndpoint, {
     method: 'PUT',
@@ -18,8 +20,7 @@ async function updateSiteAdminService() {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      key: xflowEnabledProperty,
-      value: false,
+      'xflow.product.suggestions.enabled': false,
     }),
   });
 

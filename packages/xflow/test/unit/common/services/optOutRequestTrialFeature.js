@@ -4,6 +4,7 @@ import fetchMock from 'fetch-mock';
 
 import optOutFeature, {
   jiraPreferencesEndpoint,
+  xflowEnabledKey,
   xflowEnabledProperty,
   xflowNamespace,
 } from '../../../../src/common/services/optOutFeature';
@@ -23,14 +24,14 @@ describe('optOutFeature', () => {
 
   it('should return a resolved promise with no value if both endpoints return a 204 response', async () => {
     fetchMock.mock(`${jiraPreferencesEndpoint}/${xflowEnabledProperty}`, 204);
-    fetchMock.mock(`/site/${EXPECTED_CLOUD_ID}/setting/${xflowNamespace}/${xflowEnabledProperty}`, 204);
+    fetchMock.mock(`https://api-private.atlassian.com/site/${EXPECTED_CLOUD_ID}/setting/${xflowNamespace}/${xflowEnabledKey}`, 204);
     const result = await optOutFeature();
     expect(result).toEqual(true);
   });
 
   it('should return a rejected promise if the site admin service endpoint returns a 400 response', async () => {
     fetchMock.mock(`${jiraPreferencesEndpoint}/${xflowEnabledProperty}`, 204);
-    fetchMock.mock(`/site/${EXPECTED_CLOUD_ID}/setting/${xflowNamespace}/${xflowEnabledProperty}`, 400);
+    fetchMock.mock(`https://api-private.atlassian.com/site/${EXPECTED_CLOUD_ID}/setting/${xflowNamespace}/${xflowEnabledKey}`, 400);
     try {
       await optOutFeature();
     } catch (e) {
@@ -40,7 +41,7 @@ describe('optOutFeature', () => {
 
   it('should return a rejected promise if the jira preferences endpoint returns a 400 response', async () => {
     fetchMock.mock(`${jiraPreferencesEndpoint}/${xflowEnabledProperty}`, 400);
-    fetchMock.mock(`/site/${EXPECTED_CLOUD_ID}/setting/${xflowNamespace}/${xflowEnabledProperty}`, 204);
+    fetchMock.mock(`https://api-private.atlassian.com/site/${EXPECTED_CLOUD_ID}/setting/${xflowNamespace}/${xflowEnabledKey}`, 204);
     try {
       await optOutFeature();
     } catch (e) {

@@ -15,7 +15,6 @@ const DUMMY_HTML_SINCE_NO_ENDPOINT = '<html>some html...'; // real case when a u
 
 describe('optOutFeature', () => {
   beforeEach(() => {
-    // fetchMock.mock(fetchCloudId, '1234');
     fetchMock.getOnce(JIRA_CLOUD_ID_URL, { cloudId: EXPECTED_CLOUD_ID });
     fetchMock.getOnce(CONFLUENCE_CLOUD_ID_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
     fetchMock.catch(417);

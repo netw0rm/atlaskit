@@ -7,8 +7,12 @@ import JiraToJCXFlowProvider from './product-xflow-providers/JiraToJCXFlowProvid
 import JiraToJSWXFlowProvider from './product-xflow-providers/JiraToJSWXFlowProvider';
 import RequestOrStartTrial from './request-or-start-trial/index';
 
-export function UnknownProductError() {}
+export function UnknownProductError(message) {
+  this.message = message;
+  this.stack = (new Error()).stack;
+}
 UnknownProductError.prototype = Object.create(Error.prototype);
+UnknownProductError.prototype.name = 'UnknownProductError';
 
 export default class XFlow extends Component {
   static propTypes = {

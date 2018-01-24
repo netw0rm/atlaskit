@@ -10,4 +10,4 @@ export { default as JiraToJSWXFlowProvider } from './product-xflow-providers/Jir
 // to delegate the analytics events to their own stack
 export { default as XFlowAnalyticsListener } from './common/components/XFlowAnalyticsListener';
 
-export { default as XFlow } from './XFlow';
+export { default as XFlow, UnknownProductError } from './XFlow';

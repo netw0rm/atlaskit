@@ -7,6 +7,9 @@ import JiraToJCXFlowProvider from './product-xflow-providers/JiraToJCXFlowProvid
 import JiraToJSWXFlowProvider from './product-xflow-providers/JiraToJSWXFlowProvider';
 import RequestOrStartTrial from './request-or-start-trial/index';
 
+export function UnknownProductError() {}
+UnknownProductError.prototype = Object.create(Error.prototype);
+
 export default class XFlow extends Component {
   static propTypes = {
     sourceComponent: PropTypes.string.isRequired,
@@ -33,7 +36,7 @@ export default class XFlow extends Component {
 
     const XFlowProvider = XFlow.getProviderForProductKey(targetProduct);
     if (!XFlowProvider) {
-      throw new Error(`No XFlow provider for product ${targetProduct}`);
+      throw new UnknownProductError(`No XFlow provider for product ${targetProduct}`);
     }
 
     return (

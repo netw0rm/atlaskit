@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
-import XFlow from '../../src/XFlow';
+import XFlow, { UnknownProductError } from '../../src/XFlow';
 import JiraToConfluenceXFlowProvider from '../../src/product-xflow-providers/JiraToConfluenceXFlowProvider';
 import JiraToJSDXFlowProvider from '../../src/product-xflow-providers/JiraToJSDXFlowProvider';
 import JiraToJCXFlowProvider from '../../src/product-xflow-providers/JiraToJCXFlowProvider';
@@ -81,7 +81,7 @@ describe('<XFlow> Component', () => {
 
       expect(() => {
         shallow(<XFlow {...mockProps} />);
-      }).toThrowError('No XFlow provider for product nonsenseKey');
+      }).toThrow(UnknownProductError);
     });
   });
 });

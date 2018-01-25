@@ -51,6 +51,8 @@ async function updateJiraPreferences() {
   return true;
 }
 
+// Run these calls sequentially,to ensure Site Admin Service has been updated correctly before
+// making the call to Jira Preferences. Site Admin Service will be the source of truth.
 export default async () => {
   await updateSiteAdminService();
   await updateJiraPreferences();

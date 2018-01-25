@@ -39,7 +39,7 @@ async function updateJiraPreferences() {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      key: xflowEnabledProperty,
+      id: xflowEnabledProperty,
       value: false,
     }),
   });

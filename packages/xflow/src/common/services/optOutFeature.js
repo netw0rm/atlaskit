@@ -20,7 +20,7 @@ async function updateSiteAdminService() {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      'product-suggestions-enabled': false,
+      [xflowEnabledKey]: false,
     }),
   });
 

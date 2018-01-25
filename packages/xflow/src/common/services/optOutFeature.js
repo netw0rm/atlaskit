@@ -3,9 +3,9 @@ import 'whatwg-fetch';
 import { fetchCloudId } from './tenantContext';
 import { getEnvAPIUrl } from '../utils/envDetection';
 
-export const xflowNamespace = 'xflow.product-suggestions';
+export const xflowNamespace = 'xflow';
 export const xflowEnabledProperty = 'xflow.product.suggestions.enabled';
-export const xflowEnabledKey = 'isEnabled';
+export const xflowEnabledKey = 'product-suggestions-enabled';
 
 export const jiraPreferencesEndpoint = '/rest/api/2/application-properties';
 
@@ -20,7 +20,7 @@ async function updateSiteAdminService() {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      'xflow.product.suggestions.enabled': false,
+      'product-suggestions-enabled': false,
     }),
   });
 

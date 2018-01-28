@@ -14,6 +14,7 @@ import ContextualConfirmTrialHeader from '../styled/ContextualConfirmTrialHeader
 import ContextualConfirmTrialImage from '../styled/ContextualConfirmTrialImage';
 import ContextualConfirmTrialFooter from '../styled/ContextualConfirmTrialFooter';
 import ContextualConfirmTrialHeading from '../styled/ContextualConfirmTrialHeading';
+import ContextualOptOutLinkButton from '../styled/ContextualOptOutLinkButton';
 import ConfirmTrialAdminInfo from '../styled/ConfirmTrialAdminInfo';
 import ConfirmTrialAdminInfoImage from '../styled/ConfirmTrialAdminInfoImage';
 import OptOutLinkButton from '../styled/OptOutLinkButton';
@@ -262,12 +263,12 @@ class ContextualConfirmTrial extends Component {
       {status === INACTIVE ? contextInfo.trialCTA : contextInfo.reactivateCTA}
     </Button>
     <br />
-    <OptOutLinkButton
+    <ContextualOptOutLinkButton
       id="xflow-opt-out-button"
       onClick={this.handleOptOutClick}
     >
       Turn off these messages
-    </OptOutLinkButton>
+    </ContextualOptOutLinkButton>
   </ContextualConfirmTrialContent>);
 
   render() {

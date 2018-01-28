@@ -8,6 +8,7 @@ import { withAnalytics } from '@atlaskit/analytics';
 import ErrorFlag from '../../common/components/ErrorFlag';
 
 import SpinnerDiv from '../../common/styled/SpinnerDiv';
+import OptOutLinkButton from '../styled/OptOutLinkButton';
 import StartTrialFooter from '../styled/StartTrialFooter';
 import StartTrialHeader from '../styled/StartTrialHeader';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
@@ -121,6 +122,21 @@ class ConfirmTrial extends Component {
       .then(onCancel);
   };
 
+  handleOptOutClick = () => {
+    const { firePrivateAnalyticsEvent, status } = this.props;
+    firePrivateAnalyticsEvent(
+      status === INACTIVE
+        ? 'xflow.confirm-trial.opt-out-button.clicked'
+        : 'xflow.reactivate-trial.opt-out-button.clicked'
+    );
+    this.setState({
+      spinnerActive: true,
+      buttonsDisabled: true,
+    });
+    // Redirect to GAB, with opt-out parameter so the opt-out dialog opens
+    window.location.href = `${window.location.origin}/admin/billing/addapplication?requestproductoptout=true`;
+  };
+
   handleErrorFlagDismiss = () => {
     const { firePrivateAnalyticsEvent, status } = this.props;
     firePrivateAnalyticsEvent(
@@ -184,6 +200,12 @@ class ConfirmTrial extends Component {
           </StartTrialHeader>
           {status === INACTIVE ? trialMessage : reactivateMessage}
         </div>
+        <OptOutLinkButton
+          id="xflow-opt-out-button"
+          onClick={this.handleOptOutClick}
+        >
+          Turn off these messages
+        </OptOutLinkButton>
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}
           description={intl.formatMessage(messages.errorFlagDescription)}

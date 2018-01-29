@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 4.7.2 (2018-01-29)
+
+* bug fix; object/containerAri is optional to toggle isDone for ResourcedTaskItem (issues closed: fs-1674) ([1f77a21](https://bitbucket.org/atlassian/atlaskit/commits/1f77a21))
 ## 4.7.1 (2018-01-18)
 
 * bug fix; move getCurrentUser to TaskDecisionResource ([222ef0e](https://bitbucket.org/atlassian/atlaskit/commits/222ef0e))

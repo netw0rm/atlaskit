@@ -21,6 +21,7 @@ async function updateSiteAdminService() {
     },
     body: JSON.stringify({
       [xflowEnabledKey]: false,
+      '__read-accessible__': true,
     }),
   });
 

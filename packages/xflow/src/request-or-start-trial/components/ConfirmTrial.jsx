@@ -41,6 +41,7 @@ class ConfirmTrial extends Component {
     cancelStartProductTrial: PropTypes.func,
     onComplete: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
+    isCrossSell: PropTypes.bool,
 
     intl: intlShape.isRequired,
     firePrivateAnalyticsEvent: PropTypes.func.isRequired,
@@ -158,6 +159,7 @@ class ConfirmTrial extends Component {
       trialMessage,
       reactivateHeading,
       reactivateMessage,
+      isCrossSell,
     } = this.props;
     return (
       <ModalDialog
@@ -200,12 +202,14 @@ class ConfirmTrial extends Component {
           </StartTrialHeader>
           {status === INACTIVE ? trialMessage : reactivateMessage}
         </div>
-        <OptOutLinkButton
-          id="xflow-opt-out-button"
-          onClick={this.handleOptOutClick}
-        >
-          Turn off these messages
-        </OptOutLinkButton>
+        {isCrossSell === true &&
+          <OptOutLinkButton
+            id="xflow-opt-out-button"
+            onClick={this.handleOptOutClick}
+          >
+            Turn off these messages
+          </OptOutLinkButton>
+        }
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}
           description={intl.formatMessage(messages.errorFlagDescription)}

@@ -8,6 +8,9 @@ const ContextualOptOutLinkButton = styled.button`
   border: none;
   font-size: 12px;
   cursor: pointer;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
   margin-bottom: 32px;
   
   &:hover {

@@ -12,7 +12,7 @@ import LoadingTime from './LoadingTime';
 class StartTrial extends Component {
   static propTypes = {
     showGrantAccess: PropTypes.bool.isRequired,
-
+    isCrossSell: PropTypes.bool,
     onComplete: PropTypes.func,
     onTrialActivating: PropTypes.func,
 
@@ -22,6 +22,7 @@ class StartTrial extends Component {
   static defaultProps = {
     onComplete: () => {},
     onTrialActivating: () => {},
+    isCrossSell: false,
   };
 
   render() {
@@ -30,6 +31,7 @@ class StartTrial extends Component {
       onComplete,
       onTrialActivating,
       firePrivateAnalyticsEvent,
+      isCrossSell,
     } = this.props;
     return (
       <MultiStep onComplete={onComplete}>
@@ -46,6 +48,7 @@ class StartTrial extends Component {
                 nextStep(showGrantAccess ? 1 : 2);
               }}
               onCancel={cancel}
+              isCrossSell={isCrossSell}
             />}
         />
         <Step render={nextStep => <GrantAccess onComplete={nextStep} />} />

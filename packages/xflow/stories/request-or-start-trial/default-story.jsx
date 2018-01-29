@@ -148,6 +148,18 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
   }
 
   stories = stories
+    .add('User can add a product (INACTIVE), Start Trial flow without Grant Access screen, with opt out link', () =>
+      <MockXFlowProvider
+        {...defaultXFlowProviderProps}
+      >
+        <RequestOrStartTrial
+          {...defaultRequestOrStartTrialProps}
+          onTrialActivating={action('onTrialActivating')}
+          grantAccessEnabled={false}
+          isCrossSell
+        />
+      </MockXFlowProvider>
+    )
     .add('User can add a product (INACTIVE), Start Trial flow without Grant Access screen', () =>
       <MockXFlowProvider
         {...defaultXFlowProviderProps}
@@ -185,6 +197,23 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
         />
       </MockXFlowProvider>
     )
+      .add('User can add a product (DEACTIVATED), Contextual Start Trial flow without Grant Access screen, with opt out link', () =>
+        <MockXFlowProvider
+          {...defaultXFlowProviderProps}
+          productStatusChecker={mockProductStatusChecker(DEACTIVATED)}
+        >
+          <RequestOrStartTrial
+            {...defaultRequestOrStartTrialProps}
+            contextInfo={{
+              contextualHeading: 'Project pages are powered by Confluence',
+              contextualMessage: 'Create, share, and collaborate on all your project docs in one place, with Confluence pages.',
+              reactivateCTA: 'Reactivate Confluence',
+              trialCTA: 'Try Confluence free for 30 days',
+            }}
+            isCrossSell
+          />
+        </MockXFlowProvider>
+      )
       .add('User can add a product (DEACTIVATED), Contextual Start Trial flow without Grant Access screen', () =>
         <MockXFlowProvider
           {...defaultXFlowProviderProps}

@@ -8,18 +8,19 @@ const images = {
   settings: 'https://aes-artifacts--cdn.us-east-1.prod.public.atl-paas.net/hashed/t1X9AbDG8RiEr496nPjjMLBUvZq_v7BxW877dDMKS0U/settings-icon.svg',
 };
 
-const ConfirmTrialAdminInfoImage = styled.img`
+const ConfirmTrialAdminInfoImage = styled.div`
   @media all and (max-width: 800px) {
-      margin: ${gridSize}px 0px ${math.multiply(gridSize, -3)}px 0px;
-      padding-bottom: 0px;
+    margin: ${gridSize}px 0px ${math.multiply(gridSize, -3)}px 0px;
+    padding-bottom: 0px;
   }
-  
+
   display: block;
   margin: auto;
   width: ${math.multiply(gridSize, 3)}px;
   height: ${math.multiply(gridSize, 3)}px;
   padding-bottom: ${gridSize()}px;
-  content: url(${props => images[props.imageType] || images.settings});
+  background: url(${props => images[props.imageType] || images.settings}) no-repeat;
+  background-size: ${math.multiply(gridSize, 3)}px ${math.multiply(gridSize, 3)}px;
 `;
 
 ConfirmTrialAdminInfoImage.displayName = 'ConfirmTrialAdminInfoImage';

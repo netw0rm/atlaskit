@@ -22,6 +22,7 @@ export interface Props {
 
 export interface State {
   isDone?: boolean;
+  lastUpdater?: User;
 }
 
 export default class ResourcedTaskItem extends PureComponent<Props, State> {
@@ -34,7 +35,8 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
     super(props);
 
     this.state = {
-      isDone: props.isDone
+      isDone: props.isDone,
+      lastUpdater: props.lastUpdater,
     };
   }
 
@@ -84,16 +86,21 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
 
   private handleOnChange = (taskId: string, isDone: boolean) => {
     const { taskDecisionProvider, objectAri, containerAri, onChange } = this.props;
-    if (taskDecisionProvider && containerAri && objectAri) {
-      // Optimistically update the task
-      this.setState({ isDone });
+    // Optimistically update the task
+    this.setState({ isDone });
 
+    if (taskDecisionProvider && containerAri && objectAri) {
       // Call provider to update task
       taskDecisionProvider.then(provider => {
         if (!this.mounted) {
           return;
         }
         provider.toggleTask({ localId: taskId, objectAri, containerAri }, isDone ? 'DONE' : 'TODO');
+        if (isDone) {
+          // Undefined provider.getCurrentUser or currentUser shows 'Created By'
+          // ie. does not update to prevent incorrect 'Completed By' message
+          this.setState({ lastUpdater: provider.getCurrentUser ? provider.getCurrentUser() : undefined });
+        }
       });
     }
     if (onChange) {
@@ -102,8 +109,8 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
   }
 
   render() {
-    const { isDone } = this.state;
-    const { appearance, children, contentRef, creator, participants, showParticipants, showPlaceholder, taskId, lastUpdater } = this.props;
+    const { isDone, lastUpdater } = this.state;
+    const { appearance, children, contentRef, creator, participants, showParticipants, showPlaceholder, taskId } = this.props;
 
     return (
       <TaskItem

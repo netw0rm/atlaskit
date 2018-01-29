@@ -14,6 +14,7 @@ import ContextualConfirmTrialHeader from '../styled/ContextualConfirmTrialHeader
 import ContextualConfirmTrialImage from '../styled/ContextualConfirmTrialImage';
 import ContextualConfirmTrialFooter from '../styled/ContextualConfirmTrialFooter';
 import ContextualConfirmTrialHeading from '../styled/ContextualConfirmTrialHeading';
+import ContextualOptOutLinkButton from '../styled/ContextualOptOutLinkButton';
 import ConfirmTrialAdminInfo from '../styled/ConfirmTrialAdminInfo';
 import ConfirmTrialAdminInfoImage from '../styled/ConfirmTrialAdminInfoImage';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
@@ -48,6 +49,7 @@ class ContextualConfirmTrial extends Component {
     onCancel: PropTypes.func.isRequired,
     startProductTrial: PropTypes.func,
     cancelStartProductTrial: PropTypes.func,
+    isCrossSell: PropTypes.bool,
 
     firePrivateAnalyticsEvent: PropTypes.func.isRequired,
     intl: intlShape.isRequired,
@@ -116,6 +118,21 @@ class ContextualConfirmTrial extends Component {
     );
     return Promise.resolve(cancelStartProductTrial())
       .then(onCancel);
+  };
+
+  handleOptOutClick = () => {
+    const { firePrivateAnalyticsEvent, status } = this.props;
+    firePrivateAnalyticsEvent(
+      status === INACTIVE
+        ? 'xflow.confirm-trial.opt-out-button.clicked'
+        : 'xflow.reactivate-trial.opt-out-button.clicked'
+    );
+    this.setState({
+      spinnerActive: true,
+      buttonsDisabled: true,
+    });
+    // Redirect to GAB, with opt-out parameter so the opt-out dialog opens
+    window.location.href = '/admin/billing/addapplication?requestproductoptout=true';
   };
 
   handleErrorFlagDismiss = () => {
@@ -218,7 +235,7 @@ class ContextualConfirmTrial extends Component {
     ? this.renderInactiveFooter()
     : this.renderReactivateFooter());
 
-  renderContextualContent = (status, contextInfo) => (<ContextualConfirmTrialContent id="xflow-confirm-trial">
+  renderContextualContent = (status, contextInfo, isCrossSell) => (<ContextualConfirmTrialContent id="xflow-confirm-trial">
     <ContextualConfirmTrialHeading>
       {contextInfo.contextualHeading}
     </ContextualConfirmTrialHeading>
@@ -234,6 +251,14 @@ class ContextualConfirmTrial extends Component {
     >
       {status === INACTIVE ? contextInfo.trialCTA : contextInfo.reactivateCTA}
     </Button>
+    {isCrossSell === true &&
+      <ContextualOptOutLinkButton
+        id="xflow-opt-out-button"
+        onClick={this.handleOptOutClick}
+      >
+        Turn off these messages
+      </ContextualOptOutLinkButton>
+    }
   </ContextualConfirmTrialContent>);
 
   render() {
@@ -242,12 +267,13 @@ class ContextualConfirmTrial extends Component {
       status,
       image,
       contextInfo,
+      isCrossSell,
     } = this.props;
     return (
       <ModalDialog
         isOpen
         width="medium"
-        height={'556px'}
+        height={'580px'}
         header={
           this.renderHeader(image, contextInfo)
         }
@@ -255,7 +281,7 @@ class ContextualConfirmTrial extends Component {
           this.renderFooter(status)
         }
       >
-        {this.renderContextualContent(status, contextInfo)}
+        {this.renderContextualContent(status, contextInfo, isCrossSell)}
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}
           description={intl.formatMessage(messages.errorFlagDescription)}

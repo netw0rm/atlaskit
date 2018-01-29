@@ -3,6 +3,7 @@ import {
   getServiceDecisionsResponse,
   getServiceItemsResponse,
   getServiceTasksResponse,
+  participants,
 } from './story-data';
 import {
   convertServiceDecisionResponseToDecisionResponse,
@@ -23,6 +24,7 @@ import {
   TaskDecisionProvider,
   TaskResponse,
   TaskState,
+  User,
 } from '../types';
 
 import { objectKeyToString, toggleTaskState } from '../type-helpers';
@@ -256,6 +258,12 @@ export default class MockTaskDecisionResource implements TaskDecisionProvider {
     handlers.forEach(handler => {
       handler(state);
     });
+  }
+
+  getCurrentUser(): User | undefined {
+    // Return a random user or undefined from the participants list
+    const randomParticipant = Math.floor(Math.random() * participants.length);
+    return Math.random() < 0.75 ? participants[randomParticipant] : undefined;
   }
 
   private queueItem(objectKey: ObjectKey) {

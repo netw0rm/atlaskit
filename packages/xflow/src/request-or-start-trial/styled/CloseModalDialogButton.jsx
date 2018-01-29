@@ -15,6 +15,7 @@ const CloseModalDialogButton = styled.button`
   border: none;
   margin-right: -${math.multiply(gridSize, 1.5)}px;
   margin-top: ${gridSize}px;
+  cursor: pointer;
   
   &:focus {
     outline: 0;

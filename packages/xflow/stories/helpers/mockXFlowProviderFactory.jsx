@@ -29,7 +29,7 @@ const overrideImplementations = {
   checkProductRequestFlag: notImplemented('checkProductRequestFlag'),
   closeAlreadyStartedDialog: notImplemented('closeAlreadyStartedDialog'),
 
-  optOutRequestTrialFeature: notImplemented('optOutRequestTrialFeature'),
+  optOutFeature: notImplemented('optOutFeature'),
   cancelOptOut: action('cancelOptOut'),
 };
 

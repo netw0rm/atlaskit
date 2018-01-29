@@ -33,6 +33,7 @@ class RequestOrStartTrial extends Component {
       trialCTA: PropTypes.string,
     }),
     grantAccessEnabled: PropTypes.bool,
+    isCrossSell: PropTypes.bool,
 
     canCurrentUserAddProduct: PropTypes.func.isRequired,
     getProductActivationState: PropTypes.func.isRequired,
@@ -172,6 +173,7 @@ class RequestOrStartTrial extends Component {
       sourceContext,
       contextInfo,
       grantAccessEnabled,
+      isCrossSell,
     } = this.props;
     const {
       activationState,
@@ -217,6 +219,7 @@ class RequestOrStartTrial extends Component {
                       onTrialActivating={onTrialActivating}
                       showGrantAccess={activationState === INACTIVE && grantAccessEnabled}
                       contextInfo={contextInfo}
+                      isCrossSell={isCrossSell}
                     />
                   )
                   : (
@@ -224,6 +227,7 @@ class RequestOrStartTrial extends Component {
                       onComplete={onComplete}
                       onTrialActivating={onTrialActivating}
                       showGrantAccess={activationState === INACTIVE && grantAccessEnabled}
+                      isCrossSell={isCrossSell}
                     />
                   )
               );

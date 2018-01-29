@@ -76,4 +76,10 @@ storiesOf('request-or-start-trial/ContextualConfirmTrial', module)
       status={DEACTIVATED}
       startProductTrial={() => new Promise((_, reject) => setTimeout(reject, 1500))}
     />
+  )
+  .add('Confirm Trial dialog (INACTIVE) with opt out link', () =>
+    <ContextualConfirmTrialBase
+      {...defaultProps}
+      isCrossSell
+    />
   );

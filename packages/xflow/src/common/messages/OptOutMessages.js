@@ -3,31 +3,19 @@ import { defineMessages } from 'react-intl';
 const optOutMessages = defineMessages({
   optOutHeading: {
     id: 'xflow.opt-out.heading',
-    defaultMessage: 'Trial requests',
+    defaultMessage: 'Turn off all product suggestions',
   },
   optOutMessage: {
     id: 'xflow.opt-out.message',
-    defaultMessage: 'Change your notifications or stop requests completely.',
+    defaultMessage: 'All users of Jira on this site will no longer see product suggestions.',
+  },
+  optOutMessageWarning: {
+    id: 'xflow.opt-out.message-warning',
+    defaultMessage: 'This cannot be undone.',
   },
   optOutNotePlaceholder: {
     id: 'xflow.opt-out.note-placeholder',
-    defaultMessage: 'Send us your feedback to help improve \nfuture releases.',
-  },
-  optOutOptionItemsLabelAdminNotifications: {
-    id: 'xflow.opt-out.option.label.admin-notifications',
-    defaultMessage: 'Turn off notifications',
-  },
-  optOutOptionItemsNoteAdminNotifications: {
-    id: 'xflow.opt-out.option.note.admin-notifications',
-    defaultMessage: 'You won\'t get trial requests from users.',
-  },
-  optOutOptionItemsLabelDisableRequests: {
-    id: 'xflow.opt-out.option.label.disable-requests',
-    defaultMessage: 'Turn off trial requesting',
-  },
-  optOutOptionItemsNoteDisableRequests: {
-    id: 'xflow.opt-out.option.note.disable-requests',
-    defaultMessage: 'Users can\'t request trials.',
+    defaultMessage: 'Let us know why you want to turn these messages off (optional).',
   },
 });
 
@@ -35,20 +23,8 @@ const optOutMessagesDefaultProps = intl => ({
   optOut: {
     optOutHeading: intl.formatMessage(optOutMessages.optOutHeading),
     optOutMessage: intl.formatMessage(optOutMessages.optOutMessage),
-    optOutDefaultSelectedRadio: 'admin-opt-out',
+    optOutMessageWarning: intl.formatMessage(optOutMessages.optOutMessageWarning),
     optOutNotePlaceholder: intl.formatMessage(optOutMessages.optOutNotePlaceholder),
-    optOutOptionItems: [
-      {
-        value: 'admin-opt-out',
-        label: intl.formatMessage(optOutMessages.optOutOptionItemsLabelAdminNotifications),
-        note: intl.formatMessage(optOutMessages.optOutOptionItemsNoteAdminNotifications),
-      },
-      {
-        value: 'disable-requests',
-        label: intl.formatMessage(optOutMessages.optOutOptionItemsLabelDisableRequests),
-        note: intl.formatMessage(optOutMessages.optOutOptionItemsNoteDisableRequests),
-      },
-    ],
   },
 });
 

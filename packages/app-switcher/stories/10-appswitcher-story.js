@@ -7,164 +7,146 @@ import CustomIcon from '@atlaskit/icon/glyph/home-circle';
 import AppSwitcher from '../src';
 import { name } from '../package.json';
 
-import data from './data.json';
+import props from './data.json';
 
-data.analytics = (key, props) => console.log(key, props);
-data.trigger = isSelected => (<Button isSelected={isSelected}>...</Button>);
+props.analytics = action('analytics');
+props.trigger = isSelected => (<Button isSelected={isSelected}>...</Button>);
 
 storiesOf(name, module)
-  .add('with all components', () => (
+  .addDecorator(story => (
     <Chrome>
-      <AppSwitcher {...data} />
+      {story()}
     </Chrome>
+  ))
+
+  .add('with all components', () => (
+    <AppSwitcher {...props} />
   ))
 
   .add('with no recent containers', () => (
-    <Chrome>
-      <AppSwitcher
-        {...{
-          ...data,
-          recentContainers: [],
-        }}
-      />
-    </Chrome>
+    <AppSwitcher
+      {...{
+        ...props,
+        recentContainers: [],
+      }}
+    />
   ))
 
   .add('with no suggested application', () => (
-    <Chrome>
-      <AppSwitcher
-        {...{
-          ...data,
-        }}
-      />
-    </Chrome>
+    <AppSwitcher
+      {...{
+        ...props,
+      }}
+    />
   ))
 
   .add('with only applications', () => (
-    <Chrome>
-      <AppSwitcher
-        {...{
-          ...data,
-          recentContainers: [],
-        }}
-      />
-    </Chrome>
+    <AppSwitcher
+      {...{
+        ...props,
+        recentContainers: [],
+      }}
+    />
   ))
 
   .add('with Confluence as suggested application', () => (
-    <Chrome>
-      <AppSwitcher
-        {...{
-          ...data,
-          linkedApplications: {
-            configureLink: 'https://www.atlassian.com',
-            apps: [{
-              name: 'JIRA',
-              url: 'https://www.atlassian.com/#4',
-              product: 'jira',
-            }],
-            suggested: [{
-              name: 'Confluence',
-              product: 'confluence',
-              onClick: () => { action('confluence.suggestion.clicked'); },
-            }],
-            error: false,
-          },
-        }}
-      />
-    </Chrome>
+    <AppSwitcher
+      {...{
+        ...props,
+        linkedApplications: {
+          configureLink: 'https://www.atlassian.com',
+          apps: [{
+            name: 'JIRA',
+            url: 'https://www.atlassian.com/#4',
+            product: 'jira',
+          }],
+          suggested: [{
+            name: 'Confluence',
+            product: 'confluence',
+            onClick: () => { action('confluence.suggestion.clicked'); },
+          }],
+          error: false,
+        },
+      }}
+    />
   ))
   .add('with JIRA & Confluence as suggested applications', () => (
-    <Chrome>
-      <AppSwitcher
-        {...{
-          ...data,
-          linkedApplications: {
-            configureLink: 'https://www.atlassian.com',
-            apps: [],
-            suggested: [{
-              name: 'JIRA',
-              product: 'jira',
-              onClick: () => { action('jira.suggestion.clicked'); },
-            }, {
-              name: 'Confluence',
-              product: 'confluence',
-              onClick: () => { action('confluence.suggestion.clicked'); },
-            }],
-            error: false,
-          },
-        }}
-      />
-    </Chrome>
+    <AppSwitcher
+      {...{
+        ...props,
+        linkedApplications: {
+          configureLink: 'https://www.atlassian.com',
+          apps: [],
+          suggested: [{
+            name: 'JIRA',
+            product: 'jira',
+            onClick: () => { action('jira.suggestion.clicked'); },
+          }, {
+            name: 'Confluence',
+            product: 'confluence',
+            onClick: () => { action('confluence.suggestion.clicked'); },
+          }],
+          error: false,
+        },
+      }}
+    />
   ))
   .add('with anonymous mode', () => (
-    <Chrome>
-      <AppSwitcher
-        {...{
-          ...data,
-          recentContainers: [],
-          isAnonymousUser: true,
-        }}
-      />
-    </Chrome>
+    <AppSwitcher
+      {...{
+        ...props,
+        recentContainers: [],
+        isAnonymousUser: true,
+      }}
+    />
   ))
 
   .add('with Home link disabled', () => (
-    <Chrome>
-      <AppSwitcher
-        {...{
-          ...data,
-          isHomeLinkEnabled: false,
-        }}
-      />
-    </Chrome>
+    <AppSwitcher
+      {...{
+        ...props,
+        isHomeLinkEnabled: false,
+      }}
+    />
   ))
 
   .add('with custom Home link', () => (
-    <Chrome>
-      <AppSwitcher
-        {...data}
-        homeLink={{
-          name: 'Atlassian Home',
-          url: '/home/notifications',
-          icon: <CustomIcon size="large" label="" />,
-        }}
-      />
-    </Chrome>
+    <AppSwitcher
+      {...props}
+      homeLink={{
+        name: 'Atlassian Home',
+        url: '/home/notifications',
+        icon: <CustomIcon size="large" label="" />,
+      }}
+    />
   ))
 
   .add('with Site Admin link', () => (
-    <Chrome>
-      <AppSwitcher
-        {...{
-          ...data,
-          isSiteAdminLinkEnabled: true,
-        }}
-      />
-    </Chrome>
+    <AppSwitcher
+      {...{
+        ...props,
+        isSiteAdminLinkEnabled: true,
+      }}
+    />
   ))
 
   .add('with applinks error', () => (
-    <Chrome>
-      <AppSwitcher
-        {...{
-          ...data,
-          linkedApplications: {
-            configureLink: 'https://www.atlassian.com',
-            apps: [],
-            error: true,
-          },
-        }}
-      />
-    </Chrome>
+    <AppSwitcher
+      {...{
+        ...props,
+        linkedApplications: {
+          configureLink: 'https://www.atlassian.com',
+          apps: [],
+          error: true,
+        },
+      }}
+    />
   ))
   .add('with loading state', () => (
-    <Chrome>
-      <AppSwitcher
-        {...{
-          ...data,
-          isLoading: true,
-        }}
-      />
-    </Chrome>
+    <AppSwitcher
+      {...{
+        ...props,
+        isLoading: true,
+      }}
+    />
   ));

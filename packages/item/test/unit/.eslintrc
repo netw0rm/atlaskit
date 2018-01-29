@@ -1,8 +1,0 @@
-{
-  "extends": [
-    "../../../../build/config/eslint.test.unit.js"
-  ],
-  "rules": {
-    "jest/valid-expect": "off"
-  }
-}

@@ -263,7 +263,7 @@ class ContextualConfirmTrial extends Component {
       {status === INACTIVE ? contextInfo.trialCTA : contextInfo.reactivateCTA}
     </Button>
     {isCrossSell === true &&
-      < ContextualOptOutLinkButton
+      <ContextualOptOutLinkButton
         id="xflow-opt-out-button"
         onClick={this.handleOptOutClick}
       >

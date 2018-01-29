@@ -30,6 +30,7 @@ class ContextualStartTrial extends Component {
   static defaultProps = {
     onComplete: () => {},
     onTrialActivating: () => {},
+    isCrossSell: false,
   };
 
   render() {

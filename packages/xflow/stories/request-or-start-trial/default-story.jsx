@@ -148,6 +148,18 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
   }
 
   stories = stories
+    .add('User can add a product (INACTIVE), Start Trial flow without Grant Access screen, with opt out link', () =>
+      <MockXFlowProvider
+        {...defaultXFlowProviderProps}
+      >
+        <RequestOrStartTrial
+          {...defaultRequestOrStartTrialProps}
+          onTrialActivating={action('onTrialActivating')}
+          grantAccessEnabled={false}
+          isCrossSell
+        />
+      </MockXFlowProvider>
+    )
     .add('User can add a product (INACTIVE), Start Trial flow without Grant Access screen', () =>
       <MockXFlowProvider
         {...defaultXFlowProviderProps}

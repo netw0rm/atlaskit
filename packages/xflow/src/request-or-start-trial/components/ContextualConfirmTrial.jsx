@@ -49,6 +49,7 @@ class ContextualConfirmTrial extends Component {
     onCancel: PropTypes.func.isRequired,
     startProductTrial: PropTypes.func,
     cancelStartProductTrial: PropTypes.func,
+    isCrossSell: PropTypes.func,
 
     firePrivateAnalyticsEvent: PropTypes.func.isRequired,
     intl: intlShape.isRequired,
@@ -245,7 +246,7 @@ class ContextualConfirmTrial extends Component {
     ? this.renderInactiveFooter()
     : this.renderReactivateFooter());
 
-  renderContextualContent = (status, contextInfo) => (<ContextualConfirmTrialContent id="xflow-confirm-trial">
+  renderContextualContent = (status, contextInfo, isCrossSell) => (<ContextualConfirmTrialContent id="xflow-confirm-trial">
     <ContextualConfirmTrialHeading>
       {contextInfo.contextualHeading}
     </ContextualConfirmTrialHeading>
@@ -261,13 +262,14 @@ class ContextualConfirmTrial extends Component {
     >
       {status === INACTIVE ? contextInfo.trialCTA : contextInfo.reactivateCTA}
     </Button>
-    <br />
-    <ContextualOptOutLinkButton
-      id="xflow-opt-out-button"
-      onClick={this.handleOptOutClick}
-    >
-      Turn off these messages
-    </ContextualOptOutLinkButton>
+    {isCrossSell === true &&
+      < ContextualOptOutLinkButton
+        id="xflow-opt-out-button"
+        onClick={this.handleOptOutClick}
+      >
+        Turn off these messages
+      </ContextualOptOutLinkButton>
+    }
   </ContextualConfirmTrialContent>);
 
   render() {
@@ -276,6 +278,7 @@ class ContextualConfirmTrial extends Component {
       status,
       image,
       contextInfo,
+      isCrossSell,
     } = this.props;
     return (
       <ModalDialog
@@ -289,7 +292,7 @@ class ContextualConfirmTrial extends Component {
           this.renderFooter(status)
         }
       >
-        {this.renderContextualContent(status, contextInfo)}
+        {this.renderContextualContent(status, contextInfo, isCrossSell)}
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}
           description={intl.formatMessage(messages.errorFlagDescription)}

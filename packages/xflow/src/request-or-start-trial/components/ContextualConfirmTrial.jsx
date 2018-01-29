@@ -17,7 +17,6 @@ import ContextualConfirmTrialHeading from '../styled/ContextualConfirmTrialHeadi
 import ContextualOptOutLinkButton from '../styled/ContextualOptOutLinkButton';
 import ConfirmTrialAdminInfo from '../styled/ConfirmTrialAdminInfo';
 import ConfirmTrialAdminInfoImage from '../styled/ConfirmTrialAdminInfoImage';
-import OptOutLinkButton from '../styled/OptOutLinkButton';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
 import { INACTIVE, DEACTIVATED } from '../../common/productProvisioningStates';
 

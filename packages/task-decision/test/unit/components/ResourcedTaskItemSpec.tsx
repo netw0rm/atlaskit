@@ -56,6 +56,17 @@ describe('<ResourcedTaskItem/>', () => {
     expect(spy.mock.calls.length).toEqual(1);
   });
 
+  it('should still toggle isDone of TaskItem onChange without objectAri or containerAri', () => {
+    component = mount(
+      <ResourcedTaskItem taskId="task-1" isDone={false}>
+        Hello World
+      </ResourcedTaskItem>
+    );
+    const input = component.find('input');
+    input.simulate('change');
+    expect(component.find(TaskItem).prop('isDone')).toEqual(true);
+  });
+
   it('should subscribe to updates', () => {
     component = mount(
       <ResourcedTaskItem

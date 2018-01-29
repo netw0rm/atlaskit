@@ -86,10 +86,10 @@ export default class ResourcedTaskItem extends PureComponent<Props, State> {
 
   private handleOnChange = (taskId: string, isDone: boolean) => {
     const { taskDecisionProvider, objectAri, containerAri, onChange } = this.props;
-    if (taskDecisionProvider && containerAri && objectAri) {
-      // Optimistically update the task
-      this.setState({ isDone });
+    // Optimistically update the task
+    this.setState({ isDone });
 
+    if (taskDecisionProvider && containerAri && objectAri) {
       // Call provider to update task
       taskDecisionProvider.then(provider => {
         if (!this.mounted) {

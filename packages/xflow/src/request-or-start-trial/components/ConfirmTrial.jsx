@@ -134,7 +134,7 @@ class ConfirmTrial extends Component {
       buttonsDisabled: true,
     });
     // Redirect to GAB, with opt-out parameter so the opt-out dialog opens
-    window.location.href = `${window.location.origin}/admin/billing/addapplication?requestproductoptout=true`;
+    window.location.href = '/admin/billing/addapplication?requestproductoptout=true';
   };
 
   handleErrorFlagDismiss = () => {

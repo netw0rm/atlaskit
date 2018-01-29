@@ -49,7 +49,7 @@ class ContextualConfirmTrial extends Component {
     onCancel: PropTypes.func.isRequired,
     startProductTrial: PropTypes.func,
     cancelStartProductTrial: PropTypes.func,
-    isCrossSell: PropTypes.func,
+    isCrossSell: PropTypes.bool,
 
     firePrivateAnalyticsEvent: PropTypes.func.isRequired,
     intl: intlShape.isRequired,

@@ -149,7 +149,7 @@ class RequestOrStartTrial extends Component {
         this.onFailure('product-activation-state-check');
         throw new Error('unrecognized activation state!');
     }
-  }
+  };
 
   flagActions = [
     {
@@ -242,6 +242,7 @@ class RequestOrStartTrial extends Component {
                   contextInfo={contextInfo}
                   onComplete={onComplete}
                   onTrialRequested={onTrialRequested}
+                  isCrossSell={isCrossSell}
                 />
               );
             }

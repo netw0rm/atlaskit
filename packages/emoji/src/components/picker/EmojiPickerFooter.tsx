@@ -17,6 +17,7 @@ export interface Props {
   uploadErrorMessage?: string;
   onUploadCancelled: () => void;
   onUploadEmoji: OnUploadEmoji;
+  onFileChosen?: (name: string) => void;
 }
 
 export default class EmojiPickerFooter extends PureComponent<Props, {}> {
@@ -31,6 +32,7 @@ export default class EmojiPickerFooter extends PureComponent<Props, {}> {
       toneEmoji,
       uploadErrorMessage,
       uploading,
+      onFileChosen
     } = this.props;
 
     const previewFooterClassnames = classNames([
@@ -44,6 +46,7 @@ export default class EmojiPickerFooter extends PureComponent<Props, {}> {
           <EmojiUploadPicker
             onUploadCancelled={onUploadCancelled}
             onUploadEmoji={onUploadEmoji}
+            onFileChosen={onFileChosen}
             errorMessage={uploadErrorMessage}
             initialUploadName={initialUploadName}
           />

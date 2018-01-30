@@ -3,10 +3,13 @@ import { PureComponent } from 'react';
 
 import { EmojiDescription, EmojiDescriptionWithVariations, OnToneSelected } from '../../types';
 import EmojiButton from './EmojiButton';
+import { FireAnalyticsEvent, withAnalytics } from '@atlaskit/analytics';
 
 export interface Props {
   emoji: EmojiDescriptionWithVariations;
   onToneSelected: OnToneSelected;
+  fireAnalyticsEvent?: FireAnalyticsEvent;
+  firePrivateAnalyticsEvent?: FireAnalyticsEvent;
 }
 
 const extractAllTones = (emoji: EmojiDescriptionWithVariations): EmojiDescription[] => {
@@ -16,9 +19,20 @@ const extractAllTones = (emoji: EmojiDescriptionWithVariations): EmojiDescriptio
   return [ emoji ];
 };
 
-export default class ToneSelector extends PureComponent<Props, {}> {
+
+export class ToneSelectorInternal extends PureComponent<Props, {}> {
+
+  private onToneSelectedHandler = (skinTone: number) => {
+    const { onToneSelected, firePrivateAnalyticsEvent } = this.props;
+    onToneSelected(skinTone);
+
+    if (firePrivateAnalyticsEvent) {
+      firePrivateAnalyticsEvent(`atlassian.fabric.emoji.picker.skintone.select`, { skinTone });
+    }
+  }
+
   render() {
-    const { emoji, onToneSelected } = this.props;
+    const { emoji } = this.props;
     const toneEmojis: EmojiDescription[] = extractAllTones(emoji);
 
     return (
@@ -28,7 +42,7 @@ export default class ToneSelector extends PureComponent<Props, {}> {
             <EmojiButton
               key={`${tone.id}`}
               // tslint:disable-next-line:jsx-no-lambda
-              onSelected={() => onToneSelected(i)}
+              onSelected={() => this.onToneSelectedHandler(i)}
               emoji={tone}
               selectOnHover={true}
             />
@@ -38,3 +52,9 @@ export default class ToneSelector extends PureComponent<Props, {}> {
     );
   }
 }
+
+// tslint:disable-next-line:variable-name
+const ToneSelector = withAnalytics<typeof ToneSelectorInternal>(ToneSelectorInternal, {}, {});
+type ToneSelector = ToneSelectorInternal;
+
+export default ToneSelector;

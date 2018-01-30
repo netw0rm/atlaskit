@@ -1,6 +1,6 @@
 import * as sinon from 'sinon';
 import * as React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import { expect } from 'chai';
 
 import ToneSelector from '../../../../src/components/common/ToneSelector';
@@ -28,7 +28,7 @@ const handEmoji: EmojiDescriptionWithVariations = {
 describe('<ToneSelector />', () => {
   it('should display one emoji per skin variations + default', () => {
     const onToneSelectedSpy = sinon.spy();
-    const wrapper = shallow(<ToneSelector
+    const wrapper = mount(<ToneSelector
       emoji={handEmoji}
       onToneSelected={onToneSelectedSpy}
     />);
@@ -38,12 +38,16 @@ describe('<ToneSelector />', () => {
 
   it('should call onToneSelected on click', () => {
     const onToneSelectedSpy = sinon.spy();
+    const firePrivateAnalyticsEvent = sinon.stub();
+
     const wrapper = mount(<ToneSelector
       emoji={handEmoji}
       onToneSelected={onToneSelectedSpy}
+      firePrivateAnalyticsEvent={firePrivateAnalyticsEvent}
     />);
 
     wrapper.find(EmojiButton).first().simulate('mousedown', { button: 0 });
     expect(onToneSelectedSpy.calledWith(0)).to.equal(true);
+    expect(firePrivateAnalyticsEvent.calledWith('atlassian.fabric.emoji.picker.skintone.select', { skinTone: 0 })).to.equal(true);
   });
 });

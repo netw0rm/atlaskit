@@ -10,6 +10,16 @@ import { getEmojiResource, getStandardEmojis, getUsageClearEmojiResource, lorem 
 import TriggeredEmojiResource from './TriggeredEmojiResource';
 import { mockNonUploadingEmojiResourceFactory } from '../src/support/MockEmojiResource';
 import UsageShowingEmojiPickerTextInput from './demo-emoji-picker-showing-usage';
+import { AnalyticsListener } from '@atlaskit/analytics';
+import { enableLogger } from '../src/util/logger';
+import debug from '../src/util/logger';
+
+
+enableLogger(true);
+
+function listenerHandler (eventName: string, eventData: Object) {
+  debug(`AnalyticsListener event: ${eventName} `, eventData);
+}
 
 storiesOf(`${name}/EmojiPicker`, module)
   .add('picker popup', () => (
@@ -83,11 +93,12 @@ storiesOf(`${name}/EmojiPicker`, module)
     <div style={{ padding: '10px' }} >
       <Layer
         content={
-          <EmojiPicker
-            emojiProvider={getEmojiResource({ uploadSupported: true })}
-            onSelection={action('emoji selected')}
-          />
-        }
+          <AnalyticsListener onEvent={listenerHandler} matchPrivate={true}>
+            <EmojiPicker
+              emojiProvider={getEmojiResource({ uploadSupported: true })}
+              onSelection={action('emoji selected')}
+            />
+          </AnalyticsListener>}
         position="bottom left"
       >
       <input

@@ -37,13 +37,26 @@ import * as helper from '../../_emoji-picker-test-helpers';
 
 declare var global: any;
 
+
 describe('<EmojiPicker />', () => {
   let component;
   let getUpdatedList;
+  let firePrivateAnalyticsEvent;
 
   beforeEach(async () => {
-    component = await helper.setupPicker();
+    firePrivateAnalyticsEvent = jest.fn();
+    component = await helper.setupPicker({ firePrivateAnalyticsEvent } as Props);
     getUpdatedList = () => component.update().find(EmojiPickerList);
+  });
+
+  describe('analytics for component lifecycle', () => {
+
+    it('should fire analytics in componentWillMount/componentWillUnmount', async () => {
+      const wrapper = await helper.setupPicker({ firePrivateAnalyticsEvent } as Props);
+      wrapper.unmount();
+      expect(firePrivateAnalyticsEvent).toHaveBeenCalledWith('atlassian.fabric.emoji.picker.open', {});
+      expect(firePrivateAnalyticsEvent).toHaveBeenLastCalledWith('atlassian.fabric.emoji.picker.close', {});
+    });
   });
 
   describe('display', () => {
@@ -143,6 +156,7 @@ describe('<EmojiPicker />', () => {
       const list = getUpdatedList();
       const emoji = helper.findEmojiInCategory(helper.findEmoji(list), 'flags');
       expect(emoji!.category).toEqual('FLAGS');
+      expect(firePrivateAnalyticsEvent).toHaveBeenLastCalledWith('atlassian.fabric.emoji.picker.category.select', { categoryName: 'FLAGS' });
     });
 
     it('selecting custom category scrolls to bottom', async () => {
@@ -237,10 +251,12 @@ describe('<EmojiPicker />', () => {
       let selection: OptionalEmojiDescription;
       const clickOffset = 10;
       component = await helper.setupPicker({
+        firePrivateAnalyticsEvent,
         onSelection: (emojiId, emoji) => {
           selection = emoji;
         },
       } as Props);
+
       const list = getUpdatedList();
       const hoverButton = () => list.find(Emoji).at(clickOffset);
       await waitUntil(() => hoverButton().exists());
@@ -249,6 +265,13 @@ describe('<EmojiPicker />', () => {
       await waitUntil(() => !!selection);
       expect(selection).toBeDefined();
       expect(selection!.id).toEqual(helper.allEmojis[clickOffset].id);
+
+      expect(firePrivateAnalyticsEvent).toHaveBeenLastCalledWith('atlassian.fabric.emoji.picker.item.select', expect.objectContaining({
+        emojiId: '1f431',
+        type: 'STANDARD',
+        queryLength: 0,
+        duration: expect.any(Number)
+      }));
     });
 
     it('selecting emoji should call recordSelection on EmojiProvider', async () => {
@@ -369,7 +392,7 @@ describe('<EmojiPicker />', () => {
 
     it('Upload main flow interaction', async () => {
       const emojiProvider = getEmojiResourcePromise({ uploadSupported: true });
-      component = await helper.setupPicker({ emojiProvider, hideToneSelector: true });
+      component = await helper.setupPicker({ emojiProvider, hideToneSelector: true, firePrivateAnalyticsEvent });
       const provider = await emojiProvider;
       await helper.showCategory(customCategory, component);
       await waitUntil(() => helper.startEmojiUploadVisible(component));
@@ -455,6 +478,13 @@ describe('<EmojiPicker />', () => {
       expect(emoji.name).toEqual('Cheese burger');
       expect(emoji.shortName).toEqual(':cheese_burger:');
       expect(emoji.fallback).toEqual(':cheese_burger:');
+
+      expect(firePrivateAnalyticsEvent).toHaveBeenCalledWith('atlassian.fabric.emoji.picker.upload.trigger', {});
+      expect(firePrivateAnalyticsEvent).toHaveBeenCalledWith('atlassian.fabric.emoji.picker.upload.file.selected', {});
+      expect(firePrivateAnalyticsEvent).toHaveBeenCalledWith('atlassian.fabric.emoji.picker.upload.start', {});
+      expect(firePrivateAnalyticsEvent).toHaveBeenLastCalledWith('atlassian.fabric.emoji.picker.upload.successful', {
+        duration: expect.any(Number)
+      });
     });
 
     it('Upload after searching', async () => {
@@ -554,7 +584,7 @@ describe('<EmojiPicker />', () => {
 
     it('Upload cancel interaction', async () => {
       const emojiProvider = getEmojiResourcePromise({ uploadSupported: true });
-      component = await helper.setupPicker({ emojiProvider, hideToneSelector: true });
+      component = await helper.setupPicker({ emojiProvider, hideToneSelector: true, firePrivateAnalyticsEvent });
       const provider = await emojiProvider;
       await helper.showCategory(customCategory, component);
       await waitUntil(() => helper.startEmojiUploadVisible(component) && helper.previewVisible(component));
@@ -615,6 +645,10 @@ describe('<EmojiPicker />', () => {
       // No uploads occured
       const uploads = provider.getUploads();
       expect(uploads).toHaveLength(0);
+
+      expect(firePrivateAnalyticsEvent).toHaveBeenCalledWith('atlassian.fabric.emoji.picker.upload.trigger', {});
+      expect(firePrivateAnalyticsEvent).toHaveBeenCalledWith('atlassian.fabric.emoji.picker.upload.file.selected', {});
+      expect(firePrivateAnalyticsEvent).toHaveBeenLastCalledWith('atlassian.fabric.emoji.picker.upload.cancel', {});
     });
 
     it('Upload error interaction', async () => {
@@ -622,7 +656,7 @@ describe('<EmojiPicker />', () => {
         uploadSupported: true,
         uploadError: 'bad times',
       });
-      component = await helper.setupPicker({ emojiProvider, hideToneSelector: true });
+      component = await helper.setupPicker({ emojiProvider, hideToneSelector: true, firePrivateAnalyticsEvent });
 
       const provider = await emojiProvider;
       await helper.showCategory(customCategory, component);
@@ -701,6 +735,12 @@ describe('<EmojiPicker />', () => {
       // No uploads occured
       uploads = provider.getUploads();
       expect(uploads).toHaveLength(0);
+
+      expect(firePrivateAnalyticsEvent).toHaveBeenCalledWith('atlassian.fabric.emoji.picker.upload.trigger', {});
+      expect(firePrivateAnalyticsEvent).toHaveBeenCalledWith('atlassian.fabric.emoji.picker.upload.file.selected', {});
+      expect(firePrivateAnalyticsEvent).toHaveBeenCalledWith('atlassian.fabric.emoji.picker.upload.start', {});
+      expect(firePrivateAnalyticsEvent).toHaveBeenCalledWith('atlassian.fabric.emoji.picker.upload.failed', {});
+      expect(firePrivateAnalyticsEvent).toHaveBeenLastCalledWith('atlassian.fabric.emoji.picker.upload.cancel', {});
     });
   });
 

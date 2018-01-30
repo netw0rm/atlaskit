@@ -30,6 +30,7 @@
     "src"
   ],
   "dependencies": {
+    "@atlaskit/analytics": "^2.4.1",
     "@atlaskit/button": "^5.4.12",
     "@atlaskit/field-base": "^8.1.5",
     "@atlaskit/icon": "^10.3.2",

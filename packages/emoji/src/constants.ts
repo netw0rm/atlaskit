@@ -21,3 +21,5 @@ export const defaultCategories = ['PEOPLE', 'NATURE', 'FOODS', 'ACTIVITY', 'PLAC
 export const defaultListLimit = 50;
 
 export const migrationUserId = 'hipchat_migration_emoticons';
+
+export const analyticsEmojiPrefix = 'atlassian.fabric.emoji.picker';

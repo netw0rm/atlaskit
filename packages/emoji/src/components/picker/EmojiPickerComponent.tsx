@@ -1,11 +1,11 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import {PureComponent, SyntheticEvent} from 'react';
+import { PureComponent, SyntheticEvent } from 'react';
 import * as classNames from 'classnames';
 
 import * as styles from './styles';
 
-import { customCategory, frequentCategory } from '../../constants';
+import { customCategory, frequentCategory, analyticsEmojiPrefix } from '../../constants';
 import { EmojiDescription, OptionalEmojiDescriptionWithVariations, EmojiId, EmojiSearchResult, EmojiUpload, OnEmojiEvent, SearchOptions, ToneSelection, OptionalEmojiDescription } from '../../types';
 import { containsEmojiId, isPromise /*, isEmojiIdEqual, isEmojiLoaded*/ } from '../../type-helpers';
 import { SearchSort } from '../../types';
@@ -20,7 +20,7 @@ import { getEmojiVariation } from '../../api/EmojiRepository';
 import { FireAnalyticsEvent } from '@atlaskit/analytics';
 
 const FREQUENTLY_USED_MAX = 16;
-const ANALYTICS_EMOJI_PREFIX = 'atlassian.fabric.emoji.picker';
+
 
 export interface PickerRefHandler {
   (ref: any): any;
@@ -31,7 +31,6 @@ export interface Props {
   onSelection?: OnEmojiEvent;
   onPickerRef?: PickerRefHandler;
   hideToneSelector?: boolean;
-  fireAnalyticsEvent?: FireAnalyticsEvent;
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
 }
 
@@ -200,7 +199,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     const { firePrivateAnalyticsEvent } = this.props;
 
     if (firePrivateAnalyticsEvent) {
-      firePrivateAnalyticsEvent(`${ANALYTICS_EMOJI_PREFIX}.${eventName}`, data);
+      firePrivateAnalyticsEvent(`${analyticsEmojiPrefix}.${eventName}`, data);
     }
   }
 

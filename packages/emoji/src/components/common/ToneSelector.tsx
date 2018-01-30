@@ -4,11 +4,11 @@ import { PureComponent } from 'react';
 import { EmojiDescription, EmojiDescriptionWithVariations, OnToneSelected } from '../../types';
 import EmojiButton from './EmojiButton';
 import { FireAnalyticsEvent, withAnalytics } from '@atlaskit/analytics';
+import { analyticsEmojiPrefix } from '../../constants';
 
 export interface Props {
   emoji: EmojiDescriptionWithVariations;
   onToneSelected: OnToneSelected;
-  fireAnalyticsEvent?: FireAnalyticsEvent;
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
 }
 
@@ -27,7 +27,7 @@ export class ToneSelectorInternal extends PureComponent<Props, {}> {
     onToneSelected(skinTone);
 
     if (firePrivateAnalyticsEvent) {
-      firePrivateAnalyticsEvent(`atlassian.fabric.emoji.picker.skintone.select`, { skinTone });
+      firePrivateAnalyticsEvent(`${analyticsEmojiPrefix}.skintone.select`, { skinTone });
     }
   }
 

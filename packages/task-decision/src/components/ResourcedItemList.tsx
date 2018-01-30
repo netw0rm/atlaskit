@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import Spinner from '@atlaskit/spinner';
 
 import { defaultSortCriteria } from '../constants';
-import { contentToDocument } from '../api/TaskDecisionUtils';
 import { loadLatestItems } from '../api/TaskDecisionLoader';
 import InfiniteScroll from './InfiniteScroll';
 import ListContainer from '../styled/ListContainer';
@@ -241,7 +240,7 @@ export default class ResourcedItemList extends PureComponent<Props,State> {
                   creator={item.creator}
                   lastUpdater={item.lastUpdater}
                 >
-                  {renderDocument(contentToDocument(item.content), toRendererContext(objectKey))}
+                  {renderDocument(item.content, toRendererContext(objectKey))}
                 </DecisionItem>
               </li>
             );
@@ -261,7 +260,7 @@ export default class ResourcedItemList extends PureComponent<Props,State> {
                   creator={item.creator}
                   lastUpdater={item.lastUpdater}
                 >
-                  {renderDocument(contentToDocument(item.content), toRendererContext(objectKey))}
+                  {renderDocument(item.content, toRendererContext(objectKey))}
                 </ResourcedTaskItem>
               </li>
             );

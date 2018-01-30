@@ -23,11 +23,12 @@ export interface ResponseConverter<S,C> {
 }
 
 export const convertServiceDecisionToDecision = (serviceDecision: ServiceDecision): Decision => {
-  const { creationDate, lastUpdateDate, rawContent, ...other } = serviceDecision;
+  const { creationDate, lastUpdateDate, rawContent, contentAsFabricDocument, ...other } = serviceDecision;
+
   return {
     creationDate: new Date(creationDate),
     lastUpdateDate: new Date(lastUpdateDate),
-    content: JSON.parse(rawContent),
+    content: JSON.parse(contentAsFabricDocument),
     ...other,
   };
 };
@@ -49,11 +50,12 @@ export const convertServiceDecisionResponseToDecisionResponse = (serviceDecision
 };
 
 export const convertServiceTaskToTask = (serviceTask: ServiceTask): Task => {
-  const { creationDate, lastUpdateDate, rawContent, ...other } = serviceTask;
+  const { creationDate, lastUpdateDate, rawContent, contentAsFabricDocument, ...other } = serviceTask;
+
   return {
     creationDate: new Date(creationDate),
     lastUpdateDate: new Date(lastUpdateDate),
-    content: JSON.parse(rawContent),
+    content: JSON.parse(contentAsFabricDocument),
     ...other
   };
 };
@@ -138,16 +140,6 @@ export const tasksToDocument = (tasks: Task[]): any => ({
           content,
         };
       })
-    }
-  ]
-});
-
-export const contentToDocument = (content: any[]): any => ({
-  type: 'doc',
-  version: 1,
-  content: [
-    {
-      content
     }
   ]
 });

@@ -371,12 +371,12 @@ describe('TaskDecisionResource', () => {
     const serviceTask = (key: ObjectKey, state?: TaskState) : ServiceTask => ({
       ...key,
       creationDate: new Date().toISOString(),
-      creatorId: 'c1',
       lastUpdateDate: new Date().toISOString(),
       parentLocalId: '123',
       participants: [],
       position: 1,
       rawContent: '[]',
+      contentAsFabricDocument: '[]',
       state: state || 'TODO',
       type: 'TASK',
     });

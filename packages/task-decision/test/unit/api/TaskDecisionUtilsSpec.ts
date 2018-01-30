@@ -23,7 +23,7 @@ describe('TaskDecisionUtils', () => {
 
     expect(creationDate).toEqual(new Date(serviceDecision.creationDate));
     expect(lastUpdateDate).toEqual(new Date(serviceDecision.lastUpdateDate));
-    expect(content).toEqual(JSON.parse(serviceDecision.rawContent));
+    expect(content).toEqual(JSON.parse(serviceDecision.contentAsFabricDocument));
   });
 
   it('convertServiceTaskToTask', () => {
@@ -41,7 +41,7 @@ describe('TaskDecisionUtils', () => {
 
     expect(creationDate).toEqual(new Date(serviceTask.creationDate));
     expect(lastUpdateDate).toEqual(new Date(serviceTask.lastUpdateDate));
-    expect(content).toEqual(JSON.parse(serviceTask.rawContent));
+    expect(content).toEqual(JSON.parse(serviceTask.contentAsFabricDocument));
   });
 
   it('decisionsToDocument', () => {

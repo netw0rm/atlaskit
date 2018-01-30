@@ -181,11 +181,20 @@ export const buildItemResponse = (items: Item[], nextQuery?: Query): ItemRespons
   };
 };
 
-export const content = (text: string): any => [
-  {
-    type: 'text',
-    text,
-  }
-];
+export const content = (text: string): any => ({
+  type: 'doc',
+  version: 1,
+  content: [
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text
+        }
+      ]
+    }
+  ]
+});
 
 export const datePlus = (minutes: number): Date => addMinutes(new Date(), minutes);

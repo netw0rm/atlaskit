@@ -35,6 +35,7 @@ export interface ServiceDecision {
   participants: User[];
   // Atlassian Document fragment (json string)
   rawContent: string;
+  contentAsFabricDocument: string;
   state: DecisionState;
   status: DecisionStatus;
   type: DecisionType;
@@ -122,6 +123,7 @@ export interface ServiceTask {
   position: number;
   // Atlassian Document fragment (json string)
   rawContent: string;
+  contentAsFabricDocument: string;
   state: TaskState;
   type: TaskType;
 }

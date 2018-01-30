@@ -32,7 +32,7 @@ describe('productRequest', () => {
     const xflowResponse = { message: 'request received' };
     mockRequestTrialEastEndpointWithResponse(xflowResponse);
     const requestConfluenceTrial = productRequest('confluence.ondemand');
-    const result = await requestConfluenceTrial('Please let me innovate');
+    const result = await requestConfluenceTrial('Please let me innovate', true);
     expect(result).toEqual(xflowResponse);
     expect(fetchMock.done('REQUEST_TRIAL')).toBe(true);
 
@@ -45,6 +45,7 @@ describe('productRequest', () => {
         requested_access_by_avatar: 'some-avatar-url',
         requested_access_by_name: 'Example User',
         requested_access_comment_text: 'Please let me innovate',
+        is_cross_sell: true,
       })
     );
   });
@@ -55,7 +56,7 @@ describe('productRequest', () => {
     const requestConfluenceTrial = productRequest('confluence.ondemand');
 
     try {
-      await requestConfluenceTrial('never to be seen comment');
+      await requestConfluenceTrial('never to be seen comment', true);
     } catch (e) {
       expect(e).toEqual(
         new Error('Unable to request product: Unable to request product from end user. Status: 500')

@@ -15,7 +15,7 @@ import { productRequestEndpoint } from './xflowService';
  * @param productKey product key being activated
  * @returns {*} Response from xflow microservice /requesttrial endpoint
  */
-export default (productKey) => async (comment) => {
+export default productKey => async (comment, isCrossSell) => {
   try {
     const cloudId = await fetchCloudId();
     const instanceName = getInstanceName();
@@ -35,6 +35,7 @@ export default (productKey) => async (comment) => {
         requested_access_by_avatar: avatar,
         requested_access_by_name: displayName,
         requested_access_comment_text: comment || '',
+        is_cross_sell: isCrossSell,
       }),
     });
 

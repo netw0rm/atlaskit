@@ -12,6 +12,7 @@ import RequestTrialNote from './RequestTrialNote';
 class RequestTrial extends Component {
   static propTypes = {
     alreadyRequested: PropTypes.bool.isRequired,
+    isCrossSell: PropTypes.bool,
 
     contextInfo: PropTypes.shape({
       contextualImage: PropTypes.string,
@@ -38,6 +39,7 @@ class RequestTrial extends Component {
       alreadyRequested,
       contextInfo,
       firePrivateAnalyticsEvent,
+      isCrossSell,
       onComplete,
       onTrialRequested,
     } = this.props;
@@ -45,7 +47,7 @@ class RequestTrial extends Component {
     return (
       <MultiStep onComplete={onComplete}>
         <Step
-          render={(nextStep, cancel) =>
+          render={(nextStep, cancel) => (
             <ConfirmRequest
               alreadyRequested={alreadyRequested}
               contextInfo={contextInfo}
@@ -63,11 +65,11 @@ class RequestTrial extends Component {
                 }
               }}
               onCancel={cancel}
-            />}
+            />
+          )}
         />
         <Step
-          render={nextStep =>
-            <RequestTrialNote onComplete={nextStep} />}
+          render={nextStep => <RequestTrialNote isCrossSell={isCrossSell} onComplete={nextStep} />}
         />
       </MultiStep>
     );

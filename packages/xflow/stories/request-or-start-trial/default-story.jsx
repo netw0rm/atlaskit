@@ -248,13 +248,26 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
         <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
       </MockXFlowProvider>
     )
-    .add('User cannot add a product (INACTIVE), Request Trial', () =>
+    .add('User cannot add a product (INACTIVE), Request Trial, cross sell', () =>
       <MockXFlowProvider
         {...defaultXFlowProviderProps}
         canCurrentUserAddProduct={() => false}
       >
         <RequestOrStartTrial
           {...defaultRequestOrStartTrialProps}
+          isCrossSell
+          onTrialRequested={action('onTrialRequested')}
+        />
+      </MockXFlowProvider>
+    )
+    .add('User cannot add a product (INACTIVE), Request Trial, no cross sell', () =>
+      <MockXFlowProvider
+        {...defaultXFlowProviderProps}
+        canCurrentUserAddProduct={() => false}
+      >
+        <RequestOrStartTrial
+          {...defaultRequestOrStartTrialProps}
+          isCrossSell={false}
           onTrialRequested={action('onTrialRequested')}
         />
       </MockXFlowProvider>

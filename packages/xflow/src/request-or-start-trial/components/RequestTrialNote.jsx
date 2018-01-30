@@ -43,6 +43,7 @@ class RequestTrialNote extends Component {
   static propTypes = {
     prompt: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
+    isCrossSell: PropTypes.bool,
 
     onComplete: PropTypes.func.isRequired,
     requestTrialWithNote: PropTypes.func,
@@ -54,6 +55,7 @@ class RequestTrialNote extends Component {
 
   static defaultProps = {
     requestTrialWithNote: () => {},
+    isCrossSell: false,
   };
 
   state = {
@@ -72,9 +74,10 @@ class RequestTrialNote extends Component {
       firePrivateAnalyticsEvent,
       requestTrialWithNote,
       setProductRequestFlag,
+      isCrossSell,
     } = this.props;
 
-    return Promise.resolve(requestTrialWithNote(this.state.noteText))
+    return Promise.resolve(requestTrialWithNote(this.state.noteText, isCrossSell))
       .then(() => {
         firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.successful');
         this.setState({ requestTrialSendNoteStatus: 'successful' });
@@ -95,7 +98,7 @@ class RequestTrialNote extends Component {
         });
         this.setState({ requestTrialSendNoteStatus: 'failed' });
       });
-  }
+  };
 
   handleSendRequest = () => {
     const { firePrivateAnalyticsEvent } = this.props;
@@ -116,7 +119,7 @@ class RequestTrialNote extends Component {
     } else {
       this.sendTrialRequest();
     }
-  }
+  };
 
   handleErrorFlagDismiss = () => {
     const { firePrivateAnalyticsEvent, onComplete } = this.props;

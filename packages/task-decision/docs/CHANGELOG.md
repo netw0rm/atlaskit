@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 4.8.0 (2018-01-30)
+
+* feature; resourcedItemList uses contentAsFabricDocument rather than rawContent as content to (issues closed: fs-1677) ([a0d08af](https://bitbucket.org/atlassian/atlaskit/commits/a0d08af))
 ## 4.7.2 (2018-01-29)
 
 * bug fix; object/containerAri is optional to toggle isDone for ResourcedTaskItem (issues closed: fs-1674) ([1f77a21](https://bitbucket.org/atlassian/atlaskit/commits/1f77a21))

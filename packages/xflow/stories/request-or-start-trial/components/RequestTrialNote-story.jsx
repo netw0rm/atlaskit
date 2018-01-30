@@ -5,8 +5,10 @@ import { RequestTrialNoteBase } from '../../../src/request-or-start-trial/compon
 import setupStorybookAnalytics from '../../helpers/setupStorybookAnalytics';
 
 const defaultProps = {
-  prompt: 'Send a quick note telling your site admin why you\'re keen to try Confluence:',
-  placeholder: 'Hi! I\'d like to try Confluence. It helps give the team more context on anything happening in Jira - and there\'s a free 30 day trial.',
+  prompt: "Send a quick note telling your site admin why you're keen to try Confluence:",
+  placeholder:
+    "Hi! I'd like to try Confluence. It helps give the team more context on anything happening in Jira - and there's a free 30 day trial.",
+  isCrossSell: true,
 
   onComplete: action('onComplete'),
   requestTrialWithNote: action('requestTrialWithNote'),

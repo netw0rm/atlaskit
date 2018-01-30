@@ -55,6 +55,7 @@ class RequestTrialNote extends Component {
 
   static defaultProps = {
     requestTrialWithNote: () => {},
+    isCrossSell: false,
   };
 
   state = {

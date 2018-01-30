@@ -185,16 +185,6 @@ class GrantAccess extends Component {
     return openIdAttr ? openIdAttr.values[0] : '';
   };
 
-  notifyDocumentOfUsersGrantedAccess = (users) => {
-    const grantedAccessToByUsername = users.map(user => (user.name));
-    const accessGrantedEvent = new CustomEvent('xflow.accessGranted', {
-      detail: {
-        users: grantedAccessToByUsername,
-      },
-    });
-    document.dispatchEvent(accessGrantedEvent);
-  };
-
   handleContinueClick = async () => {
     const {
       grantAccessToUsers,
@@ -236,8 +226,6 @@ class GrantAccess extends Component {
       firePrivateAnalyticsEvent('xflow.grant-access.continue-button.grant-access-successful', {
         atlassianAccountIds: grantedAccessTo.join(','),
       });
-
-      this.notifyDocumentOfUsersGrantedAccess(users);
 
       return onComplete(); // eslint-disable-line consistent-return
     } catch (e) {

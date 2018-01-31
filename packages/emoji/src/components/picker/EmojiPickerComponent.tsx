@@ -79,9 +79,11 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
       uploadSupported: false,
       uploading: false,
     };
+
+    this.openTime = 0;
   }
 
-  openTime = 0;
+  openTime: number;
 
   getChildContext(): EmojiContext {
     return {

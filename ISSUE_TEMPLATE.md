@@ -6,7 +6,7 @@
 
 [Description of the issue]
 
-Add a link to a codepen example using [this codesandbox](http://go.atlassian.com/ak-codesanbox) as starting point.
+Add a link to a codepen example using [this codesandbox](http://go.atlassian.com/ak-sanbox) as starting point.
 
 ### Steps to reproduce
 *Either*
@@ -47,7 +47,7 @@ Create a gif using [this](http://gifbrewery.com/)
 h2.Description
 
 Description of the issue
-Add a link to a codepen example using [this codesandbox](http://go.atlassian.com/ak-codesanbox) as starting point.
+Add a link to a codepen example using [this codesandbox](http://go.atlassian.com/ak-sanbox) as starting point.
 
 h2.Steps to Reproduce
 

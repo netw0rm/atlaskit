@@ -59,8 +59,8 @@ class LoadingTime extends Component {
   };
 
   static defaultProps = {
-    closeLoadingDialog: () => {},
-    goToProduct: () => {},
+    closeLoadingDialog: () => { },
+    goToProduct: () => { },
   };
 
   state = {
@@ -171,6 +171,8 @@ class LoadingTime extends Component {
       </LoadingTimeTextDiv>
     ) : '';
 
+    const goToButtonDisabled = !(isReady && status === ACTIVE) || this.state.isLoading;
+
     return (
       <ModalDialog
         isOpen
@@ -192,22 +194,24 @@ class LoadingTime extends Component {
             </SpinnerDiv>
             <Button
               id="xflow-loading-go-to-product-button"
-              isDisabled={!(isReady && status === ACTIVE) || this.state.isLoading}
+              isDisabled={goToButtonDisabled}
               onClick={this.handleGoToProductClick}
               appearance="primary"
             >
               {gotoButton}
             </Button>
-            <Button
-              id="xflow-loading-close-button"
-              onClick={this.handleCloseClick}
-              appearance="subtle-link"
-            >
-              <FormattedMessage
-                id="xflow.generic.loading-product-trial.close-button"
-                defaultMessage="Close"
-              />
-            </Button>
+            {goToButtonDisabled &&
+              <Button
+                id="xflow-loading-close-button"
+                onClick={this.handleCloseClick}
+                appearance="subtle-link"
+              >
+                <FormattedMessage
+                  id="xflow.generic.loading-product-trial.close-button"
+                  defaultMessage="Close"
+                />
+              </Button>
+            }
           </StartTrialFooter>
         }
       >
@@ -235,17 +239,17 @@ export default withXFlowProvider(
     xFlow: {
       config: {
         productLogo,
-        startTrial: {
+    startTrial: {
           loadingProductHeading,
-          loadingProductMessage,
-          loadingProductGotoProductButton,
-          loadingProductHeaderImage,
+      loadingProductMessage,
+      loadingProductGotoProductButton,
+      loadingProductHeaderImage,
         },
       },
-      goToProduct,
-      closeLoadingDialog,
-      progress,
-      status,
+    goToProduct,
+    closeLoadingDialog,
+    progress,
+    status,
     },
   }) => ({
     productLogo,

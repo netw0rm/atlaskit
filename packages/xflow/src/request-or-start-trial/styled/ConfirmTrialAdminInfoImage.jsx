@@ -20,7 +20,7 @@ const ConfirmTrialAdminInfoImage = styled.div`
   height: ${math.multiply(gridSize, 3)}px;
   padding-bottom: ${gridSize()}px;
   background: url(${props => images[props.imageType] || images.settings}) no-repeat;
-  background-size: ${math.multiply(gridSize, 3)}px ${math.multiply(gridSize, 3)}px;
+  background-size: contain;
 `;
 
 ConfirmTrialAdminInfoImage.displayName = 'ConfirmTrialAdminInfoImage';

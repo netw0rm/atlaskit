@@ -172,7 +172,7 @@ class ContextualConfirmTrial extends Component {
         <ConfirmTrialAdminInfoImage imageType="email" />
         <FormattedMessage
           id="xflow.generic.confirm-trial.email-info"
-          defaultMessage="Your billing contact will be emailed three days before."
+          defaultMessage="Your billing contact will be emailed ten days before."
         />
       </ConfirmTrialAdminInfo>
       <ConfirmTrialAdminInfo>

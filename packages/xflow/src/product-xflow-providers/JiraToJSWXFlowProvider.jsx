@@ -41,7 +41,7 @@ const messages = defineMessages({
   confirmReactivateMessage2: {
     id: 'xflow.j2jsw.start-trial.reactivate-trial.message.p1',
     defaultMessage:
-      "We'll email your billing contact 3 days prior to the due date with any new charges.",
+      "We'll email your billing contact 10 days prior to the due date with any new charges.",
   },
 
   // - Loading Time dialog
@@ -111,7 +111,7 @@ export const defaultProps = intl => ({
         <FormattedMessage
           id="xflow.j2jsw.start-trial.confirm-trial.message"
           tagName="p"
-          defaultMessage="Once your trial finishes, billing will start.{br}Easily cancel at any time in Manage applications.{br}We'll email your billing contact 3 days in advance."
+          defaultMessage="Once your trial finishes, billing will start.{br}Easily cancel at any time in Manage applications.{br}We'll email your billing contact 10 days in advance."
           values={{ br: <br /> }}
         />
       ),

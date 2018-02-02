@@ -77,10 +77,6 @@ const mockLicenseInformationEndpointWithResponse = (response) => {
   fetchMock.mock(licenseInformationEndpoint(MOCK_CLOUD_ID), response, { method: 'GET' });
 };
 
-const mockLicenseInformationEndpointWithFailureStatus = (status) => {
-  fetchMock.mock(licenseInformationEndpoint(MOCK_CLOUD_ID), status);
-};
-
 const toBeNumberInRange = (min, max) => ({
   asymmetricMatch: actual => typeof actual === 'number' && actual >= min && actual <= max,
 });

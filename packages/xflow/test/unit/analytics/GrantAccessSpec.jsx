@@ -4,7 +4,7 @@ import fetchMock from 'fetch-mock';
 import { AkFieldRadioGroup } from '@atlaskit/field-radio-group';
 
 import { GrantAccessBase } from '../../../src/request-or-start-trial/components/GrantAccess';
-import { withAnalyticsSpy, waitFor } from '../../util';
+import { withAnalyticsSpy, waitFor, waitUntil } from '../../util';
 import { ACTIVATING } from '../../../src/common/productProvisioningStates';
 
 describe('<GrantAccess> analytics', () => {
@@ -67,14 +67,18 @@ describe('<GrantAccess> analytics', () => {
     );
   });
 
-  it('should fire an appropriate analytics event when the continue button is clicked', () => {
+  it('should fire an appropriate analytics event when the continue button is clicked', async () => {
     const spy = jest.fn();
     const mountWrapper = mount(withAnalyticsSpy(spy, <GrantAccessBase {...defaultProps} />));
     expect(spy).not.toHaveBeenCalledWith(
       'xflow.grant-access.continue-button.clicked',
       expect.any(Object)
     );
-    mountWrapper.find('#xflow-grant-access-continue-button').simulate('click');
+
+    const continueButton = mountWrapper.find('#xflow-grant-access-continue-button');
+    await waitUntil(() => continueButton.not('[disabled]'));
+    continueButton.simulate('click');
+
     return waitFor(() =>
       expect(spy).toHaveBeenCalledWith(
         'xflow.grant-access.continue-button.clicked',
@@ -156,10 +160,12 @@ describe('<GrantAccess> analytics', () => {
       'xflow.grant-access.continue-button.grant-access-successful',
       expect.any(Object)
     );
-    await waitFor(() => {
-      mountWrapper.find('#xflow-grant-access-continue-button').simulate('click');
-    });
-    await waitFor(() => {
+
+    const continueButton = mountWrapper.find('#xflow-grant-access-continue-button');
+    await waitUntil(() => continueButton.not('[disabled]'));
+    continueButton.simulate('click');
+
+    return waitFor(() => {
       expect(spy).toHaveBeenCalledWith(
         'xflow.grant-access.continue-button.grant-access-successful',
         expect.objectContaining({
@@ -175,14 +181,14 @@ describe('<GrantAccess> analytics', () => {
     });
   });
 
-  it('should fire an appropriate analytics event if granting access failed and using the skip button', () => {
+  it('should fire an appropriate analytics event if granting access failed and using the skip button', async () => {
     const spy = jest.fn();
     const mountWrapper = mount(
       withAnalyticsSpy(
         spy,
         <GrantAccessBase
           {...defaultProps}
-          grantAccessToUsers={() => new Promise((_, reject) => setTimeout(reject, 500))}
+          grantAccessToUsers={() => new Promise((_, reject) => setTimeout(reject(new Error('Failed to Grant Access to Users')), 500))}
         />
       )
     );
@@ -190,15 +196,21 @@ describe('<GrantAccess> analytics', () => {
       'xflow.grant-access.continue-button.failed-to-grant-access',
       expect.any(Object)
     );
-    mountWrapper.find('#xflow-grant-access-continue-button').simulate('click');
-    return waitFor(() => {
+
+    const continueButton = mountWrapper.find('#xflow-grant-access-continue-button');
+    await waitUntil(() => continueButton.not('[disabled]'));
+    continueButton.simulate('click');
+
+    await waitFor(() => {
       expect(spy).toHaveBeenCalledWith(
         'xflow.grant-access.continue-button.failed-to-grant-access',
         expect.any(Object)
       );
-      mountWrapper.find('#xflow-grant-access-skip-button').simulate('click');
-      expect(spy).toHaveBeenCalledWith('xflow.grant-access.skip-button.clicked', expect.any(Object));
     });
+
+    mountWrapper.find('#xflow-grant-access-skip-button').simulate('click');
+
+    expect(spy).toHaveBeenCalledWith('xflow.grant-access.skip-button.clicked', expect.any(Object));
   });
 
   it('should fire an appropriate analytics event when the learn more button is clicked', () => {
@@ -222,14 +234,18 @@ describe('<GrantAccess> analytics', () => {
     });
   });
 
-  it('should fire an appropriate analytics event when the manage button is clicked', () => {
+  it('should fire an appropriate analytics event when the manage button is clicked', async () => {
     const spy = jest.fn();
     const mountWrapper = mount(withAnalyticsSpy(spy, <GrantAccessBase {...defaultProps} />));
     expect(spy).not.toHaveBeenCalledWith(
       'xflow.grant-access.manage-button.clicked',
       expect.any(Object)
     );
-    mountWrapper.find('#xflow-grant-access-manage-button').simulate('click');
+
+    const manageButton = mountWrapper.find('#xflow-grant-access-manage-button').simulate('click');
+    await waitFor(() => !manageButton.is('[disabled]'));
+    manageButton.simulate('click');
+
     return waitFor(() =>
       expect(spy).toHaveBeenCalledWith('xflow.grant-access.manage-button.clicked', expect.any(Object))
     );

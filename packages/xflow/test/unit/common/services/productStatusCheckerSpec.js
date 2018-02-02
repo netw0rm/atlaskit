@@ -3,6 +3,9 @@ import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
 import '@atlaskit/polyfills/array-prototype-includes';
 
+import * as tenantContext from '../../../../src/common/services/tenantContext';
+import { licenseInformationEndpoint } from '../../../../src/common/services/xflowService';
+
 import productUsageInactive from '../mock-data/productUsageInactive.json';
 import productUsageActive from '../mock-data/productUsageActive.json';
 
@@ -12,6 +15,8 @@ import pricingActive from '../mock-data/pricingActiveConfluence.json';
 
 import prospectivePricesInactive from '../mock-data/prospectivePricesInactiveConfluence.json';
 import prospectivePricesDeactivated from '../mock-data/prospectivePricesDeactivatedConfluence.json';
+
+import licenseInformationActive from '../mock-data/licenseInformationActiveConfluence.json';
 
 import productStatusChecker, {
   PRODUCT_USAGE_URL,
@@ -33,6 +38,8 @@ import {
 } from '../../../../src/common/productProvisioningStates';
 
 jest.useFakeTimers();
+
+const MOCK_CLOUD_ID = 'some-cloud-id';
 
 const mockPricingEndpointWithResponse = (response) => {
   const url = PRICING_URL;
@@ -66,6 +73,14 @@ const mockProspectivePricesEndpointWithFailureStatus = (status) => {
   fetchMock.mock(PROSPECTIVE_PRICES_URL, status);
 };
 
+const mockLicenseInformationEndpointWithResponse = (response) => {
+  fetchMock.mock(licenseInformationEndpoint(MOCK_CLOUD_ID), response, { method: 'GET' });
+};
+
+const mockLicenseInformationEndpointWithFailureStatus = (status) => {
+  fetchMock.mock(licenseInformationEndpoint(MOCK_CLOUD_ID), status);
+};
+
 const toBeNumberInRange = (min, max) => ({
   asymmetricMatch: actual => typeof actual === 'number' && actual >= min && actual <= max,
 });
@@ -78,7 +93,7 @@ const mockCheckSiteAvailable = (requiredChecksToComplete) => {
   let count = requiredChecksToComplete;
   return async () => {
     count--;
-    return count < 1 ? true : Promise.reject(new Error('everything went wrong'));
+    return count < 1;
   };
 };
 
@@ -93,7 +108,10 @@ const mockJiraLandingPageWithResponse = (response) => {
 describe('productStatusChecker', () => {
   let confluenceStatusChecker;
 
-  beforeEach(() => fetchMock.catch(417));
+  beforeEach(() => {
+    tenantContext.fetchCloudId = jest.fn().mockReturnValue(Promise.resolve(MOCK_CLOUD_ID));
+    fetchMock.catch(417);
+  });
   afterEach(fetchMock.restore);
 
   beforeEach(() => {
@@ -110,6 +128,7 @@ describe('productStatusChecker', () => {
     it('will poll the product usage endpoint until confluence is active', async () => {
       mockPricingEndpointWithResponse(pricingActivating);
       mockProductUsageEndpointWithSuccess(5);
+      mockLicenseInformationEndpointWithResponse(licenseInformationActive);
 
       const progressHandler = jest.fn();
       const result = await new Promise(async (resolve) => {
@@ -215,6 +234,7 @@ describe('productStatusChecker', () => {
     it('will return INACTIVE if Confluence is neither active nor activating', async () => {
       mockPricingEndpointWithResponse(pricingInactive);
       mockProspectivePricesEndpointWithResponse(prospectivePricesInactive);
+
       const result = await confluenceStatusChecker.check();
       expect(result).toBe(INACTIVE);
     });

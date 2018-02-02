@@ -188,7 +188,7 @@ export default (productKey,
       xflowLicenseReady = status === ACTIVE || status === UNKNOWN;
     }
 
-    return productUsageLicenseReady && xflowLicenseReady && await checkSiteAvailable().catch(() => console.warn(`${productKey} status unable to be determined`) && false)  // eslint-disable-line no-console
+    return productUsageLicenseReady && xflowLicenseReady && await checkSiteAvailable().catch(err => console.warn(`${productKey} status unable to be determined`, err) && false)  // eslint-disable-line no-console
       ? ACTIVE
       : ACTIVATING;
   }

@@ -19,6 +19,14 @@ export default class XFlow extends Component {
     sourceComponent: PropTypes.string.isRequired,
     sourceContext: PropTypes.string.isRequired,
     targetProduct: PropTypes.string.isRequired,
+    contextInfo: PropTypes.shape({
+      contextualImage: PropTypes.string,
+      contextualHeading: PropTypes.string,
+      contextualMessage: PropTypes.string,
+      reactivateCTA: PropTypes.string,
+      trialCTA: PropTypes.string,
+    }),
+    isCrossSell: PropTypes.bool,
     onAnalyticsEvent: PropTypes.func.isRequired,
     onComplete: PropTypes.func,
     onTrialRequested: PropTypes.func,
@@ -36,7 +44,7 @@ export default class XFlow extends Component {
 
   render() {
     const { targetProduct, sourceComponent, sourceContext, onAnalyticsEvent, onComplete,
-      onTrialActivating, onTrialRequested, ...props } = this.props;
+      onTrialActivating, onTrialRequested, contextInfo, isCrossSell, ...props } = this.props;
 
     const XFlowProvider = XFlow.getProviderForProductKey(targetProduct);
     if (!XFlowProvider) {
@@ -53,6 +61,8 @@ export default class XFlow extends Component {
           onComplete={onComplete}
           onTrialActivating={onTrialActivating}
           onTrialRequested={onTrialRequested}
+          contextInfo={contextInfo}
+          isCrossSell={isCrossSell}
         />
       </XFlowProvider>
     );

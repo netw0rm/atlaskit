@@ -7,3 +7,6 @@ export const notifyAccessEndpoint = () =>
 
 export const productRequestEndpoint = () =>
   `${getXFlowEndPoint()}/request-admins-for-product-trial`;
+
+export const licenseInformationEndpoint = (cloudId) =>
+  `${getXFlowEndPoint()}/${cloudId}/license-information`;

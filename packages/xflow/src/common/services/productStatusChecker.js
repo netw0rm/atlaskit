@@ -4,6 +4,8 @@ import bezier from 'cubic-bezier';
 import '@atlaskit/polyfills/array-prototype-includes';
 
 import { ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN } from '../productProvisioningStates';
+import { licenseInformationEndpoint } from './xflowService';
+import { fetchCloudId } from './tenantContext';
 
 const DEFAULT_POLLING_INTERVAL = 5000;
 const POLLING_TIMEOUT = 300000; // 5 minutes, milliseconds;
@@ -17,7 +19,15 @@ export const PRICING_URL = '/admin/rest/billing/api/instance/pricing';
 export const PROSPECTIVE_PRICES_URL = '/admin/rest/billing/api/instance/prospective-prices';
 
 export const JIRA_LANDING_PAGE = '/secure/LandingPage.jspa';
-export const CONFLUENCE_LANDING_PAGE = '/wiki';
+export const CONFLUENCE_LANDING_PAGE = '/wiki/';
+
+const stateMap = {
+  ACTIVE,
+  ACTIVATING,
+  INACTIVE,
+  DEACTIVATED,
+  UNKNOWN,
+};
 
 export async function checkJiraAvailable() {
   const response = await fetch(JIRA_LANDING_PAGE, {
@@ -56,6 +66,27 @@ export function getSiteAvailableCheckForProductKey(productKey) {
   }
 }
 
+export async function checkLicenseInformation(productKey) {
+  let response;
+
+  try {
+    response = await fetch(licenseInformationEndpoint(await fetchCloudId()), {
+      credentials: 'include',
+    });
+  } catch (err) {
+    return UNKNOWN;
+  }
+
+  if (!response.ok) {
+    return UNKNOWN;
+  }
+
+  const licenseInformation = await response.json();
+
+  return licenseInformation.products[productKey] ?
+    stateMap[licenseInformation.products[productKey].state] : INACTIVE;
+}
+
 /**
  * This function will poll a specified site for a set period to check if it
  * has come up.
@@ -66,11 +97,12 @@ export function getSiteAvailableCheckForProductKey(productKey) {
  * @returns {*} Product checker object
  */
 export default (productKey,
-                checkSiteAvailable = getSiteAvailableCheckForProductKey(productKey)) => {
+  checkSiteAvailable = getSiteAvailableCheckForProductKey(productKey)) => {
   let interval = null;
   let startTime = 0;
   let currentStatus = UNKNOWN;
-  let licenseReady = false;
+  let productUsageLicenseReady = false;
+  let xflowLicenseReady = false;
 
   async function hasProductBeenEvaluated() {
     const response = await fetch(PROSPECTIVE_PRICES_URL, {
@@ -128,7 +160,7 @@ export default (productKey,
   }
 
   async function checkActivatingStatus() {
-    if (!licenseReady) {
+    if (!productUsageLicenseReady) {
       const response = await fetch(PRODUCT_USAGE_URL, {
         cache: 'no-store',
         credentials: 'same-origin',
@@ -138,10 +170,25 @@ export default (productKey,
       }
 
       const products = await response.json();
-      licenseReady = products.usages.some(usage => usage.productKey === productKey);
+      productUsageLicenseReady = products.usages.some(usage => usage.productKey === productKey);
     }
 
-    return licenseReady && await checkSiteAvailable().catch(() => console.warn(`${productKey} status unable to be determined`) && false)  // eslint-disable-line no-console
+    if (productUsageLicenseReady && !xflowLicenseReady) {
+      const status = await checkLicenseInformation(productKey);
+
+      // UNKNOWN means that the endpoint returned an error
+      //   If this occurs, then we cannot rely on accessing this endpoint and
+      //   should  not try again.
+      //   This most likely occurs due to an expired or missing cookie, and
+      //   will be solved after Stargate changes to be accessible via a path,
+      //   rather than a separate domain.
+      //   When this changes, this UNKNOWN check can be removed, and this
+      //   status checker can be updated to simply poll the license-information
+      //   endpoint, without polling the the pricing endpoints.
+      xflowLicenseReady = status === ACTIVE || status === UNKNOWN;
+    }
+
+    return productUsageLicenseReady && xflowLicenseReady && await checkSiteAvailable().catch(err => console.warn(`${productKey} status unable to be determined`, err) && false)  // eslint-disable-line no-console
       ? ACTIVE
       : ACTIVATING;
   }

@@ -15,7 +15,7 @@ const defaultProps = {
     <p>
       Once your trial finishes, billing will start.<br />
       Easily cancel at anytime in <strong>Manage subscriptions</strong>.<br />
-      We will email your billing contact 3 days in advance.
+      We will email your billing contact 10 days in advance.
     </p>
   ),
   reactivateHeading: 'Welcome back',
@@ -23,7 +23,7 @@ const defaultProps = {
     <div>
       <p>If your instance is eligible for a trial, Confluence will be free for 30 days.</p>
       <p>Otherwise, billing will start immediately.</p>
-      <p>{"We'll email your billing contact 3 days prior to the due date with any new charges."}</p>
+      <p>{"We'll email your billing contact 10 days prior to the due date with any new charges."}</p>
     </div>
   ),
   spinnerActive: false,

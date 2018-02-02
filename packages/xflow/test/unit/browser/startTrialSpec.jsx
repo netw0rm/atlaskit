@@ -309,7 +309,7 @@ describe('@atlaskit/xflow', () => {
         expect(xflow.find(ContextualStartTrial).text()).toMatch('Try Confluence free for 30 days');
         // trial info footer
         expect(xflow.find(ContextualStartTrial).text()).toMatch('Once your trial finishes, billing will start.');
-        expect(xflow.find(ContextualStartTrial).text()).toMatch('Your billing contact will be emailed three days before');
+        expect(xflow.find(ContextualStartTrial).text()).toMatch('Your billing contact will be emailed ten days before');
         expect(xflow.find(ContextualStartTrial).text()).toMatch('Cancel your trial at any time in Manage subscriptions.');
       });
     });

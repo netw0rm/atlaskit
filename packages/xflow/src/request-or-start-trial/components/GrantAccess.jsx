@@ -124,6 +124,7 @@ class GrantAccess extends Component {
     userSelectInFocus: this.props.userSelectInFocus,
     userSelectIsInvalid: this.props.userSelectIsInvalid,
     userSelectNoMatchesMessage: this.props.intl.formatMessage(messages.noMatchesFound),
+    userSets: null,
     spinnerActive: this.props.spinnerActive,
     continueButtonDisabled: this.props.continueButtonDisabled,
     failedToGrantAccess: false,
@@ -359,13 +360,13 @@ class GrantAccess extends Component {
         footer={
           <GrantAccessFooter>
             <SpinnerDiv>
-              <Spinner isCompleting={!this.state.spinnerActive} />
+              <Spinner isCompleting={!(this.state.spinnerActive || this.state.userSets === null)} />
             </SpinnerDiv>
             <Button
               id="xflow-grant-access-continue-button"
               onClick={this.handleContinueClick}
               appearance="primary"
-              isDisabled={this.state.continueButtonDisabled}
+              isDisabled={this.state.continueButtonDisabled || this.state.userSets === null}
             >
               <FormattedMessage
                 id="xflow.generic.grant-access.continue-button"
@@ -385,19 +386,20 @@ class GrantAccess extends Component {
                 />
               </Button>
             ) : (
-              !this.state.changeUsers && (
-                <Button
-                  id="xflow-grant-access-manage-button"
-                  onClick={this.handleManageClick}
-                  appearance="link"
-                >
-                  <FormattedMessage
-                    id="xflow.generic.grant-access.manage"
-                    defaultMessage="Manage"
-                  />
-                </Button>
-              )
-            )}
+                !this.state.changeUsers && (
+                  <Button
+                    id="xflow-grant-access-manage-button"
+                    onClick={this.handleManageClick}
+                    appearance="link"
+                    isDisabled={this.state.userSets === null}
+                  >
+                    <FormattedMessage
+                      id="xflow.generic.grant-access.manage"
+                      defaultMessage="Manage"
+                    />
+                  </Button>
+                )
+              )}
           </GrantAccessFooter>
         }
       >

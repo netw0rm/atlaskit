@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@atlaskit/website",
-  "version": "903.0.0",
+  "version": "904.0.0",
   "description": "The Atlaskit Website",
   "scripts": {
     "build": "yarn run build-data && NODE_ENV=production ATLASKIT_SITE_ENV=production webpack -p --progress && cp dist/index.html dist/404.html",

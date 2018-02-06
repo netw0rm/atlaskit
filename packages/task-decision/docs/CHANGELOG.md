@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 4.8.1 (2018-02-06)
+
+* bug fix; copied updated json to dist for use in mk-2 ([17f61cf](https://bitbucket.org/atlassian/atlaskit/commits/17f61cf))
 ## 4.8.0 (2018-01-30)
 
 * feature; resourcedItemList uses contentAsFabricDocument rather than rawContent as content to (issues closed: fs-1677) ([a0d08af](https://bitbucket.org/atlassian/atlaskit/commits/a0d08af))

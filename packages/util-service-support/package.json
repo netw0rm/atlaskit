@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/util-service-support",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "config": {
     "access": "public"
   },

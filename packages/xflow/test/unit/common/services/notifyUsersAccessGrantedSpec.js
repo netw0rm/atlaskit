@@ -13,9 +13,11 @@ import accessgrantedJiraUsersResponse from '../mock-data/accessgrantedJiraUsers.
 import accessgrantedNoUsersResponse from '../mock-data/accessgrantedNoUsers.json';
 import jiraUsersResponse from '../mock-data/jiraUsers.json';
 
+const MOCK_CLOUD_ID = 'some-cloud-id';
+
 const mockNotifyEastEndpointWithResponse = (response) => {
   fetchMock.mock(
-    notifyAccessEndpoint(),
+    notifyAccessEndpoint(MOCK_CLOUD_ID),
     { body: response },
     {
       method: 'POST',
@@ -29,12 +31,15 @@ describe('notifyUsersAccessGranted', () => {
   beforeEach(() => { sandbox = sinon.createSandbox(); });
   afterEach(() => sandbox.restore());
 
-  beforeEach(() => fetchMock.catch(417));
+  beforeEach(() => {
+    tenantContext.fetchCloudId = jest.fn().mockReturnValue(Promise.resolve(MOCK_CLOUD_ID));
+    fetchMock.catch(417);
+  });
   afterEach(fetchMock.restore);
 
   it('should return no users and it should never contact the endpoint', async () => {
     const SHOULD_NEVER_CALL = 'SHOULD_NEVER_CALL';
-    fetchMock.mock(notifyAccessEndpoint(), {}, { name: SHOULD_NEVER_CALL });
+    fetchMock.mock(notifyAccessEndpoint(MOCK_CLOUD_ID), {}, { name: SHOULD_NEVER_CALL });
     const result = await notifyUsersAccessGranted([], 'confluence');
     expect(result).toEqual(accessgrantedNoUsersResponse);
     expect(fetchMock.called(SHOULD_NEVER_CALL)).toBe(false);
@@ -71,7 +76,7 @@ describe('notifyUsersAccessGranted', () => {
   it('should return a rejected promise if both endpoints return a 500 response', async () => {
     sandbox.stub(tenantContext, 'fetchCurrentUser').resolves(userAdminResponse);
     sandbox.stub(tenantContext, 'getInstanceName').returns('example.atlassian.net');
-    fetchMock.mock(notifyAccessEndpoint(), 500);
+    fetchMock.mock(notifyAccessEndpoint(MOCK_CLOUD_ID), 500);
     expect.assertions(1);
 
     try {

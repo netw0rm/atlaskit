@@ -1,5 +1,9 @@
 # @atlaskit/util-service-support
 
+## 2.0.4 (2018-02-06)
+
+* bug fix; added omitCredentials to SecurityOptions ([88cb203](https://bitbucket.org/atlassian/atlaskit/commits/88cb203))
+
 ## 2.0.3 (2017-12-26)
 
 * bug fix; remove @atlaskit/util-common-test from devDependencies ([e9faeab](https://bitbucket.org/atlassian/atlaskit/commits/e9faeab))

@@ -1,6 +1,6 @@
 import * as URL from 'url';
 import * as URLSearchParams from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
-import { KeyValues, RequestServiceOptions, ServiceConfig, SecurityOptions } from './types';
+import { KeyValues, RequestServiceOptions, ServiceConfig, SecurityOptions, buildCredentials } from './types';
 
 const defaultRequestServiceOptions: RequestServiceOptions = {};
 
@@ -75,10 +75,11 @@ export const requestService = <T>(serviceConfig: ServiceConfig, options?: Reques
   const secOptions = securityProvider && securityProvider();
   const requestUrl = buildUrl(url, path, queryParams, secOptions);
   const headers = buildHeaders(secOptions, requestInit && requestInit.headers);
+  const credentials = buildCredentials(secOptions);
   const requestOptions = {
     ...requestInit,
     headers,
-    credentials: 'include' as RequestCredentials,
+    credentials,
   };
 
   return fetch(new Request(requestUrl, requestOptions))

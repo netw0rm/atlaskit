@@ -58,7 +58,12 @@ export interface KeyValues {
 export interface SecurityOptions {
   params?: KeyValues;
   headers?: KeyValues;
+  omitCredentials?: boolean;
 }
+
+export const buildCredentials = (secOptions?: SecurityOptions) => {
+  return secOptions && secOptions.omitCredentials ? 'omit' as 'omit' : 'include' as 'include';
+};
 
 /**
  * Returns a promise to a SecurityOptions that has just been forcibly refreshed with a

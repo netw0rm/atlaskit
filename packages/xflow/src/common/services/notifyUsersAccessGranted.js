@@ -1,7 +1,7 @@
 import 'es6-promise/auto';
 import 'whatwg-fetch';
 
-import { fetchCurrentUser, getInstanceName, getAvatarUrl } from './tenantContext';
+import { fetchCurrentUser, getInstanceName, getAvatarUrl, fetchCloudId } from './tenantContext';
 import { notifyAccessEndpoint } from './xflowService';
 
 function getAtlassianAccountId({ attributes: { attributes } }) {
@@ -43,7 +43,8 @@ export default async (users, productKey) => {
     };
   }
 
-  const admin = await fetchCurrentUser();
+  const [admin, cloudId] = await Promise.all([fetchCurrentUser(), fetchCloudId()]);
+
   const instance = getInstanceName();
 
   const grantedAccessBy = {
@@ -58,7 +59,7 @@ export default async (users, productKey) => {
   }));
 
   return await notifyUsers(
-    notifyAccessEndpoint(),
+    notifyAccessEndpoint(cloudId),
     instance,
     grantedAccessBy,
     grantedAccessTo,

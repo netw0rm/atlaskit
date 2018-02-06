@@ -6,9 +6,11 @@ import * as tenantContext from '../../../../src/common/services/tenantContext';
 import { productRequestEndpoint } from '../../../../src/common/services/xflowService';
 import productRequest from '../../../../src/common/services/productRequest';
 
+const MOCK_CLOUD_ID = 'some-cloud-id';
+
 const mockRequestTrialEastEndpointWithResponse = (response) => {
   fetchMock.mock(
-    productRequestEndpoint(),
+    productRequestEndpoint(MOCK_CLOUD_ID),
     { body: response },
     {
       method: 'POST',
@@ -51,7 +53,7 @@ describe('productRequest', () => {
   });
 
   it('should return a rejected promise if productRequestEndpoint returns a 500 response', async () => {
-    fetchMock.mock(productRequestEndpoint(), 500);
+    fetchMock.mock(productRequestEndpoint(MOCK_CLOUD_ID), 500);
     expect.assertions(1);
     const requestConfluenceTrial = productRequest('confluence.ondemand');
 

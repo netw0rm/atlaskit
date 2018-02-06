@@ -17,12 +17,14 @@ import { productRequestEndpoint } from './xflowService';
  */
 export default productKey => async (comment, isCrossSell) => {
   try {
-    const cloudId = await fetchCloudId();
+    const [cloudId, avatar, displayName] = await Promise.all([
+      fetchCloudId(),
+      fetchCurrentUserAvatarUrl(),
+      fetchCurrentUserDisplayName(),
+    ]);
     const instanceName = getInstanceName();
-    const avatar = await fetchCurrentUserAvatarUrl();
-    const displayName = await fetchCurrentUserDisplayName();
 
-    const response = await fetch(productRequestEndpoint(), {
+    const response = await fetch(productRequestEndpoint(cloudId), {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -41,8 +43,8 @@ export default productKey => async (comment, isCrossSell) => {
 
     if (!response.ok) {
       throw new Error(
-          `Unable to request product from end user. Status: ${response.status}`
-        );
+        `Unable to request product from end user. Status: ${response.status}`
+      );
     }
 
     return await response.json();

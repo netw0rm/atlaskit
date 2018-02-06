@@ -8,8 +8,6 @@ import { promiseAny } from '../utils/promiseAny';
 const SITE_ADMINS_GROUP_NAME = 'site-admins';
 
 export const TENANT_INFO_URL = '/_tenant_info';
-export const JIRA_CLOUD_ID_URL = '/rest/product-fabric/1.0/cloud/id';
-export const CONFLUENCE_CLOUD_ID_URL = '/wiki/rest/product-fabric/1.0/cloud/id';
 export const JIRA_CURRENT_USER_AND_GROUPS_URL = '/rest/api/2/myself?expand=groups';
 
 // https://developer.atlassian.com/cloud/confluence/rest/#api-user-current-get

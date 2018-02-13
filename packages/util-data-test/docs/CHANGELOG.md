@@ -1,5 +1,8 @@
 # @atlaskit/util-data-test
 
+## 7.3.0 (2018-02-13)
+
+* feature; migrated json data back to util-data-test ([d03b160](https://bitbucket.org/atlassian/atlaskit/commits/d03b160))
 ## 7.2.1 (2018-01-17)
 
 * bug fix; missing json files are breaking mk-2 ([0e5e8db](https://bitbucket.org/atlassian/atlaskit/commits/0e5e8db))

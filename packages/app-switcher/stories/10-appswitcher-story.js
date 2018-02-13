@@ -49,6 +49,32 @@ storiesOf(name, module)
     />
   ))
 
+  .add('with application subtitle', () => (
+    <AppSwitcher
+      {...{
+        ...props,
+        linkedApplications: {
+          configureLink: 'https://www.atlassian.com',
+          apps: [
+            {
+              name: 'JIRA',
+              url: 'https://www.atlassian.com/#4',
+              product: 'jira',
+            },
+            {
+              name: 'Confluence',
+              url: 'https://www.atlassian.com/#5',
+              product: 'confluence',
+              subtitle: '7 Days Left',
+            },
+          ],
+          error: false,
+        },
+        recentContainers: [],
+      }}
+    />
+  ))
+
   .add('with Confluence as suggested application', () => (
     <AppSwitcher
       {...{

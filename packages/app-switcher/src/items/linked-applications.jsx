@@ -18,10 +18,19 @@ export default function (
     };
   }
 
-  const items = linkedApplications.apps.map(application => ({
-    content: (<Item>{application.name}</Item>),
-    href: application.url,
-    analyticEvent: { key: 'appswitcher.app.link.click', properties: { product: application.product } },
+  const items = linkedApplications.apps.map(({ name, url, product, subtitle }) => ({
+    content: (
+      <Item>
+        {name}
+        {subtitle ?
+          <LozengeContainer>
+            <Lozenge appearance="inprogress" isBold>{subtitle}</Lozenge>
+          </LozengeContainer>
+        : null}
+      </Item>
+    ),
+    href: url,
+    analyticEvent: { key: 'appswitcher.app.link.click', properties: { product } },
   }));
 
   if (!isAnonymousUser && linkedApplications.suggested) {

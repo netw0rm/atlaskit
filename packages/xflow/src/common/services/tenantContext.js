@@ -7,8 +7,7 @@ import { promiseAny } from '../utils/promiseAny';
 
 const SITE_ADMINS_GROUP_NAME = 'site-admins';
 
-export const JIRA_CLOUD_ID_URL = '/rest/product-fabric/1.0/cloud/id';
-export const CONFLUENCE_CLOUD_ID_URL = '/wiki/rest/product-fabric/1.0/cloud/id';
+export const TENANT_INFO_URL = '/_edge/tenant_info';
 export const JIRA_CURRENT_USER_AND_GROUPS_URL = '/rest/api/2/myself?expand=groups';
 
 // https://developer.atlassian.com/cloud/confluence/rest/#api-user-current-get
@@ -75,17 +74,17 @@ export function fetchCurrentUser() {
     // and choose to not walk across pages.
     fetchSameOrigin(CONFLUENCE_CURRENT_USER_URL, 'Confluence endpoint #1:')
       .then(user => fetchSameOrigin(CONFLUENCE_USER_GROUPS_URL(user.accountId), 'Confluence endpoint #2:')
-      // fuse user and her/his groups into the Jira format
+        // fuse user and her/his groups into the Jira format
         .then(groups => {
           user.groups = {};
           user.groups.items = groups.results;
           return user;
         })),
   ])
-  .catch(err => {
-    err.message = `Unable to retrieve information about current user: ${err.message}`;
-    throw err;
-  })
+    .catch(err => {
+      err.message = `Unable to retrieve information about current user: ${err.message}`;
+      throw err;
+    })
   )();
 
   return currentUserPromiseCached;
@@ -102,19 +101,19 @@ export const fetchCurrentUserAvatarUrl = () =>
 
 export const isCurrentUserSiteAdmin = () =>
   fetchCurrentUser()
-  .then(user => {
-    let isSiteAdmin;
-    try {
-      isSiteAdmin = user.groups.items.some(group => group.name === SITE_ADMINS_GROUP_NAME);
-    } catch (e) {
-      isSiteAdmin = false;
-    }
-    return isSiteAdmin;
-  })
-  .catch(err => {
-    err.message = `Unable to check current user site admin rights: ${err.message}`;
-    throw err;
-  });
+    .then(user => {
+      let isSiteAdmin;
+      try {
+        isSiteAdmin = user.groups.items.some(group => group.name === SITE_ADMINS_GROUP_NAME);
+      } catch (e) {
+        isSiteAdmin = false;
+      }
+      return isSiteAdmin;
+    })
+    .catch(err => {
+      err.message = `Unable to check current user site admin rights: ${err.message}`;
+      throw err;
+    });
 
 export const getAtlassianAccountId = () =>
   fetchCurrentUser().then(user => user.accountId);
@@ -124,21 +123,21 @@ export const getInstanceName = () => window.location.hostname;
 /**
  * Attempt to fetch cloud id from JIRA, then Confluence, otherwise throw an error
  */
-let fetchCloudIdPromiseCached = null;
+let cachedCloudId = null;
 export const fetchCloudId = async () => {
-  fetchCloudIdPromiseCached = fetchCloudIdPromiseCached || await promiseAny([
-    fetchSameOrigin(JIRA_CLOUD_ID_URL, 'Jira endpoint:'),
-    fetchSameOrigin(CONFLUENCE_CLOUD_ID_URL, 'Confluence endpoint:'),
-  ])
-  .then((response) => response.cloudId)
-  .catch(err => {
-    err.message = `Unable to retrieve cloud id: ${err.message}`;
-    throw err;
-  });
+  if (!cachedCloudId) {
+    try {
+      const response = await fetchSameOrigin(TENANT_INFO_URL, 'Tenant Info:');
+      cachedCloudId = response.cloudId;
+    } catch (err) {
+      err.message = `Unable to retrieve cloud id: ${err.message}`;
+      throw err;
+    }
+  }
 
-  return fetchCloudIdPromiseCached;
+  return cachedCloudId;
 };
 
 fetchCloudId.resetCache = () => {
-  fetchCloudIdPromiseCached = null;
+  cachedCloudId = null;
 };

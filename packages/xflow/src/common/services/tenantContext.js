@@ -7,7 +7,7 @@ import { promiseAny } from '../utils/promiseAny';
 
 const SITE_ADMINS_GROUP_NAME = 'site-admins';
 
-export const TENANT_INFO_URL = '/_tenant_info';
+export const TENANT_INFO_URL = '/_edge/tenant_info';
 export const JIRA_CURRENT_USER_AND_GROUPS_URL = '/rest/api/2/myself?expand=groups';
 
 // https://developer.atlassian.com/cloud/confluence/rest/#api-user-current-get

@@ -411,6 +411,7 @@ class GrantAccess extends Component {
           </GrantAccessFooter>
         )}
         shouldCloseOnOverlayClick={false}
+        shouldCloseOnEscapePress={false}
         onClose={this.handleDialogClosed}
       >
         <div id="xflow-grant-access">

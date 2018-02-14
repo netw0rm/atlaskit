@@ -10,6 +10,7 @@ import ErrorFlag from '../../common/components/ErrorFlag';
 
 import ProgressIndicator from './ProgressIndicator';
 import StartTrialHeading from '../styled/StartTrialHeading';
+import StartTrialHeader from '../styled/StartTrialHeader';
 import StartTrialFooter from '../styled/StartTrialFooter';
 import LoadingTimeTextDiv from '../styled/LoadingTimeTextDiv';
 import WhereToFindNewProductDiv from '../styled/WhereToFindNewProductDiv';
@@ -137,6 +138,11 @@ class LoadingTime extends Component {
     return onComplete();
   };
 
+  handleDialogClosed = () => {
+    const { firePrivateAnalyticsEvent } = this.props;
+    firePrivateAnalyticsEvent('xflow.loading-product-trial.dialog.closed');
+  };
+
   handleErrorFlagDismiss = () => {
     const { firePrivateAnalyticsEvent } = this.props;
     firePrivateAnalyticsEvent('xflow.loading-product-trial.error-flag.dismissed');
@@ -145,19 +151,54 @@ class LoadingTime extends Component {
     });
   };
 
-  render() {
-    const {
-      productLogo,
-      progress,
-      status,
-      gotoButton,
-      heading,
-      message,
-      headerImage,
-      intl,
-    } = this.props;
+  header = () => {
+    const { productLogo, progress, status } = this.props;
+    return (
+      <StartTrialHeader>
+        {productLogo}
+        <ProgressIndicator
+          progress={progress}
+          status={status}
+          onComplete={this.handleProgressComplete}
+        />
+      </StartTrialHeader>
+    );
+  };
 
-    const { isReady, showErrorFlag } = this.state;
+  footer = () => {
+    const { status, gotoButton } = this.props;
+    const { isReady } = this.state;
+
+    return (
+      <StartTrialFooter>
+        <SpinnerDiv>
+          <Spinner isCompleting={!this.state.isLoading} />
+        </SpinnerDiv>
+        <Button
+          id="xflow-loading-go-to-product-button"
+          isDisabled={!(isReady && status === ACTIVE) || this.state.isLoading}
+          onClick={this.handleGoToProductClick}
+          appearance="primary"
+        >
+          {gotoButton}
+        </Button>
+        <Button
+          id="xflow-loading-close-button"
+          onClick={this.handleCloseClick}
+          appearance="subtle-link"
+        >
+          <FormattedMessage
+            id="xflow.generic.loading-product-trial.close-button"
+            defaultMessage="Close"
+          />
+        </Button>
+      </StartTrialFooter>
+    );
+  };
+
+  render() {
+    const { heading, message, headerImage, intl } = this.props;
+    const { showErrorFlag } = this.state;
 
     const loadingMessage =
       (heading && heading.trim()) || (message && message.trim()) ? (
@@ -178,41 +219,11 @@ class LoadingTime extends Component {
       <ModalDialog
         isOpen
         width="small"
-        header={
-          <div>
-            {productLogo}
-            <ProgressIndicator
-              progress={progress}
-              status={status}
-              onComplete={this.handleProgressComplete}
-            />
-          </div>
-        }
-        footer={
-          <StartTrialFooter>
-            <SpinnerDiv>
-              <Spinner isCompleting={!this.state.isLoading} />
-            </SpinnerDiv>
-            <Button
-              id="xflow-loading-go-to-product-button"
-              isDisabled={!(isReady && status === ACTIVE) || this.state.isLoading}
-              onClick={this.handleGoToProductClick}
-              appearance="primary"
-            >
-              {gotoButton}
-            </Button>
-            <Button
-              id="xflow-loading-close-button"
-              onClick={this.handleCloseClick}
-              appearance="subtle-link"
-            >
-              <FormattedMessage
-                id="xflow.generic.loading-product-trial.close-button"
-                defaultMessage="Close"
-              />
-            </Button>
-          </StartTrialFooter>
-        }
+        header={this.header}
+        footer={this.footer}
+        shouldCloseOnOverlayClick={false}
+        shouldCloseOnEscapePress={false}
+        onClose={this.handleDialogClosed}
       >
         <div id="xflow-loading-time">
           <StartTrialHeading>{this.showHeading()}</StartTrialHeading>

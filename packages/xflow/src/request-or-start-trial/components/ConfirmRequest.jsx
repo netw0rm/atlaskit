@@ -126,7 +126,7 @@ class ConfirmRequest extends Component {
             />
           </div>
         )}
-        footer={() => (
+        footer={({ onClose }) => (
           <RequestTrialFooter>
             {alreadyRequested ? (
               <span
@@ -154,7 +154,7 @@ class ConfirmRequest extends Component {
                 />
               </Button>
             )}
-            <Button appearance="subtle-link" onClick={this.handleCloseClick}>
+            <Button appearance="subtle-link" onClick={onClose}>
               <FormattedMessage
                 id="xflow.generic.request-trial.close-button"
                 defaultMessage="Close"
@@ -162,6 +162,8 @@ class ConfirmRequest extends Component {
             </Button>
           </RequestTrialFooter>
         )}
+        shouldCloseOnOverlayClick={false}
+        onClose={this.handleCloseClick}
       >
         <RequestTrialDiv>
           <RequestTrialHeading>

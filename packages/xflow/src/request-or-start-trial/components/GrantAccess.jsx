@@ -13,6 +13,7 @@ import ProgressIndicator from './ProgressIndicator';
 import ErrorFlag from '../../common/components/ErrorFlag';
 
 import StartTrialHeading from '../styled/StartTrialHeading';
+import GrantAccessHeader from '../styled/GrantAccessHeader';
 import GrantAccessFooter from '../styled/GrantAccessFooter';
 import StartTrialProgressDiv from '../styled/StartTrialProgressDiv';
 import GrantAccessDefaultAccessDiv from '../styled/GrantAccessDefaultAccessDiv';
@@ -269,6 +270,11 @@ class GrantAccess extends Component {
     });
   };
 
+  handleDialogClosed = () => {
+    const { firePrivateAnalyticsEvent } = this.props;
+    firePrivateAnalyticsEvent('xflow.grant-access.dialog.closed');
+  };
+
   handleRadioChange = evt => {
     const { usersOption, firePrivateAnalyticsEvent } = this.props;
     firePrivateAnalyticsEvent('xflow.grant-access.radio-option.changed', {
@@ -352,15 +358,14 @@ class GrantAccess extends Component {
 
     return (
       <ModalDialog
-        isOpen
         width="small"
-        header={
-          <div>
+        header={() => (
+          <GrantAccessHeader>
             {productLogo}
             {progressIndicator}
-          </div>
-        }
-        footer={
+          </GrantAccessHeader>
+        )}
+        footer={() => (
           <GrantAccessFooter>
             <SpinnerDiv>
               <Spinner isCompleting={!(this.state.spinnerActive || this.state.userSets === null)} />
@@ -404,7 +409,9 @@ class GrantAccess extends Component {
               )
             )}
           </GrantAccessFooter>
-        }
+        )}
+        shouldCloseOnOverlayClick={false}
+        onClose={this.handleDialogClosed}
       >
         <div id="xflow-grant-access">
           <StartTrialHeading>

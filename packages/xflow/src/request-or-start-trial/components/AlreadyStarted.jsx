@@ -100,7 +100,7 @@ class AlreadyStarted extends Component {
     );
   };
 
-  footer = () => {
+  footer = ({ onClose }) => {
     const { getStartedButtonText } = this.props;
     const { isReady, isLoading } = this.state;
 
@@ -116,7 +116,7 @@ class AlreadyStarted extends Component {
         >
           {getStartedButtonText}
         </Button>
-        <Button onClick={this.handleCloseClick} appearance="subtle-link">
+        <Button onClick={onClose} appearance="subtle-link">
           <FormattedMessage id="xflow.generic.alread-started.close-button" defaultMessage="Close" />
         </Button>
       </StartTrialFooter>
@@ -127,7 +127,13 @@ class AlreadyStarted extends Component {
     const { heading, message } = this.props;
 
     return (
-      <ModalDialog width="small" header={this.header} footer={this.footer}>
+      <ModalDialog
+        width="small"
+        header={this.header}
+        footer={this.footer}
+        shouldCloseOnOverlayClick={false}
+        onClose={this.handleCloseClick}
+      >
         <div id="xflow-already-started">
           <StartTrialHeading>{heading}</StartTrialHeading>
           {message}

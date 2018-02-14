@@ -8,7 +8,6 @@ import { FormattedMessage } from 'react-intl';
 import { withAnalytics } from '@atlaskit/analytics';
 
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
-import RequestTrialHeading from '../styled/RequestTrialHeading';
 import RequestTrialFooter from '../styled/RequestTrialFooter';
 import RequestTrialHeader from '../styled/RequestTrialHeader';
 import RequestTrialLozengeDiv from '../styled/RequestTrialLozengeDiv';
@@ -166,9 +165,9 @@ class ConfirmRequest extends Component {
         onClose={this.handleCloseClick}
       >
         <RequestTrialDiv>
-          <RequestTrialHeading>
+          <h3>
             {contextInfo ? contextInfo.contextualHeading : heading}
-          </RequestTrialHeading>
+          </h3>
           {contextInfo ? <p>{contextInfo.contextualMessage}</p> : <p>{message}</p>}
         </RequestTrialDiv>
       </ModalDialog>

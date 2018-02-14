@@ -8,7 +8,7 @@ import { withAnalytics } from '@atlaskit/analytics';
 import ErrorFlag from '../../common/components/ErrorFlag';
 import SuccessFlag from '../../common/components/SuccessFlag';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
-import RequestTrialHeading from '../styled/RequestTrialHeading';
+import RequestTrialHeader from '../styled/RequestTrialHeader';
 import RequestTrialFooter from '../styled/RequestTrialFooter';
 import NoteText from '../styled/NoteText';
 
@@ -81,6 +81,7 @@ class RequestTrialNote extends Component {
       .then(() => {
         firePrivateAnalyticsEvent('xflow.request-trial-note.send-note.successful');
         this.setState({ requestTrialSendNoteStatus: 'successful' });
+        this.handleDialogClosed();
 
         return Promise.resolve(setProductRequestFlag())
           .then(() => {
@@ -141,6 +142,31 @@ class RequestTrialNote extends Component {
     setTimeout(onComplete, 1000);
   };
 
+  handleDialogClosed = () => {
+    const { firePrivateAnalyticsEvent } = this.props;
+    firePrivateAnalyticsEvent('xflow.request-trial-note.dialog.closed');
+  }
+
+  header = () =>
+    <RequestTrialHeader>
+      <h3>
+        <FormattedMessage
+          id="xflow.generic.request-trial-note.heading"
+          defaultMessage="Message your site admin"
+        />
+      </h3>
+    </RequestTrialHeader>;
+
+  footer = () =>
+    <RequestTrialFooter>
+      <Button appearance="primary" onClick={() => this.handleSendRequest()}>
+        <FormattedMessage
+          id="xflow.generic.request-trial-note.request-button"
+          defaultMessage="Send note"
+        />
+      </Button>
+    </RequestTrialFooter>;
+
   render() {
     const { intl, placeholder, prompt } = this.props;
     const { awaitingRequest, requestTrialSendNoteStatus } = this.state;
@@ -149,24 +175,11 @@ class RequestTrialNote extends Component {
         <ModalDialog
           isOpen={!awaitingRequest}
           width="small"
-          header={
-            <RequestTrialHeading>
-              <FormattedMessage
-                id="xflow.generic.request-trial-note.heading"
-                defaultMessage="Message your site admin"
-              />
-            </RequestTrialHeading>
-          }
-          footer={
-            <RequestTrialFooter>
-              <Button appearance="primary" onClick={() => this.handleSendRequest()}>
-                <FormattedMessage
-                  id="xflow.generic.request-trial-note.request-button"
-                  defaultMessage="Send note"
-                />
-              </Button>
-            </RequestTrialFooter>
-          }
+          header={this.header}
+          footer={this.footer}
+          onClose={this.handleDialogClosed}
+          shouldCloseOnEscapePress={false}
+          shouldCloseOnOverlayClick={false}
         >
           <div>
             {React.isValidElement(prompt) ? prompt : <p>{prompt}</p>}

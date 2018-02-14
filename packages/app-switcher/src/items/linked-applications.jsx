@@ -18,15 +18,13 @@ export default function (
     };
   }
 
-  const items = linkedApplications.apps.map(({ name, url, product, subtitle }) => ({
+  const items = linkedApplications.apps.map(({ name, url, product, label }) => ({
     content: (
       <Item>
         {name}
-        {subtitle ?
-          <LozengeContainer>
-            <Lozenge appearance="inprogress" isBold>{subtitle}</Lozenge>
-          </LozengeContainer>
-        : null}
+        {label && <LozengeContainer>
+          <Lozenge appearance="inprogress" isBold>{label}</Lozenge>
+        </LozengeContainer>}
       </Item>
     ),
     href: url,

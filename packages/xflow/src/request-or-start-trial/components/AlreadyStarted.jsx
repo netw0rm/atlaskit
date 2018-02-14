@@ -10,6 +10,7 @@ import { withAnalytics } from '@atlaskit/analytics';
 import SpinnerDiv from '../../common/styled/SpinnerDiv';
 import StartTrialFooter from '../styled/StartTrialFooter';
 import StartTrialHeader from '../styled/StartTrialHeader';
+import StartTrialHeading from '../styled/StartTrialHeading';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
 
 import ProgressIndicator from './ProgressIndicator';
@@ -81,51 +82,54 @@ class AlreadyStarted extends Component {
     return onComplete();
   };
 
-  render() {
-    const { productLogo, heading, message, getStartedButtonText, progress, status } = this.props;
-    const { initialActivationState, isReady, isLoading } = this.state;
+  header = () => {
+    const { productLogo, progress, status } = this.props;
+    const { initialActivationState } = this.state;
 
     return (
-      <ModalDialog
-        isOpen
-        width="small"
-        header={
-          <div>
-            {productLogo}
-            {initialActivationState === ACTIVATING
-              ? <ProgressIndicator
-                progress={progress}
-                status={status}
-                onComplete={this.handleProgressComplete}
-              />
-              : null}
-          </div>
-        }
-        footer={
-          <StartTrialFooter>
-            <SpinnerDiv>
-              <Spinner isCompleting={!isLoading} />
-            </SpinnerDiv>
-            <Button
-              onClick={this.handleGetStartedClick}
-              appearance="primary"
-              isDisabled={!isReady || isLoading}
-            >
-              {getStartedButtonText}
-            </Button>
-            <Button onClick={this.handleCloseClick} appearance="subtle-link">
-              <FormattedMessage
-                id="xflow.generic.alread-started.close-button"
-                defaultMessage="Close"
-              />
-            </Button>
-          </StartTrialFooter>
-        }
-      >
+      <StartTrialHeader>
+        {productLogo}
+        {initialActivationState === ACTIVATING ? (
+          <ProgressIndicator
+            progress={progress}
+            status={status}
+            onComplete={this.handleProgressComplete}
+          />
+        ) : null}
+      </StartTrialHeader>
+    );
+  };
+
+  footer = () => {
+    const { getStartedButtonText } = this.props;
+    const { isReady, isLoading } = this.state;
+
+    return (
+      <StartTrialFooter>
+        <SpinnerDiv>
+          <Spinner isCompleting={!isLoading} />
+        </SpinnerDiv>
+        <Button
+          onClick={this.handleGetStartedClick}
+          appearance="primary"
+          isDisabled={!isReady || isLoading}
+        >
+          {getStartedButtonText}
+        </Button>
+        <Button onClick={this.handleCloseClick} appearance="subtle-link">
+          <FormattedMessage id="xflow.generic.alread-started.close-button" defaultMessage="Close" />
+        </Button>
+      </StartTrialFooter>
+    );
+  };
+
+  render() {
+    const { heading, message } = this.props;
+
+    return (
+      <ModalDialog width="small" header={this.header} footer={this.footer}>
         <div id="xflow-already-started">
-          <StartTrialHeader>
-            {heading}
-          </StartTrialHeader>
+          <StartTrialHeading>{heading}</StartTrialHeading>
           {message}
         </div>
       </ModalDialog>

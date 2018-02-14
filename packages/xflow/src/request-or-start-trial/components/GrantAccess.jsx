@@ -12,7 +12,7 @@ import { withAnalytics } from '@atlaskit/analytics';
 import ProgressIndicator from './ProgressIndicator';
 import ErrorFlag from '../../common/components/ErrorFlag';
 
-import StartTrialHeader from '../styled/StartTrialHeader';
+import StartTrialHeading from '../styled/StartTrialHeading';
 import GrantAccessFooter from '../styled/GrantAccessFooter';
 import StartTrialProgressDiv from '../styled/StartTrialProgressDiv';
 import GrantAccessDefaultAccessDiv from '../styled/GrantAccessDefaultAccessDiv';
@@ -219,9 +219,8 @@ class GrantAccess extends Component {
     }
 
     try {
-      const users = selectedRadio === usersOption
-        ? selectedUsers
-        : [...userSets.get(selectedRadio).values()];
+      const users =
+        selectedRadio === usersOption ? selectedUsers : [...userSets.get(selectedRadio).values()];
       await grantAccessToUsers(users, notifyUsers);
       const grantedAccessTo = users.map(user => this.getAtlassianAccountId(user));
       firePrivateAnalyticsEvent('xflow.grant-access.continue-button.grant-access-successful', {
@@ -341,11 +340,15 @@ class GrantAccess extends Component {
       showProgressIndicator,
     } = this.props;
 
-    const progressIndicator = showProgressIndicator ?
-      (<ProgressIndicator progress={progress} status={status} />) : '';
+    const progressIndicator = showProgressIndicator ? (
+      <ProgressIndicator progress={progress} status={status} />
+    ) : (
+      ''
+    );
 
-    const GrantAccessChangeUsers = selectLabel ?
-        GrantAccessChangeUsersWithLabelDiv : GrantAccessChangeUsersDiv;
+    const GrantAccessChangeUsers = selectLabel
+      ? GrantAccessChangeUsersWithLabelDiv
+      : GrantAccessChangeUsersDiv;
 
     return (
       <ModalDialog
@@ -386,27 +389,27 @@ class GrantAccess extends Component {
                 />
               </Button>
             ) : (
-                !this.state.changeUsers && (
-                  <Button
-                    id="xflow-grant-access-manage-button"
-                    onClick={this.handleManageClick}
-                    appearance="link"
-                    isDisabled={this.state.userSets === null}
-                  >
-                    <FormattedMessage
-                      id="xflow.generic.grant-access.manage"
-                      defaultMessage="Manage"
-                    />
-                  </Button>
-                )
-              )}
+              !this.state.changeUsers && (
+                <Button
+                  id="xflow-grant-access-manage-button"
+                  onClick={this.handleManageClick}
+                  appearance="link"
+                  isDisabled={this.state.userSets === null}
+                >
+                  <FormattedMessage
+                    id="xflow.generic.grant-access.manage"
+                    defaultMessage="Manage"
+                  />
+                </Button>
+              )
+            )}
           </GrantAccessFooter>
         }
       >
         <div id="xflow-grant-access">
-          <StartTrialHeader>
+          <StartTrialHeading>
             <div>{heading}</div>
-          </StartTrialHeader>
+          </StartTrialHeading>
 
           {this.state.changeUsers ? (
             <GrantAccessChangeUsers>
@@ -467,7 +470,7 @@ class GrantAccess extends Component {
                     </span>
                   </GrantAccessLearnMoreSpan>
                 </AffectMyBillText>
-              ) : null }
+              ) : null}
             </GrantAccessChangeUsers>
           ) : (
             <GrantAccessDefaultAccessDiv>
@@ -475,8 +478,8 @@ class GrantAccess extends Component {
             </GrantAccessDefaultAccessDiv>
           )}
 
-          {showNotifyUsersOption
-            ? <StartTrialProgressDiv>
+          {showNotifyUsersOption ? (
+            <StartTrialProgressDiv>
               <input
                 type="checkbox"
                 id="xflow-grant-access-notify-users"
@@ -491,7 +494,9 @@ class GrantAccess extends Component {
                 />
               </InputLabel>
             </StartTrialProgressDiv>
-            : '' }
+          ) : (
+            ''
+          )}
         </div>
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}

@@ -9,7 +9,7 @@ import ModalDialog from '@atlaskit/modal-dialog';
 import ErrorFlag from '../../common/components/ErrorFlag';
 
 import ProgressIndicator from './ProgressIndicator';
-import StartTrialHeader from '../styled/StartTrialHeader';
+import StartTrialHeading from '../styled/StartTrialHeading';
 import StartTrialFooter from '../styled/StartTrialFooter';
 import LoadingTimeTextDiv from '../styled/LoadingTimeTextDiv';
 import WhereToFindNewProductDiv from '../styled/WhereToFindNewProductDiv';
@@ -159,17 +159,20 @@ class LoadingTime extends Component {
 
     const { isReady, showErrorFlag } = this.state;
 
-    const loadingMessage = (heading && heading.trim()) || (message && message.trim()) ? (
-      <LoadingTimeTextDiv>
-        <WhereToFindNewProductSVGDiv>
-          <WhereToFindNewProductImg src={headerImage} alt="app-switcher" />
-        </WhereToFindNewProductSVGDiv>
-        <WhereToFindNewProductDiv>
-          <h5>{heading}</h5>
-          <WhereToFindNewProductText>{message}</WhereToFindNewProductText>
-        </WhereToFindNewProductDiv>
-      </LoadingTimeTextDiv>
-    ) : '';
+    const loadingMessage =
+      (heading && heading.trim()) || (message && message.trim()) ? (
+        <LoadingTimeTextDiv>
+          <WhereToFindNewProductSVGDiv>
+            <WhereToFindNewProductImg src={headerImage} alt="app-switcher" />
+          </WhereToFindNewProductSVGDiv>
+          <WhereToFindNewProductDiv>
+            <h5>{heading}</h5>
+            <WhereToFindNewProductText>{message}</WhereToFindNewProductText>
+          </WhereToFindNewProductDiv>
+        </LoadingTimeTextDiv>
+      ) : (
+        ''
+      );
 
     return (
       <ModalDialog
@@ -212,7 +215,7 @@ class LoadingTime extends Component {
         }
       >
         <div id="xflow-loading-time">
-          <StartTrialHeader>{this.showHeading()}</StartTrialHeader>
+          <StartTrialHeading>{this.showHeading()}</StartTrialHeading>
           {loadingMessage}
         </div>
         <ErrorFlag

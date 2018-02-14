@@ -170,6 +170,8 @@ describe(name, () => {
         linkedApplications={linkedApplications}
       />
     );
-    expect(wrapper.find(Lozenge).text()).toBe(label);
+    const labelLozenge = wrapper.find(Lozenge);
+    expect(labelLozenge).toHaveLength(1);
+    expect(labelLozenge.text()).toBe(label);
   });
 });

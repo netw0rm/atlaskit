@@ -4,6 +4,7 @@ import React from 'react';
 import sinon from 'sinon';
 import { DropdownMenuStateless } from '@atlaskit/dropdown-menu';
 import Lozenge from '@atlaskit/lozenge';
+import { Link } from '../../src/styled';
 import AppSwitcher from '../../src';
 import { name } from '../../package.json';
 
@@ -173,5 +174,19 @@ describe(name, () => {
     const labelLozenge = wrapper.find(Lozenge);
     expect(labelLozenge).toHaveLength(1);
     expect(labelLozenge.text()).toBe(label);
+  });
+
+  it('should show links', () => {
+    const text = 'Add payment details';
+    const url = 'https://example.com';
+    const wrapper = mount(
+      <AppSwitcher
+        {...data}
+        isDropdownOpenInitially
+        links={[{ text, url }]}
+      />
+    );
+    const link = wrapper.find(Link).filterWhere(l => l.text() === text);
+    expect(link).toHaveLength(1);
   });
 });

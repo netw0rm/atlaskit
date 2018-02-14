@@ -49,7 +49,7 @@ storiesOf(name, module)
     />
   ))
 
-  .add('with application subtitle', () => (
+  .add('with application label', () => (
     <AppSwitcher
       {...{
         ...props,
@@ -65,7 +65,7 @@ storiesOf(name, module)
               name: 'Confluence',
               url: 'https://www.atlassian.com/#5',
               product: 'confluence',
-              subtitle: '7 Days Left',
+              label: '7 Days Left',
             },
           ],
           error: false,

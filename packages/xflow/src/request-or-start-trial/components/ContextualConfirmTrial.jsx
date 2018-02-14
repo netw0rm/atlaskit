@@ -147,7 +147,7 @@ class ContextualConfirmTrial extends Component {
     });
   };
 
-  handleDialogClose = () => {
+  handleDialogClosed = () => {
     const { firePrivateAnalyticsEvent, status } = this.props;
     firePrivateAnalyticsEvent(
       status === INACTIVE
@@ -288,7 +288,7 @@ class ContextualConfirmTrial extends Component {
         height={'544px'}
         header={() => this.renderHeader(image, contextInfo)}
         footer={() => this.renderFooter(status)}
-        onClose={this.handleDialogClose}
+        onClose={this.handleDialogClosed}
         shouldCloseOnEscapePress={false}
         shouldCloseOnOverlayClick={false}
       >

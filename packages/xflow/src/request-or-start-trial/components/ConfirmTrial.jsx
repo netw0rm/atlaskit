@@ -144,7 +144,7 @@ class ConfirmTrial extends Component {
     });
   };
 
-  handleDialogClose = () => {
+  handleDialogClosed = () => {
     const { firePrivateAnalyticsEvent, status } = this.props;
     firePrivateAnalyticsEvent(
       status === INACTIVE
@@ -203,7 +203,7 @@ class ConfirmTrial extends Component {
         width="small"
         header={this.header}
         footer={this.footer}
-        onClose={this.handleDialogClose}
+        onClose={this.handleDialogClosed}
         shouldCloseOnEscapePress={false}
         shouldCloseOnOverlayClick={false}
       >

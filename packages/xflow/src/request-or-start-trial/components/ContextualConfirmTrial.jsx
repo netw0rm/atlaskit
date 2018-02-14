@@ -147,17 +147,28 @@ class ContextualConfirmTrial extends Component {
     });
   };
 
-  renderHeader = (image, contextInfo) => (<div id="xflow-contextual-confirm-header">
-    <CloseModalDialogButton id="xflow-confirm-trial-cancel-button" onClick={this.handleCancelClick} isDisabled={this.state.buttonsDisabled}>
-      <CrossIcon
-        label="Close Modal"
-        primaryColor="white"
-        size="medium"
-      />
-    </CloseModalDialogButton>
-    <ContextualConfirmTrialHeader />
-    <ContextualConfirmTrialImage src={contextInfo.contextualImage || image} alt="files" />
-  </div>);
+  handleDialogClose = () => {
+    const { firePrivateAnalyticsEvent, status } = this.props;
+    firePrivateAnalyticsEvent(
+      status === INACTIVE
+        ? 'xflow.confirm-trial.dialog.closed'
+        : 'xflow.reactivate-trial.dialog.closed'
+    );
+  }
+
+  renderHeader = (image, contextInfo) => (
+    <div id="xflow-contextual-confirm-header">
+      <CloseModalDialogButton id="xflow-confirm-trial-cancel-button" onClick={this.handleCancelClick} isDisabled={this.state.buttonsDisabled}>
+        <CrossIcon
+          label="Close Modal"
+          primaryColor="white"
+          size="medium"
+        />
+      </CloseModalDialogButton>
+      <ContextualConfirmTrialHeader />
+      <ContextualConfirmTrialImage src={contextInfo.contextualImage || image} alt="files" />
+    </div>
+  );
 
   renderInactiveFooter = () => (
     <ContextualConfirmTrialFooter>
@@ -235,23 +246,24 @@ class ContextualConfirmTrial extends Component {
     ? this.renderInactiveFooter()
     : this.renderReactivateFooter());
 
-  renderContextualContent = (status, contextInfo, isCrossSell) => (<ContextualConfirmTrialContent id="xflow-confirm-trial">
-    <ContextualConfirmTrialHeading>
-      {contextInfo.contextualHeading}
-    </ContextualConfirmTrialHeading>
-    <p>{contextInfo.contextualMessage}</p>
-    <SpinnerDiv topMultiplier={2}>
-      <Spinner isCompleting={!this.state.spinnerActive} />
-    </SpinnerDiv>
-    <Button
-      id="xflow-confirm-trial-confirm-button"
-      onClick={this.handleConfirmClick}
-      appearance="primary"
-      isDisabled={this.state.buttonsDisabled}
-    >
-      {status === INACTIVE ? contextInfo.trialCTA : contextInfo.reactivateCTA}
-    </Button>
-    {isCrossSell === true &&
+  renderContextualContent = (status, contextInfo, isCrossSell) => (
+    <ContextualConfirmTrialContent id="xflow-confirm-trial">
+      <ContextualConfirmTrialHeading>
+        {contextInfo.contextualHeading}
+      </ContextualConfirmTrialHeading>
+      <p>{contextInfo.contextualMessage}</p>
+      <SpinnerDiv topMultiplier={2}>
+        <Spinner isCompleting={!this.state.spinnerActive} />
+      </SpinnerDiv>
+      <Button
+        id="xflow-confirm-trial-confirm-button"
+        onClick={this.handleConfirmClick}
+        appearance="primary"
+        isDisabled={this.state.buttonsDisabled}
+      >
+        {status === INACTIVE ? contextInfo.trialCTA : contextInfo.reactivateCTA}
+      </Button>
+      {isCrossSell === true &&
       <ContextualOptOutLinkButton
         id="xflow-opt-out-button"
         onClick={this.handleOptOutClick}
@@ -259,7 +271,7 @@ class ContextualConfirmTrial extends Component {
         Turn off these messages
       </ContextualOptOutLinkButton>
     }
-  </ContextualConfirmTrialContent>);
+    </ContextualConfirmTrialContent>);
 
   render() {
     const {
@@ -273,13 +285,12 @@ class ContextualConfirmTrial extends Component {
       <ModalDialog
         isOpen
         width="medium"
-        height={'580px'}
-        header={
-          this.renderHeader(image, contextInfo)
-        }
-        footer={
-          this.renderFooter(status)
-        }
+        height={'544px'}
+        header={() => this.renderHeader(image, contextInfo)}
+        footer={() => this.renderFooter(status)}
+        onClose={this.handleDialogClose}
+        shouldCloseOnEscapePress={false}
+        shouldCloseOnOverlayClick={false}
       >
         {this.renderContextualContent(status, contextInfo, isCrossSell)}
         <ErrorFlag

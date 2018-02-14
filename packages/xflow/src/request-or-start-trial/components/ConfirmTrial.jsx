@@ -24,6 +24,10 @@ const messages = defineMessages({
     id: 'xflow.generic.start-tral.error-flag.description',
     defaultMessage: "Let's try that again.",
   },
+  optOutMessage: {
+    id: 'xflow.generic.start-trial.opt-out.message',
+    defaultMessage: 'Turn off these messages',
+  },
 });
 
 class ConfirmTrial extends Component {
@@ -140,6 +144,15 @@ class ConfirmTrial extends Component {
     });
   };
 
+  handleDialogClose = () => {
+    const { firePrivateAnalyticsEvent, status } = this.props;
+    firePrivateAnalyticsEvent(
+      status === INACTIVE
+        ? 'xflow.confirm-trial.dialog.closed'
+        : 'xflow.reactivate-trial.dialog.closed'
+    );
+  }
+
   header = () => {
     const { productLogo } = this.props;
     return <StartTrialHeader>{productLogo}</StartTrialHeader>;
@@ -190,6 +203,9 @@ class ConfirmTrial extends Component {
         width="small"
         header={this.header}
         footer={this.footer}
+        onClose={this.handleDialogClose}
+        shouldCloseOnEscapePress={false}
+        shouldCloseOnOverlayClick={false}
       >
         <div id="xflow-confirm-trial">
           <StartTrialHeading>
@@ -202,7 +218,7 @@ class ConfirmTrial extends Component {
             id="xflow-opt-out-button"
             onClick={this.handleOptOutClick}
           >
-            Turn off these messages
+            {intl.formatMessage(messages.optOutMessage)}
           </OptOutLinkButton>
         }
         <ErrorFlag

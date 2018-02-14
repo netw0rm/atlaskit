@@ -8,10 +8,10 @@ const ContextualConfirmTrialHeader = styled.div`
       margin-bottom: 0px;
       background: none;
   }
-  
+
   background: ${colors.B400};
   border-radius: 4px 4px 0px 0px;
-  margin: -${math.multiply(gridSize, 2)}px -${math.multiply(gridSize, 2)}px -${math.multiply(gridSize, 15)}px -${math.multiply(gridSize, 2)}px;
+  margin: -${math.multiply(gridSize, 2)}px 0px -${math.multiply(gridSize, 15)}px 0px;
   min-height: ${math.multiply(gridSize, 23)}px;
 `;
 

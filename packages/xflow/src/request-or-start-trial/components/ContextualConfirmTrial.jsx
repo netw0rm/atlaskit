@@ -110,14 +110,13 @@ class ContextualConfirmTrial extends Component {
   };
 
   handleCancelClick = () => {
-    const { cancelStartProductTrial, onCancel, firePrivateAnalyticsEvent, status } = this.props;
+    const { firePrivateAnalyticsEvent, status } = this.props;
     firePrivateAnalyticsEvent(
       status === INACTIVE
         ? 'xflow.confirm-trial.cancel-button.clicked'
         : 'xflow.reactivate-trial.cancel-button.clicked'
     );
-    return Promise.resolve(cancelStartProductTrial())
-      .then(onCancel);
+    return this.handleDialogClosed();
   };
 
   handleOptOutClick = () => {
@@ -148,12 +147,14 @@ class ContextualConfirmTrial extends Component {
   };
 
   handleDialogClosed = () => {
-    const { firePrivateAnalyticsEvent, status } = this.props;
+    const { firePrivateAnalyticsEvent, cancelStartProductTrial, onCancel, status } = this.props;
     firePrivateAnalyticsEvent(
       status === INACTIVE
         ? 'xflow.confirm-trial.dialog.closed'
         : 'xflow.reactivate-trial.dialog.closed'
     );
+    return Promise.resolve(cancelStartProductTrial())
+    .then(onCancel);
   }
 
   renderHeader = (image, contextInfo) => (
@@ -289,7 +290,6 @@ class ContextualConfirmTrial extends Component {
         header={() => this.renderHeader(image, contextInfo)}
         footer={() => this.renderFooter(status)}
         onClose={this.handleDialogClosed}
-        shouldCloseOnEscapePress={false}
         shouldCloseOnOverlayClick={false}
       >
         {this.renderContextualContent(status, contextInfo, isCrossSell)}

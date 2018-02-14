@@ -107,14 +107,13 @@ class ConfirmTrial extends Component {
   };
 
   handleCancelClick = () => {
-    const { cancelStartProductTrial, onCancel, firePrivateAnalyticsEvent, status } = this.props;
+    const { firePrivateAnalyticsEvent, status } = this.props;
     firePrivateAnalyticsEvent(
       status === INACTIVE
         ? 'xflow.confirm-trial.cancel-button.clicked'
         : 'xflow.reactivate-trial.cancel-button.clicked'
     );
-    return Promise.resolve(cancelStartProductTrial())
-      .then(onCancel);
+    return this.handleDialogClosed();
   };
 
   handleOptOutClick = () => {
@@ -145,12 +144,14 @@ class ConfirmTrial extends Component {
   };
 
   handleDialogClosed = () => {
-    const { firePrivateAnalyticsEvent, status } = this.props;
+    const { firePrivateAnalyticsEvent, cancelStartProductTrial, onCancel, status } = this.props;
     firePrivateAnalyticsEvent(
       status === INACTIVE
         ? 'xflow.confirm-trial.dialog.closed'
         : 'xflow.reactivate-trial.dialog.closed'
     );
+    return Promise.resolve(cancelStartProductTrial())
+      .then(onCancel);
   }
 
   header = () => {
@@ -204,7 +205,6 @@ class ConfirmTrial extends Component {
         header={this.header}
         footer={this.footer}
         onClose={this.handleDialogClosed}
-        shouldCloseOnEscapePress={false}
         shouldCloseOnOverlayClick={false}
       >
         <div id="xflow-confirm-trial">

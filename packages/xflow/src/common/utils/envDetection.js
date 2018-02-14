@@ -1,7 +1,5 @@
-export const API_PROD_URL = 'https://api-private.atlassian.com';
-export const API_STAG_URL = 'https://api-private.stg.atlassian.com';
-
-export const JIRA_DEV = '.jira-dev.com';
+export const API_URL = '/gateway/api/';
+export const API_DEV_URL = 'https://api-private.stg.atlassian.com';
 
 export function getEnvAPIUrl(w = window, s = window.sessionStorage) {
   // Necessary for facilitating mocked servers and testing
@@ -9,12 +7,12 @@ export function getEnvAPIUrl(w = window, s = window.sessionStorage) {
     return s.getItem('xflowEnvAPIUrlOverride');
   }
 
-  let isProd = true;
+  let isLocalhost = false;
   try {
-    isProd = !(w.location.hostname.slice(-JIRA_DEV.length) === JIRA_DEV || w.location.hostname === 'localhost');
+    isLocalhost = w.location.hostname === 'localhost';
   } catch (e) {
     // silence
   }
 
-  return isProd ? API_PROD_URL : API_STAG_URL;
+  return isLocalhost ? API_DEV_URL : API_URL;
 }

@@ -25,13 +25,13 @@ class InitializingScreen extends Component {
   }
 
   render() {
-    const { productLogo } = this.props;
+    const { productLogo, isOpen } = this.props;
     return (
-      <ModalDialog isOpen={this.props.isOpen} width="small" header={productLogo || <div />} footer={<div />}>
+      isOpen ? (<ModalDialog width="small" header={() => productLogo || <div />} footer={() => <div />}>
         <InitializingSpinnerDiv>
           <Spinner size="large" isCompleting={false} />
         </InitializingSpinnerDiv>
-      </ModalDialog>
+      </ModalDialog>) : null
     );
   }
 }

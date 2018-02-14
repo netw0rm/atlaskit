@@ -25,7 +25,7 @@
     "@atlaskit/icon": "^10.9.1",
     "@atlaskit/logo": "^6.1.1",
     "@atlaskit/lozenge": "^3.5.1",
-    "@atlaskit/modal-dialog": "^3.3.12",
+    "@atlaskit/modal-dialog": "^3.3.8",
     "@atlaskit/multi-select": "^8.0.6",
     "@atlaskit/polyfills": "^1.4.2",
     "@atlaskit/spinner": "^4.1.4",

@@ -72,18 +72,21 @@ class ConfirmRequest extends Component {
   };
 
   handleCloseClick = () => {
-    const {
-      alreadyRequested,
-      firePrivateAnalyticsEvent,
-      cancelRequestTrial,
-      onCancel,
-    } = this.props;
+    const { alreadyRequested, firePrivateAnalyticsEvent } = this.props;
     firePrivateAnalyticsEvent(
       alreadyRequested
         ? 'xflow.already-requested-trial.close-button.clicked'
         : 'xflow.request-trial.close-button.clicked'
     );
-    return Promise.resolve(cancelRequestTrial()).then(onCancel);
+    return this.handleDialogClosed();
+  };
+
+  handleDialogClosed = async () => {
+    const { firePrivateAnalyticsEvent, cancelRequestTrial, onCancel } = this.props;
+
+    firePrivateAnalyticsEvent('xflow.request-trial.dialog.closed');
+    await cancelRequestTrial();
+    return onCancel();
   };
 
   render() {
@@ -125,7 +128,7 @@ class ConfirmRequest extends Component {
             />
           </div>
         )}
-        footer={({ onClose }) => (
+        footer={() => (
           <RequestTrialFooter>
             {alreadyRequested ? (
               <span
@@ -153,7 +156,7 @@ class ConfirmRequest extends Component {
                 />
               </Button>
             )}
-            <Button appearance="subtle-link" onClick={onClose}>
+            <Button appearance="subtle-link" onClick={this.handleCloseClick}>
               <FormattedMessage
                 id="xflow.generic.request-trial.close-button"
                 defaultMessage="Close"
@@ -162,7 +165,7 @@ class ConfirmRequest extends Component {
           </RequestTrialFooter>
         )}
         shouldCloseOnOverlayClick={false}
-        onClose={this.handleCloseClick}
+        onClose={this.handleDialogClosed}
       >
         <RequestTrialDiv>
           <h3>

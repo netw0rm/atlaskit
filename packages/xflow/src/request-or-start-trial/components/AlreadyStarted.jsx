@@ -66,10 +66,10 @@ class AlreadyStarted extends Component {
   };
 
   handleCloseClick = async () => {
-    const { closeAlreadyStartedDialog, onComplete, firePrivateAnalyticsEvent } = this.props;
+    const { firePrivateAnalyticsEvent } = this.props;
     firePrivateAnalyticsEvent('xflow.already-started.close-button.clicked');
-    await closeAlreadyStartedDialog();
-    return onComplete();
+
+    return this.handleDialogClosed();
   };
 
   handleGetStartedClick = async () => {
@@ -79,6 +79,14 @@ class AlreadyStarted extends Component {
       isLoading: true,
     });
     await goToProduct();
+    return onComplete();
+  };
+
+  handleDialogClosed = async () => {
+    const { firePrivateAnalyticsEvent, closeAlreadyStartedDialog, onComplete } = this.props;
+    firePrivateAnalyticsEvent('xflow.already-started.dialog.closed');
+
+    await closeAlreadyStartedDialog();
     return onComplete();
   };
 
@@ -100,7 +108,7 @@ class AlreadyStarted extends Component {
     );
   };
 
-  footer = ({ onClose }) => {
+  footer = () => {
     const { getStartedButtonText } = this.props;
     const { isReady, isLoading } = this.state;
 
@@ -116,7 +124,7 @@ class AlreadyStarted extends Component {
         >
           {getStartedButtonText}
         </Button>
-        <Button onClick={onClose} appearance="subtle-link">
+        <Button onClick={this.handleCloseClick} appearance="subtle-link">
           <FormattedMessage id="xflow.generic.alread-started.close-button" defaultMessage="Close" />
         </Button>
       </StartTrialFooter>
@@ -132,7 +140,7 @@ class AlreadyStarted extends Component {
         header={this.header}
         footer={this.footer}
         shouldCloseOnOverlayClick={false}
-        onClose={this.handleCloseClick}
+        onClose={this.handleDialogClosed}
       >
         <div id="xflow-already-started">
           <StartTrialHeading>{heading}</StartTrialHeading>

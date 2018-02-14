@@ -11,6 +11,7 @@ import SpinnerDiv from '../../common/styled/SpinnerDiv';
 import OptOutLinkButton from '../styled/OptOutLinkButton';
 import StartTrialFooter from '../styled/StartTrialFooter';
 import StartTrialHeader from '../styled/StartTrialHeader';
+import StartTrialHeading from '../styled/StartTrialHeading';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
 import { INACTIVE, DEACTIVATED } from '../../common/productProvisioningStates';
 
@@ -139,10 +140,43 @@ class ConfirmTrial extends Component {
     });
   };
 
+  header = () => {
+    const { productLogo } = this.props;
+    return <StartTrialHeader>{productLogo}</StartTrialHeader>;
+  }
+
+  footer = () => (
+    <StartTrialFooter>
+      <SpinnerDiv>
+        <Spinner isCompleting={!this.state.spinnerActive} />
+      </SpinnerDiv>
+      <Button
+        id="xflow-confirm-trial-confirm-button"
+        onClick={this.handleConfirmClick}
+        appearance="primary"
+        isDisabled={this.state.buttonsDisabled}
+      >
+        <FormattedMessage
+          id="xflow.generic.confirm-trial.confirm-button"
+          defaultMessage="Confirm"
+        />
+      </Button>
+      <Button
+        id="xflow-confirm-trial-cancel-button"
+        onClick={this.handleCancelClick}
+        appearance="subtle-link"
+        isDisabled={this.state.buttonsDisabled}
+      >
+        <FormattedMessage
+          id="xflow.generic.confirm-trial.cancel-button"
+          defaultMessage="Cancel"
+        />
+      </Button>
+    </StartTrialFooter>)
+
   render() {
     const {
       intl,
-      productLogo,
       status,
       trialHeading,
       trialMessage,
@@ -154,41 +188,13 @@ class ConfirmTrial extends Component {
       <ModalDialog
         isOpen
         width="small"
-        header={productLogo}
-        footer={
-          <StartTrialFooter>
-            <SpinnerDiv>
-              <Spinner isCompleting={!this.state.spinnerActive} />
-            </SpinnerDiv>
-            <Button
-              id="xflow-confirm-trial-confirm-button"
-              onClick={this.handleConfirmClick}
-              appearance="primary"
-              isDisabled={this.state.buttonsDisabled}
-            >
-              <FormattedMessage
-                id="xflow.generic.confirm-trial.confirm-button"
-                defaultMessage="Confirm"
-              />
-            </Button>
-            <Button
-              id="xflow-confirm-trial-cancel-button"
-              onClick={this.handleCancelClick}
-              appearance="subtle-link"
-              isDisabled={this.state.buttonsDisabled}
-            >
-              <FormattedMessage
-                id="xflow.generic.confirm-trial.cancel-button"
-                defaultMessage="Cancel"
-              />
-            </Button>
-          </StartTrialFooter>
-        }
+        header={this.header}
+        footer={this.footer}
       >
         <div id="xflow-confirm-trial">
-          <StartTrialHeader>
+          <StartTrialHeading>
             {status === INACTIVE ? trialHeading : reactivateHeading}
-          </StartTrialHeader>
+          </StartTrialHeading>
           {status === INACTIVE ? trialMessage : reactivateMessage}
         </div>
         {isCrossSell === true &&

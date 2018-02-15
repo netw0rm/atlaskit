@@ -10,19 +10,20 @@ import productRequest from '../common/services/productRequest';
 import { setAlreadyRequestedFlag, getAlreadyRequestedFlag } from '../common/services/alreadyRequestedFlag';
 
 import retrieveUserManagementUsers, {
-    JIRA_SOFTWARE_GROUP,
-    JIRA_CORE_GROUP,
-    JIRA_SERVICE_DESK_GROUP,
-    SITE_ADMINS_GROUP,
+  CONFLUENCE_GROUP,
+  JIRA_SOFTWARE_GROUP,
+  JIRA_CORE_GROUP,
+  JIRA_SERVICE_DESK_GROUP,
+  SITE_ADMINS_GROUP,
 } from '../common/services/retrieveUserManagementUsers';
 
 const VALID_GROUPS = [
+  CONFLUENCE_GROUP,
   JIRA_SOFTWARE_GROUP,
   JIRA_CORE_GROUP,
   JIRA_SERVICE_DESK_GROUP,
   SITE_ADMINS_GROUP,
 ];
-
 const PRODUCT_KEY = 'jira-software.ondemand';
 
 const messages = defineMessages({
@@ -159,18 +160,14 @@ export const defaultProps = intl => ({
   },
   canCurrentUserAddProduct: isCurrentUserSiteAdmin,
   canCurrentUserGrantAccessToProducts: isCurrentUserSiteAdmin,
-
   requestTrialWithNote: productRequest(PRODUCT_KEY),
   cancelRequestTrial: async () => {},
-
   startProductTrial: startProductTrial(PRODUCT_KEY),
   cancelStartProductTrial: async () => {},
   productStatusChecker: productStatusChecker(PRODUCT_KEY),
   grantAccessToUsers: grantAccessToUsers('jira-software-users', 'Jira Software', 'Grants access to Jira Software'),
   retrieveUsers: retrieveUserManagementUsers(VALID_GROUPS),
-  goToProduct: () => {
-    window.top.location.href = '/onboarding/software';
-  },
+  goToProduct: () => { window.top.location.href = '/onboarding/software'; },
   closeLoadingDialog: async () => {},
   closeAlreadyStartedDialog: async () => {},
   checkProductRequestFlag: () => getAlreadyRequestedFlag(PRODUCT_KEY),

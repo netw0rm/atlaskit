@@ -10,6 +10,7 @@ import startProductTrial from '../common/services/startProductTrial';
 import productStatusChecker from '../common/services/productStatusChecker';
 import grantAccessToUsers from '../common/services/grantAccessToUsers';
 import retrieveUserManagementUsers, {
+    CONFLUENCE_GROUP,
     JIRA_SOFTWARE_GROUP,
     JIRA_CORE_GROUP,
     JIRA_SERVICE_DESK_GROUP,
@@ -17,6 +18,7 @@ import retrieveUserManagementUsers, {
 } from '../common/services/retrieveUserManagementUsers';
 
 const VALID_GROUPS = [
+  CONFLUENCE_GROUP,
   JIRA_SOFTWARE_GROUP,
   JIRA_CORE_GROUP,
   JIRA_SERVICE_DESK_GROUP,

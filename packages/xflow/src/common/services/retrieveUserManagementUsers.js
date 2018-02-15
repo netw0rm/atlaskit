@@ -5,7 +5,7 @@ import '@atlaskit/polyfills/string-prototype-includes';
 
 // This aligns with User Management's pagination value
 const PAGINATION = 30;
-// export const CONFLUENCE_GROUP = 'confluence-users';
+export const CONFLUENCE_GROUP = 'confluence-users';
 export const JIRA_SOFTWARE_GROUP = 'jira-software-users';
 export const JIRA_CORE_GROUP = 'jira-core-users';
 export const JIRA_SERVICE_DESK_GROUP = 'jira-servicedesk-users';

@@ -3,6 +3,7 @@ import { shallow, mount } from 'enzyme';
 import React from 'react';
 import sinon from 'sinon';
 import { DropdownMenuStateless } from '@atlaskit/dropdown-menu';
+import Lozenge from '@atlaskit/lozenge';
 import AppSwitcher from '../../src';
 import { name } from '../../package.json';
 
@@ -142,5 +143,35 @@ describe(name, () => {
       />
     );
     expect(wrapper.find('.app-switcher-suggested-application')).toHaveLength(0);
+  });
+
+  it('should show linked application labels', () => {
+    const label = '7 Days Left';
+    const linkedApplications = {
+      ...data.linkedApplications,
+      apps: [
+        {
+          name: 'JIRA',
+          url: 'https://instance.atlassian.net/',
+          product: 'jira',
+        },
+        {
+          name: 'Confluence',
+          url: 'https://instance.atlassian.net/wiki',
+          product: 'confluence',
+          label,
+        },
+      ],
+    };
+    const wrapper = mount(
+      <AppSwitcher
+        {...data}
+        isDropdownOpenInitially
+        linkedApplications={linkedApplications}
+      />
+    );
+    const labelLozenge = wrapper.find(Lozenge);
+    expect(labelLozenge).toHaveLength(1);
+    expect(labelLozenge.text()).toBe(label);
   });
 });

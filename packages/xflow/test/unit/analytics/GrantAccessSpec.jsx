@@ -78,9 +78,11 @@ describe('<GrantAccess> analytics', () => {
     );
 
     const continueButton = mountWrapper.find('#xflow-grant-access-continue-button');
-    const onClickHandler = continueButton.prop('onClick');
     await waitUntil(() => continueButton.not('[disabled]'));
-    onClickHandler(); // Simulate click
+    // Trying to get continueButton.prop(...) doesn't work.
+    // So, we find the component again after it has enabled because
+    // enzyme loses the original component after prop changes cause rerender.
+    mountWrapper.find('#xflow-grant-access-continue-button').prop('onClick')(); // Simulate click
 
     return waitFor(() =>
       expect(spy).toHaveBeenCalledWith(
@@ -176,9 +178,8 @@ describe('<GrantAccess> analytics', () => {
     );
 
     const continueButton = mountWrapper.find('#xflow-grant-access-continue-button');
-    const onClickHandler = continueButton.prop('onClick');
     await waitUntil(() => continueButton.not('[disabled]'));
-    onClickHandler();
+    mountWrapper.find('#xflow-grant-access-continue-button').prop('onClick')();
 
     return waitFor(() => {
       expect(spy).toHaveBeenCalledWith(
@@ -217,9 +218,8 @@ describe('<GrantAccess> analytics', () => {
     );
 
     const continueButton = mountWrapper.find('#xflow-grant-access-continue-button');
-    const onClickHandler = continueButton.prop('onClick');
     await waitUntil(() => continueButton.not('[disabled]'));
-    onClickHandler();
+    mountWrapper.find('#xflow-grant-access-continue-button').prop('onClick')();
 
     await waitFor(() => {
       expect(spy).toHaveBeenCalledWith(
@@ -262,10 +262,9 @@ describe('<GrantAccess> analytics', () => {
       expect.any(Object)
     );
 
-    const manageButton = mountWrapper.find('#xflow-grant-access-manage-button').simulate('click');
-    const onClickHandler = manageButton.prop('onClick');
+    const manageButton = mountWrapper.find('#xflow-grant-access-manage-button');
     await waitFor(() => manageButton.not('[disabled]'));
-    onClickHandler();
+    mountWrapper.find('#xflow-grant-access-manage-button').prop('onClick')();
 
     return waitFor(() =>
       expect(spy).toHaveBeenCalledWith(

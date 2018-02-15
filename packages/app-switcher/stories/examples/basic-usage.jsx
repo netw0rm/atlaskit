@@ -25,6 +25,7 @@ const data = {
         name: 'Confluence',
         url: 'https://instance.atlassian.net/wiki',
         product: 'confluence',
+        label: '7 Days Left',
       },
     ],
     suggested: [

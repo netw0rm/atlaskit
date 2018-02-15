@@ -11,6 +11,14 @@ export const JIRA_CORE_GROUP = 'jira-core-users';
 export const JIRA_SERVICE_DESK_GROUP = 'jira-servicedesk-users';
 export const SITE_ADMINS_GROUP = 'site-admins';
 
+const DEFAULT_GROUPS = [
+  CONFLUENCE_GROUP,
+  JIRA_SOFTWARE_GROUP,
+  JIRA_CORE_GROUP,
+  JIRA_SERVICE_DESK_GROUP,
+  SITE_ADMINS_GROUP,
+];
+
 const GROUPS_ENDPOINT = '/admin/rest/um/1/group/search';
 
 const usernamesEndpoint = (groupName, startIndex) =>
@@ -73,12 +81,10 @@ const getActiveUsernamesList = async (groupName, startIndex = 0) => {
 };
 
 /**
- * Retrieves all the active users from a given selection
- * @param validGroups array of valid group names to retrieve users from
- * for the 'everyone' and 'specific-users' options
+ * Retrieves all the active users from a given selection from default group
  * @returns {Function}
  */
-export default validGroups => {
+export default () => {
   /**
    * Retrieve the active groups on the instance that are valid for retrieval
    * @returns Array of active group names in valid groups array
@@ -95,7 +101,7 @@ export default validGroups => {
 
     const groups = await response.json();
     return groups
-      .filter(group => group.active && validGroups.includes(group.name))
+      .filter(group => group.active && DEFAULT_GROUPS.includes(group.name))
       .map(group => group.name);
   };
 

@@ -3,6 +3,7 @@ import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
 
 import retrieveUserManagementUsers, {
+    CONFLUENCE_GROUP,
     JIRA_SOFTWARE_GROUP,
     JIRA_CORE_GROUP,
     JIRA_SERVICE_DESK_GROUP,
@@ -29,6 +30,7 @@ describe('retrieveUserManagementUsers', () => {
 
   beforeEach(() => {
     retrieveJiraUsers = retrieveUserManagementUsers([
+      CONFLUENCE_GROUP,
       JIRA_SOFTWARE_GROUP,
       JIRA_CORE_GROUP,
       JIRA_SERVICE_DESK_GROUP,

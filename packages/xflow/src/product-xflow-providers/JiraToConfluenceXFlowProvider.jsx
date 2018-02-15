@@ -9,21 +9,7 @@ import productRequest from '../common/services/productRequest';
 import startProductTrial from '../common/services/startProductTrial';
 import productStatusChecker from '../common/services/productStatusChecker';
 import grantAccessToUsers from '../common/services/grantAccessToUsers';
-import retrieveUserManagementUsers, {
-    CONFLUENCE_GROUP,
-    JIRA_SOFTWARE_GROUP,
-    JIRA_CORE_GROUP,
-    JIRA_SERVICE_DESK_GROUP,
-    SITE_ADMINS_GROUP,
-} from '../common/services/retrieveUserManagementUsers';
-
-const VALID_GROUPS = [
-  CONFLUENCE_GROUP,
-  JIRA_SOFTWARE_GROUP,
-  JIRA_CORE_GROUP,
-  JIRA_SERVICE_DESK_GROUP,
-  SITE_ADMINS_GROUP,
-];
+import retrieveUserManagementUsers from '../common/services/retrieveUserManagementUsers';
 
 const PRODUCT_KEY = 'confluence.ondemand';
 
@@ -226,7 +212,7 @@ export const defaultProps = intl => ({
   cancelStartProductTrial: async () => {},
   productStatusChecker: productStatusChecker(PRODUCT_KEY),
   grantAccessToUsers: grantAccessToUsers('confluence-users', 'confluence'),
-  retrieveUsers: retrieveUserManagementUsers(VALID_GROUPS),
+  retrieveUsers: retrieveUserManagementUsers(),
   goToProduct: () => { window.top.location.href = '/wiki/'; },
   closeLoadingDialog: async () => {},
   closeAlreadyStartedDialog: async () => {},

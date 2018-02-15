@@ -38,6 +38,7 @@ export default {
   links: PropTypes.arrayOf(PropTypes.shape({
     text: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
+    ref: PropTypes.string,
   })),
 
   i18n: PropTypes.shape({

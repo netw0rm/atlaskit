@@ -152,6 +152,7 @@ describe(name, () => {
     }, {
       text: 'Request a trial extension...',
       url: 'https://example.com/',
+      ref: 'xyz',
     }];
     const wrapper = mount(
       <AppSwitcher

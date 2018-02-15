@@ -1,4 +1,4 @@
-export const API_URL = '/gateway/api/';
+export const API_URL = '/gateway/api';
 export const API_DEV_URL = 'https://api-private.stg.atlassian.com';
 
 export function getEnvAPIUrl(w = window, s = window.sessionStorage) {

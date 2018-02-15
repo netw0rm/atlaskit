@@ -146,16 +146,23 @@ describe(name, () => {
   });
 
   it('should show links', () => {
-    const text = 'Add payment details';
-    const url = 'https://example.com';
+    const links = [{
+      text: 'Add payment details',
+      url: 'https://google.com/',
+    }, {
+      text: 'Request a trial extension...',
+      url: 'https://example.com/',
+    }];
     const wrapper = mount(
       <AppSwitcher
         {...data}
         isDropdownOpenInitially
-        links={[{ text, url }]}
+        links={links}
       />
     );
-    const link = wrapper.find(Link).filterWhere(l => l.text() === text);
-    expect(link).toHaveLength(1);
+    links.forEach(({ text }) => {
+      const link = wrapper.find(Link).filterWhere(l => l.text() === text);
+      expect(link).toHaveLength(1);
+    });
   });
 });

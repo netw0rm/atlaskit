@@ -21,6 +21,9 @@ import XFlowIntlProvider from '../../../src/common/components/XFlowIntlProvider'
 import XFlowAnalyticsListener from '../../../src/common/components/XFlowAnalyticsListener';
 import { INACTIVE } from '../../../src/common/productProvisioningStates';
 
+// eslint-disable-next-line global-require
+jest.mock('@atlaskit/modal-dialog', () => require('../__mocks__/modal-dialog-mock'));
+
 const noop = () => {};
 
 const getXFlowProviderConfig = () =>
@@ -49,7 +52,9 @@ const defaultRequestOrStartTrialProps = {
 
 describe('RequestOrStartTrial', () => {
   let sandbox;
-  beforeEach(() => { sandbox = sinon.createSandbox(); });
+  beforeEach(() => {
+    sandbox = sinon.createSandbox();
+  });
   afterEach(() => sandbox.restore());
 
   beforeEach(() => fetchMock.catch(417));
@@ -66,9 +71,7 @@ describe('RequestOrStartTrial', () => {
         <XFlowIntlProvider locale="en_US">
           <XFlowAnalyticsListener onEvent={noop}>
             <MockConfluenceXFlow {...defaultProps} canCurrentUserAddProduct={async () => false}>
-              <RequestOrStartTrial
-                {...defaultRequestOrStartTrialProps}
-              />
+              <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
             </MockConfluenceXFlow>
           </XFlowAnalyticsListener>
         </XFlowIntlProvider>
@@ -108,9 +111,12 @@ describe('RequestOrStartTrial', () => {
       const portalWrapper = new ReactWrapper(portal.node.props.children);
       const flag = portalWrapper.find(Flag);
       expect(flag.find(CheckCircleIcon).props().label).toMatch('Success icon');
-      expect(flag.text()).toMatch('That\'s sent!');
-      expect(flag.text()).toMatch('We\'ll let your admin know right away.');
-      sinon.assert.calledWith(defaultProps.requestTrialWithNote, 'Hi! I\'d like to try Confluence. It helps give the team more context on anything happening in Jira - and there\'s a free 30 day trial.');
+      expect(flag.text()).toMatch("That's sent!");
+      expect(flag.text()).toMatch("We'll let your admin know right away.");
+      sinon.assert.calledWith(
+        defaultProps.requestTrialWithNote,
+        "Hi! I'd like to try Confluence. It helps give the team more context on anything happening in Jira - and there's a free 30 day trial."
+      );
     });
 
     it('should send a custom note', async () => {
@@ -128,8 +134,8 @@ describe('RequestOrStartTrial', () => {
       const portalWrapper = new ReactWrapper(portal.node.props.children);
       const flag = portalWrapper.find(Flag);
       expect(flag.find(CheckCircleIcon).props().label).toMatch('Success icon');
-      expect(flag.text()).toMatch('That\'s sent!');
-      expect(flag.text()).toMatch('We\'ll let your admin know right away.');
+      expect(flag.text()).toMatch("That's sent!");
+      expect(flag.text()).toMatch("We'll let your admin know right away.");
       sinon.assert.calledWith(defaultProps.requestTrialWithNote, 'Hey, look a custom note');
     });
   });
@@ -144,13 +150,11 @@ describe('RequestOrStartTrial', () => {
             <MockConfluenceXFlow
               {...defaultProps}
               canCurrentUserAddProduct={async () => false}
-              requestTrialWithNote={
-                () => new Promise((_, reject) =>
-                reject(new Error('It\'s borked')))}
+              requestTrialWithNote={() =>
+                new Promise((_, reject) => reject(new Error("It's borked")))
+              }
             >
-              <RequestOrStartTrial
-                {...defaultRequestOrStartTrialProps}
-              />
+              <RequestOrStartTrial {...defaultRequestOrStartTrialProps} />
             </MockConfluenceXFlow>
           </XFlowAnalyticsListener>
         </XFlowIntlProvider>
@@ -172,8 +176,8 @@ describe('RequestOrStartTrial', () => {
       const portalWrapper = new ReactWrapper(portal.node.props.children);
       const flag = portalWrapper.find(Flag);
       expect(flag.find(ErrorIcon).props().label).toMatch('Error icon');
-      expect(flag.text()).toMatch('Uh oh. That didn\'t work');
-      expect(flag.text()).toMatch('Your trial request wasn\'t sent.');
+      expect(flag.text()).toMatch("Uh oh. That didn't work");
+      expect(flag.text()).toMatch("Your trial request wasn't sent.");
     });
   });
 

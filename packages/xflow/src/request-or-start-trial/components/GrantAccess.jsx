@@ -196,6 +196,7 @@ class GrantAccess extends Component {
       firePrivateAnalyticsEvent,
     } = this.props;
     const { selectedRadio, selectedUsers, userSets, notifyUsers } = this.state;
+
     if (selectedRadio === usersOption && selectedUsers.length === 0) {
       firePrivateAnalyticsEvent('xflow.grant-access.continue-button.user-select.invalid');
       this.setState({

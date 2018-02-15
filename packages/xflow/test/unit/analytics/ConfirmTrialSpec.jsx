@@ -7,6 +7,9 @@ import { withAnalyticsSpy, waitFor } from '../../util';
 
 import { INACTIVE } from '../../../src/common/productProvisioningStates';
 
+// eslint-disable-next-line global-require
+jest.mock('@atlaskit/modal-dialog', () => require('../__mocks__/modal-dialog-mock'));
+
 describe('<ConfirmTrial> analytics', () => {
   beforeEach(() => fetchMock.catch(417));
   afterEach(fetchMock.restore);

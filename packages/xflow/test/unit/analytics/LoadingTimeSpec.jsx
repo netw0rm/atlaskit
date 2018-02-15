@@ -6,12 +6,14 @@ import { LoadingTimeBase } from '../../../src/request-or-start-trial/components/
 import { withAnalyticsSpy, waitFor } from '../../util';
 import { ACTIVATING, ACTIVE } from '../../../src/common/productProvisioningStates';
 
+// eslint-disable-next-line global-require
+jest.mock('@atlaskit/modal-dialog', () => require('../__mocks__/modal-dialog-mock'));
+
 describe('<LoadingTime> analytics', () => {
   beforeEach(() => fetchMock.catch(417));
   afterEach(fetchMock.restore);
 
-  const noop = () => {
-  };
+  const noop = () => {};
 
   const defaultProps = {
     productLogo: <div />,

@@ -11,7 +11,7 @@ export const JIRA_CORE_GROUP = 'jira-core-users';
 export const JIRA_SERVICE_DESK_GROUP = 'jira-servicedesk-users';
 export const SITE_ADMINS_GROUP = 'site-admins';
 
-const DEFAULT_GROUPS = [
+const TARGET_GROUPS = [
   CONFLUENCE_GROUP,
   JIRA_SOFTWARE_GROUP,
   JIRA_CORE_GROUP,
@@ -101,7 +101,7 @@ export default () => {
 
     const groups = await response.json();
     return groups
-      .filter(group => group.active && DEFAULT_GROUPS.includes(group.name))
+      .filter(group => group.active && TARGET_GROUPS.includes(group.name))
       .map(group => group.name);
   };
 

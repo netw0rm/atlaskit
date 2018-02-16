@@ -29,6 +29,10 @@ const messages = defineMessages({
     id: 'xflow.generic.start-trial.error-flag.description',
     defaultMessage: "Let's try that again.",
   },
+  optOutMessage: {
+    id: 'xflow.generic.start-trial.opt-out.message',
+    defaultMessage: 'Turn off these messages',
+  },
 });
 
 class ContextualConfirmTrial extends Component {

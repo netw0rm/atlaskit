@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ModalDialog from '@atlaskit/modal-dialog';
+import ModalDialog, { ModalHeader, ModalFooter } from '@atlaskit/modal-dialog';
 import Spinner from '@atlaskit/spinner';
 import { withAnalytics } from '@atlaskit/analytics';
 
@@ -27,7 +27,7 @@ class InitializingScreen extends Component {
   render() {
     const { productLogo, isOpen } = this.props;
     return (
-      isOpen ? (<ModalDialog width="small" header={() => productLogo || <div />} footer={() => <div />}>
+      isOpen ? (<ModalDialog width="small" header={() => <ModalHeader>{productLogo}</ModalHeader>} footer={() => <ModalFooter />}>
         <InitializingSpinnerDiv>
           <Spinner size="large" isCompleting={false} />
         </InitializingSpinnerDiv>

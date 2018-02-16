@@ -56,8 +56,8 @@ class ContextualConfirmTrial extends Component {
   };
 
   static defaultProps = {
-    startProductTrial: () => {},
-    cancelStartProductTrial: () => {},
+    startProductTrial: () => { },
+    cancelStartProductTrial: () => { },
   };
 
   state = {
@@ -154,7 +154,7 @@ class ContextualConfirmTrial extends Component {
         : 'xflow.reactivate-trial.dialog.closed'
     );
     return Promise.resolve(cancelStartProductTrial())
-    .then(onCancel);
+      .then(onCancel);
   }
 
   renderHeader = (image, contextInfo) => (
@@ -247,32 +247,41 @@ class ContextualConfirmTrial extends Component {
     ? this.renderInactiveFooter()
     : this.renderReactivateFooter());
 
-  renderContextualContent = (status, contextInfo, isCrossSell) => (
-    <ContextualConfirmTrialContent id="xflow-confirm-trial">
-      <ContextualConfirmTrialHeading>
-        {contextInfo.contextualHeading}
-      </ContextualConfirmTrialHeading>
-      <p>{contextInfo.contextualMessage}</p>
-      <SpinnerDiv topMultiplier={2}>
-        <Spinner isCompleting={!this.state.spinnerActive} />
-      </SpinnerDiv>
-      <Button
-        id="xflow-confirm-trial-confirm-button"
-        onClick={this.handleConfirmClick}
-        appearance="primary"
-        isDisabled={this.state.buttonsDisabled}
-      >
-        {status === INACTIVE ? contextInfo.trialCTA : contextInfo.reactivateCTA}
-      </Button>
-      {isCrossSell === true &&
-      <ContextualOptOutLinkButton
-        id="xflow-opt-out-button"
-        onClick={this.handleOptOutClick}
-      >
-        Turn off these messages
-      </ContextualOptOutLinkButton>
-    }
-    </ContextualConfirmTrialContent>);
+  renderContextualContent = () => {
+    const {
+      intl,
+      status,
+      contextInfo,
+      isCrossSell,
+    } = this.props;
+
+    return (
+      <ContextualConfirmTrialContent id="xflow-confirm-trial">
+        <ContextualConfirmTrialHeading>
+          {contextInfo.contextualHeading}
+        </ContextualConfirmTrialHeading>
+        <p>{contextInfo.contextualMessage}</p>
+        <SpinnerDiv topMultiplier={2}>
+          <Spinner isCompleting={!this.state.spinnerActive} />
+        </SpinnerDiv>
+        <Button
+          id="xflow-confirm-trial-confirm-button"
+          onClick={this.handleConfirmClick}
+          appearance="primary"
+          isDisabled={this.state.buttonsDisabled}
+        >
+          {status === INACTIVE ? contextInfo.trialCTA : contextInfo.reactivateCTA}
+        </Button>
+        {isCrossSell === true &&
+          <ContextualOptOutLinkButton
+            id="xflow-opt-out-button"
+            onClick={this.handleOptOutClick}
+          >
+            {intl.formatMessage(messages.optOutMessage)}
+          </ContextualOptOutLinkButton>
+        }
+      </ContextualConfirmTrialContent>);
+  };
 
   render() {
     const {
@@ -280,7 +289,6 @@ class ContextualConfirmTrial extends Component {
       status,
       image,
       contextInfo,
-      isCrossSell,
     } = this.props;
     return (
       <ModalDialog
@@ -292,7 +300,7 @@ class ContextualConfirmTrial extends Component {
         onClose={this.handleDialogClosed}
         shouldCloseOnOverlayClick={false}
       >
-        {this.renderContextualContent(status, contextInfo, isCrossSell)}
+        {this.renderContextualContent()}
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}
           description={intl.formatMessage(messages.errorFlagDescription)}
@@ -312,20 +320,20 @@ export const ContextualConfirmTrialBase = withAnalytics(injectIntl(ContextualCon
 export default withXFlowProvider(
   ContextualConfirmTrialBase,
   ({
-     xFlow: {
-       config: {
-         contextualStartTrial: {
-           contextualStartTrialHeader,
-         },
-       },
-       status,
-       startProductTrial,
-       cancelStartProductTrial,
-     },
-   }) => ({
-     startProductTrial,
-     cancelStartProductTrial,
-     status,
-     image: contextualStartTrialHeader,
-   })
+    xFlow: {
+      config: {
+        contextualStartTrial: {
+          contextualStartTrialHeader,
+        },
+      },
+      status,
+      startProductTrial,
+      cancelStartProductTrial,
+    },
+  }) => ({
+    startProductTrial,
+    cancelStartProductTrial,
+    status,
+    image: contextualStartTrialHeader,
+  })
 );

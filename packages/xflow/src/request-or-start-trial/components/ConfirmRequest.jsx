@@ -82,9 +82,18 @@ class ConfirmRequest extends Component {
   };
 
   handleDialogClosed = async () => {
-    const { firePrivateAnalyticsEvent, cancelRequestTrial, onCancel } = this.props;
+    const {
+      alreadyRequested,
+      firePrivateAnalyticsEvent,
+      cancelRequestTrial,
+      onCancel,
+    } = this.props;
 
-    firePrivateAnalyticsEvent('xflow.request-trial.dialog.closed');
+    firePrivateAnalyticsEvent(
+      alreadyRequested
+        ? 'xflow.already-requested-trial.dialog.closed'
+        : 'xflow.request-trial.dialog.closed'
+    );
     await cancelRequestTrial();
     return onCancel();
   };
@@ -168,9 +177,7 @@ class ConfirmRequest extends Component {
         onClose={this.handleDialogClosed}
       >
         <RequestTrialDiv>
-          <h3>
-            {contextInfo ? contextInfo.contextualHeading : heading}
-          </h3>
+          <h3>{contextInfo ? contextInfo.contextualHeading : heading}</h3>
           {contextInfo ? <p>{contextInfo.contextualMessage}</p> : <p>{message}</p>}
         </RequestTrialDiv>
       </ModalDialog>

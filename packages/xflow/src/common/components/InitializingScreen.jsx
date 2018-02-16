@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ModalDialog, { ModalHeader, ModalFooter } from '@atlaskit/modal-dialog';
+import ModalDialog from '@atlaskit/modal-dialog';
 import Spinner from '@atlaskit/spinner';
 import { withAnalytics } from '@atlaskit/analytics';
 
 import { withXFlowProvider } from './XFlowProvider';
 import InitializingSpinnerDiv from '../styled/InitializingSpinnerDiv';
+import InitializingScreenHeader from '../styled/InitializingScreenHeader';
+import InitializingScreenFooter from '../styled/InitializingScreenFooter';
 
 class InitializingScreen extends Component {
   static propTypes = {
@@ -26,19 +28,22 @@ class InitializingScreen extends Component {
 
   render() {
     const { productLogo, isOpen } = this.props;
-    return (
-      isOpen ? (<ModalDialog width="small" header={() => <ModalHeader>{productLogo}</ModalHeader>} footer={() => <ModalFooter />}>
+    return isOpen ? (
+      <ModalDialog
+        width="small"
+        header={() => <InitializingScreenHeader>{productLogo}</InitializingScreenHeader>}
+        footer={() => <InitializingScreenFooter />}
+      >
         <InitializingSpinnerDiv>
           <Spinner size="large" isCompleting={false} />
         </InitializingSpinnerDiv>
-      </ModalDialog>) : null
-    );
+      </ModalDialog>
+    ) : null;
   }
 }
 
 export const InitializingScreenBase = withAnalytics(InitializingScreen);
 
-export default withXFlowProvider(
-  InitializingScreenBase,
-  ({ xFlow }) => ({ productLogo: xFlow.config.productLogo })
-);
+export default withXFlowProvider(InitializingScreenBase, ({ xFlow }) => ({
+  productLogo: xFlow.config.productLogo,
+}));

@@ -26,7 +26,7 @@ describe('<GrantAccess> analytics', () => {
     optionItems: [
       {
         value: 'everyone',
-        label: 'Everyone in Jira Software',
+        label: 'Everyone',
       },
       {
         value: 'site-admins',

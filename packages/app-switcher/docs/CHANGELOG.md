@@ -1,5 +1,16 @@
 # @atlaskit/app-switcher
 
+## 3.4.0 (2018-02-15)
+
+* bug fix; add prop types and flow types ([73ec073](https://bitbucket.org/atlassian/atlaskit/commits/73ec073))
+
+
+
+* bug fix; change linked application "subtitle" to "label" ([e94ee70](https://bitbucket.org/atlassian/atlaskit/commits/e94ee70))
+* feature; add optional subtitle text to linked applications ([96832be](https://bitbucket.org/atlassian/atlaskit/commits/96832be))
+
+
+
 ## 3.3.0 (2017-12-13)
 
 * bug fix; add required homeLink argument to getTopLinks() tests (issues closed: nav-35) ([e89f924](https://bitbucket.org/atlassian/atlaskit/commits/e89f924))

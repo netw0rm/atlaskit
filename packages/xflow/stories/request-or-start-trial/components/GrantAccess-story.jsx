@@ -12,7 +12,7 @@ const defaultProps = {
   optionItems: [
     {
       value: 'everyone',
-      label: 'Everyone in Jira Software',
+      label: 'Everyone',
     },
     {
       value: 'site-admins',
@@ -31,7 +31,7 @@ const defaultProps = {
   progress: 0,
   status: ACTIVATING,
   heading: 'Who should have access?',
-  defaultAccess: 'Everyone in Jira will have access to Confluence.',
+  defaultAccess: 'Everyone will have access to Confluence.',
 
   userSelectInFocus: false,
   userSelectIsInvalid: false,

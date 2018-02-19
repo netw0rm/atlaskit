@@ -3,6 +3,7 @@ import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
 
 import retrieveUserManagementUsers, {
+    CONFLUENCE_GROUP,
     JIRA_SOFTWARE_GROUP,
     JIRA_CORE_GROUP,
     JIRA_SERVICE_DESK_GROUP,
@@ -26,14 +27,8 @@ describe('retrieveUserManagementUsers', () => {
 
   beforeEach(() => fetchMock.catch(417));
   afterEach(fetchMock.restore);
-
   beforeEach(() => {
-    retrieveJiraUsers = retrieveUserManagementUsers([
-      JIRA_SOFTWARE_GROUP,
-      JIRA_CORE_GROUP,
-      JIRA_SERVICE_DESK_GROUP,
-      SITE_ADMINS_GROUP,
-    ]);
+    retrieveJiraUsers = retrieveUserManagementUsers();
   });
 
   /**
@@ -42,6 +37,7 @@ describe('retrieveUserManagementUsers', () => {
   it('should emit empty array when no valid users are retrieved', async () => {
     fetchMock.mock(GROUPS_ENDPOINT, groupSearch, { method: 'GET' });
     fetchMock.mock(usersEndpoint(JIRA_SOFTWARE_GROUP, 0), [], { method: 'GET' });
+    fetchMock.mock(usersEndpoint(CONFLUENCE_GROUP, 0), [], { method: 'GET' });
     fetchMock.mock(usersEndpoint(JIRA_CORE_GROUP, 0), [], { method: 'GET' });
     fetchMock.mock(usersEndpoint(JIRA_SERVICE_DESK_GROUP, 0), [], { method: 'GET' });
     fetchMock.mock(usersEndpoint(SITE_ADMINS_GROUP, 0), [], { method: 'GET' });
@@ -60,6 +56,7 @@ describe('retrieveUserManagementUsers', () => {
     fetchMock.mock(usersEndpoint(JIRA_SOFTWARE_GROUP, 30), jiraSoftwareUsersResponse.slice(30), {
       method: 'GET',
     });
+    fetchMock.mock(usersEndpoint(CONFLUENCE_GROUP, 0), [], { method: 'GET' });
     fetchMock.mock(usersEndpoint(JIRA_CORE_GROUP, 0), [], { method: 'GET' });
     fetchMock.mock(usersEndpoint(JIRA_SERVICE_DESK_GROUP, 0), [], { method: 'GET' });
     fetchMock.mock(usersEndpoint(SITE_ADMINS_GROUP, 0), [], { method: 'GET' });
@@ -83,6 +80,7 @@ describe('retrieveUserManagementUsers', () => {
       jiraServiceDeskUsersResponse.slice(0, 5),
       { method: 'GET' }
     );
+    fetchMock.mock(usersEndpoint(CONFLUENCE_GROUP, 0), [], { method: 'GET' });
     fetchMock.mock(usersEndpoint(SITE_ADMINS_GROUP, 0), [], { method: 'GET' });
     const response = await retrieveJiraUsers('everyone', false);
     expect(response).toEqual(
@@ -120,6 +118,7 @@ describe('retrieveUserManagementUsers', () => {
       jiraServiceDeskUsersResponse.slice(30),
       { method: 'GET' }
     );
+    fetchMock.mock(usersEndpoint(CONFLUENCE_GROUP, 0), [], { method: 'GET' });
     fetchMock.mock(usersEndpoint(SITE_ADMINS_GROUP, 0), [], { method: 'GET' });
     const response = await retrieveJiraUsers('everyone', false);
     expect(response).toEqual(jiraUsersResponse);
@@ -134,6 +133,7 @@ describe('retrieveUserManagementUsers', () => {
       .mockReturnValueOnce(jiraCoreUsersResponse)
       .mockReturnValueOnce(jiraServiceDeskUsersResponse);
     fetchMock.mock(usersEndpoint(JIRA_SOFTWARE_GROUP, 0), spy, { method: 'GET' });
+    fetchMock.mock(usersEndpoint(CONFLUENCE_GROUP, 0), [], { method: 'GET' });
     fetchMock.mock(usersEndpoint(JIRA_CORE_GROUP, 0), [], { method: 'GET' });
     fetchMock.mock(usersEndpoint(JIRA_SERVICE_DESK_GROUP, 0), [], { method: 'GET' });
     fetchMock.mock(usersEndpoint(SITE_ADMINS_GROUP, 0), [], { method: 'GET' });
@@ -152,6 +152,7 @@ describe('retrieveUserManagementUsers', () => {
     fetchMock.mock(usersEndpoint(JIRA_SERVICE_DESK_GROUP, 0), jiraServiceDeskUsersResponse, {
       method: 'GET',
     });
+    fetchMock.mock(usersEndpoint(CONFLUENCE_GROUP, 0), [], { method: 'GET' });
     fetchMock.mock(usersEndpoint(SITE_ADMINS_GROUP, 0), [], { method: 'GET' });
     try {
       await retrieveJiraUsers('everyone', false);
@@ -172,6 +173,7 @@ describe('retrieveUserManagementUsers', () => {
       method: 'GET',
     });
     fetchMock.mock(usersEndpoint(JIRA_CORE_GROUP, 0), { status: 404, body: missingJiraCoreGroupResponse }, { method: 'GET' });
+    fetchMock.mock(usersEndpoint(CONFLUENCE_GROUP, 0), [], { method: 'GET' });
     fetchMock.mock(usersEndpoint(JIRA_SERVICE_DESK_GROUP, 0), [], { method: 'GET' });
     fetchMock.mock(usersEndpoint(SITE_ADMINS_GROUP, 0), [], { method: 'GET' });
 

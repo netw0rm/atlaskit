@@ -200,7 +200,6 @@ class ConfirmTrial extends Component {
     } = this.props;
     return (
       <ModalDialog
-        isOpen
         width="small"
         header={this.header}
         footer={this.footer}

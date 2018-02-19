@@ -212,12 +212,11 @@ class LoadingTime extends Component {
           </WhereToFindNewProductDiv>
         </LoadingTimeTextDiv>
       ) : (
-        ''
-      );
+          ''
+        );
 
     return (
       <ModalDialog
-        isOpen
         width="small"
         header={this.header}
         footer={this.footer}

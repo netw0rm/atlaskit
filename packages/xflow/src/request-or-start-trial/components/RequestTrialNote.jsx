@@ -172,26 +172,27 @@ class RequestTrialNote extends Component {
     const { awaitingRequest, requestTrialSendNoteStatus } = this.state;
     return (
       <div id="xflow-request-trial-note">
-        <ModalDialog
-          isOpen={!awaitingRequest}
-          width="small"
-          header={this.header}
-          footer={this.footer}
-          onClose={this.handleDialogClosed}
-          shouldCloseOnEscapePress={false}
-          shouldCloseOnOverlayClick={false}
-        >
-          <div>
-            {React.isValidElement(prompt) ? prompt : <p>{prompt}</p>}
-            <NoteText
-              innerRef={noteText => {
-                this.noteText = noteText;
-              }}
-              placeholder={placeholder}
-              maxLength={300}
-            />
-          </div>
-        </ModalDialog>
+        {!awaitingRequest && (
+          <ModalDialog
+            width="small"
+            header={this.header}
+            footer={this.footer}
+            onClose={this.handleDialogClosed}
+            shouldCloseOnEscapePress={false}
+            shouldCloseOnOverlayClick={false}
+          >
+            <div>
+              {React.isValidElement(prompt) ? prompt : <p>{prompt}</p>}
+              <NoteText
+                innerRef={noteText => {
+                  this.noteText = noteText;
+                }}
+                placeholder={placeholder}
+                maxLength={300}
+              />
+            </div>
+          </ModalDialog>
+        )}
 
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}

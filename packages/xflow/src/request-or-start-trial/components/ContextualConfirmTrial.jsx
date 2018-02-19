@@ -296,7 +296,6 @@ class ContextualConfirmTrial extends Component {
     } = this.props;
     return (
       <ModalDialog
-        isOpen
         width="medium"
         height={'544px'}
         header={() => this.renderHeader(image, contextInfo)}

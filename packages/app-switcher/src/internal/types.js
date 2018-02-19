@@ -11,6 +11,7 @@ export type Applications = Array<{
   name: string,
   url: string,
   product: string,
+  label?: string,
 }>;
 
 export type SuggestedApplications = Array<{

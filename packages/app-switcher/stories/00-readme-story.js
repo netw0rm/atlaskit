@@ -97,6 +97,11 @@ const linkedApplicationsPropDescriptions = [
         type: 'String',
         description: 'Product - e.g. "jira", "confluence" or "custom".',
       },
+      {
+        name: 'label',
+        type: 'String?',
+        description: 'Optional string to display in a lozenge to the right of the product link.',
+      },
     ],
   },
   {

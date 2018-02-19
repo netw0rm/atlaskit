@@ -51,7 +51,8 @@ const data = {
      },
      {
        "name": "Confluence",
-       "url": "https://instance.atlassian.net/wiki"
+       "url": "https://instance.atlassian.net/wiki",
+       "label": "7 Days Left"
      },
      {
        "name": "Other application",

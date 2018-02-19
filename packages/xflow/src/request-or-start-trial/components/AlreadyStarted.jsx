@@ -8,8 +8,8 @@ import { FormattedMessage } from 'react-intl';
 import { withAnalytics } from '@atlaskit/analytics';
 
 import SpinnerDiv from '../../common/styled/SpinnerDiv';
-import StartTrialFooter from '../styled/StartTrialFooter';
-import StartTrialHeader from '../styled/StartTrialHeader';
+import ModalDialogFooter from '../../common/styled/ModalDialogFooter';
+import ModalDialogHeader from '../../common/styled/ModalDialogHeader';
 import StartTrialHeading from '../styled/StartTrialHeading';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
 
@@ -95,7 +95,7 @@ class AlreadyStarted extends Component {
     const { initialActivationState } = this.state;
 
     return (
-      <StartTrialHeader>
+      <ModalDialogHeader>
         {productLogo}
         {initialActivationState === ACTIVATING ? (
           <ProgressIndicator
@@ -104,7 +104,7 @@ class AlreadyStarted extends Component {
             onComplete={this.handleProgressComplete}
           />
         ) : null}
-      </StartTrialHeader>
+      </ModalDialogHeader>
     );
   };
 
@@ -113,7 +113,7 @@ class AlreadyStarted extends Component {
     const { isReady, isLoading } = this.state;
 
     return (
-      <StartTrialFooter>
+      <ModalDialogFooter>
         <SpinnerDiv>
           <Spinner isCompleting={!isLoading} />
         </SpinnerDiv>
@@ -127,7 +127,7 @@ class AlreadyStarted extends Component {
         <Button onClick={this.handleCloseClick} appearance="subtle-link">
           <FormattedMessage id="xflow.generic.alread-started.close-button" defaultMessage="Close" />
         </Button>
-      </StartTrialFooter>
+      </ModalDialogFooter>
     );
   };
 

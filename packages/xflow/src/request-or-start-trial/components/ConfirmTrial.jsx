@@ -9,8 +9,8 @@ import ErrorFlag from '../../common/components/ErrorFlag';
 
 import SpinnerDiv from '../../common/styled/SpinnerDiv';
 import OptOutLinkButton from '../styled/OptOutLinkButton';
-import StartTrialFooter from '../styled/StartTrialFooter';
-import StartTrialHeader from '../styled/StartTrialHeader';
+import ModalDialogFooter from '../../common/styled/ModalDialogFooter';
+import ModalDialogHeader from '../../common/styled/ModalDialogHeader';
 import StartTrialHeading from '../styled/StartTrialHeading';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
 import { INACTIVE, DEACTIVATED } from '../../common/productProvisioningStates';
@@ -150,17 +150,16 @@ class ConfirmTrial extends Component {
         ? 'xflow.confirm-trial.dialog.closed'
         : 'xflow.reactivate-trial.dialog.closed'
     );
-    return Promise.resolve(cancelStartProductTrial())
-      .then(onCancel);
-  }
+    return Promise.resolve(cancelStartProductTrial()).then(onCancel);
+  };
 
   header = () => {
     const { productLogo } = this.props;
-    return <StartTrialHeader>{productLogo}</StartTrialHeader>;
-  }
+    return <ModalDialogHeader>{productLogo}</ModalDialogHeader>;
+  };
 
   footer = () => (
-    <StartTrialFooter>
+    <ModalDialogFooter>
       <SpinnerDiv>
         <Spinner isCompleting={!this.state.spinnerActive} />
       </SpinnerDiv>
@@ -181,12 +180,10 @@ class ConfirmTrial extends Component {
         appearance="subtle-link"
         isDisabled={this.state.buttonsDisabled}
       >
-        <FormattedMessage
-          id="xflow.generic.confirm-trial.cancel-button"
-          defaultMessage="Cancel"
-        />
+        <FormattedMessage id="xflow.generic.confirm-trial.cancel-button" defaultMessage="Cancel" />
       </Button>
-    </StartTrialFooter>)
+    </ModalDialogFooter>
+  );
 
   render() {
     const {
@@ -212,21 +209,16 @@ class ConfirmTrial extends Component {
           </StartTrialHeading>
           {status === INACTIVE ? trialMessage : reactivateMessage}
         </div>
-        {isCrossSell === true &&
-          <OptOutLinkButton
-            id="xflow-opt-out-button"
-            onClick={this.handleOptOutClick}
-          >
+        {isCrossSell === true && (
+          <OptOutLinkButton id="xflow-opt-out-button" onClick={this.handleOptOutClick}>
             {intl.formatMessage(messages.optOutMessage)}
           </OptOutLinkButton>
-        }
+        )}
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}
           description={intl.formatMessage(messages.errorFlagDescription)}
           showFlag={this.state.productFailedToStart}
-          source={status === INACTIVE
-          ? 'confirm-trial'
-          : 'reactivate-trial'}
+          source={status === INACTIVE ? 'confirm-trial' : 'reactivate-trial'}
           onDismissed={this.handleErrorFlagDismiss}
         />
       </ModalDialog>

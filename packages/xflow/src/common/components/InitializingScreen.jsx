@@ -6,8 +6,8 @@ import { withAnalytics } from '@atlaskit/analytics';
 
 import { withXFlowProvider } from './XFlowProvider';
 import InitializingSpinnerDiv from '../styled/InitializingSpinnerDiv';
-import InitializingScreenHeader from '../styled/InitializingScreenHeader';
-import InitializingScreenFooter from '../styled/InitializingScreenFooter';
+import InitializingScreenHeader from '../styled/ModalDialogHeader';
+import ModalDialogFooter from '../styled/ModalDialogFooter';
 
 class InitializingScreen extends Component {
   static propTypes = {
@@ -32,7 +32,7 @@ class InitializingScreen extends Component {
       <ModalDialog
         width="small"
         header={() => <InitializingScreenHeader>{productLogo}</InitializingScreenHeader>}
-        footer={() => <InitializingScreenFooter />}
+        footer={() => <ModalDialogFooter />}
       >
         <InitializingSpinnerDiv>
           <Spinner size="large" isCompleting={false} />

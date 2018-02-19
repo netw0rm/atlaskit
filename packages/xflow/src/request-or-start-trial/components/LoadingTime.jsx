@@ -10,8 +10,8 @@ import ErrorFlag from '../../common/components/ErrorFlag';
 
 import ProgressIndicator from './ProgressIndicator';
 import StartTrialHeading from '../styled/StartTrialHeading';
-import StartTrialHeader from '../styled/StartTrialHeader';
-import StartTrialFooter from '../styled/StartTrialFooter';
+import ModalDialogHeader from '../../common/styled/ModalDialogHeader';
+import ModalDialogFooter from '../../common/styled/ModalDialogFooter';
 import LoadingTimeTextDiv from '../styled/LoadingTimeTextDiv';
 import WhereToFindNewProductDiv from '../styled/WhereToFindNewProductDiv';
 import WhereToFindNewProductImg from '../styled/WhereToFindNewProductImg';
@@ -154,14 +154,14 @@ class LoadingTime extends Component {
   header = () => {
     const { productLogo, progress, status } = this.props;
     return (
-      <StartTrialHeader>
+      <ModalDialogHeader>
         {productLogo}
         <ProgressIndicator
           progress={progress}
           status={status}
           onComplete={this.handleProgressComplete}
         />
-      </StartTrialHeader>
+      </ModalDialogHeader>
     );
   };
 
@@ -170,7 +170,7 @@ class LoadingTime extends Component {
     const { isReady } = this.state;
 
     return (
-      <StartTrialFooter>
+      <ModalDialogFooter>
         <SpinnerDiv>
           <Spinner isCompleting={!this.state.isLoading} />
         </SpinnerDiv>
@@ -192,7 +192,7 @@ class LoadingTime extends Component {
             defaultMessage="Close"
           />
         </Button>
-      </StartTrialFooter>
+      </ModalDialogFooter>
     );
   };
 
@@ -212,8 +212,8 @@ class LoadingTime extends Component {
           </WhereToFindNewProductDiv>
         </LoadingTimeTextDiv>
       ) : (
-          ''
-        );
+        ''
+      );
 
     return (
       <ModalDialog

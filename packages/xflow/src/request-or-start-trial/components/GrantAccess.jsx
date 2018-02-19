@@ -13,8 +13,8 @@ import ProgressIndicator from './ProgressIndicator';
 import ErrorFlag from '../../common/components/ErrorFlag';
 
 import StartTrialHeading from '../styled/StartTrialHeading';
-import GrantAccessHeader from '../styled/GrantAccessHeader';
-import GrantAccessFooter from '../styled/GrantAccessFooter';
+import ModalDialogHeader from '../../common/styled/ModalDialogHeader';
+import ModalDialogFooter from '../../common/styled/ModalDialogFooter';
 import StartTrialProgressDiv from '../styled/StartTrialProgressDiv';
 import GrantAccessDefaultAccessDiv from '../styled/GrantAccessDefaultAccessDiv';
 import GrantAccessLearnMoreSpan from '../styled/GrantAccessLearnMoreSpan';
@@ -361,13 +361,13 @@ class GrantAccess extends Component {
       <ModalDialog
         width="small"
         header={() => (
-          <GrantAccessHeader>
+          <ModalDialogHeader>
             {productLogo}
             {progressIndicator}
-          </GrantAccessHeader>
+          </ModalDialogHeader>
         )}
         footer={() => (
-          <GrantAccessFooter>
+          <ModalDialogFooter>
             <SpinnerDiv>
               <Spinner isCompleting={!(this.state.spinnerActive || this.state.userSets === null)} />
             </SpinnerDiv>
@@ -409,7 +409,7 @@ class GrantAccess extends Component {
                 </Button>
               )
             )}
-          </GrantAccessFooter>
+          </ModalDialogFooter>
         )}
         shouldCloseOnOverlayClick={false}
         shouldCloseOnEscapePress={false}

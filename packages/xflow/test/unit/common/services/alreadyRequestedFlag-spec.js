@@ -4,7 +4,7 @@ import fetchMock from 'fetch-mock';
 
 import {
   JIRA_CURRENT_USER_AND_GROUPS_URL,
-  JIRA_CLOUD_ID_URL,
+  TENANT_INFO_URL,
 } from '../../../../src/common/services/tenantContext';
 
 import {
@@ -24,7 +24,7 @@ describe('alreadyRequestedFlag', () => {
       accountId: MOCK_ATLASSIAN_ACCOUNT_ID,
     });
 
-    fetchMock.getOnce(JIRA_CLOUD_ID_URL, {
+    fetchMock.getOnce(TENANT_INFO_URL, {
       cloudId: MOCK_CLOUD_ID,
     });
 

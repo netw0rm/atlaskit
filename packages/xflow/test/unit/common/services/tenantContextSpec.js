@@ -6,8 +6,7 @@ import {
   isCurrentUserSiteAdmin,
   fetchCloudId,
   fetchCurrentUser,
-  JIRA_CLOUD_ID_URL,
-  CONFLUENCE_CLOUD_ID_URL,
+  TENANT_INFO_URL,
   JIRA_CURRENT_USER_AND_GROUPS_URL,
   CONFLUENCE_CURRENT_USER_URL,
   CONFLUENCE_USER_GROUPS_URL,
@@ -124,46 +123,23 @@ describe('tenantContext', () => {
   describe('fetchCloudId()', () => {
     const EXPECTED_CLOUD_ID = 'I-m-a-cloud-id';
 
-    describe('when in a JIRA-only instance', () => {
-      it('should return the expected cloud id', async () => {
-        fetchMock.getOnce(JIRA_CLOUD_ID_URL, { cloudId: EXPECTED_CLOUD_ID });
-        fetchMock.getOnce(CONFLUENCE_CLOUD_ID_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
-        const result = await fetchCloudId();
-        return expect(result).toBe(EXPECTED_CLOUD_ID);
-      });
-    });
-
-    describe('when in a Confluence-only instance', () => {
-      it('should return the expected cloud id', async () => {
-        fetchMock.getOnce(JIRA_CLOUD_ID_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
-        fetchMock.getOnce(CONFLUENCE_CLOUD_ID_URL, { cloudId: EXPECTED_CLOUD_ID });
-        const result = await fetchCloudId();
-        return expect(result).toBe(EXPECTED_CLOUD_ID);
-      });
-    });
-
-    describe('when in a Confluence + Jira instance', () => {
-      it('should return the expected cloud id', async () => {
-        fetchMock.getOnce(JIRA_CLOUD_ID_URL, { cloudId: EXPECTED_CLOUD_ID });
-        fetchMock.getOnce(CONFLUENCE_CLOUD_ID_URL, { cloudId: EXPECTED_CLOUD_ID });
-        const result = await fetchCloudId();
-        return expect(result).toBe(EXPECTED_CLOUD_ID);
-      });
+    it('should return the expected cloud id', async () => {
+      fetchMock.getOnce(TENANT_INFO_URL, { cloudId: EXPECTED_CLOUD_ID });
+      const result = await fetchCloudId();
+      return expect(result).toBe(EXPECTED_CLOUD_ID);
     });
 
     it('should return a cached response', async () => {
-      fetchMock.getOnce(JIRA_CLOUD_ID_URL, { cloudId: EXPECTED_CLOUD_ID });
-      fetchMock.getOnce(CONFLUENCE_CLOUD_ID_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
+      fetchMock.getOnce(TENANT_INFO_URL, { cloudId: EXPECTED_CLOUD_ID });
       const result = await fetchCloudId();
       const anotherResult = await fetchCloudId();
 
       return expect(anotherResult).toBe(result);
     });
 
-    it('should reject with an error if both endpoints return a 500', async () => {
+    it('should reject with an error if the endpoint return a 500', async () => {
       expect.assertions(1);
-      fetchMock.getOnce(JIRA_CLOUD_ID_URL, 500);
-      fetchMock.getOnce(CONFLUENCE_CLOUD_ID_URL, 500);
+      fetchMock.getOnce(TENANT_INFO_URL, 500);
       try {
         await fetchCloudId();
       } catch (err) {
@@ -171,10 +147,9 @@ describe('tenantContext', () => {
       }
     });
 
-    it('should reject with an error if both endpoints are not recognized', async () => {
+    it('should reject with an error if the endpoint is not recognized', async () => {
       expect.assertions(1);
-      fetchMock.getOnce(JIRA_CLOUD_ID_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
-      fetchMock.getOnce(CONFLUENCE_CLOUD_ID_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
+      fetchMock.getOnce(TENANT_INFO_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
       try {
         await fetchCloudId();
       } catch (err) {

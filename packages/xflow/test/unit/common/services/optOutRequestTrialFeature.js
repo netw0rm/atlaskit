@@ -8,15 +8,13 @@ import optOutFeature, {
   xflowEnabledProperty,
   xflowNamespace,
 } from '../../../../src/common/services/optOutFeature';
-import { CONFLUENCE_CLOUD_ID_URL, JIRA_CLOUD_ID_URL } from '../../../../src/common/services/tenantContext';
+import { TENANT_INFO_URL } from '../../../../src/common/services/tenantContext';
 
 const EXPECTED_CLOUD_ID = 'I-m-a-cloud-id';
-const DUMMY_HTML_SINCE_NO_ENDPOINT = '<html>some html...'; // real case when a url is not recognized -> returns home page
 
 describe('optOutFeature', () => {
   beforeEach(() => {
-    fetchMock.getOnce(JIRA_CLOUD_ID_URL, { cloudId: EXPECTED_CLOUD_ID });
-    fetchMock.getOnce(CONFLUENCE_CLOUD_ID_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
+    fetchMock.getOnce(TENANT_INFO_URL, { cloudId: EXPECTED_CLOUD_ID });
     fetchMock.catch(417);
   });
   afterEach(fetchMock.restore);

@@ -4,6 +4,7 @@ const applications = PropTypes.arrayOf(PropTypes.shape({
   name: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired,
   product: PropTypes.string.isRequired,
+  label: PropTypes.string,
 }));
 
 const suggestedApplications = PropTypes.arrayOf(PropTypes.shape({

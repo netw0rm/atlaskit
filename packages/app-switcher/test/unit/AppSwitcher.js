@@ -197,4 +197,19 @@ describe(name, () => {
       expect(link).toHaveLength(1);
     });
   });
+
+  it('should not render any links when it is empty', () => {
+    const wrapper = mount(
+      <AppSwitcher
+        {...data}
+        recentContainers={[]}
+        linkedApplications={{
+          configureLink: 'https://www.atlassian.com',
+          apps: [],
+          error: false,
+        }}
+      />
+    );
+    expect(wrapper.find(Link)).toHaveLength(0);
+  });
 });

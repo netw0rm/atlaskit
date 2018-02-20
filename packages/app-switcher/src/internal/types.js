@@ -39,7 +39,7 @@ export type LinkedApplications = {
 export type Links = Array<{
   text: string,
   url: string,
-  ref?: string,
+  analyticsRef?: string,
 }>;
 
 export type Translations = {

@@ -73,7 +73,7 @@ const data = {
    {
      text: 'Request a trial extension...',
      url: 'https://example.com/',
-     ref: 'xyz',
+     analyticsRef: 'xyz',
    }
  ],
  "i18n": {

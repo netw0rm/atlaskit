@@ -145,7 +145,7 @@ const linksPropDescriptions = [
     description: 'Page to open when the link is clicked.',
   },
   {
-    name: 'ref',
+    name: 'analyticsRef',
     type: 'String?',
     description: 'Optional string to send with the link\'s on-click analytic event.',
   },

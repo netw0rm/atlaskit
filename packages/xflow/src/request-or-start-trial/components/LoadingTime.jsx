@@ -9,8 +9,9 @@ import ModalDialog from '@atlaskit/modal-dialog';
 import ErrorFlag from '../../common/components/ErrorFlag';
 
 import ProgressIndicator from './ProgressIndicator';
-import StartTrialHeader from '../styled/StartTrialHeader';
-import StartTrialFooter from '../styled/StartTrialFooter';
+import StartTrialHeading from '../styled/StartTrialHeading';
+import ModalDialogHeader from '../../common/styled/ModalDialogHeader';
+import ModalDialogFooter from '../../common/styled/ModalDialogFooter';
 import LoadingTimeTextDiv from '../styled/LoadingTimeTextDiv';
 import WhereToFindNewProductDiv from '../styled/WhereToFindNewProductDiv';
 import WhereToFindNewProductImg from '../styled/WhereToFindNewProductImg';
@@ -137,6 +138,11 @@ class LoadingTime extends Component {
     return onComplete();
   };
 
+  handleDialogClosed = () => {
+    const { firePrivateAnalyticsEvent } = this.props;
+    firePrivateAnalyticsEvent('xflow.loading-product-trial.dialog.closed');
+  };
+
   handleErrorFlagDismiss = () => {
     const { firePrivateAnalyticsEvent } = this.props;
     firePrivateAnalyticsEvent('xflow.loading-product-trial.error-flag.dismissed');
@@ -145,74 +151,81 @@ class LoadingTime extends Component {
     });
   };
 
+  header = () => {
+    const { productLogo, progress, status } = this.props;
+    return (
+      <ModalDialogHeader>
+        {productLogo}
+        <ProgressIndicator
+          progress={progress}
+          status={status}
+          onComplete={this.handleProgressComplete}
+        />
+      </ModalDialogHeader>
+    );
+  };
+
+  footer = () => {
+    const { status, gotoButton } = this.props;
+    const { isReady } = this.state;
+
+    return (
+      <ModalDialogFooter>
+        <SpinnerDiv>
+          <Spinner isCompleting={!this.state.isLoading} />
+        </SpinnerDiv>
+        <Button
+          id="xflow-loading-go-to-product-button"
+          isDisabled={!(isReady && status === ACTIVE) || this.state.isLoading}
+          onClick={this.handleGoToProductClick}
+          appearance="primary"
+        >
+          {gotoButton}
+        </Button>
+        <Button
+          id="xflow-loading-close-button"
+          onClick={this.handleCloseClick}
+          appearance="subtle-link"
+        >
+          <FormattedMessage
+            id="xflow.generic.loading-product-trial.close-button"
+            defaultMessage="Close"
+          />
+        </Button>
+      </ModalDialogFooter>
+    );
+  };
+
   render() {
-    const {
-      productLogo,
-      progress,
-      status,
-      gotoButton,
-      heading,
-      message,
-      headerImage,
-      intl,
-    } = this.props;
+    const { heading, message, headerImage, intl } = this.props;
+    const { showErrorFlag } = this.state;
 
-    const { isReady, showErrorFlag } = this.state;
-
-    const loadingMessage = (heading && heading.trim()) || (message && message.trim()) ? (
-      <LoadingTimeTextDiv>
-        <WhereToFindNewProductSVGDiv>
-          <WhereToFindNewProductImg src={headerImage} alt="app-switcher" />
-        </WhereToFindNewProductSVGDiv>
-        <WhereToFindNewProductDiv>
-          <h5>{heading}</h5>
-          <WhereToFindNewProductText>{message}</WhereToFindNewProductText>
-        </WhereToFindNewProductDiv>
-      </LoadingTimeTextDiv>
-    ) : '';
+    const loadingMessage =
+      (heading && heading.trim()) || (message && message.trim()) ? (
+        <LoadingTimeTextDiv>
+          <WhereToFindNewProductSVGDiv>
+            <WhereToFindNewProductImg src={headerImage} alt="app-switcher" />
+          </WhereToFindNewProductSVGDiv>
+          <WhereToFindNewProductDiv>
+            <h5>{heading}</h5>
+            <WhereToFindNewProductText>{message}</WhereToFindNewProductText>
+          </WhereToFindNewProductDiv>
+        </LoadingTimeTextDiv>
+      ) : (
+        ''
+      );
 
     return (
       <ModalDialog
-        isOpen
         width="small"
-        header={
-          <div>
-            {productLogo}
-            <ProgressIndicator
-              progress={progress}
-              status={status}
-              onComplete={this.handleProgressComplete}
-            />
-          </div>
-        }
-        footer={
-          <StartTrialFooter>
-            <SpinnerDiv>
-              <Spinner isCompleting={!this.state.isLoading} />
-            </SpinnerDiv>
-            <Button
-              id="xflow-loading-go-to-product-button"
-              isDisabled={!(isReady && status === ACTIVE) || this.state.isLoading}
-              onClick={this.handleGoToProductClick}
-              appearance="primary"
-            >
-              {gotoButton}
-            </Button>
-            <Button
-              id="xflow-loading-close-button"
-              onClick={this.handleCloseClick}
-              appearance="subtle-link"
-            >
-              <FormattedMessage
-                id="xflow.generic.loading-product-trial.close-button"
-                defaultMessage="Close"
-              />
-            </Button>
-          </StartTrialFooter>
-        }
+        header={this.header}
+        footer={this.footer}
+        shouldCloseOnOverlayClick={false}
+        shouldCloseOnEscapePress={false}
+        onClose={this.handleDialogClosed}
       >
         <div id="xflow-loading-time">
-          <StartTrialHeader>{this.showHeading()}</StartTrialHeader>
+          <StartTrialHeading>{this.showHeading()}</StartTrialHeading>
           {loadingMessage}
         </div>
         <ErrorFlag

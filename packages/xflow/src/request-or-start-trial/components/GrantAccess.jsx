@@ -12,8 +12,9 @@ import { withAnalytics } from '@atlaskit/analytics';
 import ProgressIndicator from './ProgressIndicator';
 import ErrorFlag from '../../common/components/ErrorFlag';
 
-import StartTrialHeader from '../styled/StartTrialHeader';
-import GrantAccessFooter from '../styled/GrantAccessFooter';
+import StartTrialHeading from '../styled/StartTrialHeading';
+import ModalDialogHeader from '../../common/styled/ModalDialogHeader';
+import ModalDialogFooter from '../../common/styled/ModalDialogFooter';
 import StartTrialProgressDiv from '../styled/StartTrialProgressDiv';
 import GrantAccessDefaultAccessDiv from '../styled/GrantAccessDefaultAccessDiv';
 import GrantAccessLearnMoreSpan from '../styled/GrantAccessLearnMoreSpan';
@@ -195,6 +196,7 @@ class GrantAccess extends Component {
       firePrivateAnalyticsEvent,
     } = this.props;
     const { selectedRadio, selectedUsers, userSets, notifyUsers } = this.state;
+
     if (selectedRadio === usersOption && selectedUsers.length === 0) {
       firePrivateAnalyticsEvent('xflow.grant-access.continue-button.user-select.invalid');
       this.setState({
@@ -219,9 +221,8 @@ class GrantAccess extends Component {
     }
 
     try {
-      const users = selectedRadio === usersOption
-        ? selectedUsers
-        : [...userSets.get(selectedRadio).values()];
+      const users =
+        selectedRadio === usersOption ? selectedUsers : [...userSets.get(selectedRadio).values()];
       await grantAccessToUsers(users, notifyUsers);
       const grantedAccessTo = users.map(user => this.getAtlassianAccountId(user));
       firePrivateAnalyticsEvent('xflow.grant-access.continue-button.grant-access-successful', {
@@ -268,6 +269,11 @@ class GrantAccess extends Component {
     this.setState({
       changeUsers: true,
     });
+  };
+
+  handleDialogClosed = () => {
+    const { firePrivateAnalyticsEvent } = this.props;
+    firePrivateAnalyticsEvent('xflow.grant-access.dialog.closed');
   };
 
   handleRadioChange = evt => {
@@ -341,24 +347,27 @@ class GrantAccess extends Component {
       showProgressIndicator,
     } = this.props;
 
-    const progressIndicator = showProgressIndicator ?
-      (<ProgressIndicator progress={progress} status={status} />) : '';
+    const progressIndicator = showProgressIndicator ? (
+      <ProgressIndicator progress={progress} status={status} />
+    ) : (
+      ''
+    );
 
-    const GrantAccessChangeUsers = selectLabel ?
-        GrantAccessChangeUsersWithLabelDiv : GrantAccessChangeUsersDiv;
+    const GrantAccessChangeUsers = selectLabel
+      ? GrantAccessChangeUsersWithLabelDiv
+      : GrantAccessChangeUsersDiv;
 
     return (
       <ModalDialog
-        isOpen
         width="small"
-        header={
-          <div>
+        header={() => (
+          <ModalDialogHeader>
             {productLogo}
             {progressIndicator}
-          </div>
-        }
-        footer={
-          <GrantAccessFooter>
+          </ModalDialogHeader>
+        )}
+        footer={() => (
+          <ModalDialogFooter>
             <SpinnerDiv>
               <Spinner isCompleting={!(this.state.spinnerActive || this.state.userSets === null)} />
             </SpinnerDiv>
@@ -386,27 +395,30 @@ class GrantAccess extends Component {
                 />
               </Button>
             ) : (
-                !this.state.changeUsers && (
-                  <Button
-                    id="xflow-grant-access-manage-button"
-                    onClick={this.handleManageClick}
-                    appearance="link"
-                    isDisabled={this.state.userSets === null}
-                  >
-                    <FormattedMessage
-                      id="xflow.generic.grant-access.manage"
-                      defaultMessage="Manage"
-                    />
-                  </Button>
-                )
-              )}
-          </GrantAccessFooter>
-        }
+              !this.state.changeUsers && (
+                <Button
+                  id="xflow-grant-access-manage-button"
+                  onClick={this.handleManageClick}
+                  appearance="link"
+                  isDisabled={this.state.userSets === null}
+                >
+                  <FormattedMessage
+                    id="xflow.generic.grant-access.manage"
+                    defaultMessage="Manage"
+                  />
+                </Button>
+              )
+            )}
+          </ModalDialogFooter>
+        )}
+        shouldCloseOnOverlayClick={false}
+        shouldCloseOnEscapePress={false}
+        onClose={this.handleDialogClosed}
       >
         <div id="xflow-grant-access">
-          <StartTrialHeader>
+          <StartTrialHeading>
             <div>{heading}</div>
-          </StartTrialHeader>
+          </StartTrialHeading>
 
           {this.state.changeUsers ? (
             <GrantAccessChangeUsers>
@@ -467,7 +479,7 @@ class GrantAccess extends Component {
                     </span>
                   </GrantAccessLearnMoreSpan>
                 </AffectMyBillText>
-              ) : null }
+              ) : null}
             </GrantAccessChangeUsers>
           ) : (
             <GrantAccessDefaultAccessDiv>
@@ -475,8 +487,8 @@ class GrantAccess extends Component {
             </GrantAccessDefaultAccessDiv>
           )}
 
-          {showNotifyUsersOption
-            ? <StartTrialProgressDiv>
+          {showNotifyUsersOption ? (
+            <StartTrialProgressDiv>
               <input
                 type="checkbox"
                 id="xflow-grant-access-notify-users"
@@ -491,7 +503,9 @@ class GrantAccess extends Component {
                 />
               </InputLabel>
             </StartTrialProgressDiv>
-            : '' }
+          ) : (
+            ''
+          )}
         </div>
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}

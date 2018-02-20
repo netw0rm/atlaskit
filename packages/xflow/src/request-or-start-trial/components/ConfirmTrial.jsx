@@ -9,8 +9,9 @@ import ErrorFlag from '../../common/components/ErrorFlag';
 
 import SpinnerDiv from '../../common/styled/SpinnerDiv';
 import OptOutLinkButton from '../styled/OptOutLinkButton';
-import StartTrialFooter from '../styled/StartTrialFooter';
-import StartTrialHeader from '../styled/StartTrialHeader';
+import ModalDialogFooter from '../../common/styled/ModalDialogFooter';
+import ModalDialogHeader from '../../common/styled/ModalDialogHeader';
+import StartTrialHeading from '../styled/StartTrialHeading';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
 import { INACTIVE, DEACTIVATED } from '../../common/productProvisioningStates';
 
@@ -22,6 +23,10 @@ const messages = defineMessages({
   errorFlagDescription: {
     id: 'xflow.generic.start-tral.error-flag.description',
     defaultMessage: "Let's try that again.",
+  },
+  optOutMessage: {
+    id: 'xflow.generic.start-trial.opt-out.message',
+    defaultMessage: 'Turn off these messages',
   },
 });
 
@@ -102,14 +107,13 @@ class ConfirmTrial extends Component {
   };
 
   handleCancelClick = () => {
-    const { cancelStartProductTrial, onCancel, firePrivateAnalyticsEvent, status } = this.props;
+    const { firePrivateAnalyticsEvent, status } = this.props;
     firePrivateAnalyticsEvent(
       status === INACTIVE
         ? 'xflow.confirm-trial.cancel-button.clicked'
         : 'xflow.reactivate-trial.cancel-button.clicked'
     );
-    return Promise.resolve(cancelStartProductTrial())
-      .then(onCancel);
+    return this.handleDialogClosed();
   };
 
   handleOptOutClick = () => {
@@ -139,10 +143,51 @@ class ConfirmTrial extends Component {
     });
   };
 
+  handleDialogClosed = () => {
+    const { firePrivateAnalyticsEvent, cancelStartProductTrial, onCancel, status } = this.props;
+    firePrivateAnalyticsEvent(
+      status === INACTIVE
+        ? 'xflow.confirm-trial.dialog.closed'
+        : 'xflow.reactivate-trial.dialog.closed'
+    );
+    return Promise.resolve(cancelStartProductTrial()).then(onCancel);
+  };
+
+  header = () => {
+    const { productLogo } = this.props;
+    return <ModalDialogHeader>{productLogo}</ModalDialogHeader>;
+  };
+
+  footer = () => (
+    <ModalDialogFooter>
+      <SpinnerDiv>
+        <Spinner isCompleting={!this.state.spinnerActive} />
+      </SpinnerDiv>
+      <Button
+        id="xflow-confirm-trial-confirm-button"
+        onClick={this.handleConfirmClick}
+        appearance="primary"
+        isDisabled={this.state.buttonsDisabled}
+      >
+        <FormattedMessage
+          id="xflow.generic.confirm-trial.confirm-button"
+          defaultMessage="Confirm"
+        />
+      </Button>
+      <Button
+        id="xflow-confirm-trial-cancel-button"
+        onClick={this.handleCancelClick}
+        appearance="subtle-link"
+        isDisabled={this.state.buttonsDisabled}
+      >
+        <FormattedMessage id="xflow.generic.confirm-trial.cancel-button" defaultMessage="Cancel" />
+      </Button>
+    </ModalDialogFooter>
+  );
+
   render() {
     const {
       intl,
-      productLogo,
       status,
       trialHeading,
       trialMessage,
@@ -152,60 +197,28 @@ class ConfirmTrial extends Component {
     } = this.props;
     return (
       <ModalDialog
-        isOpen
         width="small"
-        header={productLogo}
-        footer={
-          <StartTrialFooter>
-            <SpinnerDiv>
-              <Spinner isCompleting={!this.state.spinnerActive} />
-            </SpinnerDiv>
-            <Button
-              id="xflow-confirm-trial-confirm-button"
-              onClick={this.handleConfirmClick}
-              appearance="primary"
-              isDisabled={this.state.buttonsDisabled}
-            >
-              <FormattedMessage
-                id="xflow.generic.confirm-trial.confirm-button"
-                defaultMessage="Confirm"
-              />
-            </Button>
-            <Button
-              id="xflow-confirm-trial-cancel-button"
-              onClick={this.handleCancelClick}
-              appearance="subtle-link"
-              isDisabled={this.state.buttonsDisabled}
-            >
-              <FormattedMessage
-                id="xflow.generic.confirm-trial.cancel-button"
-                defaultMessage="Cancel"
-              />
-            </Button>
-          </StartTrialFooter>
-        }
+        header={this.header}
+        footer={this.footer}
+        onClose={this.handleDialogClosed}
+        shouldCloseOnOverlayClick={false}
       >
         <div id="xflow-confirm-trial">
-          <StartTrialHeader>
+          <StartTrialHeading>
             {status === INACTIVE ? trialHeading : reactivateHeading}
-          </StartTrialHeader>
+          </StartTrialHeading>
           {status === INACTIVE ? trialMessage : reactivateMessage}
         </div>
-        {isCrossSell === true &&
-          <OptOutLinkButton
-            id="xflow-opt-out-button"
-            onClick={this.handleOptOutClick}
-          >
-            Turn off these messages
+        {isCrossSell === true && (
+          <OptOutLinkButton id="xflow-opt-out-button" onClick={this.handleOptOutClick}>
+            {intl.formatMessage(messages.optOutMessage)}
           </OptOutLinkButton>
-        }
+        )}
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}
           description={intl.formatMessage(messages.errorFlagDescription)}
           showFlag={this.state.productFailedToStart}
-          source={status === INACTIVE
-          ? 'confirm-trial'
-          : 'reactivate-trial'}
+          source={status === INACTIVE ? 'confirm-trial' : 'reactivate-trial'}
           onDismissed={this.handleErrorFlagDismiss}
         />
       </ModalDialog>

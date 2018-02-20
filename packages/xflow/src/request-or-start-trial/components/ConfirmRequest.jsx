@@ -8,7 +8,6 @@ import { FormattedMessage } from 'react-intl';
 import { withAnalytics } from '@atlaskit/analytics';
 
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
-import RequestTrialHeading from '../styled/RequestTrialHeading';
 import RequestTrialFooter from '../styled/RequestTrialFooter';
 import RequestTrialHeader from '../styled/RequestTrialHeader';
 import RequestTrialLozengeDiv from '../styled/RequestTrialLozengeDiv';
@@ -46,9 +45,9 @@ class ConfirmRequest extends Component {
 
   componentDidMount() {
     const { firePrivateAnalyticsEvent, alreadyRequested } = this.props;
-    firePrivateAnalyticsEvent(alreadyRequested ?
-      'xflow.already-requested-trial.displayed' :
-      'xflow.request-trial.displayed');
+    firePrivateAnalyticsEvent(
+      alreadyRequested ? 'xflow.already-requested-trial.displayed' : 'xflow.request-trial.displayed'
+    );
   }
 
   handleRequestTrialClick = () => {
@@ -73,17 +72,30 @@ class ConfirmRequest extends Component {
   };
 
   handleCloseClick = () => {
+    const { alreadyRequested, firePrivateAnalyticsEvent } = this.props;
+    firePrivateAnalyticsEvent(
+      alreadyRequested
+        ? 'xflow.already-requested-trial.close-button.clicked'
+        : 'xflow.request-trial.close-button.clicked'
+    );
+    return this.handleDialogClosed();
+  };
+
+  handleDialogClosed = async () => {
     const {
       alreadyRequested,
       firePrivateAnalyticsEvent,
       cancelRequestTrial,
       onCancel,
     } = this.props;
-    firePrivateAnalyticsEvent(alreadyRequested ?
-      'xflow.already-requested-trial.close-button.clicked' :
-      'xflow.request-trial.close-button.clicked');
-    return Promise.resolve(cancelRequestTrial())
-      .then(onCancel);
+
+    firePrivateAnalyticsEvent(
+      alreadyRequested
+        ? 'xflow.already-requested-trial.dialog.closed'
+        : 'xflow.request-trial.dialog.closed'
+    );
+    await cancelRequestTrial();
+    return onCancel();
   };
 
   render() {
@@ -98,31 +110,36 @@ class ConfirmRequest extends Component {
     } = this.props;
     return (
       <ModalDialog
-        isOpen
         width={'400px'}
-        header={
+        header={() => (
           <div id="xflow-confirm-request">
             <RequestTrialHeader>
               {productLogo}
               <RequestTrialLozengeDiv>
                 <Lozenge isBold>
-                  {alreadyRequested ? <FormattedMessage
-                    id="xflow.generic.request-trial.requested-lozenge"
-                    defaultMessage="Requested"
-                  /> :
-                  <FormattedMessage
-                    id="xflow.generic.request-trial.inactive-lozenge"
-                    defaultMessage="Inactive on your site"
-                  />}
+                  {alreadyRequested ? (
+                    <FormattedMessage
+                      id="xflow.generic.request-trial.requested-lozenge"
+                      defaultMessage="Requested"
+                    />
+                  ) : (
+                    <FormattedMessage
+                      id="xflow.generic.request-trial.inactive-lozenge"
+                      defaultMessage="Inactive on your site"
+                    />
+                  )}
                 </Lozenge>
               </RequestTrialLozengeDiv>
             </RequestTrialHeader>
-            <RequestTrialImage src={(contextInfo && contextInfo.contextualImage) ? contextInfo.contextualImage : image} alt="files" />
+            <RequestTrialImage
+              src={contextInfo && contextInfo.contextualImage ? contextInfo.contextualImage : image}
+              alt="files"
+            />
           </div>
-        }
-        footer={
+        )}
+        footer={() => (
           <RequestTrialFooter>
-            {alreadyRequested ?
+            {alreadyRequested ? (
               <span
                 onMouseDown={this.handleLearnMoreAlternateClick}
                 id="xflow-already-requested-trial-learn-more-span"
@@ -139,32 +156,28 @@ class ConfirmRequest extends Component {
                     defaultMessage="Learn more"
                   />
                 </Button>
-              </span> :
-              <Button
-                appearance="primary"
-                onClick={this.handleRequestTrialClick}
-              >
+              </span>
+            ) : (
+              <Button appearance="primary" onClick={this.handleRequestTrialClick}>
                 <FormattedMessage
                   id="xflow.generic.request-trial.request-button"
                   defaultMessage="Request a trial"
                 />
-              </Button>}
-            <Button
-              appearance="subtle-link"
-              onClick={this.handleCloseClick}
-            >
+              </Button>
+            )}
+            <Button appearance="subtle-link" onClick={this.handleCloseClick}>
               <FormattedMessage
                 id="xflow.generic.request-trial.close-button"
                 defaultMessage="Close"
               />
             </Button>
           </RequestTrialFooter>
-        }
+        )}
+        shouldCloseOnOverlayClick={false}
+        onClose={this.handleDialogClosed}
       >
         <RequestTrialDiv>
-          <RequestTrialHeading>
-            {contextInfo ? contextInfo.contextualHeading : heading}
-          </RequestTrialHeading>
+          <h3>{contextInfo ? contextInfo.contextualHeading : heading}</h3>
           {contextInfo ? <p>{contextInfo.contextualMessage}</p> : <p>{message}</p>}
         </RequestTrialDiv>
       </ModalDialog>
@@ -176,9 +189,7 @@ export const ConfirmRequestBase = withAnalytics(ConfirmRequest);
 
 export default withXFlowProvider(
   ConfirmRequestBase,
-  ({
-    xFlow: { config: { productLogo, requestTrial }, cancelRequestTrial },
-  }) => ({
+  ({ xFlow: { config: { productLogo, requestTrial }, cancelRequestTrial } }) => ({
     productLogo,
     image: requestTrial.accessImage,
     heading: requestTrial.accessHeading,

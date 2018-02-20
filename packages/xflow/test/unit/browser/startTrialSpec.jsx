@@ -28,6 +28,9 @@ import JiraToConfluenceXFlowProvider from '../../../src/product-xflow-providers/
 import XFlowIntlProvider from '../../../src/common/components/XFlowIntlProvider';
 import XFlowAnalyticsListener from '../../../src/common/components/XFlowAnalyticsListener';
 
+// eslint-disable-next-line global-require
+jest.mock('@atlaskit/modal-dialog', () => require('../__mocks__/modal-dialog-mock'));
+
 const noop = () => {};
 
 // More tests should try to extract actual copy from the ProviderConfig,
@@ -286,7 +289,8 @@ describe('@atlaskit/xflow', () => {
                   onTrialActivating={() => true}
                   contextInfo={{
                     contextualHeading: 'Project pages are powered by Confluence',
-                    contextualMessage: 'Create, share, and collaborate on all your project docs in one place, with Confluence pages.',
+                    contextualMessage:
+                      'Create, share, and collaborate on all your project docs in one place, with Confluence pages.',
                     reactivateCTA: 'Reactivate Confluence',
                     trialCTA: 'Try Confluence free for 30 days',
                   }}
@@ -302,15 +306,25 @@ describe('@atlaskit/xflow', () => {
         // eventually render to start trial screen
         await waitUntil(() => xflow.find(ContextualStartTrial).length === 1);
         // contextual heading
-        expect(xflow.find(ContextualStartTrial).text()).toMatch('Project pages are powered by Confluence');
+        expect(xflow.find(ContextualStartTrial).text()).toMatch(
+          'Project pages are powered by Confluence'
+        );
         // contextual message
-        expect(xflow.find(ContextualStartTrial).text()).toMatch('Create, share, and collaborate on all your project docs in one place, with Confluence pages.');
+        expect(xflow.find(ContextualStartTrial).text()).toMatch(
+          'Create, share, and collaborate on all your project docs in one place, with Confluence pages.'
+        );
         // contextual cta
         expect(xflow.find(ContextualStartTrial).text()).toMatch('Try Confluence free for 30 days');
         // trial info footer
-        expect(xflow.find(ContextualStartTrial).text()).toMatch('Once your trial finishes, billing will start.');
-        expect(xflow.find(ContextualStartTrial).text()).toMatch('Your billing contact will be emailed ten days before');
-        expect(xflow.find(ContextualStartTrial).text()).toMatch('Cancel your trial at any time in Manage subscriptions.');
+        expect(xflow.find(ContextualStartTrial).text()).toMatch(
+          'Once your trial finishes, billing will start.'
+        );
+        expect(xflow.find(ContextualStartTrial).text()).toMatch(
+          'Your billing contact will be emailed ten days before'
+        );
+        expect(xflow.find(ContextualStartTrial).text()).toMatch(
+          'Cancel your trial at any time in Manage subscriptions.'
+        );
       });
     });
 
@@ -328,7 +342,8 @@ describe('@atlaskit/xflow', () => {
                   {...defaultRequestOrStartTrialProps}
                   contextInfo={{
                     contextualHeading: 'Project pages are powered by Confluence',
-                    contextualMessage: 'Create, share, and collaborate on all your project docs in one place, with Confluence pages.',
+                    contextualMessage:
+                      'Create, share, and collaborate on all your project docs in one place, with Confluence pages.',
                     reactivateCTA: 'Reactivate Confluence',
                     trialCTA: 'Try Confluence free for 30 days',
                   }}
@@ -344,14 +359,22 @@ describe('@atlaskit/xflow', () => {
         // eventually render to start trial screen
         await waitUntil(() => xflow.find(ContextualStartTrial).length === 1);
         // contextual heading
-        expect(xflow.find(ContextualStartTrial).text()).toMatch('Project pages are powered by Confluence');
+        expect(xflow.find(ContextualStartTrial).text()).toMatch(
+          'Project pages are powered by Confluence'
+        );
         // contextual message
-        expect(xflow.find(ContextualStartTrial).text()).toMatch('Create, share, and collaborate on all your project docs in one place, with Confluence pages.');
+        expect(xflow.find(ContextualStartTrial).text()).toMatch(
+          'Create, share, and collaborate on all your project docs in one place, with Confluence pages.'
+        );
         // contextual reactivate cta
         expect(xflow.find(ContextualStartTrial).text()).toMatch('Reactivate Confluence');
         // reactivation info footer
-        expect(xflow.find(ContextualStartTrial).text()).toMatch('Once your subscription reactivates, billing will resume.');
-        expect(xflow.find(ContextualStartTrial).text()).toMatch('Cancel your subscription at any time in Manage subscriptions.');
+        expect(xflow.find(ContextualStartTrial).text()).toMatch(
+          'Once your subscription reactivates, billing will resume.'
+        );
+        expect(xflow.find(ContextualStartTrial).text()).toMatch(
+          'Cancel your subscription at any time in Manage subscriptions.'
+        );
       });
     });
   });
@@ -446,7 +469,7 @@ describe('@atlaskit/xflow', () => {
       const flag = portalWrapper.find(Flag);
       expect(flag.find(ErrorIcon).props().label).toMatch('Error icon');
       expect(flag.text()).toMatch('Oops... Something went wrong');
-      expect(flag.text()).toMatch('Let\'s try again.');
+      expect(flag.text()).toMatch("Let's try again.");
       expect(flag.text()).toMatch('Retry');
     });
   });

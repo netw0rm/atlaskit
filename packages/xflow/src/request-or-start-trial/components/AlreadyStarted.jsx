@@ -8,8 +8,9 @@ import { FormattedMessage } from 'react-intl';
 import { withAnalytics } from '@atlaskit/analytics';
 
 import SpinnerDiv from '../../common/styled/SpinnerDiv';
-import StartTrialFooter from '../styled/StartTrialFooter';
-import StartTrialHeader from '../styled/StartTrialHeader';
+import ModalDialogFooter from '../../common/styled/ModalDialogFooter';
+import ModalDialogHeader from '../../common/styled/ModalDialogHeader';
+import StartTrialHeading from '../styled/StartTrialHeading';
 import { withXFlowProvider } from '../../common/components/XFlowProvider';
 
 import ProgressIndicator from './ProgressIndicator';
@@ -65,10 +66,10 @@ class AlreadyStarted extends Component {
   };
 
   handleCloseClick = async () => {
-    const { closeAlreadyStartedDialog, onComplete, firePrivateAnalyticsEvent } = this.props;
+    const { firePrivateAnalyticsEvent } = this.props;
     firePrivateAnalyticsEvent('xflow.already-started.close-button.clicked');
-    await closeAlreadyStartedDialog();
-    return onComplete();
+
+    return this.handleDialogClosed();
   };
 
   handleGetStartedClick = async () => {
@@ -81,51 +82,68 @@ class AlreadyStarted extends Component {
     return onComplete();
   };
 
+  handleDialogClosed = async () => {
+    const { firePrivateAnalyticsEvent, closeAlreadyStartedDialog, onComplete } = this.props;
+    firePrivateAnalyticsEvent('xflow.already-started.dialog.closed');
+
+    await closeAlreadyStartedDialog();
+    return onComplete();
+  };
+
+  header = () => {
+    const { productLogo, progress, status } = this.props;
+    const { initialActivationState } = this.state;
+
+    return (
+      <ModalDialogHeader>
+        {productLogo}
+        {initialActivationState === ACTIVATING ? (
+          <ProgressIndicator
+            progress={progress}
+            status={status}
+            onComplete={this.handleProgressComplete}
+          />
+        ) : null}
+      </ModalDialogHeader>
+    );
+  };
+
+  footer = () => {
+    const { getStartedButtonText } = this.props;
+    const { isReady, isLoading } = this.state;
+
+    return (
+      <ModalDialogFooter>
+        <SpinnerDiv>
+          <Spinner isCompleting={!isLoading} />
+        </SpinnerDiv>
+        <Button
+          onClick={this.handleGetStartedClick}
+          appearance="primary"
+          isDisabled={!isReady || isLoading}
+        >
+          {getStartedButtonText}
+        </Button>
+        <Button onClick={this.handleCloseClick} appearance="subtle-link">
+          <FormattedMessage id="xflow.generic.alread-started.close-button" defaultMessage="Close" />
+        </Button>
+      </ModalDialogFooter>
+    );
+  };
+
   render() {
-    const { productLogo, heading, message, getStartedButtonText, progress, status } = this.props;
-    const { initialActivationState, isReady, isLoading } = this.state;
+    const { heading, message } = this.props;
 
     return (
       <ModalDialog
-        isOpen
         width="small"
-        header={
-          <div>
-            {productLogo}
-            {initialActivationState === ACTIVATING
-              ? <ProgressIndicator
-                progress={progress}
-                status={status}
-                onComplete={this.handleProgressComplete}
-              />
-              : null}
-          </div>
-        }
-        footer={
-          <StartTrialFooter>
-            <SpinnerDiv>
-              <Spinner isCompleting={!isLoading} />
-            </SpinnerDiv>
-            <Button
-              onClick={this.handleGetStartedClick}
-              appearance="primary"
-              isDisabled={!isReady || isLoading}
-            >
-              {getStartedButtonText}
-            </Button>
-            <Button onClick={this.handleCloseClick} appearance="subtle-link">
-              <FormattedMessage
-                id="xflow.generic.alread-started.close-button"
-                defaultMessage="Close"
-              />
-            </Button>
-          </StartTrialFooter>
-        }
+        header={this.header}
+        footer={this.footer}
+        shouldCloseOnOverlayClick={false}
+        onClose={this.handleDialogClosed}
       >
         <div id="xflow-already-started">
-          <StartTrialHeader>
-            {heading}
-          </StartTrialHeader>
+          <StartTrialHeading>{heading}</StartTrialHeading>
           {message}
         </div>
       </ModalDialog>

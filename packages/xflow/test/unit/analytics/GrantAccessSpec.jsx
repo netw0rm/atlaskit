@@ -7,12 +7,14 @@ import { GrantAccessBase } from '../../../src/request-or-start-trial/components/
 import { withAnalyticsSpy, waitFor, waitUntil } from '../../util';
 import { ACTIVATING } from '../../../src/common/productProvisioningStates';
 
+// eslint-disable-next-line global-require
+jest.mock('@atlaskit/modal-dialog', () => require('../__mocks__/modal-dialog-mock'));
+
 describe('<GrantAccess> analytics', () => {
   beforeEach(() => fetchMock.catch(417));
   afterEach(fetchMock.restore);
 
-  const noop = () => {
-  };
+  const noop = () => {};
 
   const defaultProps = {
     productLogo: <div />,
@@ -77,7 +79,10 @@ describe('<GrantAccess> analytics', () => {
 
     const continueButton = mountWrapper.find('#xflow-grant-access-continue-button');
     await waitUntil(() => continueButton.not('[disabled]'));
-    continueButton.simulate('click');
+    // Trying to get continueButton.prop(...) doesn't work.
+    // So, we find the component again after it has enabled because
+    // enzyme loses the original component after prop changes cause rerender.
+    mountWrapper.find('#xflow-grant-access-continue-button').prop('onClick')(); // Simulate click
 
     return waitFor(() =>
       expect(spy).toHaveBeenCalledWith(
@@ -101,10 +106,12 @@ describe('<GrantAccess> analytics', () => {
                 'display-name': 'Lachlan Hunt',
                 email: 'lhunt@example.com',
                 attributes: {
-                  attributes: [{
-                    name: 'atlassianid.openid.identity',
-                    values: ['https://id.atlassian.com/openid/v2/u/1'],
-                  }],
+                  attributes: [
+                    {
+                      name: 'atlassianid.openid.identity',
+                      values: ['https://id.atlassian.com/openid/v2/u/1'],
+                    },
+                  ],
                 },
               },
               {
@@ -112,10 +119,12 @@ describe('<GrantAccess> analytics', () => {
                 'display-name': 'Andrew Wakeling',
                 email: 'awakeling@example.com',
                 attributes: {
-                  attributes: [{
-                    name: 'atlassianid.openid.identity',
-                    values: ['https://id.atlassian.com/openid/v2/u/2'],
-                  }],
+                  attributes: [
+                    {
+                      name: 'atlassianid.openid.identity',
+                      values: ['https://id.atlassian.com/openid/v2/u/2'],
+                    },
+                  ],
                 },
               },
               {
@@ -123,10 +132,12 @@ describe('<GrantAccess> analytics', () => {
                 'display-name': 'Andrew Hammond',
                 email: 'ahammond@example.com',
                 attributes: {
-                  attributes: [{
-                    name: 'atlassianid.openid.identity',
-                    values: ['https://id.atlassian.com/openid/v2/u/3'],
-                  }],
+                  attributes: [
+                    {
+                      name: 'atlassianid.openid.identity',
+                      values: ['https://id.atlassian.com/openid/v2/u/3'],
+                    },
+                  ],
                 },
               },
               {
@@ -134,10 +145,12 @@ describe('<GrantAccess> analytics', () => {
                 'display-name': 'Michael Truong',
                 email: 'mtruong@example.com',
                 attributes: {
-                  attributes: [{
-                    name: 'atlassianid.openid.identity',
-                    values: ['https://id.atlassian.com/openid/v2/u/4'],
-                  }],
+                  attributes: [
+                    {
+                      name: 'atlassianid.openid.identity',
+                      values: ['https://id.atlassian.com/openid/v2/u/4'],
+                    },
+                  ],
                 },
               },
               {
@@ -145,14 +158,17 @@ describe('<GrantAccess> analytics', () => {
                 'display-name': 'George Burrows',
                 email: 'gburrows@example.com',
                 attributes: {
-                  attributes: [{
-                    name: 'atlassianid.openid.identity',
-                    values: ['https://id.atlassian.com/openid/v2/u/5'],
-                  }],
+                  attributes: [
+                    {
+                      name: 'atlassianid.openid.identity',
+                      values: ['https://id.atlassian.com/openid/v2/u/5'],
+                    },
+                  ],
                 },
               },
-            ])}
-          grantAccessToUsers={() => new Promise((resolve) => setTimeout(resolve, 500))}
+            ])
+          }
+          grantAccessToUsers={() => new Promise(resolve => setTimeout(resolve, 500))}
         />
       )
     );
@@ -163,7 +179,7 @@ describe('<GrantAccess> analytics', () => {
 
     const continueButton = mountWrapper.find('#xflow-grant-access-continue-button');
     await waitUntil(() => continueButton.not('[disabled]'));
-    continueButton.simulate('click');
+    mountWrapper.find('#xflow-grant-access-continue-button').prop('onClick')();
 
     return waitFor(() => {
       expect(spy).toHaveBeenCalledWith(
@@ -188,7 +204,11 @@ describe('<GrantAccess> analytics', () => {
         spy,
         <GrantAccessBase
           {...defaultProps}
-          grantAccessToUsers={() => new Promise((_, reject) => setTimeout(reject(new Error('Failed to Grant Access to Users')), 500))}
+          grantAccessToUsers={() =>
+            new Promise((_, reject) =>
+              setTimeout(reject(new Error('Failed to Grant Access to Users')), 500)
+            )
+          }
         />
       )
     );
@@ -199,7 +219,7 @@ describe('<GrantAccess> analytics', () => {
 
     const continueButton = mountWrapper.find('#xflow-grant-access-continue-button');
     await waitUntil(() => continueButton.not('[disabled]'));
-    continueButton.simulate('click');
+    mountWrapper.find('#xflow-grant-access-continue-button').prop('onClick')();
 
     await waitFor(() => {
       expect(spy).toHaveBeenCalledWith(
@@ -242,12 +262,15 @@ describe('<GrantAccess> analytics', () => {
       expect.any(Object)
     );
 
-    const manageButton = mountWrapper.find('#xflow-grant-access-manage-button').simulate('click');
-    await waitFor(() => !manageButton.is('[disabled]'));
-    manageButton.simulate('click');
+    const manageButton = mountWrapper.find('#xflow-grant-access-manage-button');
+    await waitFor(() => manageButton.not('[disabled]'));
+    mountWrapper.find('#xflow-grant-access-manage-button').prop('onClick')();
 
     return waitFor(() =>
-      expect(spy).toHaveBeenCalledWith('xflow.grant-access.manage-button.clicked', expect.any(Object))
+      expect(spy).toHaveBeenCalledWith(
+        'xflow.grant-access.manage-button.clicked',
+        expect.any(Object)
+      )
     );
   });
 
@@ -265,7 +288,10 @@ describe('<GrantAccess> analytics', () => {
     );
     onRadioChange(mockResponse);
     return waitFor(() => {
-      expect(spy).toHaveBeenCalledWith('xflow.grant-access.radio-option.changed', expect.any(Object));
+      expect(spy).toHaveBeenCalledWith(
+        'xflow.grant-access.radio-option.changed',
+        expect.any(Object)
+      );
     });
   });
 
@@ -276,7 +302,10 @@ describe('<GrantAccess> analytics', () => {
     );
     const mockResponse = { isOpen: true };
     const onOpenChange = mountWrapper.find('MultiSelect').prop('onOpenChange');
-    expect(spy).not.toHaveBeenCalledWith('xflow.grant-access.user-select.opened', expect.any(Object));
+    expect(spy).not.toHaveBeenCalledWith(
+      'xflow.grant-access.user-select.opened',
+      expect.any(Object)
+    );
     onOpenChange(mockResponse);
     return waitFor(() =>
       expect(spy).toHaveBeenCalledWith('xflow.grant-access.user-select.opened', expect.any(Object))

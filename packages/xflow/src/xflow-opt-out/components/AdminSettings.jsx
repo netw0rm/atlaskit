@@ -5,15 +5,11 @@ import Button from '@atlaskit/button';
 import ModalDialog from '@atlaskit/modal-dialog';
 import Spinner from '@atlaskit/spinner';
 import { withAnalytics } from '@atlaskit/analytics';
-import { colors } from '@atlaskit/theme';
-import ErrorIcon from '@atlaskit/icon/glyph/error';
 
 import ErrorFlag from '../../common/components/ErrorFlag';
 import SuccessFlag from '../../common/components/SuccessFlag';
 
-import OptOutHeader from '../styled/OptOutHeader';
 import OptOutFooter from '../styled/OptOutFooter';
-import OptOutIcon from '../styled/OptOutIcon';
 import OptOutMessage from '../styled/OptOutMessage';
 import OptOutNoteDiv from '../styled/OptOutNoteDiv';
 import OptOutNoteText from '../styled/OptOutNoteText';
@@ -123,11 +119,17 @@ class AdminSettings extends Component {
   handleCancelClick = async () => {
     const { firePrivateAnalyticsEvent, cancelOptOut } = this.props;
     firePrivateAnalyticsEvent('xflow.opt-out.cancel-button.clicked');
+    await cancelOptOut();
+    return this.handleDialogClosed();
+  };
+
+  handleDialogClosed = async () => {
+    const { firePrivateAnalyticsEvent } = this.props;
+    firePrivateAnalyticsEvent('xflow.opt-out.dialog.closed');
     this.setState({
       optOutRequestStatus: null,
       isOpen: false,
     });
-    await cancelOptOut();
   };
 
   handleErrorFlagResendRequest = () => {
@@ -157,57 +159,60 @@ class AdminSettings extends Component {
     setTimeout(onComplete, 1000);
   };
 
+  footer = () => {
+    const { spinnerActive, buttonsDisabled } = this.state;
+    return (
+      <OptOutFooter>
+        <SpinnerDiv>
+          <Spinner isCompleting={!spinnerActive} />
+        </SpinnerDiv>
+        <Button
+          id="xflow-opt-out-turn-off-button"
+          onClick={this.handleTurnOffClick}
+          appearance="danger"
+          isDisabled={buttonsDisabled}
+        >
+          <FormattedMessage id="xflow-generic.opt-out.turn-off-button" defaultMessage="Turn off" />
+        </Button>
+        <Button
+          onClick={this.handleCancelClick}
+          appearance="subtle-link"
+          isDisabled={buttonsDisabled}
+        >
+          <FormattedMessage id="xflow-generic.opt-out.cancel-button" defaultMessage="Cancel" />
+        </Button>
+      </OptOutFooter>
+    );
+  };
+
   render() {
-    const { intl, heading, message, messageWarning, notePlaceholder } = this.props;
-    const { optOutRequestStatus } = this.state;
+    const { heading, intl, message, messageWarning, notePlaceholder } = this.props;
+    const { optOutRequestStatus, isOpen } = this.state;
 
     return (
       <div id="xflow-opt-out">
-        <ModalDialog
-          isOpen={this.state.isOpen}
-          width="small"
-          header={<OptOutHeader><OptOutIcon><ErrorIcon label="Error icon" primaryColor={colors.R400} /></OptOutIcon>{heading}</OptOutHeader>}
-          footer={
-            <OptOutFooter>
-              <SpinnerDiv>
-                <Spinner isCompleting={!this.state.spinnerActive} />
-              </SpinnerDiv>
-              <Button
-                id="xflow-opt-out-turn-off-button"
-                onClick={this.handleTurnOffClick}
-                appearance="danger"
-                isDisabled={this.state.buttonsDisabled}
-              >
-                <FormattedMessage
-                  id="xflow-generic.opt-out.turn-off-button"
-                  defaultMessage="Turn off"
-                />
-              </Button>
-              <Button
-                onClick={this.handleCancelClick}
-                appearance="subtle-link"
-                isDisabled={this.state.buttonsDisabled}
-              >
-                <FormattedMessage
-                  id="xflow-generic.opt-out.cancel-button"
-                  defaultMessage="Cancel"
-                />
-              </Button>
-            </OptOutFooter>
-          }
-        >
-          <OptOutMessage>{message}</OptOutMessage>
-          <OptOutMessage>{messageWarning}</OptOutMessage>
-          <OptOutNoteDiv>
-            <OptOutNoteText
-              innerRef={noteText => {
-                this.noteText = noteText;
-              }}
-              placeholder={notePlaceholder}
-              maxLength={300}
-            />
-          </OptOutNoteDiv>
-        </ModalDialog>
+        {isOpen && (
+          <ModalDialog
+            width="small"
+            appearance="danger"
+            heading={heading}
+            footer={this.footer}
+            shouldCloseOnOverlayClick={false}
+            onClose={this.handleDialogClosed}
+          >
+            <OptOutMessage>{message}</OptOutMessage>
+            <OptOutMessage>{messageWarning}</OptOutMessage>
+            <OptOutNoteDiv>
+              <OptOutNoteText
+                innerRef={noteText => {
+                  this.noteText = noteText;
+                }}
+                placeholder={notePlaceholder}
+                maxLength={300}
+              />
+            </OptOutNoteDiv>
+          </ModalDialog>
+        )}
         <ErrorFlag
           title={intl.formatMessage(messages.errorFlagTitle)}
           description={intl.formatMessage(messages.errorFlagDescription)}
@@ -218,7 +223,8 @@ class AdminSettings extends Component {
               content: intl.formatMessage(messages.errorFlagResendRequest),
               onClick: this.handleErrorFlagResendRequest,
             },
-            { content: intl.formatMessage(messages.errorFlagNotNow),
+            {
+              content: intl.formatMessage(messages.errorFlagNotNow),
               onClick: this.handleErrorFlagDismiss,
             },
           ]}
@@ -241,12 +247,7 @@ export default withXFlowProvider(
   AdminSettingsBase,
   ({
     xFlow: {
-      optOut: {
-        optOutHeading,
-        optOutMessage,
-        optOutMessageWarning,
-        optOutNotePlaceholder,
-      },
+      optOut: { optOutHeading, optOutMessage, optOutMessageWarning, optOutNotePlaceholder },
       status,
       optOutFeature,
       cancelOptOut,

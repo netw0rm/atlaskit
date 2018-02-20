@@ -8,15 +8,14 @@ const CloseModalDialogButton = styled.button`
       color: ${colors.N300};
     }
   }
-  
+
   float: right;
   background-color: transparent;
   text-decoration: none;
   border: none;
-  margin-right: -${math.multiply(gridSize, 1.5)}px;
-  margin-top: ${gridSize}px;
+  margin-right: ${math.multiply(gridSize, 1.25)}px;
   cursor: pointer;
-  
+
   &:focus {
     outline: 0;
   }

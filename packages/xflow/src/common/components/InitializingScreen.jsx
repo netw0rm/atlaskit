@@ -6,6 +6,8 @@ import { withAnalytics } from '@atlaskit/analytics';
 
 import { withXFlowProvider } from './XFlowProvider';
 import InitializingSpinnerDiv from '../styled/InitializingSpinnerDiv';
+import InitializingScreenHeader from '../styled/ModalDialogHeader';
+import ModalDialogFooter from '../styled/ModalDialogFooter';
 
 class InitializingScreen extends Component {
   static propTypes = {
@@ -25,20 +27,23 @@ class InitializingScreen extends Component {
   }
 
   render() {
-    const { productLogo } = this.props;
-    return (
-      <ModalDialog isOpen={this.props.isOpen} width="small" header={productLogo || <div />} footer={<div />}>
+    const { productLogo, isOpen } = this.props;
+    return isOpen ? (
+      <ModalDialog
+        width="small"
+        header={() => <InitializingScreenHeader>{productLogo}</InitializingScreenHeader>}
+        footer={() => <ModalDialogFooter />}
+      >
         <InitializingSpinnerDiv>
           <Spinner size="large" isCompleting={false} />
         </InitializingSpinnerDiv>
       </ModalDialog>
-    );
+    ) : null;
   }
 }
 
 export const InitializingScreenBase = withAnalytics(InitializingScreen);
 
-export default withXFlowProvider(
-  InitializingScreenBase,
-  ({ xFlow }) => ({ productLogo: xFlow.config.productLogo })
-);
+export default withXFlowProvider(InitializingScreenBase, ({ xFlow }) => ({
+  productLogo: xFlow.config.productLogo,
+}));

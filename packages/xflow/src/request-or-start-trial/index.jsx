@@ -12,7 +12,13 @@ import AlreadyStarted from './components/AlreadyStarted';
 import ErrorFlag from '../common/components/ErrorFlag';
 import RequestOrStartTrialDialog from './styled/RequestOrStartTrialDialog';
 
-import { ACTIVE, ACTIVATING, INACTIVE, DEACTIVATED, UNKNOWN } from '../common/productProvisioningStates';
+import {
+  ACTIVE,
+  ACTIVATING,
+  INACTIVE,
+  DEACTIVATED,
+  UNKNOWN,
+} from '../common/productProvisioningStates';
 
 export const Screens = {
   INITIALIZING: 'INITIALIZING',
@@ -83,10 +89,10 @@ class RequestOrStartTrial extends Component {
       throw e;
     }
 
-    return hasPermissionToAddProduct ?
-      (await this.fetchAsyncStartFlowData()) :
-      (await this.fetchAsyncRequestFlowData());
-  }
+    return hasPermissionToAddProduct
+      ? await this.fetchAsyncStartFlowData()
+      : await this.fetchAsyncRequestFlowData();
+  };
 
   fetchAsyncRequestFlowData = async () => {
     let alreadyRequested;
@@ -103,13 +109,10 @@ class RequestOrStartTrial extends Component {
       // We assume that the product is inactive if they don't have permission.
       activationState: INACTIVE,
     });
-  }
+  };
 
   fetchAsyncStartFlowData = async () => {
-    const {
-      getProductActivationState,
-      waitForActivation,
-    } = this.props;
+    const { getProductActivationState, waitForActivation } = this.props;
 
     let activationState;
     try {
@@ -211,25 +214,21 @@ class RequestOrStartTrial extends Component {
               );
             }
             case Screens.START_TRIAL: {
-              return (
-                contextInfo
-                  ? (
-                    <ContextualStartTrial
-                      onComplete={onComplete}
-                      onTrialActivating={onTrialActivating}
-                      showGrantAccess={activationState === INACTIVE && grantAccessEnabled}
-                      contextInfo={contextInfo}
-                      isCrossSell={isCrossSell}
-                    />
-                  )
-                  : (
-                    <StartTrial
-                      onComplete={onComplete}
-                      onTrialActivating={onTrialActivating}
-                      showGrantAccess={activationState === INACTIVE && grantAccessEnabled}
-                      isCrossSell={isCrossSell}
-                    />
-                  )
+              return contextInfo ? (
+                <ContextualStartTrial
+                  onComplete={onComplete}
+                  onTrialActivating={onTrialActivating}
+                  showGrantAccess={activationState === INACTIVE && grantAccessEnabled}
+                  contextInfo={contextInfo}
+                  isCrossSell={isCrossSell}
+                />
+              ) : (
+                <StartTrial
+                  onComplete={onComplete}
+                  onTrialActivating={onTrialActivating}
+                  showGrantAccess={activationState === INACTIVE && grantAccessEnabled}
+                  isCrossSell={isCrossSell}
+                />
               );
             }
             case Screens.ALREADY_STARTED: {
@@ -287,13 +286,15 @@ export const RequestOrStartTrialBase = RequestOrStartTrial;
 
 export default withXFlowProvider(
   RequestOrStartTrialWrap03,
-  ({ xFlow: {
+  ({
+    xFlow: {
       canCurrentUserAddProduct,
       checkProductRequestFlag,
       getProductActivationState,
       waitForActivation,
       grantAccessEnabled,
-  } }) => ({
+    },
+  }) => ({
     canCurrentUserAddProduct,
     checkProductRequestFlag,
     getProductActivationState,

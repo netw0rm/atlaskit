@@ -10,11 +10,13 @@ import type {
   DropdownOptions,
   Translations,
   DropdownItem,
+  Links,
 } from './internal/types';
 
 import getTopLinks from './items/top-links';
 import getRecentContainers from './items/recent-containers';
 import getLinkedApplications from './items/linked-applications';
+import getLinks from './items/links';
 
 import { AppSwitcherContainer } from './styled';
 
@@ -33,6 +35,7 @@ export default class AppSwitcher extends Component {
     dropdownOptions: DropdownOptions,
     isLoading: boolean,
     onAppSwitcherOpen: Function,
+    links?: Links,
   };
 
   static defaultProps = {
@@ -44,6 +47,7 @@ export default class AppSwitcher extends Component {
     isLoading: false,
     onAppSwitcherOpen: () => {},
     suggestedApplication: { onDontShowAgainClick: () => {} },
+    links: [],
   };
 
   state = {
@@ -82,6 +86,7 @@ export default class AppSwitcher extends Component {
       isLoading,
       recentContainers,
       linkedApplications,
+      links,
       trigger,
       dropdownOptions,
     } = this.props;
@@ -101,6 +106,7 @@ export default class AppSwitcher extends Component {
       getTopLinks(i18n, isAnonymousUser, isHomeLinkEnabled, isSiteAdminLinkEnabled, homeLinkConfig),
       getRecentContainers(i18n, isAnonymousUser, recentContainers),
       getLinkedApplications(i18n, isAnonymousUser, linkedApplications),
+      getLinks(links),
     ].filter(item => item != null);
 
     return (

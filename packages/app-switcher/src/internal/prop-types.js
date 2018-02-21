@@ -36,6 +36,12 @@ export default {
     error: PropTypes.bool.isRequired,
   }),
 
+  links: PropTypes.arrayOf(PropTypes.shape({
+    text: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    analyticsRef: PropTypes.string,
+  })),
+
   i18n: PropTypes.shape({
     home: PropTypes.node.isRequired,
     apps: PropTypes.node.isRequired,

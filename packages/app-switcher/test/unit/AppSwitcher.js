@@ -4,6 +4,7 @@ import React from 'react';
 import sinon from 'sinon';
 import { DropdownMenuStateless } from '@atlaskit/dropdown-menu';
 import Lozenge from '@atlaskit/lozenge';
+import { Link } from '../../src/styled';
 import AppSwitcher from '../../src';
 import { name } from '../../package.json';
 
@@ -173,5 +174,42 @@ describe(name, () => {
     const labelLozenge = wrapper.find(Lozenge);
     expect(labelLozenge).toHaveLength(1);
     expect(labelLozenge.text()).toBe(label);
+  });
+
+  it('should show links', () => {
+    const links = [{
+      text: 'Add payment details',
+      url: 'https://google.com/',
+    }, {
+      text: 'Request a trial extension...',
+      url: 'https://example.com/',
+      ref: 'xyz',
+    }];
+    const wrapper = mount(
+      <AppSwitcher
+        {...data}
+        isDropdownOpenInitially
+        links={links}
+      />
+    );
+    links.forEach(({ text }) => {
+      const link = wrapper.find(Link).filterWhere(l => l.text() === text);
+      expect(link).toHaveLength(1);
+    });
+  });
+
+  it('should not render any links when it is empty', () => {
+    const wrapper = mount(
+      <AppSwitcher
+        {...data}
+        recentContainers={[]}
+        linkedApplications={{
+          configureLink: 'https://www.atlassian.com',
+          apps: [],
+          error: false,
+        }}
+      />
+    );
+    expect(wrapper.find(Link)).toHaveLength(0);
   });
 });

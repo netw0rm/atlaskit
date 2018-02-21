@@ -65,6 +65,17 @@ const data = {
     "onClick": () => {},
    ],
  },
+ links: [
+   {
+     text: 'Add payment details',
+     url: 'https://google.com/',
+   },
+   {
+     text: 'Request a trial extension...',
+     url: 'https://example.com/',
+     analyticsRef: 'xyz',
+   }
+ ],
  "i18n": {
    "home": "Home",
    "apps": "Apps",

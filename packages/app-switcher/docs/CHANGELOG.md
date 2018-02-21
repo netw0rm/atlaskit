@@ -1,5 +1,16 @@
 # @atlaskit/app-switcher
 
+## 3.5.0 (2018-02-21)
+
+
+* bug fix; change link analytics identifier property name to "analyticsRef" ([02ea33c](https://bitbucket.org/atlassian/atlaskit/commits/02ea33c))
+
+* bug fix; revert removal of previous commit ([58055a5](https://bitbucket.org/atlassian/atlaskit/commits/58055a5))
+* feature; add analytics identifier "ref" prop to links ([64308df](https://bitbucket.org/atlassian/atlaskit/commits/64308df))
+
+* bug fix; fixed prop type of links ([124b7d1](https://bitbucket.org/atlassian/atlaskit/commits/124b7d1))
+* bug fix; undo changes from other branch accidentally committed ([e304300](https://bitbucket.org/atlassian/atlaskit/commits/e304300))
+* feature; add support for arbitrary hyperlinks at the bottom of the app switcher ([fd46021](https://bitbucket.org/atlassian/atlaskit/commits/fd46021))
 ## 3.4.0 (2018-02-15)
 
 * bug fix; add prop types and flow types ([73ec073](https://bitbucket.org/atlassian/atlaskit/commits/73ec073))

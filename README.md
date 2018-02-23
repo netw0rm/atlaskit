@@ -1,26 +1,34 @@
-Atlaskit
-==============
+-------------
+# IMPORTANT NOTICE
+
+## This repository is now a legacy repository. The maintained components have been moved to [a new repository](https://bitbucket.org/atlassian/atlaskit-mk-2).
+
+**Packages that have been left in this repository are likely not actively maintained.**
+
+-------------
+
+# Atlaskit
+
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![node](https://img.shields.io/badge/node-6.10%2B-brightgreen.svg)]()
 [![npm](https://img.shields.io/badge/npm-3.8%2B-brightgreen.svg)]()
 [![yarn](https://img.shields.io/badge/yarn-0.18.1-brightgreen.svg)]()
 
-Atlaskit is the technical implementation of the [Atlassian Design Guidelines][ADG]. It is a collection of reusable components that can be downloaded independently into your projects. Each component is also independently versioned and published to npm.
+Atlaskit is the technical implementation of the [Atlassian Design Guidelines][adg]. It is a collection of reusable components that can be downloaded independently into your projects. Each component is also independently versioned and published to npm.
 
-The full list of components can be found in the [Atlaskit Registry][AtlaskitRegistry].
+The full list of components can be found in the [Atlaskit Registry][atlaskitregistry].
 
 **This project is bound by a [Code of Conduct][codeofconduct].**
 
-
-Usage
-======
+# Usage
 
 #### Pre-requisites
+
 It's strongly advised to use the Atlaskit CSS reset in your whole project, or some Atlaskit components
 may diverge in appearance:
 
 ```javascript
-import '@atlaskit/css-reset';
+import "@atlaskit/css-reset";
 ```
 
 In general, you should avoid directly styling base elements (ex. p, h1, h2…) and uses classes instead.
@@ -44,7 +52,8 @@ export default (
   />
 );
 ```
-Check out the [Atlaskit Registry][AtlaskitRegistry] to learn more.
+
+Check out the [Atlaskit Registry][atlaskitregistry] to learn more.
 
 #### Example for non-React projects
 
@@ -57,6 +66,7 @@ To use:
 <link rel="stylesheet" href="//unpkg.com/@atlaskit/css-reset@latest" />
 <link rel="stylesheet" href="//unpkg.com/@atlaskit/reduced-ui-pack@latest" />
 ```
+
 2. Then you can style HTML with
 
 `<button class="ak-button ak-button__appearance-primary">Submit</button>`
@@ -65,11 +75,9 @@ Check out the [Reduced UI pack](http://go.atlassian.com/reduced-ui-pack) for mor
 
 #### Upgrades
 
-When upgrading an Atlaskit component, all changelogs can be found in the [Atlaskit Registry][AtlaskitRegistry].
+When upgrading an Atlaskit component, all changelogs can be found in the [Atlaskit Registry][atlaskitregistry].
 
-
-Installation
-============
+# Installation
 
 #### Before you start
 
@@ -84,6 +92,7 @@ Installation
 git clone git@bitbucket.org:atlassian/atlaskit.git
 yarn
 ```
+
 You're now ready to start developing in Atlaskit!
 
 Each component/util lives in it's own package under the `packages` directory. You can build those all at once or individually using
@@ -105,16 +114,13 @@ yarn run bootstrap/single/with-deps @atlaskit/packageName
 
 Once you made some changes, stage them and then commit them using `yarn run commit` (This will use [Commitizen](https://github.com/commitizen/cz-cli) under the covers).
 
+# Documentation
 
-Documentation
-=============
-A comprehensive list of components and detailed usage of each can be found in the [Atlaskit Registry][AtlaskitRegistry].
+A comprehensive list of components and detailed usage of each can be found in the [Atlaskit Registry][atlaskitregistry].
 
-You can also find how each component is meant to be used from a design perspective on the [Atlassian Design Guidelines][ADG] website.
+You can also find how each component is meant to be used from a design perspective on the [Atlassian Design Guidelines][adg] website.
 
-
-Tests
-=====
+# Tests
 
 ### Running unit tests with jest
 
@@ -130,7 +136,7 @@ While developing, it is useful to run jest in watch-mode. We recommend running J
 
 ### Running tests in the browser
 
-For the packages that require karma to run tests in the browser (at preset, the editor-* packages), the following commands apply:
+For the packages that require karma to run tests in the browser (at preset, the editor-\* packages), the following commands apply:
 
 * To run all browser tests: run `yarn run test:browser` from the repository root
 * To run the tests for a single package:
@@ -138,21 +144,18 @@ For the packages that require karma to run tests in the browser (at preset, the 
   * run `yarn run lerna -- run test:browser --stream --scope=@atlaskit/<packageName>` from the repository root
 * To continuously run tests for a single component: `cd packages/<packageName>; yarn run test:browser -- --watch`
 
-Reporting issues
-============
+# Reporting issues
 
-We believe in open contributions and the power of a strong development community. Please read our [Contributing guidelines][CONTRIBUTING] on how to contribute back and report issues to Atlaskit.
+We believe in open contributions and the power of a strong development community. Please read our [Contributing guidelines][contributing] on how to contribute back and report issues to Atlaskit.
 
-
-Contributors
-============
+# Contributors
 
 Pull requests, issues and comments are welcomed. For pull requests:
 
 * Add tests for new features and bug fixes
 * Follow the existing style
 * Separate unrelated changes into multiple pull requests
-* Read [Contributing guidelines][CONTRIBUTING] for more details
+* Read [Contributing guidelines][contributing] for more details
 
 See the existing issues for things to start contributing.
 
@@ -173,22 +176,19 @@ those contributing as an individual.
 * [CLA for corporate contributors](https://na2.docusign.net/Member/PowerFormSigning.aspx?PowerFormId=e1c17c66-ca4d-4aab-a953-2c231af4a20b)
 * [CLA for individuals](https://na2.docusign.net/Member/PowerFormSigning.aspx?PowerFormId=3f94fbdc-2fbe-46ac-b14c-5d152700ae5d)
 
-
-License
-========
+# License
 
 This is a [mono-repo](https://github.com/babel/babel/blob/master/doc/design/monorepo.md), which means that different parts of this repository can have different licenses.
 
-The base level of the repository is licensed under [Apache 2.0][LICENSE]. There are separate license files (`LICENSE`)  for each component under `/packages` that specify the license restrictions for each component. While most components are licensed under the Apache 2.0 license, please note packages containing styles, assets & icons are most likely licensed under the [Atlassian Design Guidelines license][ADG_License].
+The base level of the repository is licensed under [Apache 2.0][license]. There are separate license files (`LICENSE`) for each component under `/packages` that specify the license restrictions for each component. While most components are licensed under the Apache 2.0 license, please note packages containing styles, assets & icons are most likely licensed under the [Atlassian Design Guidelines license][adg_license].
 
 If you fork this repository you can continue to use those Atlassian Design Guidelines licensed components only under the given license restrictions. If you want to redistribute this repository, you will need to replace these Atlassian Design Guidelines licensed components with your own implementation.
 
 Copyright (c) 2016 Atlassian and others.
 
-
-[ADG]: http://atlassian.design/ "Atlassian Design Guidelines"
-[ADG_License]: http://atlassian.design/license
-[CONTRIBUTING]: ./CONTRIBUTING.md
-[LICENSE]: ./LICENSE
-[AtlaskitRegistry]: https://atlaskit.atlassian.com/  "Atlaskit Registry"
-[CODEOFCONDUCT]: ./CODE_OF_CONDUCT.md
+[adg]: http://atlassian.design/ "Atlassian Design Guidelines"
+[adg_license]: http://atlassian.design/license
+[contributing]: ./CONTRIBUTING.md
+[license]: ./LICENSE
+[atlaskitregistry]: https://atlaskit.atlassian.com/ "Atlaskit Registry"
+[codeofconduct]: ./CODE_OF_CONDUCT.md

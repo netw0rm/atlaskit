@@ -2,7 +2,7 @@ import React from 'react';
 import { ConfluenceLogo } from '@atlaskit/logo';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { isCurrentUserSiteAdmin } from '../common/services/tenantContext';
+import { canUserAddProduct } from '../common/services/tenantContext';
 import productXFlowProviderFactory from '../common/productXFlowProviderFactory';
 import { setAlreadyRequestedFlag, getAlreadyRequestedFlag } from '../common/services/alreadyRequestedFlag';
 import productRequest from '../common/services/productRequest';
@@ -203,8 +203,8 @@ export const defaultProps = intl => ({
       ),
     },
   },
-  canCurrentUserAddProduct: isCurrentUserSiteAdmin,
-  canCurrentUserGrantAccessToProducts: isCurrentUserSiteAdmin,
+  canCurrentUserAddProduct: canUserAddProduct,
+  canCurrentUserGrantAccessToProducts: canUserAddProduct,
 
   requestTrialWithNote: productRequest(PRODUCT_KEY),
   cancelRequestTrial: async () => {},

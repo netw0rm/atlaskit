@@ -3,17 +3,13 @@ import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
 
 import {
-  isCurrentUserSiteAdmin,
+  canUserAddProduct,
   fetchCloudId,
   fetchCurrentUser,
   TENANT_INFO_URL,
-  JIRA_CURRENT_USER_AND_GROUPS_URL,
-  CONFLUENCE_CURRENT_USER_URL,
-  CONFLUENCE_USER_GROUPS_URL,
+  getMeApiUrl,
+  getPermissionApiUrl,
 } from '../../../../src/common/services/tenantContext';
-import jiraAdminResponse from '../mock-data/fetchUserAndGroupsJiraAdmin.json';
-import nonAdminResponse from '../mock-data/fetchUserAndGroupsNonAdmin.json';
-import siteAdminResponse from '../mock-data/fetchUserAndGroupsSiteAdmin.json';
 
 describe('tenantContext', () => {
   const DUMMY_HTML_SINCE_NO_ENDPOINT = '<html>some html...'; // real case when a url is not recognized -> returns home page
@@ -25,82 +21,29 @@ describe('tenantContext', () => {
 
   describe('fetchCurrentUser()', () => {
     const EXPECTED_USER = {
-      displayName: 'foo',
-      accountId: '12345',
-      groups: {
-        items: [
-          {
-            name: 'site-admins',
-            self: 'https://foo',
-          },
-        ],
-      },
+      name: 'mockUsersName',
+      account_id: 'mockAccountId',
+      picture: 'mockPicture',
     };
 
-    describe('when in a JIRA-only instance', () => {
-      it('should return the current user', async () => {
-        fetchMock.getOnce(JIRA_CURRENT_USER_AND_GROUPS_URL, EXPECTED_USER);
-        fetchMock.getOnce(CONFLUENCE_CURRENT_USER_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
-        const result = await fetchCurrentUser();
-        return expect(result).toEqual(EXPECTED_USER);
-      });
-    });
-
-    describe('when in a Confluence-only instance', () => {
-      it('should return the current user', async () => {
-        fetchMock.getOnce(JIRA_CURRENT_USER_AND_GROUPS_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
-        fetchMock.getOnce(CONFLUENCE_CURRENT_USER_URL, {
-          displayName: 'foo',
-          accountId: '12345',
-          // no groups
-        });
-        fetchMock.getOnce(CONFLUENCE_USER_GROUPS_URL(EXPECTED_USER.accountId), {
-          results: [
-            {
-              name: 'site-admins',
-              self: 'https://foo',
-            },
-          ],
-        });
-        const result = await fetchCurrentUser();
-        return expect(result).toEqual(EXPECTED_USER);
-      });
-    });
-
-    describe('when in a Confluence + Jira instance', () => {
-      it('should return the current user', async () => {
-        fetchMock.getOnce(JIRA_CURRENT_USER_AND_GROUPS_URL, EXPECTED_USER);
-        fetchMock.getOnce(CONFLUENCE_CURRENT_USER_URL, {
-          displayName: 'foo',
-          accountId: '12345',
-          // no groups
-        });
-        fetchMock.getOnce(CONFLUENCE_USER_GROUPS_URL(EXPECTED_USER.accountId), {
-          results: [
-            {
-              name: 'site-admins',
-              self: 'https://foo',
-            },
-          ],
-        });
-        const result = await fetchCurrentUser();
-        return expect(result).toEqual(EXPECTED_USER);
-      });
+    it('should return the current user', async () => {
+      fetchMock.getOnce(getMeApiUrl(), EXPECTED_USER);
+      const result = await fetchCurrentUser();
+      return expect(result).toEqual(EXPECTED_USER);
     });
 
     it('should return a cached response', async () => {
-      fetchMock.getOnce(JIRA_CURRENT_USER_AND_GROUPS_URL, EXPECTED_USER);
-      fetchMock.getOnce(CONFLUENCE_CURRENT_USER_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
+      fetchMock.getOnce(getMeApiUrl(), EXPECTED_USER);
+
       const result = await fetchCurrentUser();
       const anotherResult = await fetchCurrentUser();
 
       return expect(anotherResult).toEqual(result);
     });
 
-    it('should reject with an error if both endpoints return a 500', async () => {
+    it('should reject with an error if endpoint returns a 500', async () => {
       expect.assertions(1);
-      fetchMock.getOnce(JIRA_CURRENT_USER_AND_GROUPS_URL, 500);
-      fetchMock.getOnce(CONFLUENCE_CURRENT_USER_URL, 500);
+      fetchMock.getOnce(getMeApiUrl(), 500);
       try {
         await fetchCurrentUser();
       } catch (err) {
@@ -108,10 +51,9 @@ describe('tenantContext', () => {
       }
     });
 
-    it('should reject with an error if both endpoints are not recognized', async () => {
+    it('should reject with an error if endpoints is not recognized', async () => {
       expect.assertions(1);
-      fetchMock.getOnce(JIRA_CURRENT_USER_AND_GROUPS_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
-      fetchMock.getOnce(CONFLUENCE_CURRENT_USER_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
+      fetchMock.getOnce(getMeApiUrl(), DUMMY_HTML_SINCE_NO_ENDPOINT);
       try {
         await fetchCurrentUser();
       } catch (err) {
@@ -158,36 +100,53 @@ describe('tenantContext', () => {
     });
   });
 
-  describe('isCurrentUserSiteAdmin', () => {
-    it('will return false if he/she is only a Jira administrator', async () => {
-      fetchMock.getOnce(JIRA_CURRENT_USER_AND_GROUPS_URL, jiraAdminResponse);
-      fetchMock.getOnce(CONFLUENCE_CURRENT_USER_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
-      const result = await isCurrentUserSiteAdmin();
+  describe('canUserAddProduct', () => {
+    let EXPECTED_OPTS = null;
+
+    beforeEach(() => {
+      const EXPECTED_CLOUD_ID = 'I-m-a-cloud-id';
+      fetchMock.getOnce(TENANT_INFO_URL, { cloudId: EXPECTED_CLOUD_ID });
+
+      EXPECTED_OPTS = {
+        method: 'POST',
+        credentials: 'same-origin',
+        mode: 'core',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          permissionId: 'addProduct',
+          resourceId: `ari:cloud:platform::site/${EXPECTED_CLOUD_ID}`,
+        }),
+      };
+    });
+
+    afterEach(() => {
+      canUserAddProduct.resetCache();
+    });
+
+    it('will return false if the endpoint succeeds and returns permitted as false', async () => {
+      fetchMock.postOnce(getPermissionApiUrl(), { permitted: false }, EXPECTED_OPTS);
+
+      const result = await canUserAddProduct();
       return expect(result).toBe(false);
     });
 
-    it('will return false if she/he is not an admin', async () => {
-      fetchMock.getOnce(JIRA_CURRENT_USER_AND_GROUPS_URL, nonAdminResponse);
-      fetchMock.getOnce(CONFLUENCE_CURRENT_USER_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
-      const result = await isCurrentUserSiteAdmin();
-      return expect(result).toBe(false);
-    });
+    it('will return true if the endpoint succeeds and returns permitted as true', async () => {
+      fetchMock.postOnce(getPermissionApiUrl(), { permitted: true }, EXPECTED_OPTS);
 
-    it('will return true if she/he is a site admin', async () => {
-      fetchMock.getOnce(JIRA_CURRENT_USER_AND_GROUPS_URL, siteAdminResponse);
-      fetchMock.getOnce(CONFLUENCE_CURRENT_USER_URL, DUMMY_HTML_SINCE_NO_ENDPOINT);
-      const result = await isCurrentUserSiteAdmin();
+      const result = await canUserAddProduct();
       return expect(result).toBe(true);
     });
 
-    it('will reject with an error if all endpoint have an error', async () => {
+    it('will reject with an error if the endpoint has an error', async () => {
       expect.assertions(1);
-      fetchMock.getOnce(CONFLUENCE_CURRENT_USER_URL, 500);
-      fetchMock.getOnce(JIRA_CURRENT_USER_AND_GROUPS_URL, 500);
+      fetchMock.postOnce(getPermissionApiUrl(), 500, EXPECTED_OPTS);
+
       try {
-        await isCurrentUserSiteAdmin();
+        await canUserAddProduct();
       } catch (err) {
-        expect(err.message.startsWith('Unable to check current user site admin rights:')).toBe(true);
+        expect(err.message.startsWith('Unable to retrieve addProduct permission:')).toBe(true);
       }
     });
   });

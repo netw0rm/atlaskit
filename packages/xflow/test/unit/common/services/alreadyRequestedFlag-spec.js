@@ -3,7 +3,8 @@ import 'whatwg-fetch';
 import fetchMock from 'fetch-mock';
 
 import {
-  JIRA_CURRENT_USER_AND_GROUPS_URL,
+  getMeApiUrl,
+  fetchCurrentUser,
   TENANT_INFO_URL,
 } from '../../../../src/common/services/tenantContext';
 
@@ -20,8 +21,8 @@ describe('alreadyRequestedFlag', () => {
   const MOCK_CLOUD_ID = 'CloudID';
 
   beforeEach(() => {
-    fetchMock.getOnce(JIRA_CURRENT_USER_AND_GROUPS_URL, {
-      accountId: MOCK_ATLASSIAN_ACCOUNT_ID,
+    fetchMock.getOnce(getMeApiUrl, {
+      account_id: MOCK_ATLASSIAN_ACCOUNT_ID,
     });
 
     fetchMock.getOnce(TENANT_INFO_URL, {
@@ -31,7 +32,10 @@ describe('alreadyRequestedFlag', () => {
     fetchMock.catch(417);
   });
 
-  afterEach(fetchMock.restore);
+  afterEach(() => {
+    fetchMock.restore();
+    fetchCurrentUser.resetCache();
+  });
 
   describe('getAlreadyRequestedFlag()', () => {
     function mockUserPreferencesGetEndpointWithResponse(response, productKey) {

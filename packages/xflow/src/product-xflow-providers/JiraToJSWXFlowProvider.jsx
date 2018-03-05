@@ -62,6 +62,36 @@ const messages = defineMessages({
     defaultMessage: 'Get Started',
   },
 
+  // - Grant Access dialog
+  grantAccessHeading: {
+    id: 'xflow.j2jsw.start-trial.grant-access.heading',
+    defaultMessage: 'Who should have access?',
+  },
+  grantAccessDefaultAccess: {
+    id: 'xflow.j2jsw.start-trial.grant-access.default-access',
+    defaultMessage: 'Everyone will have access to Jira Software.',
+  },
+  grantAccessOptionItemsLabelEveryone: {
+    id: 'xflow.j2jsw.start-trial.grant-access.option.everyone',
+    defaultMessage: 'Everyone',
+  },
+  grantAccessOptionItemsLabelSiteAdmins: {
+    id: 'xflow.j2jsw.start-trial.grant-access.option.site-admins',
+    defaultMessage: 'Site admins only',
+  },
+  grantAccessOptionItemsLabelSpecificUsers: {
+    id: 'xflow.j2jsw.start-trial.grant-access.option.specific-users',
+    defaultMessage: 'Specific users',
+  },
+  // grantAccessSelectLabel: {
+  //   id: 'xflow.j2jsw.start-trial.grant-access.select-label',
+  //   defaultMessage: ' ',
+  // },
+  grantAccessUserSelectPlaceholder: {
+    id: 'xflow.j2jsw.start-trial.grant-access.select-placeholder',
+    defaultMessage: 'Start typing a username',
+  },
+
   // Request Trial
   accessHeading: {
     id: 'xflow.j2jsw.request-trial.access.heading',
@@ -124,6 +154,31 @@ export const defaultProps = intl => ({
           </p>
         </div>
       ),
+
+      grantAccessHeading: intl.formatMessage(messages.grantAccessHeading),
+      grantAccessDefaultAccess: intl.formatMessage(messages.grantAccessDefaultAccess),
+      // grantAccessSelectLabel: intl.formatMessage(messages.grantAccessSelectLabel),
+      grantAccessShowNotifyUsersOption: false,
+      grantAccessUserSelectPlaceholder: intl.formatMessage(
+        messages.grantAccessUserSelectPlaceholder
+      ),
+      grantAccessDefaultSelectedRadio: 'everyone',
+      grantAccessUsersOption: 'specific-users',
+      grantAccessOptionItems: [
+        {
+          value: 'everyone',
+          label: intl.formatMessage(messages.grantAccessOptionItemsLabelEveryone),
+        },
+        {
+          value: 'site-admins',
+          label: intl.formatMessage(messages.grantAccessOptionItemsLabelSiteAdmins),
+        },
+        {
+          value: 'specific-users',
+          label: intl.formatMessage(messages.grantAccessOptionItemsLabelSpecificUsers),
+        },
+      ],
+      grantAccessLearnMoreLink: 'https://www.atlassian.com/software/confluence/pricing?tab=cloud',
 
       loadingProductGotoProductButton: intl.formatMessage(messages.loadingProductGotoProductButton),
 

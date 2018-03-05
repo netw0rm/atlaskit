@@ -19,22 +19,18 @@ const delay = time => new Promise(resolve => setTimeout(resolve, time));
 const XFLOW_PROVIDERS_UNDER_TEST = {
   Confluence: {
     provider: JiraToConfluenceXFlowProvider,
-    hasGrantAccess: true,
     hasContextualStart: true,
   },
   JiraServiceDesk: {
     provider: JiraToJSDXFlowProvider,
-    hasGrantAccess: true,
     hasContextualStart: false,
   },
   JiraSoftware: {
     provider: JiraToJSWXFlowProvider,
-    hasGrantAccess: false,
     hasContextualStart: false,
   },
   JiraCore: {
     provider: JiraToJCXFlowProvider,
-    hasGrantAccess: false,
     hasContextualStart: false,
   },
 };
@@ -131,10 +127,8 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
   const MockXFlowProvider = mockXFlowProviderFactory(provider);
 
   let stories = storiesOf(`request-or-start-trial/RequestOrStartTrial (${productName})`, module);
-  stories = stories.addDecorator(story => setupStorybookAnalytics(story()));
-
-  if (hasGrantAccess) {
-    stories = stories.add('User can add a product (INACTIVE), Start Trial flow with Grant Access screen', () =>
+  stories = stories.addDecorator(story => setupStorybookAnalytics(story()))
+    .add('User can add a product (INACTIVE), Start Trial flow with Grant Access screen', () =>
       <MockXFlowProvider
         {...defaultXFlowProviderProps}
       >
@@ -144,10 +138,7 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
           grantAccessEnabled
         />
       </MockXFlowProvider>
-    );
-  }
-
-  stories = stories
+    )
     .add('User can add a product (INACTIVE), Start Trial flow without Grant Access screen, with opt out link', () =>
       <MockXFlowProvider
         {...defaultXFlowProviderProps}

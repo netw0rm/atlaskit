@@ -3,24 +3,14 @@
 
 import 'es6-promise/auto';
 import 'whatwg-fetch';
-import { promiseAny } from '../utils/promiseAny';
-
-const SITE_ADMINS_GROUP_NAME = 'site-admins';
+import { getEnvAPIUrl } from '../utils/envDetection';
 
 export const TENANT_INFO_URL = '/_edge/tenant_info';
-export const JIRA_CURRENT_USER_AND_GROUPS_URL = '/rest/api/2/myself?expand=groups';
+export const getMeApiUrl = () => `${getEnvAPIUrl()}/me`;
+export const getPermissionApiUrl = () => `${getEnvAPIUrl()}/permissions/permitted`;
 
-// https://developer.atlassian.com/cloud/confluence/rest/#api-user-current-get
-export const CONFLUENCE_CURRENT_USER_URL = '/wiki/rest/api/user/current';
-
-// https://developer.atlassian.com/cloud/confluence/rest/#api-user-memberof-get
-export const CONFLUENCE_USER_GROUPS_URL = accountId => `/wiki/rest/api/user/memberof?accountId=${accountId}`;
-
-const DEFAULT_AVATAR_URL = 'https://i2.wp.com/avatar-cdn.atlassian.com/default/96?ssl=1';
-const AVATAR_REGEXP = /^https:\/\/avatar-cdn.atlassian.com\/[A-Za-z0-9]+/;
-
-function fetchSameOrigin(url, prefix = '') {
-  return fetch(url, { credentials: 'same-origin' })
+function fetchSameOrigin(url, prefix = '', opts = {}) {
+  return fetch(url, { credentials: 'same-origin', ...opts })
     .then(response => {
       if (response.ok && response.status === 200) {
         return response.json()
@@ -45,84 +35,35 @@ function fetchSameOrigin(url, prefix = '') {
     });
 }
 
-/**
- * Gets the largest avatar url
- * @param avatarUrls avatar urls, usually from fetchCurrentUser() response
- * @returns urls
- */
-export const getAvatarUrl = ({ avatarUrls }) => {
-  // Find the largest size key
-  const key = Object.keys(avatarUrls || {}).pop();
-
-  if (!key) {
-    return DEFAULT_AVATAR_URL;
-  }
-
-  const baseUrl = (avatarUrls[key].match(AVATAR_REGEXP) || [])[0];
-  const url = baseUrl ? `${baseUrl}?s=128` : avatarUrls[key];
-  return url;
-};
-
 let currentUserPromiseCached = null;
-export function fetchCurrentUser() {
-  currentUserPromiseCached = currentUserPromiseCached || (() => promiseAny([
-    // Jira allows fetching user + group in one go
-    fetchSameOrigin(JIRA_CURRENT_USER_AND_GROUPS_URL, 'Jira endpoint:'),
-    // Confluence needs 2 calls:
-    // Note: the endpoint below is paginated, to a default of 200 entries.
-    // We assume that 200 entries is enough to get the most interesting groups
-    // and choose to not walk across pages.
-    fetchSameOrigin(CONFLUENCE_CURRENT_USER_URL, 'Confluence endpoint #1:')
-      .then(user => fetchSameOrigin(CONFLUENCE_USER_GROUPS_URL(user.accountId), 'Confluence endpoint #2:')
-        // fuse user and her/his groups into the Jira format
-        .then(groups => {
-          user.groups = {};
-          user.groups.items = groups.results;
-          return user;
-        })),
-  ])
-    .catch(err => {
+export const fetchCurrentUser = async () => {
+  if (!currentUserPromiseCached) {
+    try {
+      currentUserPromiseCached = await fetchSameOrigin(getMeApiUrl(), 'Me endpoint:');
+    } catch (err) {
       err.message = `Unable to retrieve information about current user: ${err.message}`;
       throw err;
-    })
-  )();
+    }
+  }
 
   return currentUserPromiseCached;
-}
+};
+
 fetchCurrentUser.resetCache = () => {
   currentUserPromiseCached = null;
 };
 
 export const fetchCurrentUserDisplayName = () =>
-  fetchCurrentUser().then(user => user.displayName || user.name || user.emailAddress || '');
+  fetchCurrentUser().then(user => user.name || user.email || '');
 
 export const fetchCurrentUserAvatarUrl = () =>
-  fetchCurrentUser().then(getAvatarUrl);
-
-export const isCurrentUserSiteAdmin = () =>
-  fetchCurrentUser()
-    .then(user => {
-      let isSiteAdmin;
-      try {
-        isSiteAdmin = user.groups.items.some(group => group.name === SITE_ADMINS_GROUP_NAME);
-      } catch (e) {
-        isSiteAdmin = false;
-      }
-      return isSiteAdmin;
-    })
-    .catch(err => {
-      err.message = `Unable to check current user site admin rights: ${err.message}`;
-      throw err;
-    });
+  fetchCurrentUser().then(user => user.picture);
 
 export const getAtlassianAccountId = () =>
-  fetchCurrentUser().then(user => user.accountId);
+  fetchCurrentUser().then(user => user.account_id);
 
 export const getInstanceName = () => window.location.hostname;
 
-/**
- * Attempt to fetch cloud id from JIRA, then Confluence, otherwise throw an error
- */
 let cachedCloudId = null;
 export const fetchCloudId = async () => {
   if (!cachedCloudId) {
@@ -140,4 +81,35 @@ export const fetchCloudId = async () => {
 
 fetchCloudId.resetCache = () => {
   cachedCloudId = null;
+};
+
+let canUserAddProductPromiseCached = null;
+export const canUserAddProduct = async () => {
+  if (!canUserAddProductPromiseCached) {
+    const cloudId = await fetchCloudId();
+
+    try {
+      const response = await fetchSameOrigin(getPermissionApiUrl(), 'Permissions permitted endpoint:', {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          permissionId: 'addProduct',
+          resourceId: `ari:cloud:platform::site/${cloudId}`,
+        }),
+      });
+      canUserAddProductPromiseCached = response.permitted;
+    } catch (err) {
+      err.message = `Unable to retrieve addProduct permission: ${err.message}`;
+      throw err;
+    }
+  }
+
+  return canUserAddProductPromiseCached;
+};
+
+canUserAddProduct.resetCache = () => {
+  canUserAddProductPromiseCached = null;
 };

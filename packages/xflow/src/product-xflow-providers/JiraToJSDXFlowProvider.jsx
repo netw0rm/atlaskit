@@ -1,7 +1,7 @@
 import React from 'react';
 import { JiraServiceDeskLogo } from '@atlaskit/logo';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { isCurrentUserSiteAdmin } from '../common/services/tenantContext';
+import { canUserAddProduct } from '../common/services/tenantContext';
 import productXFlowProviderFactory from '../common/productXFlowProviderFactory';
 import grantAccessToUsers from '../common/services/grantAccessToUsers';
 import productStatusChecker from '../common/services/productStatusChecker';
@@ -212,8 +212,8 @@ export const defaultProps = intl => ({
       ),
     },
   },
-  canCurrentUserAddProduct: isCurrentUserSiteAdmin,
-  canCurrentUserGrantAccessToProducts: isCurrentUserSiteAdmin,
+  canCurrentUserAddProduct: canUserAddProduct,
+  canCurrentUserGrantAccessToProducts: canUserAddProduct,
 
   requestTrialWithNote: productRequest(PRODUCT_KEY),
   cancelRequestTrial: async () => {},

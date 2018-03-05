@@ -8,7 +8,7 @@ import * as tenantContext from '../../../../src/common/services/tenantContext';
 import { notifyAccessEndpoint } from '../../../../src/common/services/xflowService';
 import notifyUsersAccessGranted from '../../../../src/common/services/notifyUsersAccessGranted';
 
-import userAdminResponse from '../mock-data/fetchUserAndGroupsSiteAdmin.json';
+import meResponse from '../mock-data/me.json';
 import accessgrantedJiraUsersResponse from '../mock-data/accessgrantedJiraUsers.json';
 import accessgrantedNoUsersResponse from '../mock-data/accessgrantedNoUsers.json';
 import jiraUsersResponse from '../mock-data/jiraUsers.json';
@@ -46,7 +46,7 @@ describe('notifyUsersAccessGranted', () => {
   });
 
   it('should return a resolved promise with no value if the endpoint returns a 200 response', async () => {
-    sandbox.stub(tenantContext, 'fetchCurrentUser').resolves(userAdminResponse);
+    sandbox.stub(tenantContext, 'fetchCurrentUser').resolves(meResponse);
     sandbox.stub(tenantContext, 'getInstanceName').returns('example.atlassian.net');
     mockNotifyEastEndpointWithResponse(accessgrantedJiraUsersResponse);
 
@@ -74,7 +74,7 @@ describe('notifyUsersAccessGranted', () => {
   });
 
   it('should return a rejected promise if both endpoints return a 500 response', async () => {
-    sandbox.stub(tenantContext, 'fetchCurrentUser').resolves(userAdminResponse);
+    sandbox.stub(tenantContext, 'fetchCurrentUser').resolves(meResponse);
     sandbox.stub(tenantContext, 'getInstanceName').returns('example.atlassian.net');
     fetchMock.mock(notifyAccessEndpoint(MOCK_CLOUD_ID), 500);
     expect.assertions(1);

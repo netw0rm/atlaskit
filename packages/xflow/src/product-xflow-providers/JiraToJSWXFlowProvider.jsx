@@ -83,10 +83,6 @@ const messages = defineMessages({
     id: 'xflow.j2jsw.start-trial.grant-access.option.specific-users',
     defaultMessage: 'Specific users',
   },
-  // grantAccessSelectLabel: {
-  //   id: 'xflow.j2jsw.start-trial.grant-access.select-label',
-  //   defaultMessage: ' ',
-  // },
   grantAccessUserSelectPlaceholder: {
     id: 'xflow.j2jsw.start-trial.grant-access.select-placeholder',
     defaultMessage: 'Start typing a username',
@@ -157,7 +153,6 @@ export const defaultProps = intl => ({
 
       grantAccessHeading: intl.formatMessage(messages.grantAccessHeading),
       grantAccessDefaultAccess: intl.formatMessage(messages.grantAccessDefaultAccess),
-      // grantAccessSelectLabel: intl.formatMessage(messages.grantAccessSelectLabel),
       grantAccessShowNotifyUsersOption: false,
       grantAccessUserSelectPlaceholder: intl.formatMessage(
         messages.grantAccessUserSelectPlaceholder
@@ -214,9 +209,6 @@ export const defaultProps = intl => ({
   closeAlreadyStartedDialog: async () => {},
   checkProductRequestFlag: () => getAlreadyRequestedFlag(PRODUCT_KEY),
   setProductRequestFlag: () => setAlreadyRequestedFlag(PRODUCT_KEY),
-
-  // Grant Access has not been developed for Jira Software. Do not activate in Production.
-  grantAccessEnabled: false,
 });
 
 export default productXFlowProviderFactory(defaultProps);

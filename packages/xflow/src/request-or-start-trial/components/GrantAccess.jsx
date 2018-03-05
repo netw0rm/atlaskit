@@ -194,6 +194,7 @@ class GrantAccess extends Component {
       usersOption,
       laterOption,
       firePrivateAnalyticsEvent,
+      showNotifyUsersOption,
     } = this.props;
     const { selectedRadio, selectedUsers, userSets, notifyUsers } = this.state;
 
@@ -223,7 +224,11 @@ class GrantAccess extends Component {
     try {
       const users =
         selectedRadio === usersOption ? selectedUsers : [...userSets.get(selectedRadio).values()];
-      await grantAccessToUsers(users, notifyUsers);
+
+      // when the notification control is hidden, we never send notifications
+      const doNotification = showNotifyUsersOption ? notifyUsers : false;
+      await grantAccessToUsers(users, doNotification);
+
       const grantedAccessTo = users.map(user => this.getAtlassianAccountId(user));
       firePrivateAnalyticsEvent('xflow.grant-access.continue-button.grant-access-successful', {
         atlassianAccountIds: grantedAccessTo.join(','),

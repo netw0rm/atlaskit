@@ -159,9 +159,6 @@ export const defaultProps = intl => ({
   closeAlreadyStartedDialog: async () => {},
   checkProductRequestFlag: () => getAlreadyRequestedFlag(PRODUCT_KEY),
   setProductRequestFlag: () => setAlreadyRequestedFlag(PRODUCT_KEY),
-
-  // Grant Access has not been developed for Jira Software. Do not activate in Production.
-  grantAccessEnabled: false,
 });
 
 export default productXFlowProviderFactory(defaultProps);

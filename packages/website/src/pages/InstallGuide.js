@@ -8,7 +8,7 @@ import Container from '../components/Container';
 export default class Examples extends PureComponent {
   render() {
     const title = 'Install guide';
-    const description = 'Everything you need to know to get up and running with AtalasKit';
+    const description = 'Everything you need to know to get up and running with Atlaskit';
 
     return (
       <Container>

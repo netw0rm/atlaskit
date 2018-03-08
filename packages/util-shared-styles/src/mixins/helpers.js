@@ -1,22 +1,21 @@
-import { css } from 'styled-components';
 import { akColorB100 } from '../index';
 
 // focus ring
-const createFocusRing = (color = akColorB100, width = '2px') => css`
+const createFocusRing = (color = akColorB100, width = '2px') => `
   &:focus {
     box-shadow: 0 0 0 ${width} ${color};
     outline: none;
   }
 `;
-const withFocusRing = css`
+const withFocusRing = `
   ${createFocusRing()}
 `;
-const withoutFocusRing = css`
+const withoutFocusRing = `
   box-shadow: none;
 `;
 
 // text
-const truncate = width => css`
+const truncate = width => `
   max-width: ${width};
   overflow: hidden;
   text-overflow: ellipsis;
@@ -24,7 +23,7 @@ const truncate = width => css`
 `;
 
 const placeholder = styles => (
-  css`
+  `
     &::-webkit-input-placeholder {
       ${styles}
     }

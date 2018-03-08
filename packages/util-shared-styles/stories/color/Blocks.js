@@ -1,4 +1,3 @@
-import { Tooltip } from '@atlaskit/tooltip';
 import React from 'react';
 import naturalSort from 'javascript-natural-sort';
 import wcagContrast from 'wcag-contrast';
@@ -75,7 +74,6 @@ const Blocks = props => (
           );
         })
     }
-    <Tooltip id={tooltipId} />
   </div>
 );
 Blocks.propTypes = {

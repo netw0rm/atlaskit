@@ -1,5 +1,10 @@
 # @atlaskit/util-shared-styles
 
+## 2.10.7 (2018-03-12)
+
+* bug fix; remove styled-components as a dependency ([8ddba73](https://bitbucket.org/atlassian/atlaskit/commits/8ddba73))
+
+
 ## 2.10.6 (2017-11-20)
 
 * bug fix; fS-3907 Use content attribute instead of description for Tooltip ([25c9604](https://bitbucket.org/atlassian/atlaskit/commits/25c9604))

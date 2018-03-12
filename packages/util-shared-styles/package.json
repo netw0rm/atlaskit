@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/util-shared-styles",
-  "version": "2.10.6",
+  "version": "2.10.7",
   "config": {
     "access": "public"
   },

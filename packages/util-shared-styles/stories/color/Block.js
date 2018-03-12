@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tooltip } from '@atlaskit/tooltip';
+import Tooltip from '@atlaskit/tooltip';
 import Clipboard from 'clipboard';
 import { action } from '@kadira/storybook';
 

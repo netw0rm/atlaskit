@@ -40,7 +40,7 @@ const Box = styled.button`
 
 export default (
   <Wrapper>
-    <Box appearance="default">Default behaiour</Box>
+    <Box appearance="default">Default behaviour</Box>
     <Box appearance="hover">No glow on hover</Box>
     <Box appearance="custom">Custom styles</Box>
   </Wrapper>

@@ -1,5 +1,8 @@
 # @atlaskit/profilecard
 
+## 3.13.0 (2018-03-15)
+
+* feature; update styled-components dependency to 1.4.6 - 3 (issues closed: ak-4487) ([35e96b3](https://bitbucket.org/atlassian/atlaskit/commits/35e96b3))
 ## 3.12.3 (2017-12-13)
 
 * bug fix; cap profilecard cache age at 30 days ([6e112c0](https://bitbucket.org/atlassian/atlaskit/commits/6e112c0))

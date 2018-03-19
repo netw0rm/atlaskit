@@ -2,6 +2,9 @@ import { getEnvAPIUrl } from '../utils/envDetection';
 
 export const getXFlowEndPoint = () => `${getEnvAPIUrl()}/xflow`;
 
+export const grantAccessEndpoint = (cloudId) =>
+  `${getXFlowEndPoint()}/${cloudId}/grant-access-to-product`;
+
 export const notifyAccessEndpoint = (cloudId) =>
   `${getXFlowEndPoint()}/${cloudId}/notify-users-of-product-access`;
 

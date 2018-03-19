@@ -1,8 +1,8 @@
 import 'es6-promise/auto';
 import 'whatwg-fetch';
 import notifyUsersAccessGranted from './notifyUsersAccessGranted';
+import { grantAccessEndpoint } from './xflowService';
 
-export const CREATE_GROUP_URL = '/admin/rest/um/1/group';
 export const addUsersUrl = (groupname) => `/admin/rest/um/1/group/user/direct?groupname=${groupname}`;
 
 /**
@@ -13,7 +13,7 @@ export const addUsersUrl = (groupname) => `/admin/rest/um/1/group/user/direct?gr
 export default (groupname, product, description = '') => {
   async function createUsersGroup() {
     // attempt to create group if it does not already exist
-    const response = await fetch(CREATE_GROUP_URL, {
+    const response = await fetch(grantAccessEndpoint, {
       method: 'POST',
       credentials: 'same-origin',
       body: JSON.stringify({

@@ -23,11 +23,12 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/emoji": "^31.0.8",
-    "@atlaskit/mention": "^8.5.1",
-    "@atlaskit/task-decision": "^4.7.0",
+    "@atlaskit/emoji": "^31.1.21",
+    "@atlaskit/mention": "^9.2.2",
+    "@atlaskit/task-decision": "^4.10.12",
     "lodash.sample": "^4.2.1",
-    "tslib": "^1.2.0"
+    "tslib": "^1.2.0",
+    "uuid": "^3.1.0"
   },
   "author": "Atlassian Pty. Ltd",
   "maintainers": [],

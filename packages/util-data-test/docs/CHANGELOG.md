@@ -1,5 +1,10 @@
 # @atlaskit/util-data-test
 
+## 8.0.0 (2018-03-27)
+
+
+* breaking; Change structure of exports in elements packages ([7c0b226](https://bitbucket.org/atlassian/atlaskit/commits/7c0b226))
+* breaking; fS-1697 moved testing and example utils to util-data-test ([7c0b226](https://bitbucket.org/atlassian/atlaskit/commits/7c0b226))
 ## 7.3.0 (2018-02-13)
 
 * feature; migrated json data back to util-data-test ([d03b160](https://bitbucket.org/atlassian/atlaskit/commits/d03b160))

@@ -23,17 +23,16 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/emoji": "^31.0.8",
-    "@atlaskit/mention": "^8.5.1",
-    "@atlaskit/task-decision": "^4.7.0",
+    "@atlaskit/emoji": "^31.1.21",
+    "@atlaskit/mention": "^9.2.2",
+    "@atlaskit/task-decision": "^4.10.12",
     "lodash.sample": "^4.2.1",
-    "tslib": "^1.2.0"
+    "tslib": "^1.8.0"
   },
   "author": "Atlassian Pty. Ltd",
   "maintainers": [],
   "license": "Apache-2.0",
   "peerDependencies": {
-    "js-search": "^1.4.2",
     "react": "^15.3.2",
     "react-dom": "^15.3.2"
   },
@@ -42,7 +41,10 @@
     "url": "https://bitbucket.org/atlassian/atlaskit"
   },
   "devDependencies": {
-    "akutil-common-test": "*"
+    "@atlaskit/util-service-support": "^2.0.4",
+    "js-search": "^1.3.7",
+    "date-fns": "^1.29.0",
+    "uuid": "^3.1.0"
   },
   "keywords": [
     "fabric",

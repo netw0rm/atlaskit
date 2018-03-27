@@ -1,7 +1,3 @@
-declare var require: {
-  <T>(path: string): T;
-};
-
 // tslint:disable-next-line:no-var-requires
 export const validPresenceData: Response = require('../json-data/presence-valid-info.json') as Response;
 

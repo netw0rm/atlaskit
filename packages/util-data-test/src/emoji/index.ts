@@ -1,7 +1,4 @@
-import * as emojiData from './emoji-data';
-import * as sampleEmojiData from './sample-emoji-data';
+import * as storyData from './story-data';
+import * as testData from './test-data';
 
-export default {
-  emojiData,
-  sampleEmojiData,
-};
+export { storyData, testData };

@@ -1,3 +1,3 @@
-import * as taskDecisionData from './task-decision-data';
+import * as storyData from './story-data';
 
-export default taskDecisionData;
+export default storyData;

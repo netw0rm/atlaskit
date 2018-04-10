@@ -1,0 +1,237 @@
+[
+  {
+      "schemas": [
+          "urn:ietf:params:scim:schemas:core:2.0:User",
+          "urn:scim:schemas:extension:atlassian:1.0"
+      ],
+      "id": "5acaf8dbb4bb622a7ddc125c",
+      "userName": "ahammond+admin@atlassian.com",
+      "active": true,
+      "displayName": "ahammond+admin@atlassian.com",
+      "emails": [
+          {
+              "value": "ahammond+admin@atlassian.com",
+              "primary": true
+          }
+      ],
+      "groups": [
+          {
+              "value": "823e4909-1d88-483b-a717-366def063123"
+          },
+          {
+              "value": "23ca8bb7-3d75-46b5-a6db-9ed67794df39"
+          }
+      ],
+      "meta": {
+          "resourceType": "User",
+          "lastModified": "2018-04-09T05:23:39.832Z",
+          "created": "2018-04-09T05:23:39.512Z"
+      },
+      "photos": [
+          {
+              "value": "https://avatar-cdn.stg.internal.atlassian.com/5acaf8dbb4bb622a7ddc125c?by=id",
+              "primary": true
+          }
+      ],
+      "urn:scim:schemas:extension:atlassian:1.0": {
+          "legacyUnicornUsername": "ahammond+admin",
+          "attributes": [
+              {
+                  "key": "atlassianid.openid.identity.previous",
+                  "value": ""
+              },
+              {
+                  "key": "invitationExpiryDate",
+                  "value": "1523856219315"
+              },
+              {
+                  "key": "invitationSendDate",
+                  "value": "1523251419315"
+              },
+              {
+                  "key": "inviter.name",
+                  "value": "Andrew Hammond"
+              }
+          ],
+          "profileActive": true,
+          "userbaseActive": true,
+          "accountCharacteristics": {
+              "system": false
+          },
+          "atlassianAccountProperties": {}
+      }
+  },
+  {
+      "schemas": [
+          "urn:ietf:params:scim:schemas:core:2.0:User",
+          "urn:scim:schemas:extension:atlassian:1.0"
+      ],
+      "id": "655363:75df2d18-76d4-4551-8786-e7686099f06d",
+      "userName": "ahammond@atlassian.com",
+      "active": true,
+      "displayName": "Andrew Hammond",
+      "emails": [
+          {
+              "value": "ahammond@atlassian.com",
+              "primary": true
+          }
+      ],
+      "groups": [
+          {
+              "value": "823e4909-1d88-483b-a717-366def063123"
+          }
+      ],
+      "meta": {
+          "resourceType": "User",
+          "lastModified": "2018-04-05T05:37:35.576Z",
+          "created": "2018-04-05T05:37:35.576Z"
+      },
+      "title": "",
+      "timezone": "Australia/Sydney",
+      "photos": [
+          {
+              "value": "https://avatar-cdn.stg.internal.atlassian.com/655363:75df2d18-76d4-4551-8786-e7686099f06d?by=id",
+              "primary": true
+          }
+      ],
+      "urn:scim:schemas:extension:atlassian:1.0": {
+          "legacyUnicornUsername": "admin",
+          "attributes": [],
+          "companyName": "",
+          "validatedEmails": [
+              "ahammond@atlassian.com"
+          ],
+          "googleId": "102363993820526035055",
+          "profileActive": true,
+          "userbaseActive": true,
+          "accountCharacteristics": {
+              "system": false
+          },
+          "atlassianAccountProperties": {}
+      }
+  },
+  {
+      "schemas": [
+          "urn:ietf:params:scim:schemas:core:2.0:User",
+          "urn:scim:schemas:extension:atlassian:1.0"
+      ],
+      "id": "5aa0b383d2bbf025fcdf1857",
+      "userName": "ahammond+second@atlassian.com",
+      "active": true,
+      "displayName": "Andrew Second",
+      "emails": [
+          {
+              "value": "ahammond+second@atlassian.com",
+              "primary": true
+          }
+      ],
+      "groups": [
+          {
+              "value": "23ca8bb7-3d75-46b5-a6db-9ed67794df39"
+          },
+          {
+              "value": "5822fd9d-be7b-4c92-bc2b-53147190dfcb"
+          }
+      ],
+      "meta": {
+          "resourceType": "User",
+          "lastModified": "2018-04-05T05:42:27.299Z",
+          "created": "2018-04-05T05:42:27.149Z"
+      },
+      "photos": [
+          {
+              "value": "https://avatar-cdn.stg.internal.atlassian.com/5aa0b383d2bbf025fcdf1857?by=id",
+              "primary": true
+          }
+      ],
+      "urn:scim:schemas:extension:atlassian:1.0": {
+          "legacyUnicornUsername": "ahammond+second",
+          "attributes": [
+              {
+                  "key": "atlassianid.openid.identity.previous",
+                  "value": ""
+              },
+              {
+                  "key": "invitationExpiryDate",
+                  "value": "1523511746939"
+              },
+              {
+                  "key": "invitationSendDate",
+                  "value": "1522906946939"
+              },
+              {
+                  "key": "inviter.name",
+                  "value": "Andrew Hammond"
+              }
+          ],
+          "profileActive": true,
+          "userbaseActive": true,
+          "accountCharacteristics": {
+              "system": false
+          },
+          "atlassianAccountProperties": {}
+      }
+  },
+  {
+      "schemas": [
+          "urn:ietf:params:scim:schemas:core:2.0:User",
+          "urn:scim:schemas:extension:atlassian:1.0"
+      ],
+      "id": "5aa0b385fc14eb2a0dcc8cfe",
+      "userName": "ahammond+third@atlassian.com",
+      "active": true,
+      "displayName": "Andrew Third",
+      "emails": [
+          {
+              "value": "ahammond+third@atlassian.com",
+              "primary": true
+          }
+      ],
+      "groups": [
+          {
+              "value": "5822fd9d-be7b-4c92-bc2b-53147190dfcb"
+          },
+          {
+              "value": "23ca8bb7-3d75-46b5-a6db-9ed67794df39"
+          }
+      ],
+      "meta": {
+          "resourceType": "User",
+          "lastModified": "2018-04-05T05:42:28.503Z",
+          "created": "2018-04-05T05:42:28.355Z"
+      },
+      "photos": [
+          {
+              "value": "https://avatar-cdn.stg.internal.atlassian.com/5aa0b385fc14eb2a0dcc8cfe?by=id",
+              "primary": true
+          }
+      ],
+      "urn:scim:schemas:extension:atlassian:1.0": {
+          "legacyUnicornUsername": "ahammond+third",
+          "attributes": [
+              {
+                  "key": "atlassianid.openid.identity.previous",
+                  "value": ""
+              },
+              {
+                  "key": "invitationExpiryDate",
+                  "value": "1523511748146"
+              },
+              {
+                  "key": "invitationSendDate",
+                  "value": "1522906948146"
+              },
+              {
+                  "key": "inviter.name",
+                  "value": "Andrew Hammond"
+              }
+          ],
+          "profileActive": true,
+          "userbaseActive": true,
+          "accountCharacteristics": {
+              "system": false
+          },
+          "atlassianAccountProperties": {}
+      }
+  }
+]

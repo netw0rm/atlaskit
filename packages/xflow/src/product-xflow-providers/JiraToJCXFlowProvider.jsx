@@ -8,8 +8,8 @@ import productStatusChecker from '../common/services/productStatusChecker';
 import startProductTrial from '../common/services/startProductTrial';
 import productRequest from '../common/services/productRequest';
 import { setAlreadyRequestedFlag, getAlreadyRequestedFlag } from '../common/services/alreadyRequestedFlag';
-
-import retrieveUserManagementUsers from '../common/services/retrieveUserManagementUsers';
+import retrieveUsers from '../common/services/retrieveUsers';
+import retrieveAdminIds from '../common/services/retrieveAdminIds';
 
 const PRODUCT_KEY = 'jira-core.ondemand';
 
@@ -205,7 +205,8 @@ export const defaultProps = intl => ({
   cancelStartProductTrial: async () => {},
   productStatusChecker: productStatusChecker(PRODUCT_KEY),
   grantAccessToUsers: grantAccessToUsers('jira-core-users', 'Jira Core', 'Grants access to Jira Core'),
-  retrieveUsers: retrieveUserManagementUsers(),
+  retrieveUsers,
+  retrieveAdminIds,
   goToProduct: () => {
     window.top.location.href = '/secure/LandingPage.jspa?product=jira-core';
   },

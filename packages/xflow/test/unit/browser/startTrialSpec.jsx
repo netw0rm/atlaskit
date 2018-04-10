@@ -49,9 +49,10 @@ const defaultProps = {
   retrieveUsers: () =>
     Promise.resolve([
       {
-        name: 'lhunt',
-        'display-name': 'Lachlan Hunt',
-        email: 'lhunt@example.com',
+        userName: 'lhunt',
+        displayName: 'Lachlan Hunt',
+        id: 123,
+        emails: [{ value: 'lhunt@example.com' }],
         attributes: {
           attributes: [
             {
@@ -62,9 +63,10 @@ const defaultProps = {
         },
       },
       {
-        name: 'awakeling',
-        'display-name': 'Andrew Wakeling',
-        email: 'awakeling@example.com',
+        userName: 'awakeling',
+        displayName: 'Andrew Wakeling',
+        id: 234,
+        emails: [{ value: 'awakeling@example.com' }],
         attributes: {
           attributes: [
             {
@@ -75,9 +77,10 @@ const defaultProps = {
         },
       },
       {
-        name: 'ahammond',
-        'display-name': 'Andrew Hammond',
-        email: 'ahammond@example.com',
+        userName: 'ahammond',
+        displayName: 'Andrew Hammond',
+        id: 345,
+        emails: [{ value: 'ahammond@example.com' }],
         attributes: {
           attributes: [
             {
@@ -88,9 +91,10 @@ const defaultProps = {
         },
       },
       {
-        name: 'mtruong',
-        'display-name': 'Michael Truong',
-        email: 'mtruong@example.com',
+        userName: 'mtruong',
+        displayName: 'Michael Truong',
+        id: 456,
+        emails: [{ value: 'mtruong@example.com' }],
         attributes: {
           attributes: [
             {
@@ -101,9 +105,10 @@ const defaultProps = {
         },
       },
       {
-        name: 'gburrows',
-        'display-name': 'George Burrows',
-        email: 'gburrows@example.com',
+        userName: 'gburrows',
+        displayName: 'George Burrows',
+        id: 567,
+        emails: [{ value: 'gburrows@example.com' }],
         attributes: {
           attributes: [
             {
@@ -114,6 +119,8 @@ const defaultProps = {
         },
       },
     ]),
+  retrieveAdminIds: () =>
+      Promise.resolve([123, 234]),
   startProductTrial: async () => {},
   cancelStartProductTrial: async () => {},
   grantAccessToUsers: async () => {},

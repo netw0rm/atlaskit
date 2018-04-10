@@ -4,13 +4,13 @@
           "urn:ietf:params:scim:schemas:core:2.0:User",
           "urn:scim:schemas:extension:atlassian:1.0"
       ],
-      "id": "5acaf8dbb4bb622a7ddc125c",
-      "userName": "ahammond+admin@atlassian.com",
+      "id": "123",
+      "userName": "ahammond+admin@example.com",
       "active": true,
-      "displayName": "ahammond+admin@atlassian.com",
+      "displayName": "ahammond+admin@example.com",
       "emails": [
           {
-              "value": "ahammond+admin@atlassian.com",
+              "value": "ahammond+admin@example.com",
               "primary": true
           }
       ],
@@ -29,7 +29,7 @@
       },
       "photos": [
           {
-              "value": "https://avatar-cdn.stg.internal.atlassian.com/5acaf8dbb4bb622a7ddc125c?by=id",
+              "value": "https://avatar-cdn.stg.internal.example.com/123c?by=id",
               "primary": true
           }
       ],
@@ -66,13 +66,13 @@
           "urn:ietf:params:scim:schemas:core:2.0:User",
           "urn:scim:schemas:extension:atlassian:1.0"
       ],
-      "id": "655363:75df2d18-76d4-4551-8786-e7686099f06d",
-      "userName": "ahammond@atlassian.com",
+      "id": "456",
+      "userName": "ahammond@example.com",
       "active": true,
       "displayName": "Andrew Hammond",
       "emails": [
           {
-              "value": "ahammond@atlassian.com",
+              "value": "ahammond@example.com",
               "primary": true
           }
       ],
@@ -90,7 +90,7 @@
       "timezone": "Australia/Sydney",
       "photos": [
           {
-              "value": "https://avatar-cdn.stg.internal.atlassian.com/655363:75df2d18-76d4-4551-8786-e7686099f06d?by=id",
+              "value": "https://avatar-cdn.stg.internal.example.com/456?by=id",
               "primary": true
           }
       ],
@@ -99,7 +99,7 @@
           "attributes": [],
           "companyName": "",
           "validatedEmails": [
-              "ahammond@atlassian.com"
+              "ahammond@example.com"
           ],
           "googleId": "102363993820526035055",
           "profileActive": true,
@@ -115,13 +115,13 @@
           "urn:ietf:params:scim:schemas:core:2.0:User",
           "urn:scim:schemas:extension:atlassian:1.0"
       ],
-      "id": "5aa0b383d2bbf025fcdf1857",
-      "userName": "ahammond+second@atlassian.com",
+      "id": "789",
+      "userName": "ahammond+second@example.com",
       "active": true,
       "displayName": "Andrew Second",
       "emails": [
           {
-              "value": "ahammond+second@atlassian.com",
+              "value": "ahammond+second@example.com",
               "primary": true
           }
       ],
@@ -140,7 +140,7 @@
       },
       "photos": [
           {
-              "value": "https://avatar-cdn.stg.internal.atlassian.com/5aa0b383d2bbf025fcdf1857?by=id",
+              "value": "https://avatar-cdn.stg.internal.example.com/789?by=id",
               "primary": true
           }
       ],
@@ -177,13 +177,13 @@
           "urn:ietf:params:scim:schemas:core:2.0:User",
           "urn:scim:schemas:extension:atlassian:1.0"
       ],
-      "id": "5aa0b385fc14eb2a0dcc8cfe",
-      "userName": "ahammond+third@atlassian.com",
+      "id": "135",
+      "userName": "ahammond+third@example.com",
       "active": true,
       "displayName": "Andrew Third",
       "emails": [
           {
-              "value": "ahammond+third@atlassian.com",
+              "value": "ahammond+third@example.com",
               "primary": true
           }
       ],
@@ -202,7 +202,7 @@
       },
       "photos": [
           {
-              "value": "https://avatar-cdn.stg.internal.atlassian.com/5aa0b385fc14eb2a0dcc8cfe?by=id",
+              "value": "https://avatar-cdn.stg.internal.example.com/135?by=id",
               "primary": true
           }
       ],

@@ -3,7 +3,7 @@ import 'whatwg-fetch';
 import { fetchInstanceAdminsEndpoint } from './xflowService';
 import { fetchCloudId } from './tenantContext';
 
-export default async function retireveAdminIds() {
+export default async function retrieveAdminIds() {
   const cloudId = await fetchCloudId;
   const endpoint = fetchInstanceAdminsEndpoint(cloudId);
   const response = await fetch(endpoint, {

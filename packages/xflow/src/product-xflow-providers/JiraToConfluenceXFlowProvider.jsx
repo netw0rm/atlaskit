@@ -9,7 +9,8 @@ import productRequest from '../common/services/productRequest';
 import startProductTrial from '../common/services/startProductTrial';
 import productStatusChecker from '../common/services/productStatusChecker';
 import grantAccessToUsers from '../common/services/grantAccessToUsers';
-import retrieveUserManagementUsers from '../common/services/retrieveUserManagementUsers';
+import retrieveUsers from '../common/services/retrieveUsers';
+import retrieveAdminIds from '../common/services/retrieveAdminIds';
 
 const PRODUCT_KEY = 'confluence.ondemand';
 
@@ -207,7 +208,8 @@ export const defaultProps = intl => ({
   cancelStartProductTrial: async () => {},
   productStatusChecker: productStatusChecker(PRODUCT_KEY),
   grantAccessToUsers: grantAccessToUsers('confluence-users', 'confluence'),
-  retrieveUsers: retrieveUserManagementUsers(),
+  retrieveUsers,
+  retrieveAdminIds,
   goToProduct: () => { window.top.location.href = '/wiki/'; },
   closeLoadingDialog: async () => {},
   closeAlreadyStartedDialog: async () => {},

@@ -94,84 +94,87 @@ describe('<GrantAccess> analytics', () => {
 
   it('should fire an appropriate analytics event when granting access is successful', async () => {
     const spy = jest.fn();
-    const mountWrapper = mount(
-      withAnalyticsSpy(
-        spy,
-        <GrantAccessBase
-          {...defaultProps}
-          retrieveUsers={() =>
-            Promise.resolve([
-              {
-                name: 'lhunt',
-                'display-name': 'Lachlan Hunt',
-                email: 'lhunt@example.com',
-                attributes: {
-                  attributes: [
-                    {
-                      name: 'atlassianid.openid.identity',
-                      values: ['https://id.atlassian.com/openid/v2/u/1'],
-                    },
-                  ],
-                },
+    const mountWrapper = mount(withAnalyticsSpy(spy,
+      <GrantAccessBase
+        {...defaultProps} retrieveUsers={() => Promise.resolve(
+          [
+            {
+              userName: 'lhunt',
+              displayName: 'Lachlan Hunt',
+              id: 123,
+              emails: [{ value: 'lhunt@example.com' }],
+              attributes: {
+                attributes: [
+                  {
+                    name: 'atlassianid.openid.identity',
+                    values: ['https://id.atlassian.com/openid/v2/u/1'],
+                  },
+                ],
               },
-              {
-                name: 'awakeling',
-                'display-name': 'Andrew Wakeling',
-                email: 'awakeling@example.com',
-                attributes: {
-                  attributes: [
-                    {
-                      name: 'atlassianid.openid.identity',
-                      values: ['https://id.atlassian.com/openid/v2/u/2'],
-                    },
-                  ],
-                },
+            },
+            {
+              userName: 'awakeling',
+              displayName: 'Andrew Wakeling',
+              id: 234,
+              emails: [{ value: 'awakeling@example.com' }],
+              attributes: {
+                attributes: [
+                  {
+                    name: 'atlassianid.openid.identity',
+                    values: ['https://id.atlassian.com/openid/v2/u/2'],
+                  },
+                ],
               },
-              {
-                name: 'ahammond',
-                'display-name': 'Andrew Hammond',
-                email: 'ahammond@example.com',
-                attributes: {
-                  attributes: [
-                    {
-                      name: 'atlassianid.openid.identity',
-                      values: ['https://id.atlassian.com/openid/v2/u/3'],
-                    },
-                  ],
-                },
+            },
+            {
+              userName: 'ahammond',
+              displayName: 'Andrew Hammond',
+              id: 345,
+              emails: [{ value: 'ahammond@example.com' }],
+              attributes: {
+                attributes: [
+                  {
+                    name: 'atlassianid.openid.identity',
+                    values: ['https://id.atlassian.com/openid/v2/u/3'],
+                  },
+                ],
               },
-              {
-                name: 'mtruong',
-                'display-name': 'Michael Truong',
-                email: 'mtruong@example.com',
-                attributes: {
-                  attributes: [
-                    {
-                      name: 'atlassianid.openid.identity',
-                      values: ['https://id.atlassian.com/openid/v2/u/4'],
-                    },
-                  ],
-                },
+            },
+            {
+              userName: 'mtruong',
+              displayName: 'Michael Truong',
+              id: 456,
+              emails: [{ value: 'mtruong@example.com' }],
+              attributes: {
+                attributes: [
+                  {
+                    name: 'atlassianid.openid.identity',
+                    values: ['https://id.atlassian.com/openid/v2/u/4'],
+                  },
+                ],
               },
-              {
-                name: 'gburrows',
-                'display-name': 'George Burrows',
-                email: 'gburrows@example.com',
-                attributes: {
-                  attributes: [
-                    {
-                      name: 'atlassianid.openid.identity',
-                      values: ['https://id.atlassian.com/openid/v2/u/5'],
-                    },
-                  ],
-                },
+            },
+            {
+              userName: 'gburrows',
+              displayName: 'George Burrows',
+              id: 567,
+              emails: [{ value: 'gburrows@example.com' }],
+              attributes: {
+                attributes: [
+                  {
+                    name: 'atlassianid.openid.identity',
+                    values: ['https://id.atlassian.com/openid/v2/u/5'],
+                  },
+                ],
               },
-            ])
-          }
-          grantAccessToUsers={() => new Promise(resolve => setTimeout(resolve, 500))}
-        />
-      )
-    );
+            },
+          ])}
+        retrieveAdminIds={() =>
+          Promise.resolve([123, 234])}
+        grantAccessToUsers={() => new Promise(resolve =>
+              setTimeout(resolve, 500)
+        )}
+      />));
     expect(spy).not.toHaveBeenCalledWith(
       'xflow.grant-access.continue-button.grant-access-successful',
       expect.any(Object)

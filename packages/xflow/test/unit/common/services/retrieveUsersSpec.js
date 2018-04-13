@@ -7,27 +7,33 @@ import retrieveUsers from '../../../../src/common/services/retrieveUsers';
 import { fetchInstanceUsersEndpoint } from '../../../../src/common/services/xflowService';
 
 import instanceUsersResponse from '../mock-data/instanceUsers.json';
+import { TENANT_INFO_URL } from '../../../../src/common/services/tenantContext';
+
+const MOCK_CLOUD_ID = 'mock-cloud-id';
 
 describe('retrieveUsers', () => {
   beforeEach(() => {
     fetchMock.catch(417);
+    fetchMock.mock(TENANT_INFO_URL, {
+      cloudId: MOCK_CLOUD_ID,
+    });
   });
   afterEach(fetchMock.restore);
 
   it('should emit empty array when no valid users are retrieved', async () => {
-    fetchMock.mock(fetchInstanceUsersEndpoint, [], { method: 'GET' });
+    fetchMock.mock(fetchInstanceUsersEndpoint(MOCK_CLOUD_ID), [], { method: 'GET' });
     const response = await retrieveUsers();
     expect(response).toEqual([]);
   });
 
   it('should emit array with retrieved users', async () => {
-    fetchMock.mock(fetchInstanceUsersEndpoint, instanceUsersResponse, { method: 'GET' });
+    fetchMock.mock(fetchInstanceUsersEndpoint(MOCK_CLOUD_ID), instanceUsersResponse, { method: 'GET' });
     const response = await retrieveUsers();
     expect(response).toEqual(instanceUsersResponse);
   });
 
   it('should emit fetchUsersFailure action with expected payload when the users fail to be fetched', async () => {
-    fetchMock.mock(fetchInstanceUsersEndpoint, 500, { method: 'GET' });
+    fetchMock.mock(fetchInstanceUsersEndpoint(MOCK_CLOUD_ID), 500, { method: 'GET' });
     try {
       await retrieveUsers();
     } catch (e) {

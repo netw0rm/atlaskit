@@ -40,9 +40,11 @@ class RequestOrStartTrial extends Component {
     }),
     grantAccessEnabled: PropTypes.bool,
     isCrossSell: PropTypes.bool,
+    isAdmin: PropTypes.bool,
 
     canCurrentUserAddProduct: PropTypes.func.isRequired,
     getProductActivationState: PropTypes.func.isRequired,
+    retrieveIsOptOutEnabled: PropTypes.func.isRequired,
     checkProductRequestFlag: PropTypes.func,
     waitForActivation: PropTypes.func.isRequired,
     onComplete: PropTypes.func,
@@ -65,6 +67,7 @@ class RequestOrStartTrial extends Component {
     initializingCheckFailed: false,
     activationState: UNKNOWN,
     alreadyRequested: false,
+    isOptOutEnabled: false,
   };
 
   componentDidMount() {
@@ -82,6 +85,9 @@ class RequestOrStartTrial extends Component {
 
   fetchAsyncData = async () => {
     let hasPermissionToAddProduct;
+
+    await this.fetchIsOptOutEnabled();
+
     try {
       hasPermissionToAddProduct = await this.props.canCurrentUserAddProduct();
     } catch (e) {
@@ -108,6 +114,21 @@ class RequestOrStartTrial extends Component {
       screen: Screens.REQUEST_TRIAL,
       // We assume that the product is inactive if they don't have permission.
       activationState: INACTIVE,
+    });
+  };
+
+  fetchIsOptOutEnabled = async () => {
+    const { isCrossSell, isAdmin } = this.props;
+    let isOptOutEnabled;
+    try {
+      isOptOutEnabled = await this.props.retrieveIsOptOutEnabled({ isCrossSell, isAdmin });
+    } catch (e) {
+      this.onFailure('is-opt-out-enabled-check');
+      throw e;
+    }
+
+    this.setState({
+      isOptOutEnabled,
     });
   };
 
@@ -183,6 +204,7 @@ class RequestOrStartTrial extends Component {
       alreadyRequested,
       initializingCheckFailed,
       showInitializationError,
+      isOptOutEnabled,
     } = this.state;
 
     return (
@@ -220,14 +242,14 @@ class RequestOrStartTrial extends Component {
                   onTrialActivating={onTrialActivating}
                   showGrantAccess={activationState === INACTIVE && grantAccessEnabled}
                   contextInfo={contextInfo}
-                  isCrossSell={isCrossSell}
+                  isOptOutEnabled={isOptOutEnabled}
                 />
               ) : (
                 <StartTrial
                   onComplete={onComplete}
                   onTrialActivating={onTrialActivating}
                   showGrantAccess={activationState === INACTIVE && grantAccessEnabled}
-                  isCrossSell={isCrossSell}
+                  isOptOutEnabled={isOptOutEnabled}
                 />
               );
             }
@@ -293,6 +315,7 @@ export default withXFlowProvider(
       getProductActivationState,
       waitForActivation,
       grantAccessEnabled,
+      retrieveIsOptOutEnabled,
     },
   }) => ({
     canCurrentUserAddProduct,
@@ -300,5 +323,6 @@ export default withXFlowProvider(
     getProductActivationState,
     waitForActivation,
     grantAccessEnabled,
+    retrieveIsOptOutEnabled,
   })
 );

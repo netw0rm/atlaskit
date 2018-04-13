@@ -27,6 +27,7 @@ export default class XFlow extends Component {
       trialCTA: PropTypes.string,
     }),
     isCrossSell: PropTypes.bool,
+    isAdmin: PropTypes.bool,
     onAnalyticsEvent: PropTypes.func.isRequired,
     onComplete: PropTypes.func,
     onTrialRequested: PropTypes.func,
@@ -43,8 +44,10 @@ export default class XFlow extends Component {
   }
 
   render() {
-    const { targetProduct, sourceComponent, sourceContext, onAnalyticsEvent, onComplete,
-      onTrialActivating, onTrialRequested, contextInfo, isCrossSell, ...props } = this.props;
+    const {
+      targetProduct, sourceComponent, sourceContext, onAnalyticsEvent, onComplete,
+      onTrialActivating, onTrialRequested, contextInfo, isCrossSell, isAdmin, ...props
+    } = this.props;
 
     const XFlowProvider = XFlow.getProviderForProductKey(targetProduct);
     if (!XFlowProvider) {
@@ -63,6 +66,7 @@ export default class XFlow extends Component {
           onTrialRequested={onTrialRequested}
           contextInfo={contextInfo}
           isCrossSell={isCrossSell}
+          isAdmin={isAdmin}
         />
       </XFlowProvider>
     );

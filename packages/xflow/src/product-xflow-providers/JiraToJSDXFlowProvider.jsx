@@ -10,6 +10,7 @@ import productRequest from '../common/services/productRequest';
 import { setAlreadyRequestedFlag, getAlreadyRequestedFlag } from '../common/services/alreadyRequestedFlag';
 import retrieveUsers from '../common/services/retrieveUsers';
 import retrieveAdminIds from '../common/services/retrieveAdminIds';
+import { retrieveIsOptOutEnabled } from '../common/services/optOutFeature';
 
 const PRODUCT_KEY = 'jira-servicedesk.ondemand';
 
@@ -224,6 +225,7 @@ export const defaultProps = intl => ({
   grantAccessToUsers: grantAccessToUsers('jira-servicedesk-users', 'Jira Service Desk', 'Grants access to Jira Service Desk'),
   retrieveUsers,
   retrieveAdminIds,
+  retrieveIsOptOutEnabled,
   goToProduct: () => {
     window.top.location.href = '/secure/LandingPage.jspa?product=jira-servicedesk';
   },

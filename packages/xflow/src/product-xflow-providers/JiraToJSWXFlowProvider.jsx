@@ -10,6 +10,7 @@ import productRequest from '../common/services/productRequest';
 import { setAlreadyRequestedFlag, getAlreadyRequestedFlag } from '../common/services/alreadyRequestedFlag';
 import retrieveUsers from '../common/services/retrieveUsers';
 import retrieveAdminIds from '../common/services/retrieveAdminIds';
+import { retrieveIsOptOutEnabled } from '../common/services/optOutFeature';
 
 const PRODUCT_KEY = 'jira-software.ondemand';
 
@@ -205,6 +206,7 @@ export const defaultProps = intl => ({
   grantAccessToUsers: grantAccessToUsers('jira-software-users', 'Jira Software', 'Grants access to Jira Software'),
   retrieveUsers,
   retrieveAdminIds,
+  retrieveIsOptOutEnabled,
   goToProduct: () => { window.top.location.href = '/onboarding/software'; },
   closeLoadingDialog: async () => {},
   closeAlreadyStartedDialog: async () => {},

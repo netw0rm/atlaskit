@@ -2,6 +2,7 @@ import 'es6-promise/auto';
 import 'whatwg-fetch';
 import { fetchCloudId } from './tenantContext';
 import { getEnvAPIUrl } from '../utils/envDetection';
+import retrieveCurrentUserIsAdmin from './retrieveCurrentUserIsAdmin';
 
 export const xflowNamespace = 'xflow';
 export const xflowEnabledProperty = 'xflow.product.suggestions.enabled';
@@ -50,6 +51,14 @@ async function updateJiraPreferences() {
   }
 
   return true;
+}
+
+export async function retrieveIsOptOutEnabled({ isCrossSell, isAdmin } = {}) {
+  return isCrossSell && (
+    isAdmin !== undefined
+      ? isAdmin
+      : await retrieveCurrentUserIsAdmin()
+  );
 }
 
 // Run these calls sequentially,to ensure Site Admin Service has been updated correctly before

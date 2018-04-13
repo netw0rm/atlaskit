@@ -53,7 +53,7 @@ class ContextualConfirmTrial extends Component {
     onCancel: PropTypes.func.isRequired,
     startProductTrial: PropTypes.func,
     cancelStartProductTrial: PropTypes.func,
-    isCrossSell: PropTypes.bool,
+    isOptOutEnabled: PropTypes.bool,
 
     firePrivateAnalyticsEvent: PropTypes.func.isRequired,
     intl: intlShape.isRequired,
@@ -256,7 +256,7 @@ class ContextualConfirmTrial extends Component {
       intl,
       status,
       contextInfo,
-      isCrossSell,
+      isOptOutEnabled,
     } = this.props;
 
     return (
@@ -276,7 +276,7 @@ class ContextualConfirmTrial extends Component {
         >
           {status === INACTIVE ? contextInfo.trialCTA : contextInfo.reactivateCTA}
         </Button>
-        {isCrossSell === true &&
+        {isOptOutEnabled &&
           <ContextualOptOutLinkButton
             id="xflow-opt-out-button"
             onClick={this.handleOptOutClick}
@@ -294,6 +294,7 @@ class ContextualConfirmTrial extends Component {
       image,
       contextInfo,
     } = this.props;
+
     return (
       <ModalDialog
         width="medium"

@@ -11,6 +11,7 @@ import productStatusChecker from '../common/services/productStatusChecker';
 import grantAccessToUsers from '../common/services/grantAccessToUsers';
 import retrieveUsers from '../common/services/retrieveUsers';
 import retrieveAdminIds from '../common/services/retrieveAdminIds';
+import { retrieveIsOptOutEnabled } from '../common/services/optOutFeature';
 
 const PRODUCT_KEY = 'confluence.ondemand';
 
@@ -210,6 +211,7 @@ export const defaultProps = intl => ({
   grantAccessToUsers: grantAccessToUsers('confluence-users', 'confluence'),
   retrieveUsers,
   retrieveAdminIds,
+  retrieveIsOptOutEnabled,
   goToProduct: () => { window.top.location.href = '/wiki/'; },
   closeLoadingDialog: async () => {},
   closeAlreadyStartedDialog: async () => {},

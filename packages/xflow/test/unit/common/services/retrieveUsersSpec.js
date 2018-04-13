@@ -32,7 +32,7 @@ describe('retrieveUsers', () => {
     expect(response).toEqual(instanceUsersResponse);
   });
 
-  it('should emit fetchUsersFailure action with expected payload when the users fail to be fetched', async () => {
+  it('should throw a 500 error when the users fail to be retrieved', async () => {
     fetchMock.mock(fetchInstanceUsersEndpoint(MOCK_CLOUD_ID), 500, { method: 'GET' });
     try {
       await retrieveUsers();

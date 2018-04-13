@@ -287,7 +287,7 @@ class GrantAccess extends Component {
     }
   };
 
-  handleUserSelectChange = async evt => {
+  handleUserSelectChange = evt => {
     const { firePrivateAnalyticsEvent, usersOption } = this.props;
     const { userSets } = this.state;
     const selectedUsers = evt.items.map(user =>
@@ -295,7 +295,7 @@ class GrantAccess extends Component {
     );
 
     firePrivateAnalyticsEvent('xflow.grant-access.user-select.changed');
-    await this.setState({
+    this.setState({
       userSelectIsInvalid: evt.items.length === 0,
       selectedUsers,
     });

@@ -32,7 +32,7 @@ describe('retrieveAdminIds', () => {
     expect(response).toEqual(adminIdsResponse);
   });
 
-  it('should emit fetchUsersFailure action with expected payload when the admin ids fail to be fetched', async () => {
+  it('should throw a 500 error when the admin ids fail to be retrieved', async () => {
     fetchMock.mock(fetchInstanceAdminsEndpoint(MOCK_CLOUD_ID), 500, { method: 'GET' });
     try {
       await retrieveAdminIds();

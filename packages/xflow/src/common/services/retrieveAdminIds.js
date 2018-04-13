@@ -15,5 +15,5 @@ export default async function retrieveAdminIds() {
     throw new Error(`Unable to retrieve instance admins. Status: ${response.status}`);
   }
 
-  return await response.json();
+  return response.json();
 }

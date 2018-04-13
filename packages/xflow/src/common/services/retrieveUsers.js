@@ -15,5 +15,5 @@ export default async function retrieveUsers() {
     throw new Error(`Unable to retrieve instance users. Status: ${response.status}`);
   }
 
-  return await response.json();
+  return response.json();
 }

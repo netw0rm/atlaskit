@@ -71,6 +71,7 @@ export const xFlowShape = PropTypes.shape({
   cancelStartProductTrial: PropTypes.func,
   grantAccessToUsers: PropTypes.func,
   retrieveUsers: PropTypes.func,
+  retrieveAdminIds: PropTypes.func,
   goToProduct: PropTypes.func,
   closeLoadingDialog: PropTypes.func,
   closeAlreadyStartedDialog: PropTypes.func,

@@ -40,9 +40,10 @@ const defaultXFlowProviderProps = {
   retrieveUsers: () =>
     Promise.resolve([
       {
-        name: 'lhunt',
-        'display-name': 'Lachlan Hunt',
-        email: 'lhunt@example.com',
+        userName: 'lhunt',
+        displayName: 'Lachlan Hunt',
+        id: 123,
+        emails: [{ value: 'lhunt@example.com' }],
         attributes: {
           attributes: [
             {
@@ -53,9 +54,10 @@ const defaultXFlowProviderProps = {
         },
       },
       {
-        name: 'awakeling',
-        'display-name': 'Andrew Wakeling',
-        email: 'awakeling@example.com',
+        userName: 'awakeling',
+        displayName: 'Andrew Wakeling',
+        id: 234,
+        emails: [{ value: 'awakeling@example.com' }],
         attributes: {
           attributes: [
             {
@@ -66,9 +68,10 @@ const defaultXFlowProviderProps = {
         },
       },
       {
-        name: 'ahammond',
-        'display-name': 'Andrew Hammond',
-        email: 'ahammond@example.com',
+        userName: 'ahammond',
+        displayName: 'Andrew Hammond',
+        id: 345,
+        emails: [{ value: 'ahammond@example.com' }],
         attributes: {
           attributes: [
             {
@@ -79,9 +82,10 @@ const defaultXFlowProviderProps = {
         },
       },
       {
-        name: 'mtruong',
-        'display-name': 'Michael Truong',
-        email: 'mtruong@example.com',
+        userName: 'mtruong',
+        displayName: 'Michael Truong',
+        id: 456,
+        emails: [{ value: 'mtruong@example.com' }],
         attributes: {
           attributes: [
             {
@@ -92,9 +96,10 @@ const defaultXFlowProviderProps = {
         },
       },
       {
-        name: 'gburrows',
-        'display-name': 'George Burrows',
-        email: 'gburrows@example.com',
+        userName: 'gburrows',
+        displayName: 'George Burrows',
+        id: 567,
+        emails: [{ value: 'gburrows@example.com' }],
         attributes: {
           attributes: [
             {
@@ -105,11 +110,19 @@ const defaultXFlowProviderProps = {
         },
       },
     ]),
+  retrieveAdminIds: () =>
+      Promise.resolve([123, 234]),
   cancelStartProductTrial: action('mock cancelStartProductTrial'),
-  grantAccessToUsers: (...args) => { action('mock grantAccessToUsers')(...args); return delay(1000); },
+  grantAccessToUsers: (...args) => {
+    action('mock grantAccessToUsers')(...args);
+    return delay(1000);
+  },
   goToProduct: action('mock goToProduct'),
   closeLoadingDialog: action('mock closeLoadingDialog'),
-  requestTrialWithNote: (...args) => { action('mock requestTrialWithNote')(...args); return delay(1000); },
+  requestTrialWithNote: (...args) => {
+    action('mock requestTrialWithNote')(...args);
+    return delay(1000);
+  },
   cancelRequestTrial: action('mock cancelRequestTrial'),
   checkProductRequestFlag: action('mock checkProductRequestFlag'),
   setProductRequestFlag: action('mock setProductRequestFlag'),

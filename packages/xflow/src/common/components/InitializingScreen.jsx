@@ -17,7 +17,7 @@ class InitializingScreen extends Component {
     firePrivateAnalyticsEvent: PropTypes.func.isRequired,
   };
 
-  defaultProps = {
+  static defaultProps = {
     isOpen: true,
   };
 

@@ -24,6 +24,7 @@ const overrideImplementations = {
   cancelStartProductTrial: action('cancelStartProductTrial'),
   grantAccessToUsers: notImplemented('grantAccessToUsers'),
   retrieveUsers: notImplemented('retrieveUsers'),
+  retrieveAdminIds: notImplemented('retrieveAdminIds'),
   goToProduct: action('goToProduct'),
   closeLoadingDialog: notImplemented('closeLoadingDialog'),
   checkProductRequestFlag: notImplemented('checkProductRequestFlag'),

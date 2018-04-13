@@ -8,6 +8,7 @@ import ModalDialog from '@atlaskit/modal-dialog';
 import { AkFieldRadioGroup } from '@atlaskit/field-radio-group';
 import { FormattedMessage, injectIntl, intlShape, defineMessages } from 'react-intl';
 import { withAnalytics } from '@atlaskit/analytics';
+import '@atlaskit/polyfills/array-prototype-includes';
 
 import ProgressIndicator from './ProgressIndicator';
 import ErrorFlag from '../../common/components/ErrorFlag';
@@ -54,25 +55,6 @@ const messages = defineMessages({
   },
 });
 
-function* iterate(it) {
-  yield* it;
-}
-
-// Zip generator from
-// https://github.com/lachlanhunt/generator-utilities
-function* zip(...them) {
-  if (them.length) {
-    const iterators = them.map(iterate);
-
-    // eslint-disable-next-line no-constant-condition
-    while (true) {
-      const values = iterators.map(iterator => iterator.next());
-      if (values.some(value => value.done)) return;
-      yield values.map(value => value.value);
-    }
-  }
-}
-
 class GrantAccess extends Component {
   static propTypes = {
     productLogo: PropTypes.node.isRequired,
@@ -101,6 +83,7 @@ class GrantAccess extends Component {
 
     grantAccessToUsers: PropTypes.func,
     retrieveUsers: PropTypes.func,
+    retrieveAdminIds: PropTypes.func,
     onComplete: PropTypes.func.isRequired,
 
     showNotifyUsersOption: PropTypes.bool,
@@ -114,6 +97,7 @@ class GrantAccess extends Component {
   static defaultProps = {
     grantAccessToUsers: () => {},
     retrieveUsers: () => [],
+    retrieveAdminIds: () => [],
     showNotifyUsersOption: true,
     showProgressIndicator: true,
     showAffectMyBill: true,
@@ -138,32 +122,29 @@ class GrantAccess extends Component {
   componentDidMount = async () => {
     const {
       firePrivateAnalyticsEvent,
-      optionItems,
       retrieveUsers,
+      retrieveAdminIds,
       usersOption,
-      laterOption,
     } = this.props;
 
     try {
-      const userGroups = optionItems
-        .map(option => option.value)
-        .filter(option => option !== laterOption);
-      const fetchedUsers = await Promise.all(userGroups.map(retrieveUsers));
-      const userSets = new Map([
-        ...zip(
-          userGroups,
-          fetchedUsers.map(users => new Map(users.map(user => [user.name, user])))
-        ),
-      ]);
+      const fetchedUsers = await retrieveUsers();
+      const adminIds = await retrieveAdminIds();
+      const adminUsers = fetchedUsers.filter(user => adminIds.includes(user.id));
+      const userSets = {
+        everyone: fetchedUsers,
+        'site-admins': adminUsers,
+        'specific-users': fetchedUsers,
+      };
 
-      const selectableUsers = [...userSets.get(usersOption).values()];
+      const selectableUsers = userSets[usersOption];
       const selectItems = [
         {
           items: selectableUsers.map(user => ({
-            value: user.name,
-            content: user['display-name'],
-            description: user.email,
-            filterValues: [user.email, user.name, user['display-name']],
+            value: user.userName,
+            content: user.displayName,
+            description: user.emails[0].value,
+            filterValues: [user.emails[0].value, user.userName, user.displayName],
           })),
         },
       ];
@@ -223,7 +204,7 @@ class GrantAccess extends Component {
 
     try {
       const users =
-        selectedRadio === usersOption ? selectedUsers : [...userSets.get(selectedRadio).values()];
+        selectedRadio === usersOption ? selectedUsers : userSets[selectedRadio];
 
       // when the notification control is hidden, we never send notifications
       const doNotification = showNotifyUsersOption ? notifyUsers : false;
@@ -309,7 +290,9 @@ class GrantAccess extends Component {
   handleUserSelectChange = evt => {
     const { firePrivateAnalyticsEvent, usersOption } = this.props;
     const { userSets } = this.state;
-    const selectedUsers = evt.items.map(user => userSets.get(usersOption).get(user.value));
+    const selectedUsers = evt.items.map(user =>
+      userSets[usersOption].filter(userInfo => userInfo.userName === user.value)[0]
+    );
 
     firePrivateAnalyticsEvent('xflow.grant-access.user-select.changed');
     this.setState({

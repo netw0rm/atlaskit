@@ -4,7 +4,7 @@ import { fetchInstanceUsersEndpoint } from './xflowService';
 import { fetchCloudId } from './tenantContext';
 
 export default async function retrieveUsers() {
-  const cloudId = await fetchCloudId;
+  const cloudId = await fetchCloudId();
   const endpoint = fetchInstanceUsersEndpoint(cloudId);
   const response = await fetch(endpoint, {
     credentials: 'include',

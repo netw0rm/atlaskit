@@ -48,6 +48,7 @@ const defaultRequestOrStartTrialProps = {
   sourceComponent: 'storybook-example-component',
   sourceContext: 'storybook-example-context',
   targetProduct: 'storybook-example-product',
+  retrieveIsOptOutEnabled: async () => false,
 };
 
 describe('RequestOrStartTrial', () => {

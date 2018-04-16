@@ -35,6 +35,7 @@ const XFLOW_PROVIDERS_UNDER_TEST = {
   },
 };
 
+const mockRetrieveIsOptOutEnabled = (isEnabled) => () => Promise.resolve(isEnabled);
 const defaultXFlowProviderProps = {
   canCurrentUserAddProduct: () => true,
   retrieveUsers: () =>
@@ -112,6 +113,7 @@ const defaultXFlowProviderProps = {
     ]),
   retrieveAdminIds: () =>
       Promise.resolve([123, 234]),
+  retrieveIsOptOutEnabled: mockRetrieveIsOptOutEnabled(false),
   cancelStartProductTrial: action('mock cancelStartProductTrial'),
   grantAccessToUsers: (...args) => {
     action('mock grantAccessToUsers')(...args);
@@ -155,6 +157,7 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
     .add('User can add a product (INACTIVE), Start Trial flow without Grant Access screen, with opt out link', () =>
       <MockXFlowProvider
         {...defaultXFlowProviderProps}
+        retrieveIsOptOutEnabled={mockRetrieveIsOptOutEnabled(true)}
       >
         <RequestOrStartTrial
           {...defaultRequestOrStartTrialProps}
@@ -205,6 +208,7 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
         <MockXFlowProvider
           {...defaultXFlowProviderProps}
           productStatusChecker={mockProductStatusChecker(DEACTIVATED)}
+          retrieveIsOptOutEnabled={mockRetrieveIsOptOutEnabled(true)}
         >
           <RequestOrStartTrial
             {...defaultRequestOrStartTrialProps}

@@ -80,6 +80,6 @@ storiesOf('request-or-start-trial/ContextualConfirmTrial', module)
   .add('Confirm Trial dialog (INACTIVE) with opt out link', () =>
     <ContextualConfirmTrialBase
       {...defaultProps}
-      isCrossSell
+      isOptOutEnabled
     />
   );

@@ -22,6 +22,7 @@ describe('<RequestOrStartTrial> Component', () => {
       sourceComponent: 'source-component',
       sourceContext: 'source-context',
       targetProduct: 'target-product',
+      retrieveIsOptOutEnabled: jest.fn(() => false),
       canCurrentUserAddProduct: jest.fn(),
       getProductActivationState: jest.fn(),
       waitForActivation: jest.fn(),
@@ -39,6 +40,7 @@ describe('<RequestOrStartTrial> Component', () => {
         trialCTA: 'trial-cta',
       },
       grantAccessEnabled: true,
+      isCrossSell: false,
     };
   });
 
@@ -107,6 +109,7 @@ describe('<RequestOrStartTrial> Component', () => {
         onComplete: mockProps.onComplete,
         onTrialActivating: mockProps.onTrialActivating,
         showGrantAccess: true,
+        isOptOutEnabled: false,
       });
     });
 
@@ -126,6 +129,7 @@ describe('<RequestOrStartTrial> Component', () => {
         onComplete: mockProps.onComplete,
         onTrialActivating: mockProps.onTrialActivating,
         showGrantAccess: false,
+        isOptOutEnabled: false,
       });
     });
 
@@ -146,6 +150,7 @@ describe('<RequestOrStartTrial> Component', () => {
         onComplete: mockProps.onComplete,
         onTrialActivating: mockProps.onTrialActivating,
         showGrantAccess: false,
+        isOptOutEnabled: false,
       });
     });
 
@@ -164,6 +169,7 @@ describe('<RequestOrStartTrial> Component', () => {
         onTrialActivating: mockProps.onTrialActivating,
         showGrantAccess: true,
         contextInfo: mockProps.contextInfo,
+        isOptOutEnabled: false,
       });
     });
   });
@@ -198,6 +204,7 @@ describe('<RequestOrStartTrial> Component', () => {
         onTrialRequested: mockProps.onTrialRequested,
         alreadyRequested: true,
         contextInfo: mockProps.contextInfo,
+        isCrossSell: false,
       });
     });
 
@@ -216,6 +223,7 @@ describe('<RequestOrStartTrial> Component', () => {
         onTrialRequested: mockProps.onTrialRequested,
         alreadyRequested: false,
         contextInfo: mockProps.contextInfo,
+        isCrossSell: false,
       });
     });
   });
@@ -242,6 +250,7 @@ describe('<RequestOrStartTrial> Component', () => {
 
       await instance.fetchAsyncData().then(() => {
         expect(mockProps.canCurrentUserAddProduct).toBeCalled();
+        expect(mockProps.retrieveIsOptOutEnabled).toBeCalled();
         expect(instance.fetchAsyncRequestFlowData.called).toBeTruthy();
       });
     });

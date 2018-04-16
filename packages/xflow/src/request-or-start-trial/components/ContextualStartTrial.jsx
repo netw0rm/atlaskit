@@ -22,7 +22,7 @@ class ContextualStartTrial extends Component {
 
     onComplete: PropTypes.func,
     onTrialActivating: PropTypes.func,
-    isCrossSell: PropTypes.bool,
+    isOptOutEnabled: PropTypes.bool,
 
     firePrivateAnalyticsEvent: PropTypes.func.isRequired,
   };
@@ -40,7 +40,7 @@ class ContextualStartTrial extends Component {
       onTrialActivating,
       firePrivateAnalyticsEvent,
       contextInfo,
-      isCrossSell,
+      isOptOutEnabled,
     } = this.props;
     return (
       <MultiStep start={0} onComplete={onComplete}>
@@ -58,7 +58,7 @@ class ContextualStartTrial extends Component {
               }}
               onCancel={cancel}
               contextInfo={contextInfo}
-              isCrossSell={isCrossSell}
+              isOptOutEnabled={isOptOutEnabled}
             />}
         />
         <Step render={nextStep => <GrantAccess onComplete={nextStep} />} />

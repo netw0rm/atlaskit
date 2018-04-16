@@ -25,6 +25,7 @@ const overrideImplementations = {
   grantAccessToUsers: notImplemented('grantAccessToUsers'),
   retrieveUsers: notImplemented('retrieveUsers'),
   retrieveAdminIds: notImplemented('retrieveAdminIds'),
+  retrieveIsOptOutEnabled: notImplemented('retrieveIsOptOutEnabled'),
   goToProduct: action('goToProduct'),
   closeLoadingDialog: notImplemented('closeLoadingDialog'),
   checkProductRequestFlag: notImplemented('checkProductRequestFlag'),

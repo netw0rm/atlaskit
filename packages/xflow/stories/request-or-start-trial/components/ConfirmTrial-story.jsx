@@ -79,6 +79,6 @@ storiesOf('request-or-start-trial/ConfirmTrial', module)
   .add('Confirm Trial dialog (INACTIVE) with opt out link', () =>
     <ConfirmTrialBase
       {...defaultProps}
-      isCrossSell
+      isOptOutEnabled
     />
   );

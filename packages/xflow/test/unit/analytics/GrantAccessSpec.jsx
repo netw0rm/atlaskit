@@ -94,6 +94,13 @@ describe('<GrantAccess> analytics', () => {
 
   it('should fire an appropriate analytics event when granting access is successful', async () => {
     const spy = jest.fn();
+    let mockGrantAccessResolvedPromise;
+    const mockGrantAccessResolve = jest.fn(() => {
+      mockGrantAccessResolvedPromise = new Promise((resolve) => {
+        setTimeout(resolve, 500);
+      });
+      return mockGrantAccessResolvedPromise;
+    });
     const mountWrapper = mount(withAnalyticsSpy(spy,
       <GrantAccessBase
         {...defaultProps} retrieveUsers={() => Promise.resolve(
@@ -171,9 +178,7 @@ describe('<GrantAccess> analytics', () => {
           ])}
         retrieveAdminIds={() =>
           Promise.resolve([123, 234])}
-        grantAccessToUsers={() => new Promise(resolve =>
-              setTimeout(resolve, 500)
-        )}
+        grantAccessToUsers={mockGrantAccessResolve}
       />));
     expect(spy).not.toHaveBeenCalledWith(
       'xflow.grant-access.continue-button.grant-access-successful',
@@ -183,7 +188,9 @@ describe('<GrantAccess> analytics', () => {
     const continueButton = mountWrapper.find('#xflow-grant-access-continue-button');
     await waitUntil(() => continueButton.not('[disabled]'));
     mountWrapper.find('#xflow-grant-access-continue-button').prop('onClick')();
-
+    // Ensure that the grant access promise has resolved
+    // before checking for consequential events
+    await mockGrantAccessResolvedPromise;
     return waitFor(() => {
       expect(spy).toHaveBeenCalledWith(
         'xflow.grant-access.continue-button.grant-access-successful',
@@ -202,16 +209,19 @@ describe('<GrantAccess> analytics', () => {
 
   it('should fire an appropriate analytics event if granting access failed and using the skip button', async () => {
     const spy = jest.fn();
+    let mockGrantAccessRejectionPromise;
+    const mockGrantAccessRejection = jest.fn(() => {
+      mockGrantAccessRejectionPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Failed to Grant Access to Users')), 500);
+      });
+      return mockGrantAccessRejectionPromise;
+    });
     const mountWrapper = mount(
       withAnalyticsSpy(
         spy,
         <GrantAccessBase
           {...defaultProps}
-          grantAccessToUsers={() =>
-            new Promise((_, reject) =>
-              setTimeout(reject(new Error('Failed to Grant Access to Users')), 500)
-            )
-          }
+          grantAccessToUsers={mockGrantAccessRejection}
         />
       )
     );
@@ -223,7 +233,11 @@ describe('<GrantAccess> analytics', () => {
     const continueButton = mountWrapper.find('#xflow-grant-access-continue-button');
     await waitUntil(() => continueButton.not('[disabled]'));
     mountWrapper.find('#xflow-grant-access-continue-button').prop('onClick')();
-
+    try {
+      await mockGrantAccessRejectionPromise;
+    } catch (e) {
+      // expected
+    }
     await waitFor(() => {
       expect(spy).toHaveBeenCalledWith(
         'xflow.grant-access.continue-button.failed-to-grant-access',

@@ -47,6 +47,7 @@ const ConfirmTrialAdminInfo = styled.div`
   color: ${colors.N200};
   margin: ${math.multiply(gridSize, 2)}px;
   display: inline-block;
+  vertical-align: top;
   
   span {
       display: block;

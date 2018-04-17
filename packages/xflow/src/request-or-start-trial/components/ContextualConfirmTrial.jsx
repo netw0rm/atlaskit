@@ -54,6 +54,7 @@ class ContextualConfirmTrial extends Component {
     startProductTrial: PropTypes.func,
     cancelStartProductTrial: PropTypes.func,
     isOptOutEnabled: PropTypes.bool,
+    canManageSubscriptions: PropTypes.bool,
 
     firePrivateAnalyticsEvent: PropTypes.func.isRequired,
     intl: intlShape.isRequired,
@@ -159,7 +160,7 @@ class ContextualConfirmTrial extends Component {
     );
     return Promise.resolve(cancelStartProductTrial())
       .then(onCancel);
-  }
+  };
 
   renderHeader = (image, contextInfo) => (
     <div id="xflow-contextual-confirm-header">
@@ -175,56 +176,67 @@ class ContextualConfirmTrial extends Component {
     </div>
   );
 
-  renderInactiveFooter = () => (
-    <ContextualConfirmTrialFooter>
-      <ConfirmTrialAdminInfo>
-        <ConfirmTrialAdminInfoImage imageType="card" />
-        <FormattedMessage
-          id="xflow.generic.confirm-trial.card-info"
-          defaultMessage="Once your trial finishes, billing will start."
-        />
-      </ConfirmTrialAdminInfo>
-      <ConfirmTrialAdminInfo>
-        <ConfirmTrialAdminInfoImage imageType="email" />
-        <FormattedMessage
-          id="xflow.generic.confirm-trial.email-info"
-          defaultMessage="Your billing contact will be emailed ten days before."
-        />
-      </ConfirmTrialAdminInfo>
-      <ConfirmTrialAdminInfo>
-        <ConfirmTrialAdminInfoImage imageType="settings" />
-        <FormattedMessage
-          id="xflow.generic.confirm-trial.settings-info"
-          defaultMessage="Cancel your trial at any time in {manageApplicationsLink}."
-          values={{
-            manageApplicationsLink: this.renderManageApplicationsLink(),
-          }}
-        />
-      </ConfirmTrialAdminInfo>
-    </ContextualConfirmTrialFooter>
-  );
+  renderInactiveFooter = () => {
+    const { canManageSubscriptions } = this.props;
 
-  renderReactivateFooter = () => (
-    <ContextualConfirmTrialFooter>
-      <ConfirmTrialAdminInfo columnSize="medium">
-        <ConfirmTrialAdminInfoImage imageType="card" />
-        <FormattedMessage
-          id="xflow.generic.confirm-reactivation.card-info"
-          defaultMessage="Once your subscription reactivates, billing will resume."
-        />
-      </ConfirmTrialAdminInfo>
-      <ConfirmTrialAdminInfo columnSize="medium">
-        <ConfirmTrialAdminInfoImage imageType="settings" />
-        <FormattedMessage
-          id="xflow.generic.confirm-reactivation.settings-info"
-          defaultMessage="Cancel your subscription at any time in {manageApplicationsLink}."
-          values={{
-            manageApplicationsLink: this.renderManageApplicationsLink(),
-          }}
-        />
-      </ConfirmTrialAdminInfo>
-    </ContextualConfirmTrialFooter>
-  );
+    const columnSize = canManageSubscriptions ? 'small' : 'medium';
+
+    return (
+      <ContextualConfirmTrialFooter>
+        <ConfirmTrialAdminInfo columnSize={columnSize}>
+          <ConfirmTrialAdminInfoImage imageType="card" />
+          <FormattedMessage
+            id="xflow.generic.confirm-trial.card-info"
+            defaultMessage="Once your trial finishes, billing will start."
+          />
+        </ConfirmTrialAdminInfo>
+        <ConfirmTrialAdminInfo columnSize={columnSize}>
+          <ConfirmTrialAdminInfoImage imageType="email" />
+          <FormattedMessage
+            id="xflow.generic.confirm-trial.email-info"
+            defaultMessage="Your billing contact will be emailed ten days before."
+          />
+        </ConfirmTrialAdminInfo>
+        { canManageSubscriptions && <ConfirmTrialAdminInfo columnSize={columnSize}>
+          <ConfirmTrialAdminInfoImage imageType="settings" />
+          <FormattedMessage
+            id="xflow.generic.confirm-trial.settings-info"
+            defaultMessage="Cancel your trial at any time in {manageApplicationsLink}."
+            values={{
+              manageApplicationsLink: this.renderManageApplicationsLink(),
+            }}
+          />
+        </ConfirmTrialAdminInfo>}
+      </ContextualConfirmTrialFooter>
+    );
+  };
+
+  renderReactivateFooter = () => {
+    const { canManageSubscriptions } = this.props;
+    const columnSize = canManageSubscriptions ? 'medium' : 'large';
+
+    return (
+      <ContextualConfirmTrialFooter>
+        <ConfirmTrialAdminInfo columnSize={columnSize}>
+          <ConfirmTrialAdminInfoImage imageType="card" />
+          <FormattedMessage
+            id="xflow.generic.confirm-reactivation.card-info"
+            defaultMessage="Once your subscription reactivates, billing will resume."
+          />
+        </ConfirmTrialAdminInfo>
+        { canManageSubscriptions && <ConfirmTrialAdminInfo columnSize={columnSize}>
+          <ConfirmTrialAdminInfoImage imageType="settings" />
+          <FormattedMessage
+            id="xflow.generic.confirm-reactivation.settings-info"
+            defaultMessage="Cancel your subscription at any time in {manageApplicationsLink}."
+            values={{
+              manageApplicationsLink: this.renderManageApplicationsLink(),
+            }}
+          />
+        </ConfirmTrialAdminInfo> }
+      </ContextualConfirmTrialFooter>
+    );
+  };
 
   renderManageApplicationsLink = () => {
     const { status, firePrivateAnalyticsEvent } = this.props;

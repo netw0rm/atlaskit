@@ -2,23 +2,33 @@ import styled from 'styled-components';
 
 import { colors, gridSize, math } from '@atlaskit/theme';
 
+const columnSizes = {
+  small: 21,
+  medium: 33.5,
+  large: 71,
+};
+
+const spanSizes = {
+  small: 21,
+  medium: 28,
+  large: 56,
+};
+const validOrDefaultSize = (size) => (
+  (size in columnSizes) ? size : 'small'
+);
 /**
  * Converts column sizes to gridsize multipliers required
- * @param columnSize tshirt sizing (medium/small supported)
+ * @param columnSize tshirt sizing (large/medium/small supported)
  * @returns {number} Number representing gridsize multiplier required
  */
-const columnWidth = columnSize => (columnSize === 'medium'
-    ? 33.5
-    : 21);
+const columnWidth = (columnSize = 'small') => (columnSizes[validOrDefaultSize(columnSize)]);
 
 /**
  * Converts column sizes to gridsize multipliers required
- * @param columnSize tshirt sizing (medium/small supported)
+ * @param columnSize tshirt sizing (large/medium/small supported)
  * @returns {number} Number representing gridsize multiplier required
  */
-const spanWidth = columnSize => (columnSize === 'medium'
-  ? 28
-  : 21);
+const spanWidth = (columnSize = 'small') => (spanSizes[validOrDefaultSize(columnSize)]);
 
 const ConfirmTrialAdminInfo = styled.div`
   @media all and (max-width: 800px) {
@@ -37,6 +47,7 @@ const ConfirmTrialAdminInfo = styled.div`
   color: ${colors.N200};
   margin: ${math.multiply(gridSize, 2)}px;
   display: inline-block;
+  vertical-align: top;
   
   span {
       display: block;

@@ -23,6 +23,7 @@ describe('<RequestOrStartTrial> Component', () => {
       sourceContext: 'source-context',
       targetProduct: 'target-product',
       retrieveIsOptOutEnabled: jest.fn(() => false),
+      retrieveCanManageSubscriptions: jest.fn(() => true),
       canCurrentUserAddProduct: jest.fn(),
       getProductActivationState: jest.fn(),
       waitForActivation: jest.fn(),

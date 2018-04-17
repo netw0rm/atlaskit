@@ -122,6 +122,7 @@ const defaultProps = {
   retrieveAdminIds: () =>
       Promise.resolve([123, 234]),
   retrieveIsOptOutEnabled: async () => false,
+  retrieveCanManageSubscriptions: async () => true,
   startProductTrial: async () => {},
   cancelStartProductTrial: async () => {},
   grantAccessToUsers: async () => {},

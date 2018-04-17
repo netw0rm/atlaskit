@@ -70,6 +70,8 @@ export const xFlowShape = PropTypes.shape({
   waitForActivation: PropTypes.func,
   cancelStartProductTrial: PropTypes.func,
   grantAccessToUsers: PropTypes.func,
+  getAtlassianAccountId: PropTypes.func,
+  retrieveCurrentUserIsTrusted: PropTypes.func,
   retrieveUsers: PropTypes.func,
   retrieveAdminIds: PropTypes.func,
   retrieveIsOptOutEnabled: PropTypes.func,
@@ -158,7 +160,7 @@ class XFlowProviderBase extends Component {
 
 export const XFlowProvider = injectIntl(XFlowProviderBase);
 
-export const withXFlowProvider = (WrappedComponent, mapContextToProps = () => {}) =>
+export const withXFlowProvider = (WrappedComponent, mapContextToProps = () => { }) =>
   class WithXFlowProvider extends Component {
     static displayName = `WithXFlowProvider(${Component.displayName || Component.name})`;
     static contextTypes = {

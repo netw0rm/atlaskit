@@ -9,7 +9,7 @@ import RequestOrStartTrial from './request-or-start-trial/index';
 
 export function UnknownProductError(message) {
   this.message = message;
-  this.stack = (new Error()).stack;
+  this.stack = new Error().stack;
 }
 UnknownProductError.prototype = Object.create(Error.prototype);
 UnknownProductError.prototype.name = 'UnknownProductError';
@@ -45,15 +45,23 @@ export default class XFlow extends Component {
 
   render() {
     const {
-      targetProduct, sourceComponent, sourceContext, onAnalyticsEvent, onComplete,
-      onTrialActivating, onTrialRequested, contextInfo, isCrossSell, isAdmin, ...props
+      targetProduct,
+      sourceComponent,
+      sourceContext,
+      onAnalyticsEvent,
+      onComplete,
+      onTrialActivating,
+      onTrialRequested,
+      contextInfo,
+      isCrossSell,
+      isAdmin,
+      ...props
     } = this.props;
 
     const XFlowProvider = XFlow.getProviderForProductKey(targetProduct);
     if (!XFlowProvider) {
       throw new UnknownProductError(`No XFlow provider for product ${targetProduct}`);
     }
-
     return (
       <XFlowProvider {...props}>
         <RequestOrStartTrial

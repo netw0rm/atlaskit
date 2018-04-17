@@ -13,6 +13,9 @@ export const licenseInformationEndpoint = cloudId =>
 
 export const startTrialEndpoint = cloudId => `${getXFlowEndPoint()}/${cloudId}/activate-product`;
 
+export const grantAccessToProduct = cloudId =>
+  `${getXFlowEndPoint()}/${cloudId}/grant-access-to-product`;
+
 export const fetchInstanceUsersEndpoint = cloudId =>
   `${getXFlowEndPoint()}/${cloudId}/fetch-instance-users`;
 

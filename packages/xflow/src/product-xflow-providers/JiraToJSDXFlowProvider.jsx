@@ -1,13 +1,17 @@
 import React from 'react';
 import { JiraServiceDeskLogo } from '@atlaskit/logo';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { canUserAddProduct } from '../common/services/tenantContext';
+import { canUserAddProduct, getAtlassianAccountId } from '../common/services/tenantContext';
 import productXFlowProviderFactory from '../common/productXFlowProviderFactory';
 import grantAccessToUsers from '../common/services/grantAccessToUsers';
 import productStatusChecker from '../common/services/productStatusChecker';
 import startProductTrial from '../common/services/startProductTrial';
 import productRequest from '../common/services/productRequest';
-import { setAlreadyRequestedFlag, getAlreadyRequestedFlag } from '../common/services/alreadyRequestedFlag';
+import {
+  setAlreadyRequestedFlag,
+  getAlreadyRequestedFlag,
+} from '../common/services/alreadyRequestedFlag';
+import retrieveCurrentUserIsTrusted from '../common/services/retrieveCurrentUserIsTrusted';
 import retrieveUsers from '../common/services/retrieveUsers';
 import retrieveAdminIds from '../common/services/retrieveAdminIds';
 import { retrieveIsOptOutEnabled } from '../common/services/optOutFeature';
@@ -27,7 +31,8 @@ const messages = defineMessages({
   },
   confirmReactivateMessage0: {
     id: 'xflow.j2jsd.start-trial.reactivate-trial.message.p0',
-    defaultMessage: 'If your instance is eligible for a trial, Jira Service Desk will be free for 30 days.',
+    defaultMessage:
+      'If your instance is eligible for a trial, Jira Service Desk will be free for 30 days.',
   },
   confirmReactivateMessage1: {
     id: 'xflow.j2jsd.start-trial.reactivate-trial.message.p1',
@@ -58,7 +63,7 @@ const messages = defineMessages({
   },
   grantAccessOptionItemsLabelLater: {
     id: 'xflow.j2jsd.start-trial.grant-access.option.later',
-    defaultMessage: 'I\'ll choose my team later',
+    defaultMessage: "I'll choose my team later",
   },
   grantAccessOptionItemsLabelSpecificUsers: {
     id: 'xflow.j2jsd.start-trial.grant-access.option.specific-users',
@@ -90,7 +95,8 @@ const messages = defineMessages({
   },
   alreadyStartedMessage1: {
     id: 'xflow.j2jsd.start-trial.already-started.message.p1',
-    defaultMessage: 'With Jira Service Desk, IT and developer teams can collaborate on one platform to fix incidents faster and push changes with confidence.',
+    defaultMessage:
+      'With Jira Service Desk, IT and developer teams can collaborate on one platform to fix incidents faster and push changes with confidence.',
   },
   alreadyStartedGetStartedButtonText: {
     id: 'xflow.j2jsd.start-trial.already-started.get-started-button',
@@ -104,15 +110,18 @@ const messages = defineMessages({
   },
   accessMessage: {
     id: 'xflow.j2jsd.request-trial.access.message',
-    defaultMessage: 'Get a fully featured service desk with self-service, automation, SLAs, and CSAT reporting.',
+    defaultMessage:
+      'Get a fully featured service desk with self-service, automation, SLAs, and CSAT reporting.',
   },
   notePrompt: {
     id: 'xflow.j2jsd.request-trial.note.prompt',
-    defaultMessage: 'Send a quick note telling your site admin why you’re keen to try Jira Service Desk:',
+    defaultMessage:
+      'Send a quick note telling your site admin why you’re keen to try Jira Service Desk:',
   },
   notePlaceholder: {
     id: 'xflow.j2jsd.request-trial.note.placeholder',
-    defaultMessage: 'I’d like us to give Jira Service Desk a try - it gives dev and IT one platform to work on, and it’s free for 30 days!',
+    defaultMessage:
+      'I’d like us to give Jira Service Desk a try - it gives dev and IT one platform to work on, and it’s free for 30 days!',
   },
 });
 
@@ -148,15 +157,9 @@ export const defaultProps = intl => ({
       confirmReactivateHeading: intl.formatMessage(messages.confirmReactivateHeading),
       confirmReactivateMessage: (
         <div>
-          <p>
-            {intl.formatMessage(messages.confirmReactivateMessage0)}
-          </p>
-          <p>
-            {intl.formatMessage(messages.confirmReactivateMessage1)}
-          </p>
-          <p>
-            {intl.formatMessage(messages.confirmReactivateMessage2)}
-          </p>
+          <p>{intl.formatMessage(messages.confirmReactivateMessage0)}</p>
+          <p>{intl.formatMessage(messages.confirmReactivateMessage1)}</p>
+          <p>{intl.formatMessage(messages.confirmReactivateMessage2)}</p>
         </div>
       ),
 
@@ -191,7 +194,8 @@ export const defaultProps = intl => ({
           label: intl.formatMessage(messages.grantAccessOptionItemsLabelSpecificUsers),
         },
       ],
-      grantAccessLearnMoreLink: 'https://www.atlassian.com/software/jira/service-desk/pricing?tab=cloud',
+      grantAccessLearnMoreLink:
+        'https://www.atlassian.com/software/jira/service-desk/pricing?tab=cloud',
 
       loadingProductGotoProductButton: intl.formatMessage(messages.loadingProductGotoProductButton),
 
@@ -199,13 +203,9 @@ export const defaultProps = intl => ({
 
       alreadyStartedMessage: (
         <div>
-          <p>
-            {intl.formatMessage(messages.alreadyStartedMessage0)}
-          </p>
+          <p>{intl.formatMessage(messages.alreadyStartedMessage0)}</p>
 
-          <p>
-            {intl.formatMessage(messages.alreadyStartedMessage1)}
-          </p>
+          <p>{intl.formatMessage(messages.alreadyStartedMessage1)}</p>
         </div>
       ),
       alreadyStartedGetStartedButtonText: intl.formatMessage(
@@ -222,7 +222,9 @@ export const defaultProps = intl => ({
   startProductTrial: startProductTrial(PRODUCT_KEY),
   cancelStartProductTrial: async () => {},
   productStatusChecker: productStatusChecker(PRODUCT_KEY),
-  grantAccessToUsers: grantAccessToUsers('jira-servicedesk-users', 'Jira Service Desk', 'Grants access to Jira Service Desk'),
+  grantAccessToUsers: grantAccessToUsers(PRODUCT_KEY),
+  getAtlassianAccountId,
+  retrieveCurrentUserIsTrusted,
   retrieveUsers,
   retrieveAdminIds,
   retrieveIsOptOutEnabled,

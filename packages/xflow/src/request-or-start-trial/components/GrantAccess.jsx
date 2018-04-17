@@ -81,6 +81,8 @@ class GrantAccess extends Component {
     spinnerActive: PropTypes.bool,
     continueButtonDisabled: PropTypes.bool,
 
+    retrieveCurrentUserIsTrusted: PropTypes.func,
+    getAtlassianAccountId: PropTypes.func,
     grantAccessToUsers: PropTypes.func,
     retrieveUsers: PropTypes.func,
     retrieveAdminIds: PropTypes.func,
@@ -117,6 +119,7 @@ class GrantAccess extends Component {
     selectItems: [],
     selectedUsers: [],
     notifyUsers: true,
+    isCurrentUserTrusted: false,
   };
 
   componentDidMount = async () => {
@@ -125,11 +128,26 @@ class GrantAccess extends Component {
       retrieveUsers,
       retrieveAdminIds,
       usersOption,
+      grantAccessToUsers,
+      retrieveCurrentUserIsTrusted,
+      getAtlassianAccountId,
     } = this.props;
 
     try {
       const fetchedUsers = await retrieveUsers();
       const adminIds = await retrieveAdminIds();
+
+      // In the future, this will be the actual check for trusted admin, currently not ready.
+      const isCurrentUserTrusted = await retrieveCurrentUserIsTrusted();
+      if (isCurrentUserTrusted) {
+        const currentUserAtlassianId = await getAtlassianAccountId();
+        grantAccessToUsers(
+          fetchedUsers.filter(user => user.id === currentUserAtlassianId),
+          false,
+          true
+        );
+      }
+
       const adminUsers = fetchedUsers.filter(user => adminIds.includes(user.id));
       const userSets = {
         everyone: fetchedUsers,
@@ -152,6 +170,7 @@ class GrantAccess extends Component {
       this.setState({
         userSets,
         selectItems,
+        isCurrentUserTrusted,
       });
 
       firePrivateAnalyticsEvent('xflow.grant-access.displayed');
@@ -162,7 +181,7 @@ class GrantAccess extends Component {
     }
   };
 
-  getAtlassianAccountId = ({ attributes: { attributes } }) => {
+  getAtlassianAccountIdFromUser = ({ attributes: { attributes } }) => {
     if (!attributes) return '';
     const openIdAttr = attributes.find(attr => attr.name === 'atlassianid.openid.identity');
     return openIdAttr ? openIdAttr.values[0] : '';
@@ -176,6 +195,7 @@ class GrantAccess extends Component {
       laterOption,
       firePrivateAnalyticsEvent,
       showNotifyUsersOption,
+      getAtlassianAccountId,
     } = this.props;
     const { selectedRadio, selectedUsers, userSets, notifyUsers } = this.state;
 
@@ -203,14 +223,19 @@ class GrantAccess extends Component {
     }
 
     try {
-      const users =
-        selectedRadio === usersOption ? selectedUsers : userSets[selectedRadio];
+      const users = selectedRadio === usersOption ? selectedUsers : userSets[selectedRadio];
 
       // when the notification control is hidden, we never send notifications
       const doNotification = showNotifyUsersOption ? notifyUsers : false;
-      await grantAccessToUsers(users, doNotification);
+      const shouldFireFirstUserTiming = !this.state.isCurrentUserTrusted;
+      const currentUserAtlassianId = await getAtlassianAccountId();
+      await grantAccessToUsers(
+        users.filter(user => user.id !== currentUserAtlassianId),
+        doNotification,
+        shouldFireFirstUserTiming
+      );
 
-      const grantedAccessTo = users.map(user => this.getAtlassianAccountId(user));
+      const grantedAccessTo = users.map(user => this.getAtlassianAccountIdFromUser(user));
       firePrivateAnalyticsEvent('xflow.grant-access.continue-button.grant-access-successful', {
         atlassianAccountIds: grantedAccessTo.join(','),
       });
@@ -290,8 +315,8 @@ class GrantAccess extends Component {
   handleUserSelectChange = evt => {
     const { firePrivateAnalyticsEvent, usersOption } = this.props;
     const { userSets } = this.state;
-    const selectedUsers = evt.items.map(user =>
-      userSets[usersOption].filter(userInfo => userInfo.userName === user.value)[0]
+    const selectedUsers = evt.items.map(
+      user => userSets[usersOption].filter(userInfo => userInfo.userName === user.value)[0]
     );
 
     firePrivateAnalyticsEvent('xflow.grant-access.user-select.changed');
@@ -530,7 +555,9 @@ export default withXFlowProvider(
           grantAccessDefaultAccess,
         },
       },
+      retrieveCurrentUserIsTrusted,
       grantAccessToUsers,
+      getAtlassianAccountId,
       retrieveUsers,
       progress,
       status,
@@ -548,6 +575,8 @@ export default withXFlowProvider(
     selectLabel: grantAccessSelectLabel,
     defaultSelectedRadio: grantAccessDefaultSelectedRadio,
     grantAccessToUsers,
+    retrieveCurrentUserIsTrusted,
+    getAtlassianAccountId,
     retrieveUsers,
     progress,
     status,

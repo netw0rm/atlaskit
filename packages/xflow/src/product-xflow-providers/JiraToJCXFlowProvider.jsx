@@ -1,13 +1,17 @@
 import React from 'react';
 import { JiraCoreLogo } from '@atlaskit/logo';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { canUserAddProduct } from '../common/services/tenantContext';
+import { canUserAddProduct, getAtlassianAccountId } from '../common/services/tenantContext';
 import productXFlowProviderFactory from '../common/productXFlowProviderFactory';
 import grantAccessToUsers from '../common/services/grantAccessToUsers';
 import productStatusChecker from '../common/services/productStatusChecker';
 import startProductTrial from '../common/services/startProductTrial';
 import productRequest from '../common/services/productRequest';
-import { setAlreadyRequestedFlag, getAlreadyRequestedFlag } from '../common/services/alreadyRequestedFlag';
+import {
+  setAlreadyRequestedFlag,
+  getAlreadyRequestedFlag,
+} from '../common/services/alreadyRequestedFlag';
+import retrieveCurrentUserIsTrusted from '../common/services/retrieveCurrentUserIsTrusted';
 import retrieveUsers from '../common/services/retrieveUsers';
 import retrieveAdminIds from '../common/services/retrieveAdminIds';
 import { retrieveIsOptOutEnabled } from '../common/services/optOutFeature';
@@ -56,7 +60,8 @@ const messages = defineMessages({
   },
   alreadyStartedMessage1: {
     id: 'xflow.j2jc.start-trial.already-started.message.p1',
-    defaultMessage: 'Jira Core brings perfect project planning to any team, making it simple to monitor progress and measure performance.',
+    defaultMessage:
+      'Jira Core brings perfect project planning to any team, making it simple to monitor progress and measure performance.',
   },
   alreadyStartedGetStartedButtonText: {
     id: 'xflow.j2jc.start-trial.already-started.get-started-button',
@@ -104,7 +109,8 @@ const messages = defineMessages({
   },
   notePlaceholder: {
     id: 'xflow.j2jc.request-trial.note.placeholder',
-    defaultMessage: 'I’d like us to give Jira Core a try - it’s simple, powerful project management for any type of team, and it’s free for 30 days!',
+    defaultMessage:
+      'I’d like us to give Jira Core a try - it’s simple, powerful project management for any type of team, and it’s free for 30 days!',
   },
 });
 
@@ -140,15 +146,9 @@ export const defaultProps = intl => ({
       confirmReactivateHeading: intl.formatMessage(messages.confirmReactivateHeading),
       confirmReactivateMessage: (
         <div>
-          <p>
-            {intl.formatMessage(messages.confirmReactivateMessage0)}
-          </p>
-          <p>
-            {intl.formatMessage(messages.confirmReactivateMessage1)}
-          </p>
-          <p>
-            {intl.formatMessage(messages.confirmReactivateMessage2)}
-          </p>
+          <p>{intl.formatMessage(messages.confirmReactivateMessage0)}</p>
+          <p>{intl.formatMessage(messages.confirmReactivateMessage1)}</p>
+          <p>{intl.formatMessage(messages.confirmReactivateMessage2)}</p>
         </div>
       ),
 
@@ -182,13 +182,9 @@ export const defaultProps = intl => ({
 
       alreadyStartedMessage: (
         <div>
-          <p>
-            {intl.formatMessage(messages.alreadyStartedMessage0)}
-          </p>
+          <p>{intl.formatMessage(messages.alreadyStartedMessage0)}</p>
 
-          <p>
-            {intl.formatMessage(messages.alreadyStartedMessage1)}
-          </p>
+          <p>{intl.formatMessage(messages.alreadyStartedMessage1)}</p>
         </div>
       ),
       alreadyStartedGetStartedButtonText: intl.formatMessage(
@@ -205,7 +201,9 @@ export const defaultProps = intl => ({
   startProductTrial: startProductTrial(PRODUCT_KEY),
   cancelStartProductTrial: async () => {},
   productStatusChecker: productStatusChecker(PRODUCT_KEY),
-  grantAccessToUsers: grantAccessToUsers('jira-core-users', 'Jira Core', 'Grants access to Jira Core'),
+  grantAccessToUsers: grantAccessToUsers(PRODUCT_KEY),
+  getAtlassianAccountId,
+  retrieveCurrentUserIsTrusted,
   retrieveUsers,
   retrieveAdminIds,
   retrieveIsOptOutEnabled,

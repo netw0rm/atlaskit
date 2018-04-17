@@ -14,7 +14,7 @@ describe('<GrantAccess> analytics', () => {
   beforeEach(() => fetchMock.catch(417));
   afterEach(fetchMock.restore);
 
-  const noop = () => {};
+  const noop = () => { };
 
   const defaultProps = {
     productLogo: <div />,
@@ -40,6 +40,8 @@ describe('<GrantAccess> analytics', () => {
       },
     ],
     learnMoreLink: 'https://atlassian.com',
+    retrieveCurrentUserIsTrusted: async () => false,
+    getAtlassianAccountId: async () => 123,
   };
 
   it('should fire an appropriate analytics event when it is mounted', () => {

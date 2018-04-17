@@ -1,13 +1,17 @@
 import React from 'react';
 import { JiraSoftwareLogo } from '@atlaskit/logo';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { canUserAddProduct } from '../common/services/tenantContext';
+import { canUserAddProduct, getAtlassianAccountId } from '../common/services/tenantContext';
 import productXFlowProviderFactory from '../common/productXFlowProviderFactory';
 import grantAccessToUsers from '../common/services/grantAccessToUsers';
 import productStatusChecker from '../common/services/productStatusChecker';
 import startProductTrial from '../common/services/startProductTrial';
 import productRequest from '../common/services/productRequest';
-import { setAlreadyRequestedFlag, getAlreadyRequestedFlag } from '../common/services/alreadyRequestedFlag';
+import {
+  setAlreadyRequestedFlag,
+  getAlreadyRequestedFlag,
+} from '../common/services/alreadyRequestedFlag';
+import retrieveCurrentUserIsTrusted from '../common/services/retrieveCurrentUserIsTrusted';
 import retrieveUsers from '../common/services/retrieveUsers';
 import retrieveAdminIds from '../common/services/retrieveAdminIds';
 import { retrieveIsOptOutEnabled } from '../common/services/optOutFeature';
@@ -27,7 +31,8 @@ const messages = defineMessages({
   },
   confirmReactivateMessage0: {
     id: 'xflow.j2jsw.start-trial.reactivate-trial.message.p0',
-    defaultMessage: 'If your instance is eligible for a trial, Jira Software will be free for 30 days.',
+    defaultMessage:
+      'If your instance is eligible for a trial, Jira Software will be free for 30 days.',
   },
   confirmReactivateMessage1: {
     id: 'xflow.j2jsw.start-trial.reactivate-trial.message.p1',
@@ -56,7 +61,8 @@ const messages = defineMessages({
   },
   alreadyStartedMessage1: {
     id: 'xflow.j2jsw.start-trial.already-started.message.p1',
-    defaultMessage: 'Jira Software is built for every member of your team to plan, track, and release great software.',
+    defaultMessage:
+      'Jira Software is built for every member of your team to plan, track, and release great software.',
   },
   alreadyStartedGetStartedButtonText: {
     id: 'xflow.j2jsw.start-trial.already-started.get-started-button',
@@ -96,15 +102,18 @@ const messages = defineMessages({
   },
   accessMessage: {
     id: 'xflow.j2jsw.request-trial.access.message',
-    defaultMessage: 'Jira Software is built for every member of the team to plan, track, and release great software.',
+    defaultMessage:
+      'Jira Software is built for every member of the team to plan, track, and release great software.',
   },
   notePrompt: {
     id: 'xflow.j2jsw.request-trial.note.prompt',
-    defaultMessage: 'Send a quick note telling your site admin why you’re keen to try Jira Software:',
+    defaultMessage:
+      'Send a quick note telling your site admin why you’re keen to try Jira Software:',
   },
   notePlaceholder: {
     id: 'xflow.j2jsw.request-trial.note.placeholder',
-    defaultMessage: 'I’d like us to give Jira Software a try - it’s built for every member of our team to plan, track, and release great software, and it’s free for 30 days!',
+    defaultMessage:
+      'I’d like us to give Jira Software a try - it’s built for every member of our team to plan, track, and release great software, and it’s free for 30 days!',
   },
 });
 
@@ -140,15 +149,9 @@ export const defaultProps = intl => ({
       confirmReactivateHeading: intl.formatMessage(messages.confirmReactivateHeading),
       confirmReactivateMessage: (
         <div>
-          <p>
-            {intl.formatMessage(messages.confirmReactivateMessage0)}
-          </p>
-          <p>
-            {intl.formatMessage(messages.confirmReactivateMessage1)}
-          </p>
-          <p>
-            {intl.formatMessage(messages.confirmReactivateMessage2)}
-          </p>
+          <p>{intl.formatMessage(messages.confirmReactivateMessage0)}</p>
+          <p>{intl.formatMessage(messages.confirmReactivateMessage1)}</p>
+          <p>{intl.formatMessage(messages.confirmReactivateMessage2)}</p>
         </div>
       ),
 
@@ -182,13 +185,9 @@ export const defaultProps = intl => ({
 
       alreadyStartedMessage: (
         <div>
-          <p>
-            {intl.formatMessage(messages.alreadyStartedMessage0)}
-          </p>
+          <p>{intl.formatMessage(messages.alreadyStartedMessage0)}</p>
 
-          <p>
-            {intl.formatMessage(messages.alreadyStartedMessage1)}
-          </p>
+          <p>{intl.formatMessage(messages.alreadyStartedMessage1)}</p>
         </div>
       ),
       alreadyStartedGetStartedButtonText: intl.formatMessage(
@@ -203,11 +202,15 @@ export const defaultProps = intl => ({
   startProductTrial: startProductTrial(PRODUCT_KEY),
   cancelStartProductTrial: async () => {},
   productStatusChecker: productStatusChecker(PRODUCT_KEY),
-  grantAccessToUsers: grantAccessToUsers('jira-software-users', 'Jira Software', 'Grants access to Jira Software'),
+  grantAccessToUsers: grantAccessToUsers(PRODUCT_KEY),
+  getAtlassianAccountId,
+  retrieveCurrentUserIsTrusted,
   retrieveUsers,
   retrieveAdminIds,
   retrieveIsOptOutEnabled,
-  goToProduct: () => { window.top.location.href = '/onboarding/software'; },
+  goToProduct: () => {
+    window.top.location.href = '/onboarding/software';
+  },
   closeLoadingDialog: async () => {},
   closeAlreadyStartedDialog: async () => {},
   checkProductRequestFlag: () => getAlreadyRequestedFlag(PRODUCT_KEY),

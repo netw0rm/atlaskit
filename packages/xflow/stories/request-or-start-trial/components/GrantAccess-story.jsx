@@ -40,6 +40,9 @@ const defaultProps = {
   continueButtonDisabled: false,
 
   grantAccessToUsers: action('grantAccessToUsers'),
+  retrieveCurrentUserIsTrusted: () =>
+    new Promise(resolve => setTimeout(() => resolve(false), 1000)),
+  getAtlassianAccountId: () => new Promise(resolve => setTimeout(() => resolve(123), 1000)),
 
   retrieveUsers: () =>
     new Promise(resolve => setTimeout(() => resolve([
@@ -136,9 +139,25 @@ storiesOf('request-or-start-trial/GrantAccess', module)
       changeUsers
       defaultSelectedRadio="everyone"
       grantAccessToUsers={() => {
-        action('grantAccessToUsers')();
-        console.log('grantAccessToUsers', ...arguments);
+        action('grantAccessToUsers')(...arguments);
         return new Promise((_, reject) => setTimeout(reject(new Error('Error granting access.')), 1500));
+      }}
+    />
+  )
+  .add('Grant Access dialog, if user is trusted first grant access to itself', () =>
+    <GrantAccessBase
+      {...defaultProps}
+      changeUsers
+      defaultSelectedRadio="everyone"
+      retrieveCurrentUserIsTrusted={() => {
+        const result = true;
+        action('retrieveCurrentUserIsTrusted')(result);
+        return new Promise(resolve => setTimeout(() => resolve(result), 1000));
+      }}
+      getAtlassianAccountId={() => {
+        const result = 123;
+        action('getAtlassianAccountId')(result);
+        return new Promise(resolve => setTimeout(() => resolve(result), 1000));
       }}
     />
   );

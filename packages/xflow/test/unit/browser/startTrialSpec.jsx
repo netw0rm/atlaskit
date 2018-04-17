@@ -31,7 +31,7 @@ import XFlowAnalyticsListener from '../../../src/common/components/XFlowAnalytic
 // eslint-disable-next-line global-require
 jest.mock('@atlaskit/modal-dialog', () => require('../__mocks__/modal-dialog-mock'));
 
-const noop = () => {};
+const noop = () => { };
 
 // More tests should try to extract actual copy from the ProviderConfig,
 // instead of being hardcoded in the test
@@ -120,17 +120,19 @@ const defaultProps = {
       },
     ]),
   retrieveAdminIds: () =>
-      Promise.resolve([123, 234]),
+    Promise.resolve([123, 234]),
   retrieveIsOptOutEnabled: async () => false,
-  startProductTrial: async () => {},
-  cancelStartProductTrial: async () => {},
-  grantAccessToUsers: async () => {},
-  goToProduct: async () => {},
-  closeLoadingDialog: async () => {},
-  requestTrialWithNote: async () => {},
-  cancelRequestTrial: async () => {},
-  checkProductRequestFlag: async () => {},
-  setProductRequestFlag: async () => {},
+  startProductTrial: async () => { },
+  cancelStartProductTrial: async () => { },
+  grantAccessToUsers: async () => { },
+  goToProduct: async () => { },
+  closeLoadingDialog: async () => { },
+  requestTrialWithNote: async () => { },
+  cancelRequestTrial: async () => { },
+  checkProductRequestFlag: async () => { },
+  setProductRequestFlag: async () => { },
+  retrieveCurrentUserIsTrusted: async () => { },
+  getAtlassianAccountId: async () => { },
 };
 
 const defaultRequestOrStartTrialProps = {
@@ -195,6 +197,7 @@ describe('@atlaskit/xflow', () => {
       await waitUntil(() => xflow.find(GrantAccess).length === 1);
 
       const grantAccess = xflow.find(GrantAccess);
+
       clickOnText(grantAccess, 'Manage');
 
       const everyoneLabel = getXFlowProviderConfig().startTrial.grantAccessOptionItems.filter(

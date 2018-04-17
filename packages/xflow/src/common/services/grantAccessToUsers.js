@@ -1,63 +1,38 @@
 import 'es6-promise/auto';
 import 'whatwg-fetch';
 import notifyUsersAccessGranted from './notifyUsersAccessGranted';
-
-export const CREATE_GROUP_URL = '/admin/rest/um/1/group';
-export const addUsersUrl = (groupname) => `/admin/rest/um/1/group/user/direct?groupname=${groupname}`;
+import { grantAccessToProduct } from './xflowService';
+import { fetchCloudId } from './tenantContext';
 
 /**
- * Grants access to users to a particular group, and notifies the users granted access
- * @param groupname
- * @param product
+ * Grants access to users to a particular product
+ * @param productKey
  */
-export default (groupname, product, description = '') => {
-  async function createUsersGroup() {
-    // attempt to create group if it does not already exist
-    const response = await fetch(CREATE_GROUP_URL, {
-      method: 'POST',
+export default productKey => {
+  async function grantAccess(userIds, shouldFireFirstUserAddedDuration) {
+    const cloudId = await fetchCloudId();
+    const response = await fetch(grantAccessToProduct(cloudId), {
+      method: 'PUT',
       credentials: 'same-origin',
       body: JSON.stringify({
-        name: groupname,
-        description,
-        type: 'GROUP',
+        productKey,
+        userIds,
+        shouldFireFirstUserAddedDuration,
       }),
       headers: {
         'Content-Type': 'application/json',
       },
     });
 
-    if (!((response.status >= 200 && response.status < 300) || response.status === 400)) {
-      throw new Error(`Unable to create ${groupname} group. Status: ${response.status}`);
+    if (!response.ok) {
+      throw new Error(`Unable to grant access to ${productKey}. Status: ${response.status}`);
     }
   }
-
-  async function addUsersToUsersGroup(users) {
-    const response = await fetch(addUsersUrl(groupname), {
-      method: 'POST',
-      credentials: 'same-origin',
-      body: JSON.stringify({
-        users,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (response.status !== 200) {
-      throw new Error(`Unable to grant access to users. Status: ${response.status}`);
-    }
-
-    return await response.json();
-  }
-
-  return async (users, notifyUsers = true) => {
-    await createUsersGroup();
-    const data = await addUsersToUsersGroup(users.map(user => ({ name: user.name })));
+  return async (users, notifyUsers = true, shouldFireFirstUserAddedDuration = true) => {
+    await grantAccess(users.map(user => user.id), shouldFireFirstUserAddedDuration);
 
     if (notifyUsers) {
-      await notifyUsersAccessGranted(users, product);
+      await notifyUsersAccessGranted(users, productKey);
     }
-
-    return data ? data.users : [];
   };
 };

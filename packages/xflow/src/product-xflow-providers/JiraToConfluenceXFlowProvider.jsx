@@ -2,13 +2,17 @@ import React from 'react';
 import { ConfluenceLogo } from '@atlaskit/logo';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
-import { canUserAddProduct } from '../common/services/tenantContext';
+import { canUserAddProduct, getAtlassianAccountId } from '../common/services/tenantContext';
 import productXFlowProviderFactory from '../common/productXFlowProviderFactory';
-import { setAlreadyRequestedFlag, getAlreadyRequestedFlag } from '../common/services/alreadyRequestedFlag';
+import {
+  setAlreadyRequestedFlag,
+  getAlreadyRequestedFlag,
+} from '../common/services/alreadyRequestedFlag';
 import productRequest from '../common/services/productRequest';
 import startProductTrial from '../common/services/startProductTrial';
 import productStatusChecker from '../common/services/productStatusChecker';
 import grantAccessToUsers from '../common/services/grantAccessToUsers';
+import retrieveCurrentUserIsTrusted from '../common/services/retrieveCurrentUserIsTrusted';
 import retrieveUsers from '../common/services/retrieveUsers';
 import retrieveAdminIds from '../common/services/retrieveAdminIds';
 import { retrieveIsOptOutEnabled } from '../common/services/optOutFeature';
@@ -106,7 +110,8 @@ const messages = defineMessages({
   },
   accessMessage: {
     id: 'xflow.j2c.request-trial.access.message',
-    defaultMessage: 'Confluence helps your team create and collaborate on project documentation and it integrates perfectly with Jira.',
+    defaultMessage:
+      'Confluence helps your team create and collaborate on project documentation and it integrates perfectly with Jira.',
   },
   notePrompt: {
     id: 'xflow.j2c.request-trial.note.prompt',
@@ -208,11 +213,15 @@ export const defaultProps = intl => ({
   startProductTrial: startProductTrial(PRODUCT_KEY),
   cancelStartProductTrial: async () => {},
   productStatusChecker: productStatusChecker(PRODUCT_KEY),
-  grantAccessToUsers: grantAccessToUsers('confluence-users', 'confluence'),
+  grantAccessToUsers: grantAccessToUsers(PRODUCT_KEY),
+  getAtlassianAccountId,
+  retrieveCurrentUserIsTrusted,
   retrieveUsers,
   retrieveAdminIds,
   retrieveIsOptOutEnabled,
-  goToProduct: () => { window.top.location.href = '/wiki/'; },
+  goToProduct: () => {
+    window.top.location.href = '/wiki/';
+  },
   closeLoadingDialog: async () => {},
   closeAlreadyStartedDialog: async () => {},
   checkProductRequestFlag: () => getAlreadyRequestedFlag(PRODUCT_KEY),

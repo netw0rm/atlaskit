@@ -45,6 +45,7 @@ class RequestOrStartTrial extends Component {
     canCurrentUserAddProduct: PropTypes.func.isRequired,
     getProductActivationState: PropTypes.func.isRequired,
     retrieveIsOptOutEnabled: PropTypes.func.isRequired,
+    retrieveCanManageSubscriptions: PropTypes.func.isRequired,
     checkProductRequestFlag: PropTypes.func,
     waitForActivation: PropTypes.func.isRequired,
     onComplete: PropTypes.func,

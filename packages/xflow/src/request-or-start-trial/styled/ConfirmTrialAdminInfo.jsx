@@ -13,20 +13,19 @@ const spanSizes = {
   medium: 28,
   large: 56,
 };
-const validOrDefaultSize = (size) => {
-  return (size in columnSizes) ? size : 'small';
-};
-
+const validOrDefaultSize = (size) => (
+  (size in columnSizes) ? size : 'small'
+);
 /**
  * Converts column sizes to gridsize multipliers required
- * @param columnSize tshirt sizing (medium/small supported)
+ * @param columnSize tshirt sizing (large/medium/small supported)
  * @returns {number} Number representing gridsize multiplier required
  */
 const columnWidth = (columnSize = 'small') => (columnSizes[validOrDefaultSize(columnSize)]);
 
 /**
  * Converts column sizes to gridsize multipliers required
- * @param columnSize tshirt sizing (medium/small supported)
+ * @param columnSize tshirt sizing (large/medium/small supported)
  * @returns {number} Number representing gridsize multiplier required
  */
 const spanWidth = (columnSize = 'small') => (spanSizes[validOrDefaultSize(columnSize)]);

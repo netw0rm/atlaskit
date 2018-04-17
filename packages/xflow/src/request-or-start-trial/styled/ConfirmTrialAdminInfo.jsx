@@ -2,23 +2,34 @@ import styled from 'styled-components';
 
 import { colors, gridSize, math } from '@atlaskit/theme';
 
-/**
- * Converts column sizes to gridsize multipliers required
- * @param columnSize tshirt sizing (medium/small supported)
- * @returns {number} Number representing gridsize multiplier required
- */
-const columnWidth = columnSize => (columnSize === 'medium'
-    ? 33.5
-    : 21);
+const columnSizes = {
+  small: 21,
+  medium: 33.5,
+  large: 71,
+};
+
+const spanSizes = {
+  small: 21,
+  medium: 28,
+  large: 56,
+};
+const validOrDefaultSize = (size) => {
+  return (size in columnSizes) ? size : 'small';
+};
 
 /**
  * Converts column sizes to gridsize multipliers required
  * @param columnSize tshirt sizing (medium/small supported)
  * @returns {number} Number representing gridsize multiplier required
  */
-const spanWidth = columnSize => (columnSize === 'medium'
-  ? 28
-  : 21);
+const columnWidth = (columnSize = 'small') => (columnSizes[validOrDefaultSize(columnSize)]);
+
+/**
+ * Converts column sizes to gridsize multipliers required
+ * @param columnSize tshirt sizing (medium/small supported)
+ * @returns {number} Number representing gridsize multiplier required
+ */
+const spanWidth = (columnSize = 'small') => (spanSizes[validOrDefaultSize(columnSize)]);
 
 const ConfirmTrialAdminInfo = styled.div`
   @media all and (max-width: 800px) {

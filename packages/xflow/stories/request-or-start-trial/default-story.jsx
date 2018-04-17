@@ -35,7 +35,11 @@ const XFLOW_PROVIDERS_UNDER_TEST = {
   },
 };
 
-const mockRetrieveIsOptOutEnabled = (isEnabled) => () => Promise.resolve(isEnabled);
+const mockResolveValue = (isEnabled) => () => Promise.resolve(isEnabled);
+
+const mockRetrieveIsOptOutEnabled = mockResolveValue;
+const mockCanManageSubscriptions = mockResolveValue;
+
 const defaultXFlowProviderProps = {
   canCurrentUserAddProduct: () => true,
   retrieveUsers: () =>
@@ -114,6 +118,7 @@ const defaultXFlowProviderProps = {
   retrieveAdminIds: () =>
       Promise.resolve([123, 234]),
   retrieveIsOptOutEnabled: mockRetrieveIsOptOutEnabled(false),
+  retrieveCanManageSubscriptions: mockCanManageSubscriptions(true),
   cancelStartProductTrial: action('mock cancelStartProductTrial'),
   grantAccessToUsers: (...args) => {
     action('mock grantAccessToUsers')(...args);
@@ -188,6 +193,13 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
     );
 
   if (hasContextualStart) {
+    const contextInfo = {
+      contextualHeading: 'Project pages are powered by Confluence',
+      contextualMessage: 'Create, share, and collaborate on all your project docs in one place, with Confluence pages.',
+      reactivateCTA: 'Reactivate Confluence',
+      trialCTA: 'Try Confluence free for 30 days',
+    };
+
     stories = stories.add('User can add a product (INACTIVE), Contextual Start Trial flow with Grant Access screen', () =>
       <MockXFlowProvider
         {...defaultXFlowProviderProps}
@@ -195,12 +207,7 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
         <RequestOrStartTrial
           {...defaultRequestOrStartTrialProps}
           onTrialActivating={action('onTrialActivating')}
-          contextInfo={{
-            contextualHeading: 'Project pages are powered by Confluence',
-            contextualMessage: 'Create, share, and collaborate on all your project docs in one place, with Confluence pages.',
-            reactivateCTA: 'Reactivate Confluence',
-            trialCTA: 'Try Confluence free for 30 days',
-          }}
+          contextInfo={contextInfo}
         />
       </MockXFlowProvider>
     )
@@ -212,12 +219,20 @@ forEach(XFLOW_PROVIDERS_UNDER_TEST, ({ provider, hasGrantAccess, hasContextualSt
         >
           <RequestOrStartTrial
             {...defaultRequestOrStartTrialProps}
-            contextInfo={{
-              contextualHeading: 'Project pages are powered by Confluence',
-              contextualMessage: 'Create, share, and collaborate on all your project docs in one place, with Confluence pages.',
-              reactivateCTA: 'Reactivate Confluence',
-              trialCTA: 'Try Confluence free for 30 days',
-            }}
+            contextInfo={contextInfo}
+            isCrossSell
+          />
+        </MockXFlowProvider>
+      )
+      .add('User can add a product (DEACTIVATED), Contextual Start Trial flow without Grant Access screen and manage subscriptions link', () =>
+        <MockXFlowProvider
+          {...defaultXFlowProviderProps}
+          productStatusChecker={mockProductStatusChecker(DEACTIVATED)}
+          retrieveCanManageSubscriptions={mockCanManageSubscriptions(false)}
+        >
+          <RequestOrStartTrial
+            {...defaultRequestOrStartTrialProps}
+            contextInfo={contextInfo}
             isCrossSell
           />
         </MockXFlowProvider>

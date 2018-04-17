@@ -15,6 +15,7 @@ import retrieveCurrentUserIsTrusted from '../common/services/retrieveCurrentUser
 import retrieveUsers from '../common/services/retrieveUsers';
 import retrieveAdminIds from '../common/services/retrieveAdminIds';
 import { retrieveIsOptOutEnabled } from '../common/services/optOutFeature';
+import retrieveCanManageSubscriptions from '../common/services/retrieveCanManageSubscriptions';
 
 const PRODUCT_KEY = 'jira-servicedesk.ondemand';
 
@@ -228,6 +229,7 @@ export const defaultProps = intl => ({
   retrieveUsers,
   retrieveAdminIds,
   retrieveIsOptOutEnabled,
+  retrieveCanManageSubscriptions,
   goToProduct: () => {
     window.top.location.href = '/secure/LandingPage.jspa?product=jira-servicedesk';
   },

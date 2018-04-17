@@ -23,6 +23,7 @@ class ContextualStartTrial extends Component {
     onComplete: PropTypes.func,
     onTrialActivating: PropTypes.func,
     isOptOutEnabled: PropTypes.bool,
+    canManageSubscriptions: PropTypes.bool,
 
     firePrivateAnalyticsEvent: PropTypes.func.isRequired,
   };
@@ -41,6 +42,7 @@ class ContextualStartTrial extends Component {
       firePrivateAnalyticsEvent,
       contextInfo,
       isOptOutEnabled,
+      canManageSubscriptions,
     } = this.props;
     return (
       <MultiStep start={0} onComplete={onComplete}>
@@ -59,6 +61,7 @@ class ContextualStartTrial extends Component {
               onCancel={cancel}
               contextInfo={contextInfo}
               isOptOutEnabled={isOptOutEnabled}
+              canManageSubscriptions={canManageSubscriptions}
             />}
         />
         <Step render={nextStep => <GrantAccess onComplete={nextStep} />} />

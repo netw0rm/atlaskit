@@ -45,6 +45,7 @@ class RequestOrStartTrial extends Component {
     canCurrentUserAddProduct: PropTypes.func.isRequired,
     getProductActivationState: PropTypes.func.isRequired,
     retrieveIsOptOutEnabled: PropTypes.func.isRequired,
+    retrieveCanManageSubscriptions: PropTypes.func.isRequired,
     checkProductRequestFlag: PropTypes.func,
     waitForActivation: PropTypes.func.isRequired,
     onComplete: PropTypes.func,
@@ -87,6 +88,7 @@ class RequestOrStartTrial extends Component {
     let hasPermissionToAddProduct;
 
     await this.fetchIsOptOutEnabled();
+    await this.fetchCanManageSubscriptions();
 
     try {
       hasPermissionToAddProduct = await this.props.canCurrentUserAddProduct();
@@ -129,6 +131,21 @@ class RequestOrStartTrial extends Component {
 
     this.setState({
       isOptOutEnabled,
+    });
+  };
+
+  fetchCanManageSubscriptions = async () => {
+    const { isAdmin } = this.props;
+    let canManageSubscriptions;
+    try {
+      canManageSubscriptions = await this.props.retrieveCanManageSubscriptions({ isAdmin });
+    } catch (e) {
+      this.onFailure('can-manage-subscriptions-check');
+      throw e;
+    }
+
+    this.setState({
+      canManageSubscriptions,
     });
   };
 
@@ -205,6 +222,7 @@ class RequestOrStartTrial extends Component {
       initializingCheckFailed,
       showInitializationError,
       isOptOutEnabled,
+      canManageSubscriptions,
     } = this.state;
 
     return (
@@ -243,6 +261,7 @@ class RequestOrStartTrial extends Component {
                   showGrantAccess={activationState === INACTIVE && grantAccessEnabled}
                   contextInfo={contextInfo}
                   isOptOutEnabled={isOptOutEnabled}
+                  canManageSubscriptions={canManageSubscriptions}
                 />
               ) : (
                 <StartTrial
@@ -316,6 +335,7 @@ export default withXFlowProvider(
       waitForActivation,
       grantAccessEnabled,
       retrieveIsOptOutEnabled,
+      retrieveCanManageSubscriptions,
     },
   }) => ({
     canCurrentUserAddProduct,
@@ -324,5 +344,6 @@ export default withXFlowProvider(
     waitForActivation,
     grantAccessEnabled,
     retrieveIsOptOutEnabled,
+    retrieveCanManageSubscriptions,
   })
 );

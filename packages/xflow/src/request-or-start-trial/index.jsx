@@ -140,7 +140,7 @@ class RequestOrStartTrial extends Component {
     try {
       canManageSubscriptions = await this.props.retrieveCanManageSubscriptions({ isAdmin });
     } catch (e) {
-      this.onFailure('is-opt-out-enabled-check');
+      this.onFailure('can-manage-subscriptions-check');
       throw e;
     }
 

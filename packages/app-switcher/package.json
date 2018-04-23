@@ -36,12 +36,21 @@
   },
   "peerDependencies": {
     "react": "^15.3.2 || ^16.0.0",
-    "styled-components": "^1.4.6"
+    "styled-components": "1.4.6 - 3"
   },
   "author": "Atlassian Pty Ltd",
   "maintainers": [
     {
-      "name": "James McA"
+      "name": "Jimmy Kurniawan",
+      "email": "jkurniawan@atlassian.com"
+    },
+    {
+      "name": "Ryan Braganza",
+      "email": "rbraganza@atlassian.com"
+    },
+    {
+      "name": "Atlassian Home/Clementine",
+      "email": "home@atlassian.com"
     }
   ],
   "license": "Apache-2.0",

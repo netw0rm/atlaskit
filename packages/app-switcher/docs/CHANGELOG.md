@@ -1,5 +1,8 @@
 # @atlaskit/app-switcher
 
+## 3.5.1 (2018-04-23)
+
+* bug fix; cLEM-1641 app-switcher now support styled-components v3 (issues closed: http://product-fabric.atlassian.net/browse/clem-1641) ([9a2d648](https://bitbucket.org/atlassian/atlaskit/commits/9a2d648))
 ## 3.5.0 (2018-02-21)
 
 

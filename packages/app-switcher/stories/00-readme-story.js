@@ -131,6 +131,11 @@ const linkedApplicationsPropDescriptions = [
     type: 'Boolean',
     description: 'If true the app switcher will display an error message.',
   },
+  {
+    name: 'discoverProductsLink',
+    type: 'Boolean',
+    description: 'If true the app switcher will display a discover products link after the suggested products. Depending on whether the user is an admin or not it will redirect to the appropriate url',
+  },
 ];
 
 const linksPropDescriptions = [

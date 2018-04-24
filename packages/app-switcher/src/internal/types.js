@@ -34,6 +34,7 @@ export type LinkedApplications = {
   suggested?: SuggestedApplications,
   apps: Applications,
   error: boolean,
+  discoverProductsLink: boolean,
 };
 
 export type Links = Array<{
@@ -52,6 +53,7 @@ export type Translations = {
   'container.jira-project': ReactNode,
   'applinks.error': ReactNode,
   'try.lozenge': ReactNode,
+  'discover.products': ReactNode,
 };
 
 export type DropdownOptions = {

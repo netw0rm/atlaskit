@@ -105,7 +105,7 @@ export default class AppSwitcher extends Component {
     const dropdownItems = [
       getTopLinks(i18n, isAnonymousUser, isHomeLinkEnabled, isSiteAdminLinkEnabled, homeLinkConfig),
       getRecentContainers(i18n, isAnonymousUser, recentContainers),
-      getLinkedApplications(i18n, isAnonymousUser, linkedApplications),
+      getLinkedApplications(i18n, isAnonymousUser, isSiteAdminLinkEnabled, linkedApplications),
       getLinks(links),
     ].filter(item => item != null);
 

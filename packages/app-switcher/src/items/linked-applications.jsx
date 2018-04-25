@@ -58,7 +58,7 @@ export default function (
       analyticEvent: {
         key: `appswitcher.discover.products.${isSiteAdminLinkEnabled ? 'admin' : 'trusted'}.link.click`,
         properties: {
-          product: isSiteAdminLinkEnabled ? 'admin-discover-apps' : 'trusted-admin-discover-apps',
+          product: isSiteAdminLinkEnabled ? 'admin-discover-products' : 'trusted-admin-discover-products',
         },
       },
     });

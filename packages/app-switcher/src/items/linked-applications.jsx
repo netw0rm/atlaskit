@@ -7,6 +7,7 @@ import type { Translations, LinkedApplications, DropdownConfig } from '../intern
 export default function (
   i18n: Translations,
   isAnonymousUser: boolean,
+  isSiteAdminLinkEnabled?: boolean,
   linkedApplications: LinkedApplications,
 ): DropdownConfig {
   if (linkedApplications.error) {
@@ -45,6 +46,21 @@ export default function (
         analyticEvent: { key: 'appswitcher.discovery.user.try.clicked', properties: { product } },
         onClick,
       });
+    });
+  }
+
+  if (!isAnonymousUser && linkedApplications.discoverProductsLink) {
+    items.push({
+      content: <Item>{i18n['discover.products'] || 'Discover products'}</Item>,
+      href: isSiteAdminLinkEnabled
+        ? '/admin/billing/addapplication'
+        : '/trusted-admin/billing/addapplication',
+      analyticEvent: {
+        key: `appswitcher.discover.products.${isSiteAdminLinkEnabled ? 'admin' : 'trusted'}.link.click`,
+        properties: {
+          product: isSiteAdminLinkEnabled ? 'admin-discover-products' : 'trusted-admin-discover-products',
+        },
+      },
     });
   }
   if (linkedApplications.configureLink && !isAnonymousUser) {

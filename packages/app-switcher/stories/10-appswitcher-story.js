@@ -171,6 +171,54 @@ storiesOf(name, module)
     />
   ))
 
+  .add('with discover products link (Admin)', () => (
+    <AppSwitcher
+      {...{
+        ...props,
+        isSiteAdminLinkEnabled: true,
+        linkedApplications: {
+          configureLink: 'https://www.atlassian.com',
+          apps: [{
+            name: 'JIRA',
+            url: 'https://www.atlassian.com/#4',
+            product: 'jira',
+          }],
+          suggested: [{
+            name: 'Confluence',
+            product: 'confluence',
+            onClick: () => { action('confluence.suggestion.clicked'); },
+          }],
+          error: false,
+          discoverProductsLink: true,
+        },
+      }}
+    />
+  ))
+
+  .add('with discover products link (Trusted User)', () => (
+    <AppSwitcher
+      {...{
+        ...props,
+        isSiteAdminLinkEnabled: false,
+        linkedApplications: {
+          configureLink: 'https://www.atlassian.com',
+          apps: [{
+            name: 'JIRA',
+            url: 'https://www.atlassian.com/#4',
+            product: 'jira',
+          }],
+          suggested: [{
+            name: 'Confluence',
+            product: 'confluence',
+            onClick: () => { action('confluence.suggestion.clicked'); },
+          }],
+          error: false,
+          discoverProductsLink: true,
+        },
+      }}
+    />
+  ))
+
   .add('with applinks error', () => (
     <AppSwitcher
       {...{

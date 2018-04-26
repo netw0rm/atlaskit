@@ -1,5 +1,8 @@
 # @atlaskit/app-switcher
 
+## 3.6.1 (2018-04-26)
+
+* bug fix; refactor Discover products link to be Discover applications ([04b63f7](https://bitbucket.org/atlassian/atlaskit/commits/04b63f7))
 ## 3.6.0 (2018-04-26)
 
 

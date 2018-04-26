@@ -49,16 +49,16 @@ export default function (
     });
   }
 
-  if (!isAnonymousUser && linkedApplications.discoverProductsLink) {
+  if (!isAnonymousUser && linkedApplications.discoverApplicationsLink) {
     items.push({
-      content: <Item>{i18n['discover.products'] || 'Discover products'}</Item>,
+      content: <Item>{i18n['discover.applications'] || 'Discover applications'}</Item>,
       href: isSiteAdminLinkEnabled
         ? '/admin/billing/addapplication'
         : '/trusted-admin/billing/addapplication',
       analyticEvent: {
-        key: `appswitcher.discover.products.${isSiteAdminLinkEnabled ? 'admin' : 'trusted'}.link.click`,
+        key: `appswitcher.discover.applications.${isSiteAdminLinkEnabled ? 'admin' : 'trusted'}.link.click`,
         properties: {
-          product: isSiteAdminLinkEnabled ? 'admin-discover-products' : 'trusted-admin-discover-products',
+          product: isSiteAdminLinkEnabled ? 'admin-discover-applications' : 'trusted-admin-discover-applications',
         },
       },
     });

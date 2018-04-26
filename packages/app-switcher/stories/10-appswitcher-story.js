@@ -171,7 +171,7 @@ storiesOf(name, module)
     />
   ))
 
-  .add('with discover products link (Admin)', () => (
+  .add('with discover applications link (Admin)', () => (
     <AppSwitcher
       {...{
         ...props,
@@ -189,13 +189,13 @@ storiesOf(name, module)
             onClick: () => { action('confluence.suggestion.clicked'); },
           }],
           error: false,
-          discoverProductsLink: true,
+          discoverApplicationsLink: true,
         },
       }}
     />
   ))
 
-  .add('with discover products link (Trusted User)', () => (
+  .add('with discover applications link (Trusted User)', () => (
     <AppSwitcher
       {...{
         ...props,
@@ -213,7 +213,7 @@ storiesOf(name, module)
             onClick: () => { action('confluence.suggestion.clicked'); },
           }],
           error: false,
-          discoverProductsLink: true,
+          discoverApplicationsLink: true,
         },
       }}
     />

@@ -1,5 +1,10 @@
 # @atlaskit/app-switcher
 
+## 3.6.0 (2018-04-26)
+
+
+
+* feature; adding optional discover products link to app-switcher (issues closed: eue-240) ([9a0a8d9](https://bitbucket.org/atlassian/atlaskit/commits/9a0a8d9))
 ## 3.5.1 (2018-04-23)
 
 * bug fix; cLEM-1641 app-switcher now support styled-components v3 (issues closed: http://product-fabric.atlassian.net/browse/clem-1641) ([9a2d648](https://bitbucket.org/atlassian/atlaskit/commits/9a2d648))

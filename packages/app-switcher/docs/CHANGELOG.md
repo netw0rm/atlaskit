@@ -1,5 +1,8 @@
 # @atlaskit/app-switcher
 
+## 3.6.3 (2018-04-27)
+
+* bug fix; i18n discover.products as optional (issues closed: eue-240) ([90d3b9b](https://bitbucket.org/atlassian/atlaskit/commits/90d3b9b))
 ## 3.6.2 (2018-04-27)
 
 * bug fix; setting discoverProductsLink on app-switcher as optional (issues closed: eue-240) ([463014e](https://bitbucket.org/atlassian/atlaskit/commits/463014e))

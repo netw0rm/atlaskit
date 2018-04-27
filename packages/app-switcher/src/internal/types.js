@@ -53,7 +53,7 @@ export type Translations = {
   'container.jira-project': ReactNode,
   'applinks.error': ReactNode,
   'try.lozenge': ReactNode,
-  'discover.applications': ReactNode,
+  'discover.applications'?: ReactNode,
 };
 
 export type DropdownOptions = {
@@ -67,10 +67,10 @@ export type DropdownItem = {
   content: ReactNode,
   elemBefore?: ReactNode,
   href?: ReactNode,
-  analyticEvent?: { key: string, properties?: Object }
+  analyticEvent?: { key: string, properties?: Object },
 };
 
 export type DropdownConfig = {
   heading?: ReactNode,
-  items: Array<DropdownItem>
+  items: Array<DropdownItem>,
 };

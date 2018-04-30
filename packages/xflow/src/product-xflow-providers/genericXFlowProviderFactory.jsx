@@ -20,7 +20,11 @@ const deepMerge = (source, mixin = {}) => {
     .forEach((key) => {
       const override = mixin[key];
       if (typeof override === 'object' && typeof target[key] === 'object') {
-        target = { ...target, [key]: deepMerge(target[key], override) };
+        if (override.$$typeof) {
+          target[key] = override;
+        } else {
+          target = { ...target, [key]: deepMerge(target[key], override) };
+        }
       } else {
         target[key] = override;
       }
@@ -178,19 +182,15 @@ const genericXFlowFactory = (PRODUCT_KEY, options) => {
     canCurrentUserGrantAccessToProducts: isCurrentUserSiteAdmin,
 
     requestTrialWithNote: productRequest(PRODUCT_KEY),
-    cancelRequestTrial: async () => {
-    },
+    cancelRequestTrial: async () => {},
 
     startProductTrial: startProductTrial(PRODUCT_KEY),
-    cancelStartProductTrial: async () => {
-    },
+    cancelStartProductTrial: async () => {},
     productStatusChecker: productStatusChecker(PRODUCT_KEY, () => Promise.resolve(true)),
     goToProduct: 'defineGoToFunction',
 
-    closeLoadingDialog: async () => {
-    },
-    closeAlreadyStartedDialog: async () => {
-    },
+    closeLoadingDialog: async () => {},
+    closeAlreadyStartedDialog: async () => {},
     checkProductRequestFlag: () => getAlreadyRequestedFlag(PRODUCT_KEY),
     setProductRequestFlag: () => setAlreadyRequestedFlag(PRODUCT_KEY),
 

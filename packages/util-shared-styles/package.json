@@ -45,7 +45,7 @@
     "less-vars-to-js": "^1.1.2",
     "prop-types": "^15.5.10",
     "rgba-convert": "^0.3.0",
-    "styled-components": "^1.4.6",
+    "styled-components": "1.4.6 - 3",
     "uid": "0.0.2",
     "wcag-contrast": "^0.1.0"
   },

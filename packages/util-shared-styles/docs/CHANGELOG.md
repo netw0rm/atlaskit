@@ -1,5 +1,8 @@
 # @atlaskit/util-shared-styles
 
+## 2.10.8 (2018-05-02)
+
+* bug fix; add version range for styled-components dep for all packages ([82865c1](https://bitbucket.org/atlassian/atlaskit/commits/82865c1))
 ## 2.10.7 (2018-03-12)
 
 * bug fix; remove styled-components as a dependency ([8ddba73](https://bitbucket.org/atlassian/atlaskit/commits/8ddba73))

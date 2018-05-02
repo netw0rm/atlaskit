@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/util-component-template",
-  "version": "2.4.3",
+  "version": "2.4.4",
   "config": {
     "access": "public"
   },

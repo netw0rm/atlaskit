@@ -1,5 +1,9 @@
 # @atlaskit/util-component-template
 
+## 2.4.4 (2018-05-02)
+
+* bug fix; add version range for styled-components dep for all packages ([82865c1](https://bitbucket.org/atlassian/atlaskit/commits/82865c1))
+
 ## 2.4.3 (2017-10-22)
 
 * bug fix; update styled components dep and react peerDep ([5539ada](https://bitbucket.org/atlassian/atlaskit/commits/5539ada))

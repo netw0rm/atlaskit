@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/util-readme",
-  "version": "3.6.5",
+  "version": "3.6.6",
   "config": {
     "access": "public"
   },

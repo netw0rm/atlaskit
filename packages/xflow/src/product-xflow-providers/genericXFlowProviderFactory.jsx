@@ -15,16 +15,18 @@ import JiraToJCXFlowProvider from './JiraToJCXFlowProvider';
 
 const deepMerge = (source, mixin = {}) => {
   let target = { ...source };
-  Object
-    .keys(mixin)
-    .forEach((key) => {
-      const override = mixin[key];
-      if (typeof override === 'object' && typeof target[key] === 'object') {
-        target = { ...target, [key]: deepMerge(target[key], override) };
-      } else {
+  Object.keys(mixin).forEach((key) => {
+    const override = mixin[key];
+    if (typeof override === 'object' && typeof target[key] === 'object') {
+      if (override.$$typeof) {
         target[key] = override;
+      } else {
+        target = { ...target, [key]: deepMerge(target[key], override) };
       }
-    });
+    } else {
+      target[key] = override;
+    }
+  });
   return target;
 };
 

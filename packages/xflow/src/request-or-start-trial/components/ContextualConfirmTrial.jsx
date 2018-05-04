@@ -1,0 +1,355 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Button from '@atlaskit/button';
+import CrossIcon from '@atlaskit/icon/glyph/cross';
+import ModalDialog from '@atlaskit/modal-dialog';
+import Spinner from '@atlaskit/spinner';
+import { FormattedMessage, defineMessages, injectIntl, intlShape } from 'react-intl';
+import { withAnalytics } from '@atlaskit/analytics';
+import ErrorFlag from '../../common/components/ErrorFlag';
+import ContextualConfirmTrialContent from '../styled/ContextualConfirmTrialContent';
+import CloseModalDialogButton from '../styled/CloseModalDialogButton';
+import SpinnerDiv from '../../common/styled/SpinnerDiv';
+import ContextualConfirmTrialHeader from '../styled/ContextualConfirmTrialHeader';
+import ContextualConfirmTrialImage from '../styled/ContextualConfirmTrialImage';
+import ContextualConfirmTrialFooter from '../styled/ContextualConfirmTrialFooter';
+import ContextualConfirmTrialHeading from '../styled/ContextualConfirmTrialHeading';
+import ContextualOptOutLinkButton from '../styled/ContextualOptOutLinkButton';
+import ConfirmTrialAdminInfo from '../styled/ConfirmTrialAdminInfo';
+import ConfirmTrialAdminInfoImage from '../styled/ConfirmTrialAdminInfoImage';
+import { withXFlowProvider } from '../../common/components/XFlowProvider';
+import { INACTIVE, DEACTIVATED } from '../../common/productProvisioningStates';
+
+const messages = defineMessages({
+  errorFlagTitle: {
+    id: 'xflow.generic.start-trial.error-flag.title',
+    defaultMessage: 'Oops... Something went wrong',
+  },
+  errorFlagDescription: {
+    id: 'xflow.generic.start-trial.error-flag.description',
+    defaultMessage: "Let's try that again.",
+  },
+  optOutMessage: {
+    id: 'xflow.generic.start-trial.opt-out.message',
+    defaultMessage: 'Turn off these messages',
+  },
+});
+
+class ContextualConfirmTrial extends Component {
+  static propTypes = {
+    image: PropTypes.string.isRequired,
+    contextInfo: PropTypes.shape({
+      contextualImage: PropTypes.string,
+      contextualHeading: PropTypes.string.isRequired,
+      contextualMessage: PropTypes.string.isRequired,
+      reactivateCTA: PropTypes.string.isRequired,
+      trialCTA: PropTypes.string.isRequired,
+    }).isRequired,
+    spinnerActive: PropTypes.bool,
+    buttonsDisabled: PropTypes.bool,
+    status: PropTypes.oneOf([INACTIVE, DEACTIVATED]),
+
+    onComplete: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
+    startProductTrial: PropTypes.func,
+    cancelStartProductTrial: PropTypes.func,
+    isOptOutEnabled: PropTypes.bool,
+    canManageSubscriptions: PropTypes.bool,
+
+    firePrivateAnalyticsEvent: PropTypes.func.isRequired,
+    intl: intlShape.isRequired,
+  };
+
+  static defaultProps = {
+    startProductTrial: () => { },
+    cancelStartProductTrial: () => { },
+  };
+
+  state = {
+    spinnerActive: this.props.spinnerActive,
+    buttonsDisabled: this.props.buttonsDisabled,
+    productFailedToStart: false,
+  };
+
+  componentDidMount() {
+    const { firePrivateAnalyticsEvent, status } = this.props;
+    firePrivateAnalyticsEvent(
+      status === INACTIVE ? 'xflow.confirm-trial.displayed' : 'xflow.reactivate-trial.displayed'
+    );
+  }
+
+  handleConfirmClick = () => {
+    const { status, startProductTrial, onComplete, firePrivateAnalyticsEvent } = this.props;
+    firePrivateAnalyticsEvent(
+      status === INACTIVE
+        ? 'xflow.confirm-trial.confirm-button.clicked'
+        : 'xflow.reactivate-trial.confirm-button.clicked'
+    );
+    this.setState({
+      spinnerActive: true,
+      buttonsDisabled: true,
+      productFailedToStart: false,
+    });
+
+    return Promise.resolve(startProductTrial())
+      .then(() => {
+        firePrivateAnalyticsEvent(
+          status === INACTIVE
+            ? 'xflow.confirm-trial.start-product-trial.successful'
+            : 'xflow.reactivate-trial.start-product-trial.successful'
+        );
+        return onComplete();
+      })
+      .catch(() => {
+        firePrivateAnalyticsEvent(
+          status === INACTIVE
+            ? 'xflow.confirm-trial.start-product-trial.failed'
+            : 'xflow.reactivate-trial.start-product-trial.failed'
+        );
+        this.setState({
+          productFailedToStart: true,
+          spinnerActive: false,
+          buttonsDisabled: false,
+        });
+      });
+  };
+
+  handleCancelClick = () => {
+    const { firePrivateAnalyticsEvent, status } = this.props;
+    firePrivateAnalyticsEvent(
+      status === INACTIVE
+        ? 'xflow.confirm-trial.cancel-button.clicked'
+        : 'xflow.reactivate-trial.cancel-button.clicked'
+    );
+    return this.handleDialogClosed();
+  };
+
+  handleOptOutClick = () => {
+    const { firePrivateAnalyticsEvent, status } = this.props;
+    firePrivateAnalyticsEvent(
+      status === INACTIVE
+        ? 'xflow.confirm-trial.opt-out-button.clicked'
+        : 'xflow.reactivate-trial.opt-out-button.clicked'
+    );
+    this.setState({
+      spinnerActive: true,
+      buttonsDisabled: true,
+    });
+    // Redirect to GAB, with opt-out parameter so the opt-out dialog opens
+    window.location.href = '/admin/billing/addapplication?requestproductoptout=true';
+  };
+
+  handleErrorFlagDismiss = () => {
+    const { firePrivateAnalyticsEvent, status } = this.props;
+    firePrivateAnalyticsEvent(
+      status === INACTIVE
+        ? 'xflow.confirm-trial.error-flag.dismissed'
+        : 'xflow.reactivate-trial.error-flag.dismissed'
+    );
+    this.setState({
+      productFailedToStart: false,
+    });
+  };
+
+  handleDialogClosed = () => {
+    const { firePrivateAnalyticsEvent, cancelStartProductTrial, onCancel, status } = this.props;
+    firePrivateAnalyticsEvent(
+      status === INACTIVE
+        ? 'xflow.confirm-trial.dialog.closed'
+        : 'xflow.reactivate-trial.dialog.closed'
+    );
+    return Promise.resolve(cancelStartProductTrial())
+      .then(onCancel);
+  };
+
+  renderHeader = (image, contextInfo) => (
+    <div id="xflow-contextual-confirm-header">
+      <CloseModalDialogButton id="xflow-confirm-trial-cancel-button" onClick={this.handleCancelClick} isDisabled={this.state.buttonsDisabled}>
+        <CrossIcon
+          label="Close Modal"
+          primaryColor="white"
+          size="medium"
+        />
+      </CloseModalDialogButton>
+      <ContextualConfirmTrialHeader />
+      <ContextualConfirmTrialImage src={contextInfo.contextualImage || image} alt="files" />
+    </div>
+  );
+
+  renderInactiveFooter = () => {
+    const { canManageSubscriptions } = this.props;
+
+    const columnSize = canManageSubscriptions ? 'small' : 'medium';
+
+    return (
+      <ContextualConfirmTrialFooter>
+        <ConfirmTrialAdminInfo columnSize={columnSize}>
+          <ConfirmTrialAdminInfoImage imageType="card" />
+          <FormattedMessage
+            id="xflow.generic.confirm-trial.card-info"
+            defaultMessage="Once your trial finishes, billing will start."
+          />
+        </ConfirmTrialAdminInfo>
+        <ConfirmTrialAdminInfo columnSize={columnSize}>
+          <ConfirmTrialAdminInfoImage imageType="email" />
+          <FormattedMessage
+            id="xflow.generic.confirm-trial.email-info"
+            defaultMessage="Your billing contact will be emailed ten days before."
+          />
+        </ConfirmTrialAdminInfo>
+        { canManageSubscriptions && <ConfirmTrialAdminInfo columnSize={columnSize}>
+          <ConfirmTrialAdminInfoImage imageType="settings" />
+          <FormattedMessage
+            id="xflow.generic.confirm-trial.settings-info"
+            defaultMessage="Cancel your trial at any time in {manageApplicationsLink}."
+            values={{
+              manageApplicationsLink: this.renderManageApplicationsLink(),
+            }}
+          />
+        </ConfirmTrialAdminInfo>}
+      </ContextualConfirmTrialFooter>
+    );
+  };
+
+  renderReactivateFooter = () => {
+    const { canManageSubscriptions } = this.props;
+    const columnSize = canManageSubscriptions ? 'medium' : 'large';
+
+    return (
+      <ContextualConfirmTrialFooter>
+        <ConfirmTrialAdminInfo columnSize={columnSize}>
+          <ConfirmTrialAdminInfoImage imageType="card" />
+          <FormattedMessage
+            id="xflow.generic.confirm-reactivation.card-info"
+            defaultMessage="Once your subscription reactivates, billing will resume."
+          />
+        </ConfirmTrialAdminInfo>
+        { canManageSubscriptions && <ConfirmTrialAdminInfo columnSize={columnSize}>
+          <ConfirmTrialAdminInfoImage imageType="settings" />
+          <FormattedMessage
+            id="xflow.generic.confirm-reactivation.settings-info"
+            defaultMessage="Cancel your subscription at any time in {manageApplicationsLink}."
+            values={{
+              manageApplicationsLink: this.renderManageApplicationsLink(),
+            }}
+          />
+        </ConfirmTrialAdminInfo> }
+      </ContextualConfirmTrialFooter>
+    );
+  };
+
+  renderManageApplicationsLink = () => {
+    const { status, firePrivateAnalyticsEvent } = this.props;
+    return (
+      <a
+        href="/admin/billing/applications"
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => firePrivateAnalyticsEvent(
+          status === INACTIVE
+            ? 'xflow.confirm-trial.manage-subscriptions.clicked'
+            : 'xflow.reactivate-trial.manage-subscriptions.clicked'
+        )}
+      >
+        <FormattedMessage
+          id="xflow.generic.confirm-trial.settings-info.manage-applications.link"
+          defaultMessage="Manage subscriptions"
+        />
+      </a>
+    );
+  }
+
+  renderFooter = (status) => (status === INACTIVE
+    ? this.renderInactiveFooter()
+    : this.renderReactivateFooter());
+
+  renderContextualContent = () => {
+    const {
+      intl,
+      status,
+      contextInfo,
+      isOptOutEnabled,
+    } = this.props;
+
+    return (
+      <ContextualConfirmTrialContent id="xflow-confirm-trial">
+        <ContextualConfirmTrialHeading>
+          {contextInfo.contextualHeading}
+        </ContextualConfirmTrialHeading>
+        <p>{contextInfo.contextualMessage}</p>
+        <SpinnerDiv topMultiplier={2}>
+          <Spinner isCompleting={!this.state.spinnerActive} />
+        </SpinnerDiv>
+        <Button
+          id="xflow-confirm-trial-confirm-button"
+          onClick={this.handleConfirmClick}
+          appearance="primary"
+          isDisabled={this.state.buttonsDisabled}
+        >
+          {status === INACTIVE ? contextInfo.trialCTA : contextInfo.reactivateCTA}
+        </Button>
+        {isOptOutEnabled &&
+          <ContextualOptOutLinkButton
+            id="xflow-opt-out-button"
+            onClick={this.handleOptOutClick}
+          >
+            {intl.formatMessage(messages.optOutMessage)}
+          </ContextualOptOutLinkButton>
+        }
+      </ContextualConfirmTrialContent>);
+  };
+
+  render() {
+    const {
+      intl,
+      status,
+      image,
+      contextInfo,
+    } = this.props;
+
+    return (
+      <ModalDialog
+        width="medium"
+        height={'544px'}
+        header={() => this.renderHeader(image, contextInfo)}
+        footer={() => this.renderFooter(status)}
+        onClose={this.handleDialogClosed}
+        shouldCloseOnOverlayClick={false}
+      >
+        {this.renderContextualContent()}
+        <ErrorFlag
+          title={intl.formatMessage(messages.errorFlagTitle)}
+          description={intl.formatMessage(messages.errorFlagDescription)}
+          showFlag={this.state.productFailedToStart}
+          source={status === INACTIVE
+            ? 'confirm-trial'
+            : 'reactivate-trial'}
+          onDismissed={this.handleErrorFlagDismiss}
+        />
+      </ModalDialog>
+    );
+  }
+}
+
+export const ContextualConfirmTrialBase = withAnalytics(injectIntl(ContextualConfirmTrial));
+
+export default withXFlowProvider(
+  ContextualConfirmTrialBase,
+  ({
+    xFlow: {
+      config: {
+        contextualStartTrial: {
+          contextualStartTrialHeader,
+        },
+      },
+      status,
+      startProductTrial,
+      cancelStartProductTrial,
+    },
+  }) => ({
+    startProductTrial,
+    cancelStartProductTrial,
+    status,
+    image: contextualStartTrialHeader,
+  })
+);

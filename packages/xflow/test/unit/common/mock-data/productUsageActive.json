@@ -1,0 +1,13 @@
+{
+  "usages": [{
+    "productKey": "jira-software.ondemand",
+    "features": {
+      "userCount": 1
+    }
+  }, {
+    "productKey": "confluence.ondemand",
+    "features": {
+      "userCount": 1
+    }
+  }]
+}

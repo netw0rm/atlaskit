@@ -1,0 +1,31 @@
+{
+  "self": "https://example.atlassian.net/rest/api/2/user?username=user%40acme.org",
+  "key": "user@acme.org",
+  "accountId": "557058:7b50ef24-a364-43da-9083-96927922d0d5",
+  "name": "user",
+  "emailAddress": "user@acme.org",
+  "avatarUrls": {
+    "16x16": "https://avatar-cdn.atlassian.com/814b22d6847ad6a4c730cf807ebb2b11?s=16&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2F814b22d6847ad6a4c730cf807ebb2b11%3Fd%3Dmm%26s%3D16%26noRedirect%3Dtrue",
+    "24x24": "https://avatar-cdn.atlassian.com/814b22d6847ad6a4c730cf807ebb2b11?s=24&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2F814b22d6847ad6a4c730cf807ebb2b11%3Fd%3Dmm%26s%3D24%26noRedirect%3Dtrue",
+    "32x32": "https://avatar-cdn.atlassian.com/814b22d6847ad6a4c730cf807ebb2b11?s=32&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2F814b22d6847ad6a4c730cf807ebb2b11%3Fd%3Dmm%26s%3D32%26noRedirect%3Dtrue",
+    "48x48": "https://avatar-cdn.atlassian.com/814b22d6847ad6a4c730cf807ebb2b11?s=48&d=https%3A%2F%2Fsecure.gravatar.com%2Favatar%2F814b22d6847ad6a4c730cf807ebb2b11%3Fd%3Dmm%26s%3D48%26noRedirect%3Dtrue"
+  },
+  "displayName": "Alex Smith",
+  "active": true,
+  "timeZone": "Australia/Sydney",
+  "locale": "en_US",
+  "groups": {
+    "size": 1,
+    "items": [
+      {
+        "name": "jira-software-users",
+        "self": "https://example.atlassian.net/rest/api/2/group?groupname=jira-software-users"
+      }
+    ]
+  },
+  "applicationRoles": {
+    "size": 1,
+    "items": []
+  },
+  "expand": "groups,applicationRoles"
+}

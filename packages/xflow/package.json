@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/xflow",
-  "version": "6.25.0",
+  "version": "6.25.1",
   "config": {
     "access": "public"
   },

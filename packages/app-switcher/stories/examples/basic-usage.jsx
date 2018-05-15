@@ -36,6 +36,17 @@ const data = {
     ],
     error: false,
   },
+  links: [
+    {
+      text: 'Add payment details',
+      url: 'https://google.com/',
+    },
+    {
+      text: 'Request a trial extension...',
+      url: 'https://example.com/',
+      onClick: () => {},
+    },
+  ],
   isAnonymousUser: false,
   i18n: {
     home: 'Home',

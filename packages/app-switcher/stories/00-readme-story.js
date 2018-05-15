@@ -16,6 +16,7 @@ const propDescriptions = {
   homeLink: 'Object to configure the top link to Atlassian Home.',
   recentContainers: 'Array of recent containers. If this array is empty the recent container section will be hidden.',
   linkedApplications: 'Map containing an array of linked applications.',
+  links: 'Optional array of regular links. If this array is empty or not passed, the links section will be hidden.',
   i18n: 'Mapping of i18n keys to translations.',
   isAnonymousUser: 'If set to true, the home icon, recent containers and suggested application will not display.',
   isHomeLinkEnabled: 'If set to true, the link to Atlassian Home will be rendered at the top of the app switcher',
@@ -124,6 +125,24 @@ const linkedApplicationsPropDescriptions = [
     name: 'error',
     type: 'Boolean',
     description: 'If true the app switcher will display an error message.',
+  },
+];
+
+const linksPropDescriptions = [
+  {
+    name: 'text',
+    type: 'String',
+    description: 'Visible link text.',
+  },
+  {
+    name: 'url',
+    type: 'String',
+    description: 'Page to open when the link is clicked.',
+  },
+  {
+    name: 'analyticsRef',
+    type: 'String?',
+    description: 'Optional string to send with the link\'s on-click analytic event.',
   },
 ];
 
@@ -237,6 +256,13 @@ storiesOf(name, module)
             The linkedApplications property is a map with the following format:
           </p>
           {propDescriptionList(linkedApplicationsPropDescriptions)}
+
+          <Heading type="3">links property</Heading>
+          <p>
+            The links property is an array containing links to display at the bottom.
+            Each link item is a map with the following keys:
+          </p>
+          {propDescriptionList(linksPropDescriptions)}
 
           <Heading type="3">i18n property</Heading>
           <p>

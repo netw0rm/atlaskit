@@ -100,6 +100,21 @@ storiesOf(name, module)
       }}
     />
   ))
+  .add('with links', () => (
+    <AppSwitcher
+      {...{
+        ...props,
+        links: [{
+          text: 'Add payment details',
+          url: 'https://google.com/',
+        }, {
+          text: 'Request a trial extension...',
+          url: 'https://example.com/',
+          onClick: () => { action('footer.link.request.clicked'); },
+        }],
+      }}
+    />
+  ))
 
   .add('with Home link disabled', () => (
     <AppSwitcher

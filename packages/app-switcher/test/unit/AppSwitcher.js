@@ -3,6 +3,7 @@ import { shallow, mount } from 'enzyme';
 import React from 'react';
 import sinon from 'sinon';
 import { DropdownMenuStateless } from '@atlaskit/dropdown-menu';
+import { Link } from '../../src/styled';
 import AppSwitcher from '../../src';
 import { name } from '../../package.json';
 
@@ -142,5 +143,42 @@ describe(name, () => {
       />
     );
     expect(wrapper.find('.app-switcher-suggested-application')).toHaveLength(0);
+  });
+
+  it('should show links', () => {
+    const links = [{
+      text: 'Add payment details',
+      url: 'https://google.com/',
+    }, {
+      text: 'Request a trial extension...',
+      url: 'https://example.com/',
+      onClick: () => {},
+    }];
+    const wrapper = mount(
+      <AppSwitcher
+        {...data}
+        isDropdownOpenInitially
+        links={links}
+      />
+    );
+    links.forEach(({ text }) => {
+      const link = wrapper.find(Link).filterWhere(l => l.text() === text);
+      expect(link).toHaveLength(1);
+    });
+  });
+
+  it('should not render any links when it is empty', () => {
+    const wrapper = mount(
+      <AppSwitcher
+        {...data}
+        recentContainers={[]}
+        linkedApplications={{
+          configureLink: 'https://www.atlassian.com',
+          apps: [],
+          error: false,
+        }}
+      />
+    );
+    expect(wrapper.find(Link)).toHaveLength(0);
   });
 });

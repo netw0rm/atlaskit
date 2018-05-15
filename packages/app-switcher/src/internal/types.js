@@ -35,6 +35,12 @@ export type LinkedApplications = {
   error: boolean,
 };
 
+export type Links = Array<{
+  text: string,
+  url: string,
+  onClick?: Function,
+}>;
+
 export type Translations = {
   home: ReactNode,
   'site-admin'?: ReactNode,

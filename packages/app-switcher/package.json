@@ -41,16 +41,8 @@
   "author": "Atlassian Pty Ltd",
   "maintainers": [
     {
-      "name": "Jimmy Kurniawan",
-      "email": "jkurniawan@atlassian.com"
-    },
-    {
-      "name": "Ryan Braganza",
-      "email": "rbraganza@atlassian.com"
-    },
-    {
-      "name": "Atlassian Home/Clementine",
-      "email": "home@atlassian.com"
+      "name": "Harsha Ivaturi",
+      "email": "isriharsha@atlassian.com"
     }
   ],
   "license": "Apache-2.0",

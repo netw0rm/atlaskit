@@ -14,6 +14,7 @@ const AppSwitcherDescription = 'This component provides the app switcher used in
 
 const propDescriptions = {
   homeLink: 'Object to configure the top link to Atlassian Home.',
+  peopleProfileLink: 'Object to configure the top link to the Atlassian People Profile',
   recentContainers: 'Array of recent containers. If this array is empty the recent container section will be hidden.',
   linkedApplications: 'Map containing an array of linked applications.',
   links: 'Optional array of regular links. If this array is empty or not passed, the links section will be hidden.',
@@ -21,6 +22,7 @@ const propDescriptions = {
   isAnonymousUser: 'If set to true, the home icon, recent containers and suggested application will not display.',
   isHomeLinkEnabled: 'If set to true, the link to Atlassian Home will be rendered at the top of the app switcher',
   isSiteAdminLinkEnabled: 'If set to true, the link to Site Administration will be rendered at the top of the app switcher below the Home link (if present).',
+  isPeopleProfileLinkEnabled: 'If set to true, the link to Site Administration will be rendered at the top of the app switcher below the Site Admin link (if present).',
   trigger: 'This function is called to render the trigger for the dropdown. It is called with one parameter - the ' +
            'dropdown\'s current state (open or closed).',
   analytics: 'This function is called when the user performs certain actions in the app switcher. ' +
@@ -44,6 +46,24 @@ const homeLinkPropDescriptions = [
     name: 'icon',
     type: 'Node',
     description: 'Icon element for the HomeLink item',
+  },
+];
+
+const peopleProfileLinkPropDescriptions = [
+  {
+    name: 'name',
+    type: 'String',
+    description: 'Text label of the PeopleProfileLink item.',
+  },
+  {
+    name: 'url',
+    type: 'String',
+    description: 'Link target of the PeopleProfileLink item.',
+  },
+  {
+    name: 'icon',
+    type: 'Node',
+    description: 'Icon element for the PeopleProfileLink item',
   },
 ];
 
@@ -254,6 +274,12 @@ storiesOf(name, module)
             The homeLink property is an object configuring the link to Atlassian Home.
           </p>
           {propDescriptionList(homeLinkPropDescriptions)}
+          <Heading type="3">peopleProfileLink property</Heading>
+          <p>
+            The peopleProfileLink property is an object configuring the link to Atlassian
+            People Profile.
+          </p>
+          {propDescriptionList(peopleProfileLinkPropDescriptions)}
           <Heading type="3">recentContainers property</Heading>
           <p>
             The recentContainers property is an array containing the recent containers to display.

@@ -2,14 +2,16 @@
 import React from 'react';
 import SiteAdminIcon from '../components/SiteAdminIcon';
 import { HomeIconContainer, SiteAdminIconContainer, TopLinkContainer } from '../styled';
-import type { HomeLink, Translations, DropdownConfig } from '../internal/types';
+import type { HomeLink, Translations, DropdownConfig, PeopleProfileLink } from '../internal/types';
 
 export default function (
   i18n: Translations,
   isAnonymousUser: boolean,
   isHomeLinkEnabled: boolean,
   isSiteAdminLinkEnabled?: boolean,
+  isPeopleProfileLinkEnabled?: boolean,
   homeLink: HomeLink,
+  peopleProfileLink: PeopleProfileLink
 ): DropdownConfig | null {
   if (isAnonymousUser) {
     return null;
@@ -32,6 +34,15 @@ export default function (
       elemBefore: (<SiteAdminIconContainer><SiteAdminIcon /></SiteAdminIconContainer>),
       href: '/admin',
       analyticEvent: { key: 'appswitcher.siteAdmin.link.click' },
+    });
+  }
+
+  if (isPeopleProfileLinkEnabled) {
+    items.push({
+      content: (<TopLinkContainer>{peopleProfileLink.name}</TopLinkContainer>),
+      elemBefore: (<SiteAdminIconContainer>{peopleProfileLink.icon}</SiteAdminIconContainer>),
+      href: peopleProfileLink.url,
+      analyticEvent: { key: 'appswitcher.peopleProfile.link.click' },
     });
   }
 

@@ -28,21 +28,21 @@ export default function (
     });
   }
 
-  if (isSiteAdminLinkEnabled) {
-    items.push({
-      content: (<TopLinkContainer>{i18n['site-admin']}</TopLinkContainer>),
-      elemBefore: (<SiteAdminIconContainer><SiteAdminIcon /></SiteAdminIconContainer>),
-      href: '/admin',
-      analyticEvent: { key: 'appswitcher.siteAdmin.link.click' },
-    });
-  }
-
   if (isPeopleProfileLinkEnabled) {
     items.push({
       content: (<TopLinkContainer>{peopleProfileLink.name}</TopLinkContainer>),
       elemBefore: (<SiteAdminIconContainer>{peopleProfileLink.icon}</SiteAdminIconContainer>),
       href: peopleProfileLink.url,
       analyticEvent: { key: 'appswitcher.peopleProfile.link.click' },
+    });
+  }
+
+  if (isSiteAdminLinkEnabled) {
+    items.push({
+      content: (<TopLinkContainer>{i18n['site-admin']}</TopLinkContainer>),
+      elemBefore: (<SiteAdminIconContainer><SiteAdminIcon /></SiteAdminIconContainer>),
+      href: '/admin',
+      analyticEvent: { key: 'appswitcher.siteAdmin.link.click' },
     });
   }
 

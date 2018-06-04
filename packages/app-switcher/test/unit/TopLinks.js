@@ -10,7 +10,7 @@ const homeLink = {
 const peopleProfileLink = {
   name: 'People Profile',
   icon: null,
-  url: '/people-profile',
+  url: '/people',
 };
 
 describe(name, () => {
@@ -50,7 +50,7 @@ describe(name, () => {
     expect(result).not.toBe(null);
     expect(result.items).not.toBe(null);
     expect(result.items.length).toBe(1);
-    expect(result.items[0].href).toBe('/people-profile');
+    expect(result.items[0].href).toBe('/people');
   });
 
   it('should return the Home, Site Admin and People Profile links item when they are enabled', () => {
@@ -60,7 +60,7 @@ describe(name, () => {
     expect(result.items).not.toBe(null);
     expect(result.items.length).toBe(3);
     expect(result.items[0].href).toBe('/home');
-    expect(result.items[1].href).toBe('/admin');
-    expect(result.items[2].href).toBe('/people-profile');
+    expect(result.items[1].href).toBe('/people');
+    expect(result.items[2].href).toBe('/admin');
   });
 });

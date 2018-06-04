@@ -180,7 +180,7 @@ storiesOf(name, module)
         isPeopleProfileLinkEnabled: true,
         peopleProfileLink: {
           name: 'People Profile',
-          url: '/secure/ViewProfile.jspa',
+          url: '/people',
           icon: <PersonIcon size="large" label="" />,
         },
       }}

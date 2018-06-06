@@ -28,6 +28,12 @@ export const HomeIconContainer = styled.div`
   ${imageDimensions}
 `;
 
+export const PeopleDirectoryIconContainer = styled.div`
+  color: ${akColorN200};
+
+  ${imageDimensions}
+`;
+
 export const SiteAdminIconContainer = styled.div`
   color: ${akColorN200};
 

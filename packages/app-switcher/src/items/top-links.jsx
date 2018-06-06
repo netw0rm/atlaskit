@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import SiteAdminIcon from '../components/SiteAdminIcon';
-import { HomeIconContainer, SiteAdminIconContainer, TopLinkContainer } from '../styled';
+import { HomeIconContainer, PeopleDirectoryIconContainer, SiteAdminIconContainer, TopLinkContainer } from '../styled';
 import type { HomeLink, Translations, DropdownConfig, PeopleProfileLink } from '../internal/types';
 
 export default function (
@@ -31,7 +31,9 @@ export default function (
   if (isPeopleProfileLinkEnabled) {
     items.push({
       content: (<TopLinkContainer>{peopleProfileLink.name}</TopLinkContainer>),
-      elemBefore: (<SiteAdminIconContainer>{peopleProfileLink.icon}</SiteAdminIconContainer>),
+      elemBefore: (
+        <PeopleDirectoryIconContainer>{peopleProfileLink.icon}</PeopleDirectoryIconContainer>
+      ),
       href: peopleProfileLink.url,
       analyticEvent: { key: 'appswitcher.peopleProfile.link.click' },
     });

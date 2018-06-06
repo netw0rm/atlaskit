@@ -1,5 +1,11 @@
 # @atlaskit/app-switcher
 
+## 3.7.0 (2018-06-06)
+
+* bug fix; change ordering of top links in app-switcher ([18340cd](https://bitbucket.org/atlassian/atlaskit/commits/18340cd))
+
+* feature; add people profile link to app-switcher (issues closed: ak-4805) ([d11c7cf](https://bitbucket.org/atlassian/atlaskit/commits/d11c7cf))
+
 ## 3.6.3 (2018-04-27)
 
 * bug fix; i18n discover.products as optional (issues closed: eue-240) ([90d3b9b](https://bitbucket.org/atlassian/atlaskit/commits/90d3b9b))

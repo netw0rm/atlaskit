@@ -1,15 +1,17 @@
 // @flow
 import React from 'react';
 import SiteAdminIcon from '../components/SiteAdminIcon';
-import { HomeIconContainer, SiteAdminIconContainer, TopLinkContainer } from '../styled';
-import type { HomeLink, Translations, DropdownConfig } from '../internal/types';
+import { HomeIconContainer, PeopleDirectoryIconContainer, SiteAdminIconContainer, TopLinkContainer } from '../styled';
+import type { HomeLink, Translations, DropdownConfig, PeopleProfileLink } from '../internal/types';
 
 export default function (
   i18n: Translations,
   isAnonymousUser: boolean,
   isHomeLinkEnabled: boolean,
   isSiteAdminLinkEnabled?: boolean,
+  isPeopleProfileLinkEnabled?: boolean,
   homeLink: HomeLink,
+  peopleProfileLink: PeopleProfileLink
 ): DropdownConfig | null {
   if (isAnonymousUser) {
     return null;
@@ -23,6 +25,17 @@ export default function (
       elemBefore: (<HomeIconContainer>{homeLink.icon}</HomeIconContainer>),
       href: homeLink.url,
       analyticEvent: { key: 'appswitcher.home.link.click' },
+    });
+  }
+
+  if (isPeopleProfileLinkEnabled) {
+    items.push({
+      content: (<TopLinkContainer>{peopleProfileLink.name}</TopLinkContainer>),
+      elemBefore: (
+        <PeopleDirectoryIconContainer>{peopleProfileLink.icon}</PeopleDirectoryIconContainer>
+      ),
+      href: peopleProfileLink.url,
+      analyticEvent: { key: 'appswitcher.peopleProfile.link.click' },
     });
   }
 

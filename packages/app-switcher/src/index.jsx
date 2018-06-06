@@ -5,6 +5,7 @@ import { DropdownMenuStateless } from '@atlaskit/dropdown-menu';
 
 import type {
   HomeLink,
+  PeopleProfileLink,
   RecentContainers,
   LinkedApplications,
   DropdownOptions,
@@ -27,7 +28,9 @@ export default class AppSwitcher extends Component {
     isAnonymousUser: boolean,
     isHomeLinkEnabled: boolean,
     homeLink?: HomeLink,
+    peopleProfileLink?: PeopleProfileLink,
     isSiteAdminLinkEnabled?: boolean,
+    isPeopleProfileLinkEnabled?: boolean,
     i18n: Translations,
     trigger: Function,
     analytics: Function,
@@ -44,6 +47,7 @@ export default class AppSwitcher extends Component {
     dropdownOptions: {},
     isHomeLinkEnabled: true,
     isSiteAdminLinkEnabled: false,
+    isPeopleProfileLinkEnabled: false,
     isLoading: false,
     onAppSwitcherOpen: () => {},
     suggestedApplication: { onDontShowAgainClick: () => {} },
@@ -82,7 +86,9 @@ export default class AppSwitcher extends Component {
       isAnonymousUser,
       isHomeLinkEnabled,
       homeLink,
+      peopleProfileLink,
       isSiteAdminLinkEnabled,
+      isPeopleProfileLinkEnabled,
       isLoading,
       recentContainers,
       linkedApplications,
@@ -103,7 +109,15 @@ export default class AppSwitcher extends Component {
     // future. (Its what is throwing the warnings in tests too)
 
     const dropdownItems = [
-      getTopLinks(i18n, isAnonymousUser, isHomeLinkEnabled, isSiteAdminLinkEnabled, homeLinkConfig),
+      getTopLinks(
+        i18n,
+        isAnonymousUser,
+        isHomeLinkEnabled,
+        isSiteAdminLinkEnabled,
+        isPeopleProfileLinkEnabled,
+        homeLinkConfig,
+        peopleProfileLink
+      ),
       getRecentContainers(i18n, isAnonymousUser, recentContainers),
       getLinkedApplications(i18n, isAnonymousUser, isSiteAdminLinkEnabled, linkedApplications),
       getLinks(links),

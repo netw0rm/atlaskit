@@ -3,6 +3,7 @@ import React from 'react';
 import { Chrome } from '@atlaskit/util-readme';
 import Button from '@atlaskit/button';
 import CustomIcon from '@atlaskit/icon/glyph/home-circle';
+import PersonIcon from '@atlaskit/icon/glyph/person';
 
 import AppSwitcher from '../src';
 import { name } from '../package.json';
@@ -167,6 +168,21 @@ storiesOf(name, module)
       {...{
         ...props,
         isSiteAdminLinkEnabled: true,
+      }}
+    />
+  ))
+
+  .add('with People Profile link', () => (
+    <AppSwitcher
+      {...{
+        ...props,
+        isSiteAdminLinkEnabled: true,
+        isPeopleProfileLinkEnabled: true,
+        peopleProfileLink: {
+          name: 'People Profile',
+          url: '/people',
+          icon: <PersonIcon size="large" label="" />,
+        },
       }}
     />
   ))

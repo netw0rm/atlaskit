@@ -1,5 +1,8 @@
 # @atlaskit/app-switcher
 
+## 3.8.0 (2018-06-12)
+
+* feature; changing analytic events (issues closed: eue-559) ([7bc7a18](https://bitbucket.org/atlassian/atlaskit/commits/7bc7a18))
 ## 3.7.0 (2018-06-06)
 
 * bug fix; change ordering of top links in app-switcher ([18340cd](https://bitbucket.org/atlassian/atlaskit/commits/18340cd))

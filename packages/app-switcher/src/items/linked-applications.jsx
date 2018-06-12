@@ -56,9 +56,9 @@ export default function (
         ? '/admin/billing/addapplication'
         : '/trusted-admin/billing/addapplication',
       analyticEvent: {
-        key: `appswitcher.discover.applications.${isSiteAdminLinkEnabled ? 'admin' : 'trusted'}.link.click`,
+        key: 'grow0.experiment2199.appswitcher.discover.applications.link.click',
         properties: {
-          product: isSiteAdminLinkEnabled ? 'admin-discover-applications' : 'trusted-admin-discover-applications',
+          isSiteAdmin: isSiteAdminLinkEnabled,
         },
       },
     });

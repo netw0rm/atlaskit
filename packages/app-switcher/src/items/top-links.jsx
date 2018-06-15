@@ -1,8 +1,20 @@
 // @flow
 import React from 'react';
 import SiteAdminIcon from '../components/SiteAdminIcon';
-import { HomeIconContainer, PeopleDirectoryIconContainer, SiteAdminIconContainer, TopLinkContainer } from '../styled';
-import type { HomeLink, Translations, DropdownConfig, PeopleProfileLink } from '../internal/types';
+import {
+  HomeIconContainer,
+  PeopleDirectoryIconContainer,
+  InviteUsersIconContainer,
+  SiteAdminIconContainer,
+  TopLinkContainer,
+} from '../styled';
+import type {
+  HomeLink,
+  Translations,
+  DropdownConfig,
+  PeopleProfileLink,
+  InviteUsersLink,
+} from '../internal/types';
 
 export default function (
   i18n: Translations,
@@ -10,8 +22,10 @@ export default function (
   isHomeLinkEnabled: boolean,
   isSiteAdminLinkEnabled?: boolean,
   isPeopleProfileLinkEnabled?: boolean,
+  isInviteUsersLinkEnabled?: boolean,
   homeLink: HomeLink,
-  peopleProfileLink: PeopleProfileLink
+  peopleProfileLink: PeopleProfileLink,
+  inviteUsersLink: InviteUsersLink
 ): DropdownConfig | null {
   if (isAnonymousUser) {
     return null;
@@ -21,8 +35,8 @@ export default function (
 
   if (isHomeLinkEnabled) {
     items.push({
-      content: (<TopLinkContainer>{homeLink.name}</TopLinkContainer>),
-      elemBefore: (<HomeIconContainer>{homeLink.icon}</HomeIconContainer>),
+      content: <TopLinkContainer>{homeLink.name}</TopLinkContainer>,
+      elemBefore: <HomeIconContainer>{homeLink.icon}</HomeIconContainer>,
       href: homeLink.url,
       analyticEvent: { key: 'appswitcher.home.link.click' },
     });
@@ -30,7 +44,7 @@ export default function (
 
   if (isPeopleProfileLinkEnabled) {
     items.push({
-      content: (<TopLinkContainer>{peopleProfileLink.name}</TopLinkContainer>),
+      content: <TopLinkContainer>{peopleProfileLink.name}</TopLinkContainer>,
       elemBefore: (
         <PeopleDirectoryIconContainer>{peopleProfileLink.icon}</PeopleDirectoryIconContainer>
       ),
@@ -39,10 +53,23 @@ export default function (
     });
   }
 
+  if (isInviteUsersLinkEnabled) {
+    items.push({
+      content: <TopLinkContainer>{inviteUsersLink.name}</TopLinkContainer>,
+      elemBefore: <InviteUsersIconContainer>{inviteUsersLink.icon}</InviteUsersIconContainer>,
+      href: inviteUsersLink.url,
+      analyticEvent: { key: 'grow0.experiment2203.app.switcher.invite.users.link.click' },
+    });
+  }
+
   if (isSiteAdminLinkEnabled) {
     items.push({
-      content: (<TopLinkContainer>{i18n['site-admin']}</TopLinkContainer>),
-      elemBefore: (<SiteAdminIconContainer><SiteAdminIcon /></SiteAdminIconContainer>),
+      content: <TopLinkContainer>{i18n['site-admin']}</TopLinkContainer>,
+      elemBefore: (
+        <SiteAdminIconContainer>
+          <SiteAdminIcon />
+        </SiteAdminIconContainer>
+      ),
       href: '/admin',
       analyticEvent: { key: 'appswitcher.siteAdmin.link.click' },
     });

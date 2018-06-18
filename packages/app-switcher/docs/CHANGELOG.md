@@ -1,5 +1,9 @@
 # @atlaskit/app-switcher
 
+## 4.0.0 (2018-06-18)
+
+* breaking; ' ([8ae57f4](https://bitbucket.org/atlassian/atlaskit/commits/8ae57f4))
+* breaking; adding inviteUsersLink to appSwitcher (issues closed: eue-441) ([8ae57f4](https://bitbucket.org/atlassian/atlaskit/commits/8ae57f4))
 ## 3.8.0 (2018-06-12)
 
 * feature; changing analytic events (issues closed: eue-559) ([7bc7a18](https://bitbucket.org/atlassian/atlaskit/commits/7bc7a18))

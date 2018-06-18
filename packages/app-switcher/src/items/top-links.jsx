@@ -58,7 +58,7 @@ export default function (
       content: <TopLinkContainer>{inviteUsersLink.name}</TopLinkContainer>,
       elemBefore: <InviteUsersIconContainer>{inviteUsersLink.icon}</InviteUsersIconContainer>,
       href: inviteUsersLink.url,
-      analyticEvent: { key: 'grow0.experiment2203.app.switcher.invite.users.link.click' },
+      analyticEvent: { key: 'appswitcher.invite.users.link.click' },
     });
   }
 

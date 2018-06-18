@@ -56,7 +56,7 @@ export default function (
         ? '/admin/billing/addapplication'
         : '/trusted-admin/billing/addapplication',
       analyticEvent: {
-        key: 'grow0.experiment2199.appswitcher.discover.applications.link.click',
+        key: 'appswitcher.discover.applications.link.click',
         properties: {
           isSiteAdmin: isSiteAdminLinkEnabled,
         },

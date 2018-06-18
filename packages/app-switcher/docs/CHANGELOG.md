@@ -1,5 +1,8 @@
 # @atlaskit/app-switcher
 
+## 4.0.1 (2018-06-18)
+
+* bug fix; removed grow0 events ([27efc0a](https://bitbucket.org/atlassian/atlaskit/commits/27efc0a))
 ## 4.0.0 (2018-06-18)
 
 * breaking; ' ([8ae57f4](https://bitbucket.org/atlassian/atlaskit/commits/8ae57f4))

@@ -4,6 +4,7 @@ import { Chrome } from '@atlaskit/util-readme';
 import Button from '@atlaskit/button';
 import CustomIcon from '@atlaskit/icon/glyph/home-circle';
 import PersonIcon from '@atlaskit/icon/glyph/person';
+import InviteTeamIcon from '@atlaskit/icon/glyph/invite-team';
 
 import AppSwitcher from '../src';
 import { name } from '../package.json';
@@ -11,18 +12,12 @@ import { name } from '../package.json';
 import props from './data.json';
 
 props.analytics = action('analytics');
-props.trigger = isSelected => (<Button isSelected={isSelected}>...</Button>);
+props.trigger = isSelected => <Button isSelected={isSelected}>...</Button>;
 
 storiesOf(name, module)
-  .addDecorator(story => (
-    <Chrome>
-      {story()}
-    </Chrome>
-  ))
+  .addDecorator(story => <Chrome>{story()}</Chrome>)
 
-  .add('with all components', () => (
-    <AppSwitcher {...props} />
-  ))
+  .add('with all components', () => <AppSwitcher {...props} />)
 
   .add('with no recent containers', () => (
     <AppSwitcher
@@ -82,16 +77,22 @@ storiesOf(name, module)
         ...props,
         linkedApplications: {
           configureLink: 'https://www.atlassian.com',
-          apps: [{
-            name: 'JIRA',
-            url: 'https://www.atlassian.com/#4',
-            product: 'jira',
-          }],
-          suggested: [{
-            name: 'Confluence',
-            product: 'confluence',
-            onClick: () => { action('confluence.suggestion.clicked'); },
-          }],
+          apps: [
+            {
+              name: 'JIRA',
+              url: 'https://www.atlassian.com/#4',
+              product: 'jira',
+            },
+          ],
+          suggested: [
+            {
+              name: 'Confluence',
+              product: 'confluence',
+              onClick: () => {
+                action('confluence.suggestion.clicked');
+              },
+            },
+          ],
           error: false,
         },
       }}
@@ -104,15 +105,22 @@ storiesOf(name, module)
         linkedApplications: {
           configureLink: 'https://www.atlassian.com',
           apps: [],
-          suggested: [{
-            name: 'JIRA',
-            product: 'jira',
-            onClick: () => { action('jira.suggestion.clicked'); },
-          }, {
-            name: 'Confluence',
-            product: 'confluence',
-            onClick: () => { action('confluence.suggestion.clicked'); },
-          }],
+          suggested: [
+            {
+              name: 'JIRA',
+              product: 'jira',
+              onClick: () => {
+                action('jira.suggestion.clicked');
+              },
+            },
+            {
+              name: 'Confluence',
+              product: 'confluence',
+              onClick: () => {
+                action('confluence.suggestion.clicked');
+              },
+            },
+          ],
           error: false,
         },
       }}
@@ -131,14 +139,17 @@ storiesOf(name, module)
     <AppSwitcher
       {...{
         ...props,
-        links: [{
-          text: 'Add payment details',
-          url: 'https://google.com/',
-        }, {
-          text: 'Request a trial extension...',
-          url: 'https://example.com/',
-          analyticsRef: 'xyz',
-        }],
+        links: [
+          {
+            text: 'Add payment details',
+            url: 'https://google.com/',
+          },
+          {
+            text: 'Request a trial extension...',
+            url: 'https://example.com/',
+            analyticsRef: 'xyz',
+          },
+        ],
       }}
     />
   ))
@@ -187,6 +198,21 @@ storiesOf(name, module)
     />
   ))
 
+  .add('with Invite Users link', () => (
+    <AppSwitcher
+      {...{
+        ...props,
+        isSiteAdminLinkEnabled: true,
+        isInviteUsersLinkEnabled: true,
+        inviteUsersLink: {
+          name: 'Invite new users',
+          url: '/trusted-admin/users/invite',
+          icon: <InviteTeamIcon size="large" label="" />,
+        },
+      }}
+    />
+  ))
+
   .add('with discover applications link (Admin)', () => (
     <AppSwitcher
       {...{
@@ -194,16 +220,22 @@ storiesOf(name, module)
         isSiteAdminLinkEnabled: true,
         linkedApplications: {
           configureLink: 'https://www.atlassian.com',
-          apps: [{
-            name: 'JIRA',
-            url: 'https://www.atlassian.com/#4',
-            product: 'jira',
-          }],
-          suggested: [{
-            name: 'Confluence',
-            product: 'confluence',
-            onClick: () => { action('confluence.suggestion.clicked'); },
-          }],
+          apps: [
+            {
+              name: 'JIRA',
+              url: 'https://www.atlassian.com/#4',
+              product: 'jira',
+            },
+          ],
+          suggested: [
+            {
+              name: 'Confluence',
+              product: 'confluence',
+              onClick: () => {
+                action('confluence.suggestion.clicked');
+              },
+            },
+          ],
           error: false,
           discoverApplicationsLink: true,
         },
@@ -218,16 +250,22 @@ storiesOf(name, module)
         isSiteAdminLinkEnabled: false,
         linkedApplications: {
           configureLink: 'https://www.atlassian.com',
-          apps: [{
-            name: 'JIRA',
-            url: 'https://www.atlassian.com/#4',
-            product: 'jira',
-          }],
-          suggested: [{
-            name: 'Confluence',
-            product: 'confluence',
-            onClick: () => { action('confluence.suggestion.clicked'); },
-          }],
+          apps: [
+            {
+              name: 'JIRA',
+              url: 'https://www.atlassian.com/#4',
+              product: 'jira',
+            },
+          ],
+          suggested: [
+            {
+              name: 'Confluence',
+              product: 'confluence',
+              onClick: () => {
+                action('confluence.suggestion.clicked');
+              },
+            },
+          ],
           error: false,
           discoverApplicationsLink: true,
         },

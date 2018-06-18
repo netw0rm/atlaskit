@@ -10,23 +10,35 @@ import BasicUsageExample from './examples/basic-usage';
 import BasicUsageExampleRaw from '!raw!./examples/basic-usage';
 /* eslint-enable import/first, import/no-duplicates */
 
-const AppSwitcherDescription = 'This component provides the app switcher used in Atlassian Cloud products.';
+const AppSwitcherDescription =
+  'This component provides the app switcher used in Atlassian Cloud products.';
 
 const propDescriptions = {
   homeLink: 'Object to configure the top link to Atlassian Home.',
   peopleProfileLink: 'Object to configure the top link to the Atlassian People Profile',
-  recentContainers: 'Array of recent containers. If this array is empty the recent container section will be hidden.',
+  inviteUsersLink: 'Object to configure the top link to the Invite Users Experiment',
+  recentContainers:
+    'Array of recent containers. If this array is empty the recent container section will be hidden.',
   linkedApplications: 'Map containing an array of linked applications.',
-  links: 'Optional array of regular links. If this array is empty or not passed, the links section will be hidden.',
+  links:
+    'Optional array of regular links. If this array is empty or not passed, the links section will be hidden.',
   i18n: 'Mapping of i18n keys to translations.',
-  isAnonymousUser: 'If set to true, the home icon, recent containers and suggested application will not display.',
-  isHomeLinkEnabled: 'If set to true, the link to Atlassian Home will be rendered at the top of the app switcher',
-  isPeopleProfileLinkEnabled: 'If set to true, the link to Site Administration will be rendered at the top of the app switcher below the Home link (if present).',
-  isSiteAdminLinkEnabled: 'If set to true, the link to Site Administration will be rendered at the top of the app switcher below the Home link (if present).',
-  trigger: 'This function is called to render the trigger for the dropdown. It is called with one parameter - the ' +
-           'dropdown\'s current state (open or closed).',
-  analytics: 'This function is called when the user performs certain actions in the app switcher. ' +
-             'The function supplied should have the following signature: function analyics(eventName, payload) { ... }.',
+  isAnonymousUser:
+    'If set to true, the home icon, recent containers and suggested application will not display.',
+  isHomeLinkEnabled:
+    'If set to true, the link to Atlassian Home will be rendered at the top of the app switcher',
+  isPeopleProfileLinkEnabled:
+    'If set to true, the link to Site Administration will be rendered at the top of the app switcher below the Home link (if present).',
+  isInviteUsersLinkEnabled:
+    'If set to true, the link to the invite users experiment will be rendered below the People Profile link (if present).',
+  isSiteAdminLinkEnabled:
+    'If set to true, the link to Site Administration will be rendered at the top of the app switcher below the Home link (if present).',
+  trigger:
+    'This function is called to render the trigger for the dropdown. It is called with one parameter - the ' +
+    "dropdown's current state (open or closed).",
+  analytics:
+    'This function is called when the user performs certain actions in the app switcher. ' +
+    'The function supplied should have the following signature: function analyics(eventName, payload) { ... }.',
   isDropdownOpenInitially: 'The initial state of the dropdown.',
   dropdownOptions: 'Any additional options to pass into StatelessDropdown',
 };
@@ -67,6 +79,24 @@ const peopleProfileLinkPropDescriptions = [
   },
 ];
 
+const inviteUsersLinkPropDescriptions = [
+  {
+    name: 'name',
+    type: 'String',
+    description: 'Text label of the InviteUsersLink item.',
+  },
+  {
+    name: 'url',
+    type: 'String',
+    description: 'Link target of the InviteUsersLink item.',
+  },
+  {
+    name: 'icon',
+    type: 'Node',
+    description: 'Icon element for the InviteUsersLink item',
+  },
+];
+
 const recentContainerPropDescriptions = [
   {
     name: 'name',
@@ -81,12 +111,13 @@ const recentContainerPropDescriptions = [
   {
     name: 'iconUrl',
     type: 'String',
-    description: 'Link to the container\'s icon. Should be 32px square.',
+    description: "Link to the container's icon. Should be 32px square.",
   },
   {
     name: 'type',
     type: 'String',
-    description: 'Type of the container. Currently, "confluence-space" and "jira-project" are supported.',
+    description:
+      'Type of the container. Currently, "confluence-space" and "jira-project" are supported.',
   },
 ];
 
@@ -94,13 +125,15 @@ const linkedApplicationsPropDescriptions = [
   {
     name: 'configureLink',
     type: 'Boolean|String',
-    description: 'A link to configure the applinks for this instance OR false if the user does ' +
-                 'not have permission to configure applinks',
+    description:
+      'A link to configure the applinks for this instance OR false if the user does ' +
+      'not have permission to configure applinks',
   },
   {
     name: 'apps',
     type: 'Array',
-    description: 'An array of the application links to display. Each array item is a map with the following keys:',
+    description:
+      'An array of the application links to display. Each array item is a map with the following keys:',
     children: [
       {
         name: 'name',
@@ -127,7 +160,8 @@ const linkedApplicationsPropDescriptions = [
   {
     name: 'suggested',
     type: 'Array',
-    description: 'An array of suggested application links to display. Each array item is a map with the following keys:',
+    description:
+      'An array of suggested application links to display. Each array item is a map with the following keys:',
     children: [
       {
         name: 'name',
@@ -137,12 +171,14 @@ const linkedApplicationsPropDescriptions = [
       {
         name: 'product',
         type: 'String',
-        description: 'A product identifier for the suggested application. Used in an analytics event. e.g. "jira", "confluence", "bitbucket", etc',
+        description:
+          'A product identifier for the suggested application. Used in an analytics event. e.g. "jira", "confluence", "bitbucket", etc',
       },
       {
         name: 'onClick',
         type: 'Function',
-        description: 'Called when the suggested application is clicked. The AppSwitcher will close if the item is selected.',
+        description:
+          'Called when the suggested application is clicked. The AppSwitcher will close if the item is selected.',
       },
     ],
   },
@@ -154,7 +190,8 @@ const linkedApplicationsPropDescriptions = [
   {
     name: 'discoverApplicationsLink',
     type: 'Boolean',
-    description: 'If true the app switcher will display a discover applications link after the suggested products. Depending on whether the user is an admin or not it will redirect to the appropriate url',
+    description:
+      'If true the app switcher will display a discover applications link after the suggested products. Depending on whether the user is an admin or not it will redirect to the appropriate url',
   },
 ];
 
@@ -172,7 +209,7 @@ const linksPropDescriptions = [
   {
     name: 'analyticsRef',
     type: 'String?',
-    description: 'Optional string to send with the link\'s on-click analytic event.',
+    description: "Optional string to send with the link's on-click analytic event.",
   },
 ];
 
@@ -198,7 +235,7 @@ const i18nPropDescriptions = [
     description: 'Recent',
   },
   {
-    name: 'don\'t.show.this.again',
+    name: "don't.show.this.again",
     description: 'Don’t show this again',
   },
   {
@@ -219,14 +256,16 @@ const dropdownOptionsPropDescriptions = [
   {
     name: 'appearance',
     type: 'String',
-    description: "Controls the appearance of the dropdown. Available types: 'default', 'tall'. " +
-    'Default dropdown has scroll after its height exceeds the pre-defined amount. Tall dropdown has no restrictions.',
+    description:
+      "Controls the appearance of the dropdown. Available types: 'default', 'tall'. " +
+      'Default dropdown has scroll after its height exceeds the pre-defined amount. Tall dropdown has no restrictions.',
   },
   {
     name: 'isTriggerNotTabbable',
     type: 'Boolean',
-    description: 'Controls whether it is possible to tab to the trigger. This property should be set to true if ' +
-    'some interactive element is used inside trigger (links, buttons)',
+    description:
+      'Controls whether it is possible to tab to the trigger. This property should be set to true if ' +
+      'some interactive element is used inside trigger (links, buttons)',
   },
   {
     name: 'position',
@@ -243,7 +282,7 @@ const dropdownOptionsPropDescriptions = [
 function propDescriptionList(descriptions) {
   const listItems = descriptions.map((item, index) => {
     const children = item.children ? propDescriptionList(item.children) : null;
-    const type = item.type ? (<i>({item.type})</i>) : null;
+    const type = item.type ? <i>({item.type})</i> : null;
 
     return (
       <li key={index}>
@@ -252,68 +291,62 @@ function propDescriptionList(descriptions) {
     );
   });
 
-  return (
-    <ul>{listItems}</ul>
-  );
+  return <ul>{listItems}</ul>;
 }
 
-storiesOf(name, module)
-  .add('AppSwitcher Readme', () => (
-    <div>
-      <Readme
-        component={name}
-        description={AppSwitcherDescription}
-      >
-        <Code code={BasicUsageExampleRaw}>
-          {BasicUsageExample}
-        </Code>
-        <Props component={AppSwitcher} descriptions={propDescriptions} />
-        <Description>
-          <Heading type="3">homeLink property</Heading>
-          <p>
-            The homeLink property is an object configuring the link to Atlassian Home.
-          </p>
-          {propDescriptionList(homeLinkPropDescriptions)}
-          <Heading type="3">peopleProfileLink property</Heading>
-          <p>
-            The peopleProfileLink property is an object configuring the link to Atlassian
-            People Profile.
-          </p>
-          {propDescriptionList(peopleProfileLinkPropDescriptions)}
-          <Heading type="3">recentContainers property</Heading>
-          <p>
-            The recentContainers property is an array containing the recent containers to display.
-            Each recent container item is a map with the following keys:
-          </p>
-          {propDescriptionList(recentContainerPropDescriptions)}
+storiesOf(name, module).add('AppSwitcher Readme', () => (
+  <div>
+    <Readme component={name} description={AppSwitcherDescription}>
+      <Code code={BasicUsageExampleRaw}>{BasicUsageExample}</Code>
+      <Props component={AppSwitcher} descriptions={propDescriptions} />
+      <Description>
+        <Heading type="3">homeLink property</Heading>
+        <p>The homeLink property is an object configuring the link to Atlassian Home.</p>
+        {propDescriptionList(homeLinkPropDescriptions)}
+        <Heading type="3">peopleProfileLink property</Heading>
+        <p>
+          The peopleProfileLink property is an object configuring the link to Atlassian People
+          Profile.
+        </p>
+        {propDescriptionList(peopleProfileLinkPropDescriptions)}
+        <Heading type="3">inviteUsersLink property</Heading>
+        <p>
+          The inviteUsersLink property is an object configuring the link to the Invite Users
+          experiment
+        </p>
+        {propDescriptionList(inviteUsersLinkPropDescriptions)}
+        <Heading type="3">recentContainers property</Heading>
+        <p>
+          The recentContainers property is an array containing the recent containers to display.
+          Each recent container item is a map with the following keys:
+        </p>
+        {propDescriptionList(recentContainerPropDescriptions)}
 
-          <Heading type="3">linkedApplications property</Heading>
-          <p>
-            The linkedApplications property is a map with the following format:
-          </p>
-          {propDescriptionList(linkedApplicationsPropDescriptions)}
+        <Heading type="3">linkedApplications property</Heading>
+        <p>The linkedApplications property is a map with the following format:</p>
+        {propDescriptionList(linkedApplicationsPropDescriptions)}
 
-          <Heading type="3">links property</Heading>
-          <p>
-            The links property is an array containing links to display at the bottom.
-            Each link item is a map with the following keys:
-          </p>
-          {propDescriptionList(linksPropDescriptions)}
+        <Heading type="3">links property</Heading>
+        <p>
+          The links property is an array containing links to display at the bottom. Each link item
+          is a map with the following keys:
+        </p>
+        {propDescriptionList(linksPropDescriptions)}
 
-          <Heading type="3">i18n property</Heading>
-          <p>
-            The i18n property is a mapping between translation keys and translations. It should
-            contain translations for the following keys:
-          </p>
-          {propDescriptionList(i18nPropDescriptions)}
+        <Heading type="3">i18n property</Heading>
+        <p>
+          The i18n property is a mapping between translation keys and translations. It should
+          contain translations for the following keys:
+        </p>
+        {propDescriptionList(i18nPropDescriptions)}
 
-          <Heading type="3">dropdownOptions</Heading>
-          <p>
-            The dropdownOptions is a map which is passed into DropdownMenuStateless to allow
-            configuring the dropdown. It has the following format:
-          </p>
-          {propDescriptionList(dropdownOptionsPropDescriptions)}
-        </Description>
-      </Readme>
-    </div>
-  ));
+        <Heading type="3">dropdownOptions</Heading>
+        <p>
+          The dropdownOptions is a map which is passed into DropdownMenuStateless to allow
+          configuring the dropdown. It has the following format:
+        </p>
+        {propDescriptionList(dropdownOptionsPropDescriptions)}
+      </Description>
+    </Readme>
+  </div>
+));

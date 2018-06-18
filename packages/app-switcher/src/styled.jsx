@@ -5,6 +5,7 @@ import {
   akColorN100,
   akColorN200,
   akGridSize,
+  akColorN0,
 } from '@atlaskit/util-shared-styles';
 
 const ellipsis = `
@@ -25,19 +26,28 @@ const primaryLinkTitleLineHeight = `
 export const HomeIconContainer = styled.div`
   color: ${akColorB400};
 
-  ${imageDimensions}
+  ${imageDimensions};
 `;
 
 export const PeopleDirectoryIconContainer = styled.div`
   color: ${akColorN200};
 
-  ${imageDimensions}
+  ${imageDimensions};
+`;
+
+export const InviteUsersIconContainer = styled.div`
+  background-color: ${akColorB400};
+  border-radius: 3px;
+  color: ${akColorN0};
+  text-align: center;
+  line-height: 46px;
+  ${imageDimensions};
 `;
 
 export const SiteAdminIconContainer = styled.div`
   color: ${akColorN200};
 
-  ${imageDimensions}
+  ${imageDimensions};
 `;
 
 export const Item = styled.div`
@@ -45,14 +55,14 @@ export const Item = styled.div`
   max-width: 225px;
   min-width: 208px;
 
-  ${ellipsis}
+  ${ellipsis};
 `;
 
 export const ItemWithIcon = styled.div`
   max-width: 177px;
   min-width: 160px;
 
-  ${ellipsis}
+  ${ellipsis};
 `;
 
 export const TopLinkContainer = styled(ItemWithIcon)`
@@ -68,9 +78,7 @@ export const RecentContainerType = styled.div`
 `;
 
 export const RecentContainerName = styled.div`
-  ${primaryLinkTitleLineHeight}
-
-  ${ellipsis}
+  ${primaryLinkTitleLineHeight} ${ellipsis};
 `;
 
 export const Link = styled.span`
@@ -78,7 +86,7 @@ export const Link = styled.span`
 `;
 
 export const AppSwitcherContainer = styled.span`
-  [data-role="droplistContent"] {
+  [data-role='droplistContent'] {
     max-height: 85vh;
   }
 `;

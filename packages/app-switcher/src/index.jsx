@@ -41,6 +41,7 @@ export default class AppSwitcher extends Component {
     dropdownOptions: DropdownOptions,
     isLoading: boolean,
     onAppSwitcherOpen: Function,
+    onAppSwitcherClose: Function,
     links?: Links,
   };
 
@@ -54,6 +55,7 @@ export default class AppSwitcher extends Component {
     isInviteUsersLinkEnabled: false,
     isLoading: false,
     onAppSwitcherOpen: () => {},
+    onAppSwitcherClose: () => {},
     suggestedApplication: { onDontShowAgainClick: () => {} },
     links: [],
   };
@@ -79,6 +81,9 @@ export default class AppSwitcher extends Component {
     if (!this.state.isDropdownOpen && attrs.isOpen) {
       this.props.analytics('appswitcher.trigger.click');
       this.props.onAppSwitcherOpen();
+    } else if (this.state.isDropdownOpen && !attrs.isOpen) {
+      this.props.analytics('appswitcher.trigger.closed');
+      this.props.onAppSwitcherClose();
     }
 
     this.setState({ isDropdownOpen: attrs.isOpen });

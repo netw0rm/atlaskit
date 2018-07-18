@@ -100,6 +100,23 @@ describe(name, () => {
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
+  it('should invoke the close callback when it closes', () => {
+    const spy = jest.fn();
+    const wrapper = shallow(
+      <AppSwitcher
+        {...data}
+        dropdownOptions={{ items: [{ items: [{ content: 'test' }] }] }}
+        onAppSwitcherClose={spy}
+      />
+    );
+    expect(spy).toHaveBeenCalledTimes(0);
+
+    wrapper.instance().onOpenChange({
+      isOpen: true,
+    });
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
   it('should invoke the suggested application callback when the appropriate item is clicked', () => {
     jest.useFakeTimers();
     const spy = jest.fn();

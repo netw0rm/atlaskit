@@ -114,6 +114,9 @@ describe(name, () => {
     wrapper.instance().onOpenChange({
       isOpen: true,
     });
+    wrapper.instance().onOpenChange({
+      isOpen: false,
+    });
     expect(spy).toHaveBeenCalledTimes(1);
   });
 

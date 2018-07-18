@@ -79,7 +79,7 @@ export default class AppSwitcher extends Component {
 
   onOpenChange = (attrs: { isOpen: boolean }) => {
     if (!this.state.isDropdownOpen && attrs.isOpen) {
-      this.props.analytics('appswitcher.trigger.click');
+      this.props.analytics('appswitcher.trigger.opened');
       this.props.onAppSwitcherOpen();
     } else if (this.state.isDropdownOpen && !attrs.isOpen) {
       this.props.analytics('appswitcher.trigger.closed');

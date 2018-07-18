@@ -90,6 +90,7 @@ When upgrading an Atlaskit component, all changelogs can be found in the [Atlask
 
 ```
 git clone git@bitbucket.org:atlassian/atlaskit.git
+cd atlaskit
 yarn
 ```
 
@@ -130,8 +131,8 @@ While developing, it is useful to run jest in watch-mode. We recommend running J
 
 * To run the full unit test suite: run `yarn run test:unit` from the repository root
 * To run the tests for a single package:
-  * run (cd packages/<packageName>; yarn run test:unit)
-  * run `yarn run lerna -- run test:unit --stream --scope=@atlaskit/<packageName>` from the repository root
+    * run (cd packages/<packageName>; yarn run test:unit)
+    * run `yarn run lerna -- run test:unit --stream --scope=@atlaskit/<packageName>` from the repository root
 * To run the unit tests in watch mode for development/tdd: run `yarn run test:unit -- --watch` from the repository root. Note: This might require the installation of [Watchman](https://facebook.github.io/watchman/docs/install.html). If this command fails, please install watchman and retry.
 
 ### Running tests in the browser
@@ -140,8 +141,8 @@ For the packages that require karma to run tests in the browser (at preset, the 
 
 * To run all browser tests: run `yarn run test:browser` from the repository root
 * To run the tests for a single package:
-  * run (cd packages/<packageName>; yarn run test:browser)
-  * run `yarn run lerna -- run test:browser --stream --scope=@atlaskit/<packageName>` from the repository root
+    * run (cd packages/<packageName>; yarn run test:browser)
+    * run `yarn run lerna -- run test:browser --stream --scope=@atlaskit/<packageName>` from the repository root
 * To continuously run tests for a single component: `cd packages/<packageName>; yarn run test:browser -- --watch`
 
 # Reporting issues
@@ -184,7 +185,7 @@ The base level of the repository is licensed under [Apache 2.0][license]. There 
 
 If you fork this repository you can continue to use those Atlassian Design Guidelines licensed components only under the given license restrictions. If you want to redistribute this repository, you will need to replace these Atlassian Design Guidelines licensed components with your own implementation.
 
-Copyright (c) 2016 Atlassian and others.
+Copyright (c) 2018 Atlassian and others.
 
 [adg]: http://atlassian.design/ "Atlassian Design Guidelines"
 [adg_license]: http://atlassian.design/license

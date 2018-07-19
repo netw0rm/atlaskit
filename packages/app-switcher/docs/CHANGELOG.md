@@ -1,5 +1,14 @@
 # @atlaskit/app-switcher
 
+## 7.0.0 (2018-07-19)
+
+
+
+
+* breaking; "appswitcher.trigger.click" analytics event was renamed to "appswitcher.trigger.opened" ([d6d489b](https://bitbucket.org/atlassian/atlaskit/commits/d6d489b))
+* breaking; nEXT-6027 app-switcher - make analytics event names consistent (issues closed: next-6027) ([d6d489b](https://bitbucket.org/atlassian/atlaskit/commits/d6d489b))
+
+* feature; NEXT-6005 Add onClose prop to app-switcher atlaskit component (issues closed: next-6005) ([fe19ad9](https://bitbucket.org/atlassian/atlaskit/commits/fe19ad9))
 ## 6.0.0 (2018-07-18)
 
 

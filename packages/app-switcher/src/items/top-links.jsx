@@ -3,6 +3,7 @@ import React from 'react';
 import SiteAdminIcon from '../components/SiteAdminIcon';
 import {
   HomeIconContainer,
+  MarketplaceIconContainer,
   PeopleDirectoryIconContainer,
   InviteUsersIconContainer,
   SiteAdminIconContainer,
@@ -10,6 +11,7 @@ import {
 } from '../styled';
 import type {
   HomeLink,
+  MarketplaceLink,
   Translations,
   DropdownConfig,
   PeopleProfileLink,
@@ -20,10 +22,12 @@ export default function (
   i18n: Translations,
   isAnonymousUser: boolean,
   isHomeLinkEnabled: boolean,
+  isMarketplaceLinkEnabled: boolean,
   isSiteAdminLinkEnabled?: boolean,
   isPeopleProfileLinkEnabled?: boolean,
   isInviteUsersLinkEnabled?: boolean,
   homeLink: HomeLink,
+  marketplaceLink: MarketplaceLink,
   peopleProfileLink: PeopleProfileLink,
   inviteUsersLink: InviteUsersLink
 ): DropdownConfig | null {
@@ -72,6 +76,15 @@ export default function (
       ),
       href: '/admin',
       analyticEvent: { key: 'appswitcher.siteAdmin.link.click' },
+    });
+  }
+
+  if (isMarketplaceLinkEnabled) {
+    items.push({
+      content: <TopLinkContainer>{marketplaceLink.name}</TopLinkContainer>,
+      elemBefore: <MarketplaceIconContainer>{marketplaceLink.icon}</MarketplaceIconContainer>,
+      href: marketplaceLink.url,
+      analyticEvent: { key: 'appswitcher.marketplace.link.click' },
     });
   }
 

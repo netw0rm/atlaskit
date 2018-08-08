@@ -15,6 +15,7 @@ const AppSwitcherDescription =
 
 const propDescriptions = {
   homeLink: 'Object to configure the top link to Atlassian Home.',
+  marketplaceLink: 'Object to configure the link to Atlassian Marketplace',
   peopleProfileLink: 'Object to configure the top link to the Atlassian People Profile',
   inviteUsersLink: 'Object to configure the top link to the Invite Users Experiment',
   recentContainers:
@@ -27,6 +28,8 @@ const propDescriptions = {
     'If set to true, the home icon, recent containers and suggested application will not display.',
   isHomeLinkEnabled:
     'If set to true, the link to Atlassian Home will be rendered at the top of the app switcher',
+  isMarketplaceLinkEnabled:
+    'If set to true, the link to Atlassian Marketplace will be rendered in the app switcher',
   isPeopleProfileLinkEnabled:
     'If set to true, the link to Site Administration will be rendered at the top of the app switcher below the Home link (if present).',
   isInviteUsersLinkEnabled:
@@ -58,6 +61,24 @@ const homeLinkPropDescriptions = [
     name: 'icon',
     type: 'Node',
     description: 'Icon element for the HomeLink item',
+  },
+];
+
+const marketplaceLinkPropDescriptions = [
+  {
+    name: 'name',
+    type: 'String',
+    description: 'Text label of the MarketplaceLink item.',
+  },
+  {
+    name: 'url',
+    type: 'String',
+    description: 'Link target of the MarketplaceLink item.',
+  },
+  {
+    name: 'icon',
+    type: 'Node',
+    description: 'Icon element for the MarketplaceLink item',
   },
 ];
 
@@ -303,6 +324,11 @@ storiesOf(name, module).add('AppSwitcher Readme', () => (
         <Heading type="3">homeLink property</Heading>
         <p>The homeLink property is an object configuring the link to Atlassian Home.</p>
         {propDescriptionList(homeLinkPropDescriptions)}
+        <Heading type="3">marketplaceLink property</Heading>
+        <p>
+          The marketplaceLink property is an object configuring the link to Atlassian Marketplace.
+        </p>
+        {propDescriptionList(marketplaceLinkPropDescriptions)}
         <Heading type="3">peopleProfileLink property</Heading>
         <p>
           The peopleProfileLink property is an object configuring the link to Atlassian People

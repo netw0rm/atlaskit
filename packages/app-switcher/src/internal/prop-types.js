@@ -22,6 +22,12 @@ export default {
     icon: PropTypes.node.isRequired,
   }),
 
+  marketplaceLink: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    icon: PropTypes.node.isRequired,
+  }),
+
   recentContainers: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,

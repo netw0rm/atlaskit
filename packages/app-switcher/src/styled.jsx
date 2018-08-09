@@ -50,6 +50,12 @@ export const SiteAdminIconContainer = styled.div`
   ${imageDimensions};
 `;
 
+export const MarketplaceIconContainer = styled.div`
+  color: ${akColorN200};
+
+  ${imageDimensions};
+`;
+
 export const Item = styled.div`
   line-height: 1.2;
   max-width: 225px;

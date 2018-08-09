@@ -183,6 +183,15 @@ storiesOf(name, module)
     />
   ))
 
+  .add('with Marketplace link', () => (
+    <AppSwitcher
+      {...{
+        ...props,
+        isMarketplaceLinkEnabled: true,
+      }}
+    />
+  ))
+
   .add('with People Profile link', () => (
     <AppSwitcher
       {...{

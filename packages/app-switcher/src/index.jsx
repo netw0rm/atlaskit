@@ -1,10 +1,12 @@
 // @flow
 import React, { Component } from 'react';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import MarketplaceIcon from '@atlaskit/icon/glyph/marketplace';
 import { DropdownMenuStateless } from '@atlaskit/dropdown-menu';
 
 import type {
   HomeLink,
+  MarketplaceLink,
   PeopleProfileLink,
   InviteUsersLink,
   RecentContainers,
@@ -29,6 +31,8 @@ export default class AppSwitcher extends Component {
     isAnonymousUser: boolean,
     isHomeLinkEnabled: boolean,
     homeLink?: HomeLink,
+    isMarketplaceLinkEnabled: boolean,
+    marketplaceLink?: MarketplaceLink,
     peopleProfileLink?: PeopleProfileLink,
     inviteUsersLink?: InviteUsersLink,
     isSiteAdminLinkEnabled?: boolean,
@@ -50,6 +54,7 @@ export default class AppSwitcher extends Component {
     isDropdownOpenInitially: true,
     dropdownOptions: {},
     isHomeLinkEnabled: true,
+    isMarketplaceLinkEnabled: false,
     isSiteAdminLinkEnabled: false,
     isPeopleProfileLinkEnabled: false,
     isInviteUsersLinkEnabled: false,
@@ -95,6 +100,8 @@ export default class AppSwitcher extends Component {
       isAnonymousUser,
       isHomeLinkEnabled,
       homeLink,
+      isMarketplaceLinkEnabled,
+      marketplaceLink,
       peopleProfileLink,
       inviteUsersLink,
       isSiteAdminLinkEnabled,
@@ -115,6 +122,13 @@ export default class AppSwitcher extends Component {
       url: '/home',
     };
 
+    // Fallback to default Marketplace apps link if no `marketplaceLink` prop was passed
+    const marketplaceLinkConfig : MarketplaceLink = marketplaceLink || {
+      name: 'Marketplace apps',
+      icon: <MarketplaceIcon size="large" label="" />,
+      url: '/plugins/servlet/upm/marketplace?source=app_switcher',
+    };
+
     // NOTE: dropdownItems here are passing content that are React elements and not strings
     // This is not the intended behaviour of DropdownMenu and could result in major issues in the
     // future. (Its what is throwing the warnings in tests too)
@@ -124,10 +138,12 @@ export default class AppSwitcher extends Component {
         i18n,
         isAnonymousUser,
         isHomeLinkEnabled,
+        isMarketplaceLinkEnabled,
         isSiteAdminLinkEnabled,
         isPeopleProfileLinkEnabled,
         isInviteUsersLinkEnabled,
         homeLinkConfig,
+        marketplaceLinkConfig,
         peopleProfileLink,
         inviteUsersLink
       ),

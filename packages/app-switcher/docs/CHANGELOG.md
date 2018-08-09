@@ -1,5 +1,8 @@
 # @atlaskit/app-switcher
 
+## 7.1.0 (2018-08-09)
+
+* feature; Adds Marketplace apps link to App switcher (issues closed: mc-239) ([7d88712](https://bitbucket.org/atlassian/atlaskit/commits/7d88712))
 ## 7.0.0 (2018-07-19)
 
 

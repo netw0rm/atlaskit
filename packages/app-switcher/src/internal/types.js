@@ -10,7 +10,6 @@ export type HomeLink = {
 export type MarketplaceLink = {
   name: string,
   url: string,
-  icon: ReactNode,
 };
 
 export type PeopleProfileLink = {

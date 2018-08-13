@@ -1,7 +1,6 @@
 // @flow
 import React, { Component } from 'react';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
-import MarketplaceIcon from '@atlaskit/icon/glyph/marketplace';
 import { DropdownMenuStateless } from '@atlaskit/dropdown-menu';
 
 import type {
@@ -125,7 +124,6 @@ export default class AppSwitcher extends Component {
     // Fallback to default Marketplace apps link if no `marketplaceLink` prop was passed
     const marketplaceLinkConfig : MarketplaceLink = marketplaceLink || {
       name: 'Marketplace apps',
-      icon: <MarketplaceIcon size="large" label="" />,
       url: '/plugins/servlet/upm/marketplace?source=app_switcher',
     };
 

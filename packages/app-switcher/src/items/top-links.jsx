@@ -17,6 +17,7 @@ import type {
   PeopleProfileLink,
   InviteUsersLink,
 } from '../internal/types';
+import MarketplaceIcon from '../components/MarketplaceIcon';
 
 export default function (
   i18n: Translations,
@@ -82,7 +83,11 @@ export default function (
   if (isMarketplaceLinkEnabled) {
     items.push({
       content: <TopLinkContainer>{marketplaceLink.name}</TopLinkContainer>,
-      elemBefore: <MarketplaceIconContainer>{marketplaceLink.icon}</MarketplaceIconContainer>,
+      elemBefore: (
+        <MarketplaceIconContainer>
+          <MarketplaceIcon />
+        </MarketplaceIconContainer>
+      ),
       href: marketplaceLink.url,
       analyticEvent: { key: 'appswitcher.marketplace.link.click' },
     });

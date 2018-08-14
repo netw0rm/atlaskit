@@ -14,6 +14,7 @@ const MarketplaceIconContainer = styled.span`
 
 const MarketplaceIconContainerInner = styled.span`
   margin: auto;
+  padding-top: 2px;
 `;
 
 export default class MarketplaceIcon extends PureComponent {

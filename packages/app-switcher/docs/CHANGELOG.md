@@ -1,5 +1,9 @@
 # @atlaskit/app-switcher
 
+## 8.0.0 (2018-08-14)
+
+* breaking; Property \`marketplaceLink\` of app-switcher no longer has an \`icon\` field ([8516a59](https://bitbucket.org/atlassian/atlaskit/commits/8516a59))
+* breaking; updated AppSwitcher to render its own MarketplaceIcon, whenever marketplace icon sh (issues closed: mc-239) ([8516a59](https://bitbucket.org/atlassian/atlaskit/commits/8516a59))
 ## 7.1.0 (2018-08-09)
 
 * feature; Adds Marketplace apps link to App switcher (issues closed: mc-239) ([7d88712](https://bitbucket.org/atlassian/atlaskit/commits/7d88712))

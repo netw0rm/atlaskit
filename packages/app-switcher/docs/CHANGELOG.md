@@ -1,5 +1,8 @@
 # @atlaskit/app-switcher
 
+## 8.0.1 (2018-08-14)
+
+* bug fix; adding small padding-top to marketplace app switcher icon (issues closed: mc-239) ([6572ba6](https://bitbucket.org/atlassian/atlaskit/commits/6572ba6))
 ## 8.0.0 (2018-08-14)
 
 * breaking; Property \`marketplaceLink\` of app-switcher no longer has an \`icon\` field ([8516a59](https://bitbucket.org/atlassian/atlaskit/commits/8516a59))

@@ -1,5 +1,9 @@
 # @atlaskit/util-shared-styles
 
+## 3.0.0 (2018-09-12)
+
+* breaking; updated the H100 styles in util-shared-styles ([d2b8def](https://bitbucket.org/atlassian/atlaskit/commits/d2b8def))
+* breaking; updated the H100 styles in util-shared-styles (issues closed: #5156) ([d2b8def](https://bitbucket.org/atlassian/atlaskit/commits/d2b8def))
 ## 2.10.8 (2018-05-02)
 
 * bug fix; add version range for styled-components dep for all packages ([82865c1](https://bitbucket.org/atlassian/atlaskit/commits/82865c1))

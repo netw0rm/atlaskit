@@ -1,5 +1,9 @@
 # @atlaskit/app-switcher
 
+## 8.1.0 (2018-10-22)
+
+
+* feature; display the "Site administration" link and the "Discover applications" link for bot (issues closed: eue-675) ([90f0f80](https://bitbucket.org/atlassian/atlaskit/commits/90f0f80))
 ## 8.0.1 (2018-08-14)
 
 * bug fix; adding small padding-top to marketplace app switcher icon (issues closed: mc-239) ([6572ba6](https://bitbucket.org/atlassian/atlaskit/commits/6572ba6))

@@ -17,7 +17,6 @@ const propDescriptions = {
   homeLink: 'Object to configure the top link to Atlassian Home.',
   marketplaceLink: 'Object to configure the link to Atlassian Marketplace',
   peopleProfileLink: 'Object to configure the top link to the Atlassian People Profile',
-  inviteUsersLink: 'Object to configure the top link to the Invite Users Experiment',
   recentContainers:
     'Array of recent containers. If this array is empty the recent container section will be hidden.',
   linkedApplications: 'Map containing an array of linked applications.',
@@ -32,8 +31,6 @@ const propDescriptions = {
     'If set to true, the link to Atlassian Marketplace will be rendered in the app switcher',
   isPeopleProfileLinkEnabled:
     'If set to true, the link to Site Administration will be rendered at the top of the app switcher below the Home link (if present).',
-  isInviteUsersLinkEnabled:
-    'If set to true, the link to the invite users experiment will be rendered below the People Profile link (if present).',
   isSiteAdminLinkEnabled:
     'If set to true, the link to Site Administration will be rendered at the top of the app switcher below the Home link (if present).',
   trigger:
@@ -97,24 +94,6 @@ const peopleProfileLinkPropDescriptions = [
     name: 'icon',
     type: 'Node',
     description: 'Icon element for the PeopleProfileLink item',
-  },
-];
-
-const inviteUsersLinkPropDescriptions = [
-  {
-    name: 'name',
-    type: 'String',
-    description: 'Text label of the InviteUsersLink item.',
-  },
-  {
-    name: 'url',
-    type: 'String',
-    description: 'Link target of the InviteUsersLink item.',
-  },
-  {
-    name: 'icon',
-    type: 'Node',
-    description: 'Icon element for the InviteUsersLink item',
   },
 ];
 
@@ -335,12 +314,6 @@ storiesOf(name, module).add('AppSwitcher Readme', () => (
           Profile.
         </p>
         {propDescriptionList(peopleProfileLinkPropDescriptions)}
-        <Heading type="3">inviteUsersLink property</Heading>
-        <p>
-          The inviteUsersLink property is an object configuring the link to the Invite Users
-          experiment
-        </p>
-        {propDescriptionList(inviteUsersLinkPropDescriptions)}
         <Heading type="3">recentContainers property</Heading>
         <p>
           The recentContainers property is an array containing the recent containers to display.

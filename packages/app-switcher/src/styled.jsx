@@ -5,7 +5,6 @@ import {
   akColorN100,
   akColorN200,
   akGridSize,
-  akColorN0,
 } from '@atlaskit/util-shared-styles';
 
 const ellipsis = `
@@ -32,15 +31,6 @@ export const HomeIconContainer = styled.div`
 export const PeopleDirectoryIconContainer = styled.div`
   color: ${akColorN200};
 
-  ${imageDimensions};
-`;
-
-export const InviteUsersIconContainer = styled.div`
-  background-color: ${akColorB400};
-  border-radius: 3px;
-  color: ${akColorN0};
-  text-align: center;
-  line-height: 46px;
   ${imageDimensions};
 `;
 

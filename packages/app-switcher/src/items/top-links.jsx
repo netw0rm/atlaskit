@@ -5,7 +5,6 @@ import {
   HomeIconContainer,
   MarketplaceIconContainer,
   PeopleDirectoryIconContainer,
-  InviteUsersIconContainer,
   SiteAdminIconContainer,
   TopLinkContainer,
 } from '../styled';
@@ -15,7 +14,6 @@ import type {
   Translations,
   DropdownConfig,
   PeopleProfileLink,
-  InviteUsersLink,
 } from '../internal/types';
 import MarketplaceIcon from '../components/MarketplaceIcon';
 
@@ -27,11 +25,9 @@ export default function (
   isMarketplaceLinkEnabled: boolean,
   isSiteAdminLinkEnabled?: boolean,
   isPeopleProfileLinkEnabled?: boolean,
-  isInviteUsersLinkEnabled?: boolean,
   homeLink: HomeLink,
   marketplaceLink: MarketplaceLink,
   peopleProfileLink: PeopleProfileLink,
-  inviteUsersLink: InviteUsersLink
 ): DropdownConfig | null {
   if (isAnonymousUser) {
     return null;
@@ -59,16 +55,7 @@ export default function (
     });
   }
 
-  if (isInviteUsersLinkEnabled) {
-    items.push({
-      content: <TopLinkContainer>{inviteUsersLink.name}</TopLinkContainer>,
-      elemBefore: <InviteUsersIconContainer>{inviteUsersLink.icon}</InviteUsersIconContainer>,
-      href: inviteUsersLink.url,
-      analyticEvent: { key: 'appswitcher.invite.users.link.click' },
-    });
-  }
-
-  if (isSiteAdminLinkEnabled || isTrustedUser) {
+  if (isSiteAdminLinkEnabled) {
     items.push({
       content: <TopLinkContainer>{i18n['site-admin']}</TopLinkContainer>,
       elemBefore: (

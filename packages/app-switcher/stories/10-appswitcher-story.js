@@ -135,6 +135,15 @@ storiesOf(name, module)
       }}
     />
   ))
+  .add('with trusted user', () => (
+    <AppSwitcher
+      {...{
+        ...props,
+        recentContainers: [],
+        isTrustedUser: true,
+      }}
+    />
+  ))
   .add('with links', () => (
     <AppSwitcher
       {...{
@@ -227,36 +236,6 @@ storiesOf(name, module)
       {...{
         ...props,
         isSiteAdminLinkEnabled: true,
-        linkedApplications: {
-          configureLink: 'https://www.atlassian.com',
-          apps: [
-            {
-              name: 'JIRA',
-              url: 'https://www.atlassian.com/#4',
-              product: 'jira',
-            },
-          ],
-          suggested: [
-            {
-              name: 'Confluence',
-              product: 'confluence',
-              onClick: () => {
-                action('confluence.suggestion.clicked');
-              },
-            },
-          ],
-          error: false,
-          discoverApplicationsLink: true,
-        },
-      }}
-    />
-  ))
-
-  .add('with discover applications link (Trusted User)', () => (
-    <AppSwitcher
-      {...{
-        ...props,
-        isSiteAdminLinkEnabled: false,
         linkedApplications: {
           configureLink: 'https://www.atlassian.com',
           apps: [

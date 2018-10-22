@@ -51,7 +51,6 @@ export type LinkedApplications = {
   suggested?: SuggestedApplications,
   apps: Applications,
   error: boolean,
-  discoverApplicationsLink?: boolean,
 };
 
 export type Links = Array<{

@@ -35,6 +35,7 @@ const data = {
     error: false,
   },
   isAnonymousUser: false,
+  isTrustedUser: false,
   i18n: {
     home: 'Home',
     apps: 'Apps',

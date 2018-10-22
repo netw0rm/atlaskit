@@ -55,7 +55,7 @@ export default function (
     });
   }
 
-  if (isSiteAdminLinkEnabled) {
+  if (isSiteAdminLinkEnabled || isTrustedUser) {
     items.push({
       content: <TopLinkContainer>{i18n['site-admin']}</TopLinkContainer>,
       elemBefore: (

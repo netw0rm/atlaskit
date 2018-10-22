@@ -48,7 +48,9 @@ describe(name, () => {
   });
 
   it('should return Marketplace link item when it is enabled', () => {
-    const result = getTopLinks({}, false, false, false, true, false, false, false, null, marketplaceLink);
+    const result = getTopLinks(
+      {}, false, false, false, true, false, false, false, null, marketplaceLink
+    );
 
     expect(result).not.toBe(null);
     expect(result.items).not.toBe(null);

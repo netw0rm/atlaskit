@@ -150,7 +150,8 @@ export default class AppSwitcher extends Component {
         inviteUsersLink
       ),
       getRecentContainers(i18n, isAnonymousUser, recentContainers),
-      getLinkedApplications(i18n, isAnonymousUser, isTrustedUser, isSiteAdminLinkEnabled, linkedApplications),
+      getLinkedApplications(i18n, isAnonymousUser, isTrustedUser, isSiteAdminLinkEnabled,
+        linkedApplications),
       getLinks(links),
     ].filter(item => item != null);
 

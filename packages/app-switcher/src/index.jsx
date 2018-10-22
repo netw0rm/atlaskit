@@ -28,6 +28,7 @@ export default class AppSwitcher extends Component {
     recentContainers: RecentContainers,
     linkedApplications: LinkedApplications,
     isAnonymousUser: boolean,
+    isTrustedUser?: boolean,
     isHomeLinkEnabled: boolean,
     homeLink?: HomeLink,
     isMarketplaceLinkEnabled: boolean,
@@ -50,6 +51,7 @@ export default class AppSwitcher extends Component {
 
   static defaultProps = {
     analytics: () => {},
+    isTrustedUser: false,
     isDropdownOpenInitially: true,
     dropdownOptions: {},
     isHomeLinkEnabled: true,
@@ -97,6 +99,7 @@ export default class AppSwitcher extends Component {
     const {
       i18n,
       isAnonymousUser,
+      isTrustedUser,
       isHomeLinkEnabled,
       homeLink,
       isMarketplaceLinkEnabled,
@@ -135,6 +138,7 @@ export default class AppSwitcher extends Component {
       getTopLinks(
         i18n,
         isAnonymousUser,
+        isTrustedUser,
         isHomeLinkEnabled,
         isMarketplaceLinkEnabled,
         isSiteAdminLinkEnabled,
@@ -146,7 +150,8 @@ export default class AppSwitcher extends Component {
         inviteUsersLink
       ),
       getRecentContainers(i18n, isAnonymousUser, recentContainers),
-      getLinkedApplications(i18n, isAnonymousUser, isSiteAdminLinkEnabled, linkedApplications),
+      getLinkedApplications(i18n, isAnonymousUser, isTrustedUser, isSiteAdminLinkEnabled,
+        linkedApplications),
       getLinks(links),
     ].filter(item => item != null);
 

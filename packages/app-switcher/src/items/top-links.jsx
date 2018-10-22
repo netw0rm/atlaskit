@@ -22,6 +22,7 @@ import MarketplaceIcon from '../components/MarketplaceIcon';
 export default function (
   i18n: Translations,
   isAnonymousUser: boolean,
+  isTrustedUser: boolean,
   isHomeLinkEnabled: boolean,
   isMarketplaceLinkEnabled: boolean,
   isSiteAdminLinkEnabled?: boolean,
@@ -67,7 +68,7 @@ export default function (
     });
   }
 
-  if (isSiteAdminLinkEnabled) {
+  if (isSiteAdminLinkEnabled || isTrustedUser) {
     items.push({
       content: <TopLinkContainer>{i18n['site-admin']}</TopLinkContainer>,
       elemBefore: (
@@ -75,8 +76,13 @@ export default function (
           <SiteAdminIcon />
         </SiteAdminIconContainer>
       ),
-      href: '/admin',
-      analyticEvent: { key: 'appswitcher.siteAdmin.link.click' },
+      href: isTrustedUser ? '/trusted-admin/billing/addapplication' : '/admin',
+      analyticEvent: {
+        key: 'appswitcher.siteAdmin.link.click',
+        properties: {
+          isSiteAdmin: isSiteAdminLinkEnabled,
+        },
+      },
     });
   }
 

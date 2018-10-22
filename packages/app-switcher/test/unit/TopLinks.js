@@ -33,7 +33,7 @@ describe(name, () => {
   });
 
   it('should return Home link item when it is enabled', () => {
-    const result = getTopLinks({}, false, true, false, false, false, homeLink);
+    const result = getTopLinks({}, false, false, false, true, false, false, false, homeLink);
 
     expect(result).not.toBe(null);
     expect(result.items).not.toBe(null);
@@ -42,7 +42,7 @@ describe(name, () => {
   });
 
   it('should return Marketplace link item when it is enabled', () => {
-    const result = getTopLinks({}, false, false, true, false, false, null, marketplaceLink);
+    const result = getTopLinks({}, false, false, false, true, false, false, null, marketplaceLink);
 
     expect(result).not.toBe(null);
     expect(result.items).not.toBe(null);
@@ -69,7 +69,7 @@ describe(name, () => {
 
   it('should return People Profile Link Admin link item when it is enabled', () => {
     const result = getTopLinks(
-      {}, false, false, false, false, true, null, null, peopleProfileLink
+      {}, false, false, false, false, false, true, null, null, peopleProfileLink
     );
 
     expect(result).not.toBe(null);

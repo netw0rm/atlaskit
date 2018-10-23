@@ -1,5 +1,12 @@
 # @atlaskit/app-switcher
 
+## 9.0.0 (2018-10-23)
+
+* feature; clean up unused props in App Switcher. Clean up storybook. ([29fe6f3](https://bitbucket.org/atlassian/atlaskit/commits/29fe6f3))
+
+* breaking; none ([1384aa1](https://bitbucket.org/atlassian/atlaskit/commits/1384aa1))
+* breaking; eUE-673 Remove unused code for Invite Users in App Switcher component ([1384aa1](https://bitbucket.org/atlassian/atlaskit/commits/1384aa1))
+
 ## 8.1.0 (2018-10-22)
 
 

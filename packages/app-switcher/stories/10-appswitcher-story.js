@@ -4,7 +4,6 @@ import { Chrome } from '@atlaskit/util-readme';
 import Button from '@atlaskit/button';
 import CustomIcon from '@atlaskit/icon/glyph/home-circle';
 import PersonIcon from '@atlaskit/icon/glyph/person';
-import InviteTeamIcon from '@atlaskit/icon/glyph/invite-team';
 
 import AppSwitcher from '../src';
 import { name } from '../package.json';
@@ -211,21 +210,6 @@ storiesOf(name, module)
           name: 'People Profile',
           url: '/people',
           icon: <PersonIcon size="large" label="" />,
-        },
-      }}
-    />
-  ))
-
-  .add('with Invite Users link', () => (
-    <AppSwitcher
-      {...{
-        ...props,
-        isSiteAdminLinkEnabled: true,
-        isInviteUsersLinkEnabled: true,
-        inviteUsersLink: {
-          name: 'Invite new users',
-          url: '/trusted-admin/users/invite',
-          icon: <InviteTeamIcon size="large" label="" />,
         },
       }}
     />

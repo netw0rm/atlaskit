@@ -18,12 +18,6 @@ export type PeopleProfileLink = {
   icon: ReactNode,
 }
 
-export type InviteUsersLink = {
-  name: string,
-  url: string,
-  icon: ReactNode,
-}
-
 export type Applications = Array<{
   name: string,
   url: string,

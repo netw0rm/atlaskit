@@ -134,12 +134,32 @@ storiesOf(name, module)
       }}
     />
   ))
-  .add('with trusted user', () => (
+  .add('with site admin', () => (
     <AppSwitcher
       {...{
         ...props,
         recentContainers: [],
-        isTrustedUser: true,
+        isSiteAdminLinkEnabled: true,
+      }}
+    />
+  ))
+  .add('with trusted user (can add products)', () => (
+    <AppSwitcher
+      {...{
+        ...props,
+        recentContainers: [],
+        canAddProducts: true,
+        isSiteAdminLinkEnabled: false,
+      }}
+    />
+  ))
+  .add('with trusted user (can invite users)', () => (
+    <AppSwitcher
+      {...{
+        ...props,
+        recentContainers: [],
+        canInviteUsers: true,
+        isSiteAdminLinkEnabled: false,
       }}
     />
   ))
@@ -210,36 +230,6 @@ storiesOf(name, module)
           name: 'People Profile',
           url: '/people',
           icon: <PersonIcon size="large" label="" />,
-        },
-      }}
-    />
-  ))
-
-  .add('with discover applications link (Admin)', () => (
-    <AppSwitcher
-      {...{
-        ...props,
-        isSiteAdminLinkEnabled: true,
-        linkedApplications: {
-          configureLink: 'https://www.atlassian.com',
-          apps: [
-            {
-              name: 'JIRA',
-              url: 'https://www.atlassian.com/#4',
-              product: 'jira',
-            },
-          ],
-          suggested: [
-            {
-              name: 'Confluence',
-              product: 'confluence',
-              onClick: () => {
-                action('confluence.suggestion.clicked');
-              },
-            },
-          ],
-          error: false,
-          discoverApplicationsLink: true,
         },
       }}
     />

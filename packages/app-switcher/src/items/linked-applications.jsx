@@ -7,7 +7,7 @@ import type { Translations, LinkedApplications, DropdownConfig } from '../intern
 export default function (
   i18n: Translations,
   isAnonymousUser: boolean,
-  isTrustedUser: boolean,
+  canAddProducts: boolean,
   isSiteAdminLinkEnabled?: boolean,
   linkedApplications: LinkedApplications,
 ): DropdownConfig {
@@ -50,7 +50,7 @@ export default function (
     });
   }
 
-  if (!isAnonymousUser && (isTrustedUser || isSiteAdminLinkEnabled)) {
+  if (!isAnonymousUser && (canAddProducts || isSiteAdminLinkEnabled)) {
     items.push({
       content: <Item>{i18n['discover.applications'] || 'Discover applications'}</Item>,
       href: isSiteAdminLinkEnabled

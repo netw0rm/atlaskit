@@ -1,5 +1,8 @@
 # @atlaskit/app-switcher
 
+## 9.1.0 (2018-10-29)
+
+* feature; use specific permission checks in app switcher rather than relying on generic "isTr ([9bad14d](https://bitbucket.org/atlassian/atlaskit/commits/9bad14d))
 ## 9.0.0 (2018-10-23)
 
 * feature; clean up unused props in App Switcher. Clean up storybook. ([29fe6f3](https://bitbucket.org/atlassian/atlaskit/commits/29fe6f3))

@@ -35,7 +35,8 @@ const data = {
     error: false,
   },
   isAnonymousUser: false,
-  isTrustedUser: false,
+  canAddProducts: false,
+  canInviteUsers: false,
   i18n: {
     home: 'Home',
     apps: 'Apps',

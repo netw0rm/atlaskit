@@ -41,6 +41,8 @@ const propDescriptions = {
     'The function supplied should have the following signature: function analyics(eventName, payload) { ... }.',
   isDropdownOpenInitially: 'The initial state of the dropdown.',
   dropdownOptions: 'Any additional options to pass into StatelessDropdown',
+  canAddProducts: 'If set to true, the "Discover applications" link will be rendered after the suggested products. Depending on whether the user is an admin or not it will redirect to the appropriate url. The "Site administration" link will also be rendered.',
+  canInviteUsers: 'If set to true, the "Site administration" link will be rendered, and will redirect to trusted-admin-ui if the user is not a site admin.',
 };
 
 const homeLinkPropDescriptions = [
@@ -186,12 +188,6 @@ const linkedApplicationsPropDescriptions = [
     name: 'error',
     type: 'Boolean',
     description: 'If true the app switcher will display an error message.',
-  },
-  {
-    name: 'discoverApplicationsLink',
-    type: 'Boolean',
-    description:
-      'If true the app switcher will display a discover applications link after the suggested products. Depending on whether the user is an admin or not it will redirect to the appropriate url',
   },
 ];
 

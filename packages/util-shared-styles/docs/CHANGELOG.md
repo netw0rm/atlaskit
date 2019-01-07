@@ -1,5 +1,8 @@
 # @atlaskit/util-shared-styles
 
+## 3.1.1 (2019-01-07)
+
+* bug fix; added deprecation warning to the package ([d70aa03](https://bitbucket.org/atlassian/atlaskit/commits/d70aa03))
 ## 3.1.0 (2019-01-06)
 
 * feature; added deprecation warning to the util-shared-styles package ([58761cf](https://bitbucket.org/atlassian/atlaskit/commits/58761cf))

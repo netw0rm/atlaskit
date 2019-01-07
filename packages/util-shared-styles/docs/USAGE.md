@@ -1,11 +1,16 @@
-This package provides you with the ADG colors & typography in a programmatic way.
+## [WARNING] This package will be deprecated on 21-01-2019. Please use [@atlaskit/theme](https://atlaskit.atlassian.com/packages/core/theme) instead.
 
+Please follow [@atlaskit/theme migration guide](https://atlaskit.atlassian.com/packages/core/theme/docs/migration-guide) for migration to @atlaskit/theme package in your project.
+
+---
+
+This package provides you with the ADG colors & typography in a programmatic way.
 
 You can either use the less files by importing them via
 
 ```less
-@import '~@atlaskit/util-shared-styles/src/colors.less';
-@import '~@atlaskit/util-shared-styles/src/fonts.less';
+@import "~@atlaskit/util-shared-styles/src/colors.less";
+@import "~@atlaskit/util-shared-styles/src/fonts.less";
 
 .myclass {
   color: @ak-color-R100;
@@ -19,6 +24,6 @@ or use them within JS via
 import {
   akColorN500 as defaultColor,
   akColorR500 as highlightColor,
-  akFontFamily as fontFamily,
-} from '@atlaskit/util-shared-styles';
+  akFontFamily as fontFamily
+} from "@atlaskit/util-shared-styles";
 ```

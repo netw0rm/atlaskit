@@ -22,7 +22,6 @@ local.log
 /storybook-static
 browserstack-entry.js
 packages/**/**/README.md
-!packages/**/util-shared-styles/README.md
 packages/*/CHANGELOG.md
 **/local-config.js
 packages/**/yarn.lock

@@ -1,4 +1,4 @@
-## [WARNING] This package will be deprecated on 21-01-2019. Please use [@atlaskit/theme](https://atlaskit.atlassian.com/packages/core/theme) instead.
+## [WARNING] This package is deprecated. We recommend using @atlaskit/theme package instead.
 
 Please follow [@atlaskit/theme migration guide](https://atlaskit.atlassian.com/packages/core/theme/docs/migration-guide) for migration to @atlaskit/theme package in your project.
 

@@ -1,9 +1,0 @@
-{
-  "extends": "@atlaskit/eslint-config-base",
-  "settings": {
-    "polyfills": [
-      "promises",
-      "fetch"
-    ]
-  }
-}

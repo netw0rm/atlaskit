@@ -1,7 +1,0 @@
-{
-  "lerna": "2.0.0-rc.5",
-  "hoist": true,
-  "CommentForTheLineBelow": "We use nohoist here to prevent each of those packages from hoisting because they caused major issues with the website (AK-3251)",
-  "nohoist":"@(webpack|webpack-dev-server|copy-webpack-plugin|html-webpack-plugin)",
-  "version": "independent"
-}
